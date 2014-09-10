@@ -38,6 +38,14 @@ var basePrototype = {
     }
 
     return this.formatters[prop](value);;
+  },
+
+  toJson: function(formatter) {
+    if (formatter) {
+      return formatter(this.props);
+    }
+
+    return this.props;
   }
 }
 

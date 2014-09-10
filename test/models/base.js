@@ -78,4 +78,32 @@ describe('Base model', function() {
       expect(baseSetSpy).to.have.been.calledWith('test', 'value');
     });
   });
+
+  describe('registering properties', function() {
+    it('can register a new property', function() {
+      var base = new Base({
+        testA: 'A'
+      });
+
+      base.defineProperty('testB');
+
+      base.testB = 'B';
+
+      expect(base.props.testA).to.equal('A');
+      expect(base.props.testB).to.equal('B');
+
+    });
+  });
+
+  describe('to json', function() {
+    it('turns into json', function() {
+      var base = new Base({
+        testA: 'A'
+      });
+
+      expect(base.toJson()).deep.equals({
+        testA: 'A'
+      });
+    });
+  });
 });
