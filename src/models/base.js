@@ -3,9 +3,15 @@ var Emitter = require('events').EventEmitter;
 var basePrototype = {
   init: function(props) {
     props = props || {};
-    var value;
 
-    for (var p in props) {
+    var value;
+    var p;
+
+    for (p in this.properties()) {
+      this.defineProperty(p);
+    }
+
+    for (p in props) {
       this.defineProperty(p);
       this[p] = props[p];
     }
@@ -46,6 +52,10 @@ var basePrototype = {
     }
 
     return this.props;
+  },
+
+  properties: function() {
+    return [];
   }
 }
 

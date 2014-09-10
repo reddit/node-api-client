@@ -48,6 +48,7 @@ function APIv1Endpoint(config) {
   var config = config || {};
   this.origin = config.origin || 'https://www.reddit.com';
   this.request = config.request || request;
+  this.userAgent = config.userAgent || 'SNOODE UNREGISTERED v0.0.2';
 };
 
 function baseGet(uri, options, request, processOptions, formatBody) {
@@ -113,6 +114,18 @@ APIv1Endpoint.prototype.links = function() {
 }
 
 APIv1Endpoint.prototype.comments = function() {
+  function mapReplies(comment) {
+    var comment = comment.data;
+
+    if (comment.replies) {
+      comment.replies = comment.replies.data.children.map(mapReplies);
+    } else {
+      comment.replies = [];
+    }
+
+    return new Comment(comment);
+  }
+
   var get = function(options) {
     var options = options || {};
     var uri = this.origin + '/comments/' + options.linkId + '.json';
@@ -124,9 +137,10 @@ APIv1Endpoint.prototype.comments = function() {
 
       return requestOptions;
     }, function(body) {
-      return body[1].data.children.map(function(c) {
-        return new Comment(c.data);
-      });
+      return {
+        listing: body[0].data.children[0].data,
+        comments: body[1].data.children.map(mapReplies)
+      }
     });
   }
 

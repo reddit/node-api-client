@@ -18,7 +18,7 @@ api.links.get({
 
 api.comments.get({
   linkId: 't3_ib4bk'
-}).then(function(commentS) {
+}).then(function(comments, listing) {
   // do stuff with the array of comments
 });
 ```
