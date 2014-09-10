@@ -1,0 +1,23 @@
+{
+  "name": "snoode",
+  "version": "0.0.1",
+  "description": "node and browser reddit api library",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajacksified/snoode.git"
+  },
+  "keywords": [
+    "reddit",
+    "api"
+  ],
+  "author": "Jack Lawson <ajacksified@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajacksified/snoode/issues"
+  },
+  "homepage": "https://github.com/ajacksified/snoode"
+}
