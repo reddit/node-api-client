@@ -4,7 +4,7 @@
   "description": "node and browser reddit api library",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ./test"
+    "test": "./node_modules/mocha/bin/mocha --recursive ./test/"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,16 @@
   "bugs": {
     "url": "https://github.com/ajacksified/snoode/issues"
   },
-  "homepage": "https://github.com/ajacksified/snoode"
+  "homepage": "https://github.com/ajacksified/snoode",
+  "dependencies": {
+    "q": "^1.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^5.11.1",
+    "chai": "^1.9.1",
+    "gulp": "^3.8.8",
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3",
+    "sinon-chai": "^2.5.0"
+  }
 }
