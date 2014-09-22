@@ -9,41 +9,6 @@ var PromoCampaign = require('../models/promocampaign');
 
 var q = require('q');
 
-var commonQueryParameters = [
-  'after',
-  'before',
-  'limit',
-  'count',
-  'show'
-];
-
-var commonHeaderParameters = [
-];
-
-function buildQuery(options) {
-  var query = {};
-
-  commonQueryParameters.forEach(function(q) {
-    if(options[q]) {
-      query[q] = options[q];
-    }
-  });
-
-  return query;
-}
-
-function buildHeaders(options) {
-  var headers = {};
-
-  commonHeaderParameters.forEach(function(q) {
-    if(options[q]) {
-      headers[q] = options[q];
-    }
-  });
-
-  return headers;
-}
-
 function APIv1Endpoint(config) {
   var config = config || {};
   this.origin = config.origin || 'https://www.reddit.com';
@@ -55,13 +20,10 @@ function baseGet(uri, options, request, processOptions, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
-  var query = buildQuery(options);
-  var headers = buildHeaders(options);
-
   var requestOptions = {
     uri: uri,
-    headers: headers,
-    query: query
+    headers: options.headers,
+    query: options.query,
   }
 
   if (processOptions) {
