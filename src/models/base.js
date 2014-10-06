@@ -46,7 +46,7 @@ var basePrototype = {
     return this.formatters[prop](value);;
   },
 
-  toJson: function(formatter) {
+  toJSON: function(formatter) {
     if (formatter) {
       return formatter(this.props);
     }

@@ -101,7 +101,7 @@ describe('Base model', function() {
         testA: 'A'
       });
 
-      expect(base.toJson()).deep.equals({
+      expect(base.toJSON()).deep.equals({
         testA: 'A'
       });
     });
