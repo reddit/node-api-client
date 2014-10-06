@@ -22,9 +22,11 @@ function baseGet(uri, options, request, processOptions, formatBody) {
 
   var requestOptions = {
     uri: uri,
-    headers: options.headers,
-    query: options.query,
+    headers: options.headers || {},
+    qs: options.query,
   }
+
+  requestOptions.headers['User-Agent'] = this.userAgent;
 
   if (processOptions) {
     requestOptions = processOptions(options, requestOptions);
@@ -64,9 +66,13 @@ APIv1Endpoint.prototype.links = function() {
     uri += view + '.json';
 
     return baseGet(uri, options, this.request, null, function(body) {
-      return body.data.children.map(function(c) {
-        return new Link(c.data);
-      });
+      if(body.data && body.data.children) {
+        return body.data.children.map(function(c) {
+          return new Link(c.data);
+        });
+      }else{
+        return [];
+      }
     });
   }
 
@@ -102,6 +108,31 @@ APIv1Endpoint.prototype.comments = function() {
       return {
         listing: body[0].data.children[0].data,
         comments: body[1].data.children.map(mapReplies)
+      }
+    });
+  }
+
+  return {
+    get: get.bind(this)
+  }
+}
+
+APIv1Endpoint.prototype.users = function() {
+  var get = function(options) {
+    var options = options || {};
+    var uri = this.origin + '/';
+
+    if (options.user === 'me') { // current oauth doesn't return user id
+      uri += 'api/v1/me';
+    } else {
+      uri += 'user/' + options.user + '/about.json';
+    }
+
+    return baseGet(uri, options, this.request, null, function(body) {
+      if(body) {
+        return new Account(body);
+      }else{
+        return null;
       }
     });
   }
