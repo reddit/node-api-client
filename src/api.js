@@ -9,6 +9,6 @@ module.exports = {
     Message: require('./models/message'),
     Promocampaign: require('./models/promocampaign'),
     Subreddit: require('./models/subreddit'),
-    Vote: require('./models/Vote'),
+    Vote: require('./models/vote'),
   },
 }
