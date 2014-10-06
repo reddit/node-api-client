@@ -53,6 +53,43 @@ function baseGet(uri, options, request, processOptions, formatBody) {
   return defer.promise;
 }
 
+function basePost(uri, options, request, processOptions, formatBody) {
+  var options = options || {};
+  var defer = q.defer();
+
+  var requestOptions = {
+    uri: uri,
+    headers: options.headers || {},
+    form: options.form,
+  }
+
+  requestOptions.headers['User-Agent'] = this.userAgent;
+
+  if (processOptions) {
+    requestOptions = processOptions(options, requestOptions);
+  }
+
+  request.post(requestOptions, function(err, res) {
+    if(err) {
+      defer.reject(err, res);
+    } else {
+      try {
+        var body = JSON.parse(res.body);
+
+        if(formatBody) {
+          body = formatBody(body);
+        }
+
+        defer.resolve(body);
+      } catch(e) {
+        defer.reject(e);
+      }
+    }
+  });
+
+  return defer.promise;
+}
+
 APIv1Endpoint.prototype.links = function() {
   var get = function(options) {
     var options = options || {};
@@ -139,6 +176,28 @@ APIv1Endpoint.prototype.users = function() {
 
   return {
     get: get.bind(this)
+  }
+}
+
+APIv1Endpoint.prototype.votes = function(type) {
+  var post = function(options) {
+    var options = options || {};
+    var uri = this.origin + '/api/vote';
+
+    options.form = options.model.toJSON(function(props) {
+      return {
+        id: props.id,
+        dir: props.direction,
+      };
+    });
+
+    return basePost(uri, options, this.request, null, function(body) {
+      return null;
+    });
+  }
+
+  return {
+    post: post.bind(this)
   }
 }
 
