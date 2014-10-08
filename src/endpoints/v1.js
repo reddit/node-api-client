@@ -45,6 +45,8 @@ function baseGet(uri, options, request, processOptions, formatBody) {
 
         defer.resolve(body);
       } catch(e) {
+        console.log(requestOptions);
+        console.log(res.body);
         defer.reject(e);
       }
     }
@@ -96,8 +98,8 @@ APIv1Endpoint.prototype.links = function() {
     var uri = this.origin + '/';
     var view = options.view || 'hot';
 
-    if (options.subredditName) {
-      uri += 'r/' + options.subredditName + '/';
+    if (options.query.subredditName) {
+      uri += 'r/' + options.query.subredditName + '/';
     }
 
     uri += view + '.json';
