@@ -1,19 +1,15 @@
-var Base = require('./base');
+import Base from './base';
 
-var Vote = Base.extend({
-  properties: function() {
-    return [
-      'direction',
-      'id',
-    ];
-  },
-
-  validators: {
-    direction: function(v) {
-      return ([-1,0,1].indexOf(v) > -1);
-    }
+class Vote extends Base {
+  constructor(props) {
+    return super(props);
   }
+};
 
-});
+Vote.validators = {
+  direction: function(v) {
+    return ([-1,0,1].indexOf(v) > -1);
+  }
+}
 
-module.exports = Vote;
+export default Vote;

@@ -1,7 +1,9 @@
-var Base = require('./base');
+import Base from './base';
 
-var Subreddit = Base.extend({
+class Subreddit extends Base {
+  constructor(props) {
+    return super(props);
+  }
+};
 
-});
-
-module.exports = Subreddit;
+export default Subreddit;

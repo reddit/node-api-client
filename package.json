@@ -4,7 +4,7 @@
   "description": "node and browser reddit api library",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive ./test/"
+    "test": "./node_modules/mocha/bin/mocha --harmony --recursive ./test/"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
+    "6to5": "^1.9.1",
+    "gulp-sourcemaps": "^1.2.4",
+    "harmony-reflect": "^1.1.0",
     "q": "^1.0.1",
     "request": "^2.42.0"
   },
@@ -28,6 +31,8 @@
     "browserify": "^5.11.1",
     "chai": "^1.9.1",
     "gulp": "^3.8.8",
+    "gulp-6to5": "^1.0.1",
+    "gulp-sourcemaps": "^1.2.4",
     "mocha": "^1.21.4",
     "sinon": "^1.10.3",
     "sinon-chai": "^2.5.0"

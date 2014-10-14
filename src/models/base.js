@@ -1,85 +1,69 @@
-var Emitter = require('events').EventEmitter;
+import { EventEmitter } from 'events';
+import * as Reflect from 'harmony-reflect';
 
-var basePrototype = {
-  init: function(props) {
-    props = props || {};
+class Base {
+  constructor (props={}, opts={}) {
+    this.props = {};
+    this.validators = opts.validators || [];
+    this.formatters = opts.formatters || [];
+    this.emitter = opts.emitter || new EventEmitter();
 
-    var value;
-    var p;
-
-    for (p in this.properties()) {
-      this.defineProperty(p);
+    for (var p in props) {
+      this.props[p] = props[p];
     }
 
-    for (p in props) {
-      this.defineProperty(p);
-      this[p] = props[p];
-    }
-  },
+    return new Proxy(this, {
+      set: function (receiver, name, value) {
 
-  defineProperty: function(p) {
-    Object.defineProperty(this, p, {
-      get: function(){
-        return this.props[p];
-      },
-      set: function(newValue){
-        if (this.validate(p, newValue)) {
-          this.props[p] = this.format(newValue);
+        if (receiver[name]) {
+          return receiver[name] = value;
+        }
 
-          this.emitter.emit('set:' + p, newValue);
-          this.emitter.emit('set', p, newValue);
+        if (receiver.validate(name, value)) {
+          receiver.props[name] = value;
+          receiver.emit('set', name, value);
+          receiver.emit('set:' + name, value);
+        } else {
+          receiver.emit('validationError', 'set', name, value);
         }
       },
-      configurable: true
+
+      get: function (receiver, name) {
+        return receiver[name] || receiver.props[name];
+      }
     });
-  },
+  }
 
-  validate: function(prop, value) {
-    return (!this.validators || !this.validators[prop] || this.validators[prop](value));
-  },
+  emit (...args) {
+    this.emitter.emit(...args);
+  }
 
-  format: function(value){
+  on (...args) {
+    this.emitter.on(...args);
+  }
+
+  validate (prop, value) {
+    return (
+      !this.validators || 
+      !this.validators[prop] || 
+      this.validators[prop] (value));
+  }
+
+  format (value){
     if (!this.formatters || !this.formatters[prop]) {
       return value;
     }
 
-    return this.formatters[prop](value);;
-  },
+    return this.formatters[prop] (value);;
+  }
 
-  toJSON: function(formatter) {
+  toJSON (formatter) {
     if (formatter) {
-      return formatter(this.props);
+      return formatter (this.props);
     }
 
     return this.props;
-  },
-
-  properties: function() {
-    return [];
   }
 }
 
-function extend(proto) {
-  function Child(props) {
-    this.type = Child;
-    this.base = Base;
-    this.props = {};
-    this.emitter = new Emitter();
-    this.init(props);
-  }
-
-  for (m in basePrototype) {
-    if (!proto[m]) {
-      proto[m] = basePrototype[m];
-      proto.base = Base;
-    }
-  }
-
-  Child.prototype = proto;
-  return Child;
-};
-
-Base = extend(basePrototype);
-Base.extend = extend;
-
-module.exports = Base;
+export default Base;

@@ -23,3 +23,7 @@ api.comments.get({
 });
 ```
 
+Caveats
+------
+
+* Requires --harmony flag to run with node.

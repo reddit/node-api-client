@@ -1,7 +1,9 @@
-var Base = require('./base');
+import Base from './base';
 
-var Award = Base.extend({
+class Award extends Base {
+  constructor(props) {
+    return super(props);
+  }
+};
 
-});
-
-module.exports = Award;
+export default Award;

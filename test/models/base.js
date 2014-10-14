@@ -5,7 +5,7 @@ var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai)
 
-var Base = require('../../src/models/base.js');
+var Base = require('../../index.js').models.Base;
 
 describe('Base model', function() {
   describe('constructor', function() {
@@ -28,20 +28,13 @@ describe('Base model', function() {
 
       expect(base.props.testA).to.equal('AA');
       expect(base.props.testB).to.equal('BB');
-    });
-  });
 
-  describe('extending', function() {
-    it('extends onto new objects', function() {
-      var Child = Base.extend({ });
-      var child = new Child({ test: 'A' });
-      expect(child.props.test).to.equal('A');
     });
   });
 
   describe('validation', function() {
     it('does not set invalid properties', function() {
-      var Child = Base.extend({
+      var child = new Base({}, {
         validators: {
           val: function(v) {
             return v == 1;
@@ -49,7 +42,6 @@ describe('Base model', function() {
         }
       });
 
-      var child = new Child({ val: 0 });
       expect(child.props.val).to.equal(undefined);
 
       child.val = 1;
@@ -69,29 +61,13 @@ describe('Base model', function() {
       var setSpy = sinon.spy();
       var baseSetSpy = sinon.spy();
 
-      base.emitter.on('set:test', setSpy);
-      base.emitter.on('set', baseSetSpy);
+      base.on('set:test', setSpy);
+      base.on('set', baseSetSpy);
 
       base.test = 'value';
 
       expect(setSpy).to.have.been.calledWith('value');
       expect(baseSetSpy).to.have.been.calledWith('test', 'value');
-    });
-  });
-
-  describe('registering properties', function() {
-    it('can register a new property', function() {
-      var base = new Base({
-        testA: 'A'
-      });
-
-      base.defineProperty('testB');
-
-      base.testB = 'B';
-
-      expect(base.props.testA).to.equal('A');
-      expect(base.props.testB).to.equal('B');
-
     });
   });
 

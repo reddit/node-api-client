@@ -1,7 +1,9 @@
-var Base = require('./base');
+import Base from './base';
 
-var PromoCampaign = Base.extend({
+class PromoCampaign extends Base {
+  constructor(props) {
+    return super(props);
+  }
+};
 
-});
-
-module.exports = PromoCampaign;
+export default PromoCampaign;

@@ -1,14 +1,28 @@
-module.exports = {
-  v1: require('./endpoints/v1'),
-  models: {
-    Account: require('./models/account'),
-    Award: require('./models/award'),
-    Base: require('./models/base'),
-    Comment: require('./models/comment'),
-    Link: require('./models/link'),
-    Message: require('./models/message'),
-    Promocampaign: require('./models/promocampaign'),
-    Subreddit: require('./models/subreddit'),
-    Vote: require('./models/vote'),
-  },
+import v1 from './endpoints/v1';
+
+import Account from './models/account';
+import Award from './models/award.js';
+import Base from './models/base.js';
+import Comment from './models/comment.js';
+import Link from './models/link.js';
+import Message from './models/message.js';
+import PromoCampaign from './models/promocampaign.js';
+import Subreddit from './models/subreddit.js';
+import Vote from './models/vote.js';
+
+var models = {
+  Account,
+  Award,
+  Base,
+  Comment,
+  Link,
+  Message,
+  PromoCampaign,
+  Subreddit,
+  Vote
+};
+
+export {
+  v1,
+  models
 }
