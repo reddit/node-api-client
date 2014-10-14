@@ -1,10 +1,10 @@
 {
   "name": "snoode",
-  "version": "0.0.9",
+  "version": "0.0.12-es6",
   "description": "node and browser reddit api library",
-  "main": "index.js",
+  "main": "src/api.es6.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive ./test/"
+    "test": "./node_modules/mocha/bin/mocha --harmony --recursive ./test/"
   },
   "repository": {
     "type": "git",
@@ -21,13 +21,13 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
+    "6to5": "^1.9.5",
+    "harmony-reflect": "^1.1.0",
     "q": "^1.0.1",
     "request": "^2.42.0"
   },
   "devDependencies": {
-    "browserify": "^5.11.1",
     "chai": "^1.9.1",
-    "gulp": "^3.8.8",
     "mocha": "^1.21.4",
     "sinon": "^1.10.3",
     "sinon-chai": "^2.5.0"
