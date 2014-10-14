@@ -1,3 +1,6 @@
+require('6to5/register');
+require('6to5/polyfill');
+
 var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon');
@@ -5,7 +8,7 @@ var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai)
 
-var Base = require('../../src/models/base.js');
+var Base = require('../../src/api.es6').models.Base;
 
 describe('Base model', function() {
   describe('constructor', function() {
@@ -20,28 +23,21 @@ describe('Base model', function() {
         testB: 'B',
       });
 
-      expect(base.props.testA).to.equal('A');
-      expect(base.props.testB).to.equal('B');
+      expect(base.get('testA')).to.equal('A');
+      expect(base.get('testB')).to.equal('B');
 
-      base.testA = 'AA';
-      base.testB = 'BB';
+      base.set('testA', 'AA');
+      base.set('testB', 'BB');
 
-      expect(base.props.testA).to.equal('AA');
-      expect(base.props.testB).to.equal('BB');
-    });
-  });
+      expect(base.get('testA')).to.equal('AA');
+      expect(base.get('testB')).to.equal('BB');
 
-  describe('extending', function() {
-    it('extends onto new objects', function() {
-      var Child = Base.extend({ });
-      var child = new Child({ test: 'A' });
-      expect(child.props.test).to.equal('A');
     });
   });
 
   describe('validation', function() {
     it('does not set invalid properties', function() {
-      var Child = Base.extend({
+      var child = new Base({}, {
         validators: {
           val: function(v) {
             return v == 1;
@@ -49,14 +45,13 @@ describe('Base model', function() {
         }
       });
 
-      var child = new Child({ val: 0 });
-      expect(child.props.val).to.equal(undefined);
+      expect(child.get('val')).to.equal(undefined);
 
-      child.val = 1;
-      expect(child.props.val).to.equal(1);
+      child.set('val', 1);
+      expect(child.get('val')).to.equal(1);
 
-      child.val = 2;
-      expect(child.props.val).to.equal(1);
+      child.set('val', 2);
+      expect(child.get('val')).to.equal(1);
     });
   });
 
@@ -69,29 +64,13 @@ describe('Base model', function() {
       var setSpy = sinon.spy();
       var baseSetSpy = sinon.spy();
 
-      base.emitter.on('set:test', setSpy);
-      base.emitter.on('set', baseSetSpy);
+      base.on('set:test', setSpy);
+      base.on('set', baseSetSpy);
 
-      base.test = 'value';
+      base.set('test',  'value');
 
       expect(setSpy).to.have.been.calledWith('value');
       expect(baseSetSpy).to.have.been.calledWith('test', 'value');
-    });
-  });
-
-  describe('registering properties', function() {
-    it('can register a new property', function() {
-      var base = new Base({
-        testA: 'A'
-      });
-
-      base.defineProperty('testB');
-
-      base.testB = 'B';
-
-      expect(base.props.testA).to.equal('A');
-      expect(base.props.testB).to.equal('B');
-
     });
   });
 
