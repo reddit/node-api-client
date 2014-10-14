@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
-    "6to5": "git+https://github.com/ajacksified/6to5.git#9c2f1b6aca39d6d5e2ccbed824fa4d3f927f70cf",
+    "6to5": "git+https://github.com/ajacksified/6to5.git#9b4fb4f",
     "harmony-reflect": "^1.1.0",
     "q": "^1.0.1",
     "request": "^2.42.0"
