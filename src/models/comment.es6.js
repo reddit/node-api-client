@@ -1,4 +1,4 @@
-import Base from './base.es6';
+import Base from './base';
 
 class Comment extends Base {
   constructor(props) {

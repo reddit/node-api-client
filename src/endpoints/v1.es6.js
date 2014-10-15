@@ -1,10 +1,10 @@
 import * as request from 'request';
 import * as q from 'q';
 
-import Account from '../models/account.es6';
-import Comment from '../models/comment.es6';
-import Link from '../models/link.es6';
-import Vote from '../models/vote.es6';
+import Account from '../models/account';
+import Comment from '../models/comment';
+import Link from '../models/link';
+import Vote from '../models/vote';
 
 
 function baseGet(uri, options, request, processOptions, formatBody) {

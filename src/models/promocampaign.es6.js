@@ -1,4 +1,4 @@
-import Base from './base.es6';
+import Base from './base';
 
 class PromoCampaign extends Base {
   constructor(props) {
