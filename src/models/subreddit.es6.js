@@ -1,4 +1,4 @@
-import Base from './base.es6';
+import Base from './base';
 
 class Subreddit extends Base {
   constructor(props) {

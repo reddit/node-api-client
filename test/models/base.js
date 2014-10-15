@@ -1,5 +1,6 @@
-require('6to5/register');
-require('6to5/polyfill');
+require('6to5/register')({
+  extensions: ['.js', '.es6.js']
+});
 
 var chai = require('chai');
 var expect = chai.expect;
@@ -8,7 +9,7 @@ var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai)
 
-var Base = require('../../src/api.es6').models.Base;
+var Base = require('../../src/api').models.Base;
 
 describe('Base model', function() {
   describe('constructor', function() {

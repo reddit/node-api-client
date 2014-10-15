@@ -1,14 +1,14 @@
-import v1 from './endpoints/v1.es6';
+import v1 from './endpoints/v1';
 
-import Account from './models/account.es6';
-import Award from './models/award.es6';
-import Base from './models/base.es6';
-import Comment from './models/comment.es6';
-import Link from './models/link.es6';
-import Message from './models/message.es6';
-import PromoCampaign from './models/promocampaign.es6';
-import Subreddit from './models/subreddit.es6';
-import Vote from './models/vote.es6';
+import Account from './models/account';
+import Award from './models/award';
+import Base from './models/base';
+import Comment from './models/comment';
+import Link from './models/link';
+import Message from './models/message';
+import PromoCampaign from './models/promocampaign';
+import Subreddit from './models/subreddit';
+import Vote from './models/vote';
 
 var models = {
   Account,

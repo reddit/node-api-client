@@ -1,4 +1,4 @@
-import Base from './base.es6';
+import Base from './base';
 
 class Award extends Base {
   constructor(props) {
