@@ -1,6 +1,6 @@
 {
   "name": "snoode",
-  "version": "0.0.14-es6",
+  "version": "0.0.15-es6",
   "description": "node and browser reddit api library",
   "main": "src/api.es6.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
-    "6to5": "git+https://github.com/ajacksified/6to5.git#v1.9.5-ex",
+    "6to5": "git+https://github.com/sebmck/6to5.git#5b08924c026ff21c2857ba5d0f2357eb424ec890",
     "harmony-reflect": "^1.1.0",
     "q": "^1.0.1",
     "request": "^2.42.0"
