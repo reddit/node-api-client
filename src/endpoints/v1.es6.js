@@ -105,8 +105,8 @@ class APIv1Endpoint {
         var uri = this.origin + '/';
         var sort = options.sort || 'hot';
 
-        if (options.query && options.query.subredditName) {
-          uri += 'r/' + options.query.subredditName + '/';
+        if (options.subredditName) {
+          uri += 'r/' + options.subredditName + '/';
         }
 
         uri += sort + '.json';
