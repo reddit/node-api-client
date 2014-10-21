@@ -17,7 +17,7 @@ function baseGet(uri, options, request, processOptions, formatBody) {
     qs: options.query,
   }
 
-  requestOptions.headers['User-Agent'] = this.userAgent;
+  requestOptions.headers['User-Agent'] = options.userAgent;
 
   if (processOptions) {
     requestOptions = processOptions(options, requestOptions);
@@ -54,7 +54,7 @@ function basePost(uri, options, request, processOptions, formatBody) {
     form: options.form,
   }
 
-  requestOptions.headers['User-Agent'] = this.userAgent;
+  requestOptions.headers['User-Agent'] = options.userAgent;
 
   if (processOptions) {
     requestOptions = processOptions(options, requestOptions);
@@ -93,7 +93,6 @@ function bind(obj, context) {
 
 class APIv1Endpoint {
   constructor (config = {}) {
-    var config = config || {};
     this.origin = config.origin || 'https://www.reddit.com';
     this.request = config.request || request;
     this.userAgent = config.userAgent || 'SNOODE UNREGISTERED v0.0.2';
@@ -110,6 +109,8 @@ class APIv1Endpoint {
         }
 
         uri += sort + '.json';
+
+        options.userAgent = this.userAgent;
 
         return baseGet(uri, options, this.request, null, (body) => {
           if (body.data && body.data.children) {
@@ -139,6 +140,8 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var uri = this.origin + '/comments/' + options.linkId + '.json';
 
+        options.userAgent = this.userAgent;
+
         return baseGet(uri, options, this.request, (options, requestOptions) => {
           if (options.comment) {
             requestOptions.query.comment = options.comment;
@@ -166,6 +169,8 @@ class APIv1Endpoint {
           uri += 'user/' + options.user + '/about.json';
         }
 
+        options.userAgent = this.userAgent;
+
         return baseGet(uri, options, this.request, null, (body) => {
           if (body) {
             return new Account(body).toJSON();
@@ -181,6 +186,8 @@ class APIv1Endpoint {
     return bind({
       post: function(options = {}) {
         var uri = this.origin + '/api/vote';
+
+        options.userAgent = this.userAgent;
 
         options.form = options.model.toJSON((props) => {
           return {
