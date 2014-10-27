@@ -1,6 +1,6 @@
 {
   "name": "snoode",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "node and browser reddit api library",
   "main": "src/api.es6.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "6to5": "^1.9.6",
     "harmony-reflect": "^1.1.0",
     "q": "^1.0.1",
-    "request": "^2.42.0"
+    "superagent": "^0.20.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

@@ -1,4 +1,4 @@
-import * as request from 'request';
+import * as superagent from 'superagent';
 import * as q from 'q';
 
 import Account from '../models/account';
@@ -11,24 +11,25 @@ function baseGet(uri, options, request, processOptions, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
-  var requestOptions = {
-    uri: uri,
-    headers: options.headers || {},
-    qs: options.query,
-  }
+  var query = options.query || {};
+  var headers = options.headers || {};
 
-  requestOptions.headers['User-Agent'] = options.userAgent;
+  headers['User-Agent'] = options.userAgent;
 
   if (processOptions) {
     requestOptions = processOptions(options, requestOptions);
   }
 
-  request(requestOptions, (err, res) => {
-    if (err) {
-      defer.reject(err, res);
-    } else {
+  request.get(uri)
+    .set(headers)
+    .query(query)
+    .end((res) => {
+      if (!res.ok) {
+        return defer.reject(res);
+      }
+
       try {
-        var body = JSON.parse(res.body);
+        var body = res.body;
 
         if (formatBody) {
           body = formatBody(body);
@@ -38,8 +39,7 @@ function baseGet(uri, options, request, processOptions, formatBody) {
       } catch (e) {
         defer.reject(e);
       }
-    }
-  });
+    });
 
   return defer.promise;
 }
@@ -48,24 +48,26 @@ function basePost(uri, options, request, processOptions, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
-  var requestOptions = {
-    uri: uri,
-    headers: options.headers || {},
-    form: options.form,
-  }
+  var form = options.form || {};
+  var headers = options.headers || {};
 
-  requestOptions.headers['User-Agent'] = options.userAgent;
+  headers['User-Agent'] = options.userAgent;
 
   if (processOptions) {
     requestOptions = processOptions(options, requestOptions);
   }
 
-  request.post(requestOptions, (err, res) => {
-    if (err) {
-      defer.reject(err, res);
-    } else {
+  request.post(uri)
+    .set(headers)
+    .send(form)
+    .type('form')
+    .end((res) => {
+      if (!res.ok) {
+        defer.reject(res);
+      }
+
       try {
-        var body = JSON.parse(res.body);
+        var body = res.body;
 
         if (formatBody) {
           body = formatBody(body);
@@ -75,8 +77,7 @@ function basePost(uri, options, request, processOptions, formatBody) {
       } catch (e) {
         defer.reject(e);
       }
-    }
-  });
+    });
 
   return defer.promise;
 }
@@ -94,7 +95,7 @@ function bind(obj, context) {
 class APIv1Endpoint {
   constructor (config = {}) {
     this.origin = config.origin || 'https://www.reddit.com';
-    this.request = config.request || request;
+    this.request = config.request || superagent;
     this.userAgent = config.userAgent || 'SNOODE UNREGISTERED v0.0.2';
   }
 
