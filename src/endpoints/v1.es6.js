@@ -7,7 +7,7 @@ import Link from '../models/link';
 import Vote from '../models/vote';
 
 
-function baseGet(uri, options, request, processOptions, formatBody) {
+function baseGet(uri, options, request, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
@@ -15,10 +15,6 @@ function baseGet(uri, options, request, processOptions, formatBody) {
   var headers = options.headers || {};
 
   headers['User-Agent'] = options.userAgent;
-
-  if (processOptions) {
-    requestOptions = processOptions(options, requestOptions);
-  }
 
   request.get(uri)
     .set(headers)
@@ -44,7 +40,7 @@ function baseGet(uri, options, request, processOptions, formatBody) {
   return defer.promise;
 }
 
-function basePost(uri, options, request, processOptions, formatBody) {
+function basePost(uri, options, request, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
@@ -52,10 +48,6 @@ function basePost(uri, options, request, processOptions, formatBody) {
   var headers = options.headers || {};
 
   headers['User-Agent'] = options.userAgent;
-
-  if (processOptions) {
-    requestOptions = processOptions(options, requestOptions);
-  }
 
   request.post(uri)
     .set(headers)
@@ -113,7 +105,7 @@ class APIv1Endpoint {
 
         options.userAgent = this.userAgent;
 
-        return baseGet(uri, options, this.request, null, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body.data && body.data.children) {
             return body.data.children.map(c => new Link(c.data).toJSON());
           }else {
@@ -143,13 +135,11 @@ class APIv1Endpoint {
 
         options.userAgent = this.userAgent;
 
-        return baseGet(uri, options, this.request, (options, requestOptions) => {
-          if (options.comment) {
-            requestOptions.query.comment = options.comment;
-          }
+        if (options.coment) {
+          options.query.comment = options.comment;
+        }
 
-          return requestOptions;
-        }, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           return {
             listing: body[0].data.children[0].data,
             comments: body[1].data.children.map (mapReplies)
@@ -172,7 +162,7 @@ class APIv1Endpoint {
 
         options.userAgent = this.userAgent;
 
-        return baseGet(uri, options, this.request, null, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body) {
             return new Account(body).toJSON();
           }else {
@@ -197,7 +187,7 @@ class APIv1Endpoint {
           };
         });
 
-        return basePost (uri, options, this.request, null, () => null);
+        return basePost (uri, options, this.request, () => null);
       }
     }, this)
   }
