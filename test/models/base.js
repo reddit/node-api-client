@@ -73,6 +73,33 @@ describe('Base model', function() {
       expect(setSpy).to.have.been.calledWith('value');
       expect(baseSetSpy).to.have.been.calledWith('test', 'value');
     });
+
+    it('publishes events properly when setting with an object', function() {
+      var base = new Base({
+        test: 'wat'
+      });
+
+      var value = {
+        test: 'changed',
+        anotherProperty: 'added',
+      }
+
+      var setSpy = sinon.spy();
+      var baseSetSpy = sinon.spy();
+
+      base.on('set:anotherProperty', setSpy);
+      base.on('set:test', setSpy);
+      base.on('set', baseSetSpy);
+
+      base.set(value);
+
+      expect(setSpy).to.have.been.calledWith('changed');
+      expect(setSpy).to.have.been.calledWith('added');
+      expect(setSpy).to.have.been.called.twice;
+
+      expect(baseSetSpy).to.have.been.calledWith(value);
+      expect(baseSetSpy).to.have.been.called.once;
+    });
   });
 
   describe('to json', function() {

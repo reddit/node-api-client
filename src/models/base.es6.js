@@ -16,13 +16,28 @@ class Base {
     return this.format(name, this.props[name]);
   }
 
-  set (name, value) {
-    if (this.validate(name, value)) {
-      this.props[name] = value;
-      this.emit('set', name, value);
-      this.emit('set:' + name, value);
+  set (name, value, emit = { value: true, base: true}) {
+    if (typeof name === 'object') {
+      for (var n in name) {
+        console.log('setting', n, name[n])
+        this.set(n, name[n], { value: true });
+      }
+
+      this.emit('set', name);
     } else {
-      this.emit('validationError', 'set', name, value);
+      if (this.validate(name, value)) {
+        this.props[name] = value;
+
+        if(emit && emit.base) {
+          this.emit('set', name, value);
+        }
+
+        if(emit && emit.value) {
+          this.emit('set:' + name, value);
+        }
+      } else {
+        this.emit('validationError', 'set', name, value);
+      }
     }
   }
 
