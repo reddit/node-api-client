@@ -192,7 +192,7 @@ class APIv1Endpoint {
     }, this)
   }
 
-  buildOptions (req, auth) {
+  buildOptions (auth) {
     var options = {
       query: {},
       model: {},
@@ -200,7 +200,7 @@ class APIv1Endpoint {
     };
 
     if (auth) {
-      options.headers.Authorization = 'bearer ' + req.session.token.access_token
+      options.headers.Authorization = 'bearer ' + auth;
     }
 
     return options;
