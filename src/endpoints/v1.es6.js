@@ -191,6 +191,20 @@ class APIv1Endpoint {
       }
     }, this)
   }
+
+  buildOptions (req, auth) {
+    var options = {
+      query: {},
+      model: {},
+      headers: {},
+    };
+
+    if (auth) {
+      options.headers.Authorization = 'bearer ' + req.session.token.access_token
+    }
+
+    return options;
+  }
 }
 
 export default APIv1Endpoint;
