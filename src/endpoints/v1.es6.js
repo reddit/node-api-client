@@ -97,8 +97,8 @@ class APIv1Endpoint {
         var uri = this.origin + '/';
         var sort = options.sort || 'hot';
 
-        if (options.subredditName) {
-          uri += 'r/' + options.subredditName + '/';
+        if (options.query.subredditName) {
+          uri += 'r/' + options.query.subredditName + '/';
         }
 
         uri += sort + '.json';
@@ -141,8 +141,8 @@ class APIv1Endpoint {
 
         return baseGet(uri, options, this.request, (body) => {
           return {
-            listing: body[0].data.children[0].data,
-            comments: body[1].data.children.map (mapReplies)
+            listing: new Link(body[0].data.children[0].data).toJSON(),
+            comments: body[1].data.children.map(mapReplies)
           }
         });
       }

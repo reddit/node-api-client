@@ -42,11 +42,11 @@ class Base {
   }
 
   emit (...args) {
-    this.emitter.emit(...args);
+    this.emitter.emit.apply(this, args);
   }
 
   on (...args) {
-    this.emitter.on(...args);
+    this.emitter.on.apply(this, args);
   }
 
   validate (prop, value) {
