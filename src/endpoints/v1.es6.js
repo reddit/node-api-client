@@ -113,7 +113,8 @@ class APIv1Endpoint {
   constructor (config = {}) {
     this.origin = config.origin || 'https://www.reddit.com';
     this.request = config.request || superagent;
-    this.userAgent = config.userAgent || 'SNOODE UNREGISTERED v0.0.2';
+
+    this.userAgent = config.userAgent;
 
     this.cache = {
       links: {
