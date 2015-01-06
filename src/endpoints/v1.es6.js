@@ -151,7 +151,7 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = this.origin + '/';
-        var sort = options.sort || 'hot';
+        var sort = options.query.sort || 'hot';
 
         if (options.query.subredditName) {
           uri += 'r/' + options.query.subredditName + '/';
@@ -203,6 +203,10 @@ class APIv1Endpoint {
 
         if (options.coment) {
           options.query.comment = options.comment;
+        }
+
+        if (options.sort) {
+          options.query.sort = options.sort;
         }
 
         return { uri, options }
