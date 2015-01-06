@@ -19,24 +19,19 @@ class Base {
   set (name, value, emit = { value: true, base: true}) {
     if (typeof name === 'object') {
       for (var n in name) {
-        console.log('setting', n, name[n])
         this.set(n, name[n], { value: true });
       }
 
       this.emit('set', name);
     } else {
-      if (this.validate(name, value)) {
-        this.props[name] = value;
+      this.props[name] = value;
 
-        if(emit && emit.base) {
-          this.emit('set', name, value);
-        }
+      if(emit && emit.base) {
+        this.emit('set', name, value);
+      }
 
-        if(emit && emit.value) {
-          this.emit('set:' + name, value);
-        }
-      } else {
-        this.emit('validationError', 'set', name, value);
+      if(emit && emit.value) {
+        this.emit('set:' + name, value);
       }
     }
   }
@@ -49,11 +44,26 @@ class Base {
     this.emitter.on.apply(this, args);
   }
 
-  validate (prop, value) {
-    return (
-      !this.validators ||
-      !this.validators[prop] ||
-      this.validators[prop] (value));
+  validate () {
+    if (!this.validators) {
+      return true;
+    }
+
+    var invalid = [];
+    var p;
+
+    for (p in this.props) {
+      if (this.validators[p] && !this.validators[p](this.props[p])) {
+        invalid.push(p);
+      }
+    }
+
+    if (invalid.length === 0) {
+      return true;
+    }
+
+    this.emit('validationError', invalid);
+    return invalid;
   }
 
   format (prop, value){
@@ -71,6 +81,32 @@ class Base {
 
     return this.props;
   }
+}
+
+Base.validators = {
+  integer: function(i) {
+    return i === parseInt(i);
+  },
+
+  string: function(s) {
+    return s === s.toString();
+  },
+
+  min: function (i, min) {
+    return i >= min;
+  },
+
+  max: function (i, max) {
+    return i <= max;
+  },
+
+  maxLength: function (s, l) {
+    return Base.validators.string(s) && Base.validators.max(s.length, l);
+  },
+
+  minLength: function (s, l) {
+    return Base.validators.string(s) && Base.validators.min(s.length, l);
+  },
 }
 
 export default Base;

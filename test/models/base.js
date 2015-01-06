@@ -37,7 +37,8 @@ describe('Base model', function() {
   });
 
   describe('validation', function() {
-    it('does not set invalid properties', function() {
+    it('returns invalid properties', function() {
+      var invalid;
       var child = new Base({}, {
         validators: {
           val: function(v) {
@@ -46,13 +47,15 @@ describe('Base model', function() {
         }
       });
 
-      expect(child.get('val')).to.equal(undefined);
-
       child.set('val', 1);
-      expect(child.get('val')).to.equal(1);
+      invalid = child.validate();
+
+      expect(invalid).to.equal(true);
 
       child.set('val', 2);
-      expect(child.get('val')).to.equal(1);
+      invalid = child.validate();
+
+      expect(invalid).to.have.members(['val']);
     });
   });
 
