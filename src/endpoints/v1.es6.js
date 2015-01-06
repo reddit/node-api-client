@@ -7,6 +7,8 @@ import Comment from '../models/comment';
 import Link from '../models/link';
 import Vote from '../models/vote';
 
+import NoModelError from '../errors/noModelError';
+import ValidationError from '../errors/validationError';
 
 import * as LRU from 'lru-cache';
 
@@ -22,7 +24,9 @@ function baseGet(cache, uri, options, request, formatBody) {
   var query = options.query || {};
   var headers = options.headers || {};
 
-  headers['User-Agent'] = options.userAgent;
+  if (options.userAgent) {
+    headers['User-Agent'] = options.userAgent;
+  }
 
   var key = uri + '?' + querystring.stringify(query);
 
@@ -63,12 +67,15 @@ function baseGet(cache, uri, options, request, formatBody) {
   return defer.promise;
 }
 
-function basePost(uri, options, request, formatBody) {
+function basePost(cache, uri, options, request, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
   var form = options.form || {};
   var headers = options.headers || {};
+
+  var cache = cache.authed;
+  cache.reset();
 
   if (options.userAgent) {
     headers['User-Agent'] = options.userAgent;
@@ -159,10 +166,6 @@ class APIv1Endpoint {
 
         uri += sort + '.json';
 
-        if (this.userAgent) {
-          options.userAgent = this.userAgent;
-        }
-
         return { uri, options }
       },
 
@@ -197,10 +200,6 @@ class APIv1Endpoint {
       buildOptions: function(options) {
         var uri = this.origin + '/comments/' + options.linkId + '.json';
 
-        if (this.userAgent) {
-          options.userAgent = this.userAgent;
-        }
-
         if (options.coment) {
           options.query.comment = options.comment;
         }
@@ -221,6 +220,39 @@ class APIv1Endpoint {
             comments: body[1].data.children.map(mapReplies)
           }
         });
+      },
+
+      post: function(options = {}) {
+        var uri = this.origin + '/api/comment';
+
+        if (!options.model) {
+          throw new NoModelError('/api/comment');
+        }
+
+        var valid = options.model.validate();
+
+        if (valid === true) {
+          var json = options.model.toJSON();
+
+          options.form = {
+            api_type: 'json',
+            thing_id: json.thingId,
+            text: json.text,
+          };
+
+          return basePost(this.cache.comments, uri, options, this.request, (body) => {
+            if (body) {
+              var comment = body.json.data.things[0].data;
+              return new Comment(comment).toJSON();
+            } else {
+              return null;
+            }
+          });
+        } else {
+          var defer = q.defer();
+          defer.reject('Comment', options.model, valid);
+          return defer.promise;
+        }
       }
     }, this);
   }
@@ -234,10 +266,6 @@ class APIv1Endpoint {
           uri += 'api/v1/me';
         } else {
           uri += 'user/' + options.user + '/about.json';
-        }
-
-        if (this.userAgent) {
-          options.userAgent = this.userAgent;
         }
 
         return { uri, options }
@@ -262,16 +290,24 @@ class APIv1Endpoint {
       post: function(options = {}) {
         var uri = this.origin + '/api/vote';
 
-        options.userAgent = this.userAgent;
+        if (!options.model) {
+          throw new NoModelError('/api/comment');
+        }
 
-        options.form = options.model.toJSON((props) => {
-          return {
-            id: props.id,
-            dir: props.direction,
-          };
-        });
+        var valid = options.model.validate();
 
-        return basePost (uri, options, this.request, () => null);
+        if (valid === true) {
+          options.form = options.model.toJSON((props) => {
+            return {
+              id: props.id,
+              dir: props.direction,
+            };
+          });
+
+          return basePost(this.cache.comments, uri, options, this.request, () => null);
+        } else {
+          throw new ValidationError('Vote', options.model, valid);
+        }
       }
     }, this)
   }
