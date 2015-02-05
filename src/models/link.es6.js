@@ -1,5 +1,5 @@
 import Base from './base';
-import * as process from 'reddit-text-js';
+import process from 'reddit-text-js';
 
 class Link extends Base {
   constructor(props) {
@@ -20,7 +20,7 @@ class Link extends Base {
     );
 
     if (content) {
-      content = content.replace(/&gt;/g, '>').replace(/&lt;/g, '<');
+      content = content.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
     } else if (props.selftext) {
       content = process(props.selftext);
     }

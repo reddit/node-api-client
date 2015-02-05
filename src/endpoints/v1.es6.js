@@ -1,6 +1,6 @@
-import * as superagent from 'superagent';
-import * as q from 'q';
-import * as querystring from 'querystring';
+import superagent from 'superagent';
+import q from 'q';
+import querystring from 'querystring';
 
 import Account from '../models/account';
 import Comment from '../models/comment';
@@ -10,7 +10,7 @@ import Vote from '../models/vote';
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
 
-import * as LRU from 'lru-cache';
+import LRU from 'lru-cache';
 
 var defaultCacheConfig = {
  max: 500,

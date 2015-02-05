@@ -1,5 +1,5 @@
 import Base from './base';
-import * as process from 'reddit-text-js';
+import process from 'reddit-text-js';
 
 class Comment extends Base {
   constructor(props) {
