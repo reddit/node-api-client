@@ -1,6 +1,6 @@
 {
   "name": "snoode",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "node and browser reddit api library",
   "main": "src/api.es6.js",
   "scripts": {
@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "peerDependencies": {
-    "6to5": "^3.3.7",
+    "6to5": "^3.5.3",
     "harmony-reflect": "^1.1.0",
     "lru-cache": "^2.5.0",
     "q": "^1.1.2",
-    "reddit-text-js": "^0.4.3",
+    "reddit-text-js": "^0.4.4",
     "superagent": "^0.21.0"
   },
   "devDependencies": {
