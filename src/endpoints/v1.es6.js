@@ -312,6 +312,34 @@ class APIv1Endpoint {
     }, this)
   }
 
+  get reports () {
+    return bind({
+      post: function(options = {}) {
+        var uri = this.origin + '/api/report';
+
+        if (!options.model) {
+          throw new NoModelError('/api/report');
+        }
+
+        var valid = options.model.validate();
+
+        if (valid === true) {
+          options.form = options.model.toJSON((props) => {
+            return {
+              reason: props.reason,
+              other_reason: props.other_reason,
+              thing_id: props.thing_id,
+            };
+          });
+
+          return basePost(this.cache.comments, uri, options, this.request, () => null);
+        } else {
+          throw new ValidationError('Report', options.model, valid);
+        }
+      }
+    }, this)
+  }
+
   buildOptions (auth) {
     var options = {
       query: {},
