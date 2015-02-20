@@ -21,8 +21,7 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
-    "6to5": "^3.5.3",
-    "harmony-reflect": "^1.1.0",
+    "babel": "^4.3.0",
     "lru-cache": "^2.5.0",
     "q": "^1.1.2",
     "reddit-text-js": "^0.5.0",

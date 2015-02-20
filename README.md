@@ -7,9 +7,15 @@ For now, it handles only a few resources. Building in parallel with
 [switcharoo](https://github.com/reddit/switcharoo).
 
 ```javascript
-// Convert snoode's es6 to es5. To use in browser, use 6to5-browserify and
+// Convert snoode's es6 to es5. To use in browser, use babelify and
 // compile in.
-require('6to5/register')(/^(?!.*es6\.js$).*\.js$/i);
+
+require('babel/register')({
+  ignore: false,
+  only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
+  extensions: ['.js', '.es6.js'],
+  sourceMap: true,
+});
 
 // Require snoode.
 var api = require('snoode').v1;
@@ -33,5 +39,4 @@ api.comments.get({
 Caveats
 ------
 
-* Requires --harmony flag to run with node.
-* 
+* Requires iojs, or node with `--harmony` flag.
