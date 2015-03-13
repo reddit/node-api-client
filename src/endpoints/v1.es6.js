@@ -45,7 +45,11 @@ function baseGet(cache, uri, options, request, formatBody) {
   request.get(uri)
     .set(headers)
     .query(query)
-    .end((res) => {
+    .end((err, res) => {
+      if (err) {
+        return defer.reject(err);
+      }
+
       if (!res.ok) {
         return defer.reject(res);
       }
@@ -85,7 +89,11 @@ function basePost(cache, uri, options, request, formatBody) {
     .set(headers)
     .send(form)
     .type('form')
-    .end((res) => {
+    .end((err, res) => {
+      if (err) {
+        return defer.reject(err);
+      }
+
       if (!res.ok) {
         defer.reject(res);
       }
@@ -159,7 +167,6 @@ class APIv1Endpoint {
       buildOptions: function(options) {
         var sort = options.query.sort || 'hot';
         var uri = this.origin;
-        console.log(uri);
 
         if (options.user) {
           uri += '/user/' + options.user + '/submitted.json';
