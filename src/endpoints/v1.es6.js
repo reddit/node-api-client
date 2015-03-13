@@ -157,14 +157,19 @@ class APIv1Endpoint {
   get links () {
     return bind({
       buildOptions: function(options) {
-        var uri = this.origin + '/';
         var sort = options.query.sort || 'hot';
+        var uri = this.origin;
+        console.log(uri);
 
-        if (options.query.subredditName) {
-          uri += 'r/' + options.query.subredditName + '/';
+        if (options.user) {
+          uri += '/user/' + options.user + '/submitted.json';
+        } else {
+          if (options.query.subredditName) {
+            uri += '/r/' + options.query.subredditName;
+          }
+
+          uri += '/' + sort + '.json';
         }
-
-        uri += sort + '.json';
 
         return { uri, options }
       },
@@ -198,7 +203,13 @@ class APIv1Endpoint {
 
     return bind({
       buildOptions: function(options) {
-        var uri = this.origin + '/comments/' + options.linkId + '.json';
+        var uri;
+
+        if (options.user) {
+          uri = this.origin + '/user/' + options.user + '/comments.json';
+        } else {
+          uri = this.origin + '/comments/' + options.linkId + '.json';
+        }
 
         if (options.coment) {
           options.query.comment = options.comment;

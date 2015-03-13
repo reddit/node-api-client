@@ -1,4 +1,4 @@
-require('6to5/register')({
+require('babel/register')({
   extensions: ['.js', '.es6.js']
 });
 
