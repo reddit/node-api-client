@@ -17,7 +17,16 @@ var defaultCacheConfig = {
  maxAge: 1000 * 50 * 3,
 }
 
-function baseGet(cache, uri, options, request, formatBody) {
+function processMeta(res) {
+  var headers = res.headers;
+
+  return {
+    moose: headers['x-moose'],
+    tracking: headers['x-reddit-tracking'],
+  }
+}
+
+function baseGet(cache={}, uri, options, request, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
@@ -37,7 +46,7 @@ function baseGet(cache, uri, options, request, formatBody) {
     cache = cache.unauthed;
   }
 
-  if(cache.get(key)) {
+  if(cache && cache.get(key)) {
     defer.resolve(cache.get(key));
     return defer.promise;
   }
@@ -56,12 +65,15 @@ function baseGet(cache, uri, options, request, formatBody) {
 
       try {
         var body = res.body;
+        var meta = processMeta(res);
 
         if (formatBody) {
           body = formatBody(body);
         }
 
-        cache.set(key, body);
+        body.meta = meta;
+
+        if(cache) { cache.set(key, body); }
         defer.resolve(body);
       } catch (e) {
         defer.reject(e);
@@ -71,7 +83,7 @@ function baseGet(cache, uri, options, request, formatBody) {
   return defer.promise;
 }
 
-function basePost(cache, uri, options, request, formatBody) {
+function basePost(cache={}, uri, options, request, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
@@ -79,7 +91,7 @@ function basePost(cache, uri, options, request, formatBody) {
   var headers = options.headers || {};
 
   var cache = cache.authed;
-  cache.reset();
+  if(cache) { cache.reset(); }
 
   if (options.userAgent) {
     headers['User-Agent'] = options.userAgent;
@@ -218,7 +230,7 @@ class APIv1Endpoint {
           uri = this.origin + '/comments/' + options.linkId + '.json';
         }
 
-        if (options.coment) {
+        if (options.comment) {
           options.query.comment = options.comment;
         }
 
@@ -296,6 +308,28 @@ class APIv1Endpoint {
           if (body) {
             var user = body.data;
             return new Account(user).toJSON();
+          }else {
+            return null;
+          }
+        });
+      }
+    }, this);
+  }
+
+  get trophies () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = `${this.origin}/api/v1/user/${options.user}/trophies.json`;
+        return { uri, options }
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.users.buildOptions(options);
+
+        return baseGet(this.cache.trophies, uri, options, this.request, (body) => {
+          if (body) {
+            var trophies = body.data;
+            return new Award(user).toJSON();
           }else {
             return null;
           }
