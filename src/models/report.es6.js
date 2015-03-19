@@ -2,7 +2,8 @@ import Base from './base';
 
 class Report extends Base {
   constructor(props) {
-    return super(props);
+    props._type = 'Report';
+    super(props);
 
     this.validators = {
       reason: function() {

@@ -3,7 +3,8 @@ import process from 'reddit-text-js';
 
 class Link extends Base {
   constructor(props) {
-    return super(props);
+    props._type = 'Link';
+    super(props);
   }
 
   get expandContent () {

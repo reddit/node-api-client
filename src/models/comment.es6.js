@@ -3,7 +3,9 @@ import process from 'reddit-text-js';
 
 class Comment extends Base {
   constructor(props) {
-    return super(props);
+    props._type = 'Comment';
+
+    super(props);
 
     this.validators = {
       body: function() {

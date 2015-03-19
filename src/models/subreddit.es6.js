@@ -2,7 +2,8 @@ import Base from './base';
 
 class Subreddit extends Base {
   constructor(props) {
-    return super(props);
+    props._type = 'Subreddit';
+    super(props);
   }
 };
 

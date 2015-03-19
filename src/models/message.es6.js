@@ -2,7 +2,8 @@ import Base from './base';
 
 class Message extends Base {
   constructor(props) {
-    return super(props);
+    props._type = 'Message';
+    super(props);
   }
 };
 

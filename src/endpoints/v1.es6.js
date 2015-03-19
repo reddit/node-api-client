@@ -91,7 +91,7 @@ function basePost(cache={}, uri, options, request, formatBody) {
   var headers = options.headers || {};
 
   var cache = cache.authed;
-  if(cache) { cache.reset(); }
+  if (cache) { cache.reset(); }
 
   if (options.userAgent) {
     headers['User-Agent'] = options.userAgent;
@@ -324,12 +324,48 @@ class APIv1Endpoint {
       },
 
       get: function(options = {}) {
-        var { uri, options } = this.users.buildOptions(options);
+        var { uri, options } = this.trophies.buildOptions(options);
 
-        return baseGet(this.cache.trophies, uri, options, this.request, (body) => {
+        return baseGet(null, uri, options, this.request, (body) => {
           if (body) {
             var trophies = body.data;
             return new Award(user).toJSON();
+          }else {
+            return null;
+          }
+        });
+      }
+    }, this);
+  }
+
+  get activities () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = `${this.origin}/user/${options.user}/${options.activity}.json`;
+        return { uri, options }
+        console.log(uri);
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.activities.buildOptions(options);
+
+        return baseGet(this.cache.activity, uri, options, this.request, (body) => {
+          if (body) {
+            var activities = body.data.children;
+            var data = [];
+
+            activities.forEach(function(a) {
+              switch (a.kind) {
+                case 't1':
+                  data.push((new Comment(a.data)).toJSON());
+                  break;
+                case 't3':
+                  data.push((new Link(a.data)).toJSON());
+                  break;
+              }
+            });
+
+            return data;
           }else {
             return null;
           }
