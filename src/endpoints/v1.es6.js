@@ -178,6 +178,8 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var sort = options.query.sort || 'hot';
+        options.query.feature = 'link_preview';
+
         var uri = this.origin;
 
         if (options.user) {
@@ -229,6 +231,7 @@ class APIv1Endpoint {
         } else {
           uri = this.origin + '/comments/' + options.linkId + '.json';
         }
+        options.query.feature = 'link_preview';
 
         if (options.comment) {
           options.query.comment = options.comment;
@@ -341,8 +344,8 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = `${this.origin}/user/${options.user}/${options.activity}.json`;
+        options.query.feature = 'link_preview';
         return { uri, options }
-        console.log(uri);
       },
 
       get: function(options = {}) {
