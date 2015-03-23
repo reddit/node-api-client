@@ -309,7 +309,7 @@ class APIv1Endpoint {
 
         return baseGet(this.cache.users, uri, options, this.request, (body) => {
           if (body) {
-            return new Account(body).toJSON();
+            return new Account(body.data).toJSON();
           }else {
             return null;
           }
