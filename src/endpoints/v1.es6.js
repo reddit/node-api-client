@@ -65,13 +65,12 @@ function baseGet(cache={}, uri, options, request, formatBody) {
 
       try {
         var body = res.body;
-        var meta = processMeta(res);
 
         if (formatBody) {
           body = formatBody(body);
         }
 
-        body.meta = meta;
+        body._meta = processMeta(res);
 
         if(cache) { cache.set(key, body); }
         defer.resolve(body);
@@ -116,6 +115,8 @@ function basePost(cache={}, uri, options, request, formatBody) {
         if (formatBody) {
           body = formatBody(body);
         }
+
+        body._meta = processMeta(res);
 
         defer.resolve(body);
       } catch (e) {
