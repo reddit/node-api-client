@@ -70,10 +70,14 @@ function baseGet(cache={}, uri, options, request, formatBody) {
           body = formatBody(body);
         }
 
-        body._meta = processMeta(res);
+        var data = {
+          data: body,
+          meta: processMeta(res),
+        }
 
-        if(cache) { cache.set(key, body); }
-        defer.resolve(body);
+        if(cache) { cache.set(key, data); }
+
+        defer.resolve(data);
       } catch (e) {
         defer.reject(e);
       }
@@ -82,7 +86,7 @@ function baseGet(cache={}, uri, options, request, formatBody) {
   return defer.promise;
 }
 
-function basePost(cache={}, uri, options, request, formatBody) {
+function basePost(uri, options, request, formatBody) {
   var options = options || {};
   var defer = q.defer();
 
@@ -116,9 +120,12 @@ function basePost(cache={}, uri, options, request, formatBody) {
           body = formatBody(body);
         }
 
-        body._meta = processMeta(res);
+        var data = {
+          data: body,
+          meta: processMeta(res),
+        }
 
-        defer.resolve(body);
+        defer.resolve(data);
       } catch (e) {
         defer.reject(e);
       }
@@ -274,7 +281,7 @@ class APIv1Endpoint {
             text: json.text,
           };
 
-          return basePost(this.cache.comments, uri, options, this.request, (body) => {
+          return basePost(uri, options, this.request, (body) => {
             if (body) {
               var comment = body.json.data.things[0].data;
               return new Comment(comment).toJSON();
@@ -396,7 +403,7 @@ class APIv1Endpoint {
             };
           });
 
-          return basePost(this.cache.comments, uri, options, this.request, () => null);
+          return basePost(uri, options, this.request, () => null);
         } else {
           throw new ValidationError('Vote', options.model, valid);
         }
@@ -424,7 +431,7 @@ class APIv1Endpoint {
             };
           });
 
-          return basePost(this.cache.comments, uri, options, this.request, () => null);
+          return basePost(uri, options, this.request, () => null);
         } else {
           throw new ValidationError('Report', options.model, valid);
         }
