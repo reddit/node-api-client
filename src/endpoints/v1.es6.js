@@ -192,14 +192,14 @@ class APIv1Endpoint {
 
         if (options.user) {
           uri += '/user/' + options.user + '/submitted.json';
-        } else if (options.query.subredditName) {
+        } else {
           if (options.query.subredditName) {
             uri += '/r/' + options.query.subredditName;
+          } else if (options.query.multi) {
+            uri += '/user/' + options.query.multiUser + '/m/' + options.query.multi;
           }
 
           uri += '/' + sort + '.json';
-        } else if (options.query.multi) {
-          uri += '/user/' + options.query.multiUser + '/m/' + options.query.multi + '.json';
         }
 
         return { uri, options }
