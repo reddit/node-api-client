@@ -165,6 +165,10 @@ class APIv1Endpoint {
         unauthed: new LRU(defaultCacheConfig),
         authed: new LRU(defaultCacheConfig),
       },
+      subreddits: {
+        unauthed: new LRU(defaultCacheConfig),
+        authed: new LRU(defaultCacheConfig),
+      },
     }
   }
 
