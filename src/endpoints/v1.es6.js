@@ -6,6 +6,7 @@ import Account from '../models/account';
 import Comment from '../models/comment';
 import Link from '../models/link';
 import Vote from '../models/vote';
+import Subreddit from '../models/subreddit';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
@@ -180,6 +181,27 @@ class APIv1Endpoint {
     }
 
     cache.set(key, data);
+  }
+
+  get subreddits () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = this.origin + `/r/${options.query.subreddit}/about.json`;
+        return { uri, options };
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.subreddits.buildOptions(options);
+
+        return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
+          if (body) {
+            return new Subreddit(body.data || body).toJSON();
+          } else {
+            return null;
+          }
+        });
+      }
+    }, this);
   }
 
   get links () {
