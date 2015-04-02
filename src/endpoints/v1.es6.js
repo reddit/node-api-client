@@ -94,9 +94,6 @@ function basePost(uri, options, request, formatBody) {
   var form = options.form || {};
   var headers = options.headers || {};
 
-  var cache = cache.authed;
-  if (cache) { cache.reset(); }
-
   if (options.userAgent) {
     headers['User-Agent'] = options.userAgent;
   }
@@ -309,6 +306,8 @@ class APIv1Endpoint {
             text: json.text,
           };
 
+          this.cache.comments.reset();
+
           return basePost(uri, options, this.request, (body) => {
             if (body) {
               var comment = body.json.data.things[0].data;
@@ -430,6 +429,9 @@ class APIv1Endpoint {
               dir: props.direction,
             };
           });
+
+          this.cache.links.authed.reset();
+          this.cache.comments.authed.reset();
 
           return basePost(uri, options, this.request, () => null);
         } else {
