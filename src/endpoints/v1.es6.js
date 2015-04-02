@@ -306,7 +306,7 @@ class APIv1Endpoint {
             text: json.text,
           };
 
-          this.cache.comments.reset();
+          this.cache.comments.authed.reset();
 
           return basePost(uri, options, this.request, (body) => {
             if (body) {
