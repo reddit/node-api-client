@@ -224,16 +224,8 @@ class APIv1Endpoint {
             sr: json.sr
           };
 
-          //this.cache.comments.authed.reset();
-
           return basePost(uri, options, this.request, (body) => {
-            return { success: true };
-            //if (body) {
-            //  var comment = body.json.data.things[0].data;
-            //  return new Comment(comment).toJSON();
-            //} else {
-            //  return null;
-            //}
+            return body;
           });
         } else {
           var defer = q.defer();
