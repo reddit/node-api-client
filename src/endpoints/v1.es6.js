@@ -205,6 +205,37 @@ class APIv1Endpoint {
     }, this);
   }
 
+  get subscriptions() {
+    return bind({
+      post: function (options = {}) {
+        var uri = this.origin + '/api/subscribe';
+
+        if (!options.model) {
+          throw new NoModelError('/api/subscribe');
+        }
+
+        var valid = options.model.validate();
+        if (valid) {
+          var json = options.model.toJSON();
+
+          options.form = {
+            api_type: 'json',
+            action: json.action,
+            sr: json.sr
+          };
+
+          return basePost(uri, options, this.request, (body) => {
+            return body;
+          });
+        } else {
+          var defer = q.defer();
+          defer.reject('Subscription', options.model, valid);
+          return defer.promise;
+        }
+      }
+    }, this);
+  }
+
   get links () {
     return bind({
       buildOptions: function(options) {
