@@ -8,6 +8,7 @@ import Link from './models/link';
 import Message from './models/message';
 import PromoCampaign from './models/promocampaign';
 import Subreddit from './models/subreddit';
+import Subscription from './models/subscription';
 import Vote from './models/vote';
 
 var models = {
@@ -19,6 +20,7 @@ var models = {
   Message,
   PromoCampaign,
   Subreddit,
+  Subscription,
   Vote
 };
 
