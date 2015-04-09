@@ -27,6 +27,26 @@ function processMeta(res) {
   }
 }
 
+// decode websafe_json encoding
+function unsafeJson(text) {
+  return text.replace(/&gt;/g, '>')
+             .replace(/&lt;/g, '<')
+             .replace(/&amp;/g, '&');
+}
+
+function res_type(str){
+  return str.split(/ *; */).shift();
+};
+
+function massageAPIv1JsonRes(res) {
+  // API v1 actually returns JSON with extra HTML escaping surprises,
+  // re-parse the body in that case.
+  if (res_type(res.headers['content-type'] || '') === 'application/json') {
+    var text = res.text && res.text.replace(/^\s*|\s*$/g, '');
+    res.body = text && JSON.parse(unsafeJson(text));
+  }
+}
+
 function baseGet(cache={}, uri, options={}, request, formatBody) {
   var defer = q.defer();
 
@@ -70,6 +90,7 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
       }
 
       try {
+        massageAPIv1JsonRes(res);
         var body = res.body;
 
         if (formatBody) {
@@ -119,6 +140,7 @@ function basePost(uri, options, request, formatBody) {
       }
 
       try {
+        massageAPIv1JsonRes(res);
         var body = res.body;
 
         if (formatBody) {
