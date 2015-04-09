@@ -27,8 +27,7 @@ function processMeta(res) {
   }
 }
 
-function baseGet(cache={}, uri, options, request, formatBody) {
-  var options = options || {};
+function baseGet(cache={}, uri, options={}, request, formatBody) {
   var defer = q.defer();
 
   var query = options.query || {};
@@ -38,7 +37,7 @@ function baseGet(cache={}, uri, options, request, formatBody) {
     headers['User-Agent'] = options.userAgent;
   }
 
-  var key = uri + '?' + querystring.stringify(query);
+  var key = uri + (uri.indexOf('?') > 0 ? '&' : '?') + querystring.stringify(query);
 
   if (headers.Authorization) {
     cache = cache.authed;
@@ -188,6 +187,15 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = this.origin + `/r/${options.query.subreddit}/about.json`;
+
+        if (typeof options.useCache !== 'boolean') {
+          options.useCache = true;
+        }
+
+        if (!options.useCache) {
+          uri += '?noCache=' + new Date().getTime();
+        }
+
         return { uri, options };
       },
 
