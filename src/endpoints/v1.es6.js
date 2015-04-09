@@ -30,6 +30,10 @@ function processMeta(res) {
 function baseGet(cache={}, uri, options={}, request, formatBody) {
   var defer = q.defer();
 
+  if (typeof options.useCache !== 'boolean') {
+    options.useCache = true;
+  }
+
   var query = options.query || {};
   var headers = options.headers || {};
 
@@ -37,18 +41,20 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
     headers['User-Agent'] = options.userAgent;
   }
 
-  var key = uri + (uri.indexOf('?') > 0 ? '&' : '?') + querystring.stringify(query);
+  var key = uri + '?' + querystring.stringify(query);
 
-  if (headers.Authorization) {
-    cache = cache.authed;
-    key += '&auth=' + headers.Authorization;
-  } else {
-    cache = cache.unauthed;
-  }
+  if (options.useCache) {
+    if (headers.Authorization) {
+      cache = cache.authed;
+      key += '&auth=' + headers.Authorization;
+    } else {
+      cache = cache.unauthed;
+    }
 
-  if(cache && cache.get(key)) {
-    defer.resolve(cache.get(key));
-    return defer.promise;
+    if (cache && cache.get(key)) {
+      defer.resolve(cache.get(key));
+      return defer.promise;
+    }
   }
 
   request.get(uri)
@@ -73,9 +79,11 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
         var data = {
           data: body,
           meta: processMeta(res),
-        }
+        };
 
-        if(cache) { cache.set(key, data); }
+        if (options.useCache && cache) {
+          cache.set(key, data);
+        }
 
         defer.resolve(data);
       } catch (e) {
@@ -187,15 +195,6 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = this.origin + `/r/${options.query.subreddit}/about.json`;
-
-        if (typeof options.useCache !== 'boolean') {
-          options.useCache = true;
-        }
-
-        if (!options.useCache) {
-          uri += '?noCache=' + new Date().getTime();
-        }
-
         return { uri, options };
       },
 
