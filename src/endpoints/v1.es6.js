@@ -27,9 +27,12 @@ function processMeta(res) {
   }
 }
 
-function baseGet(cache={}, uri, options, request, formatBody) {
-  var options = options || {};
+function baseGet(cache={}, uri, options={}, request, formatBody) {
   var defer = q.defer();
+
+  if (typeof options.useCache !== 'boolean') {
+    options.useCache = true;
+  }
 
   var query = options.query || {};
   var headers = options.headers || {};
@@ -40,16 +43,18 @@ function baseGet(cache={}, uri, options, request, formatBody) {
 
   var key = uri + '?' + querystring.stringify(query);
 
-  if (headers.Authorization) {
-    cache = cache.authed;
-    key += '&auth=' + headers.Authorization;
-  } else {
-    cache = cache.unauthed;
-  }
+  if (options.useCache) {
+    if (headers.Authorization) {
+      cache = cache.authed;
+      key += '&auth=' + headers.Authorization;
+    } else {
+      cache = cache.unauthed;
+    }
 
-  if(cache && cache.get(key)) {
-    defer.resolve(cache.get(key));
-    return defer.promise;
+    if (cache && cache.get(key)) {
+      defer.resolve(cache.get(key));
+      return defer.promise;
+    }
   }
 
   request.get(uri)
@@ -74,9 +79,11 @@ function baseGet(cache={}, uri, options, request, formatBody) {
         var data = {
           data: body,
           meta: processMeta(res),
-        }
+        };
 
-        if(cache) { cache.set(key, data); }
+        if (options.useCache && cache) {
+          cache.set(key, data);
+        }
 
         defer.resolve(data);
       } catch (e) {
