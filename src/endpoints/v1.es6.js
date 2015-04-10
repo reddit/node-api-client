@@ -13,10 +13,10 @@ import ValidationError from '../errors/validationError';
 
 import LRU from 'lru-cache';
 
-var defaultCacheConfig = {
+const defaultCacheConfig = {
  max: 500,
  maxAge: 1000 * 50 * 3,
-}
+};
 
 function processMeta(res) {
   var headers = res.headers;
@@ -195,6 +195,10 @@ class APIv1Endpoint {
         unauthed: new LRU(defaultCacheConfig),
         authed: new LRU(defaultCacheConfig),
       },
+      search: {
+        unauthed: new LRU(defaultCacheConfig),
+        authed: new LRU(defaultCacheConfig),
+      },
     }
   }
 
@@ -261,6 +265,46 @@ class APIv1Endpoint {
           defer.reject('Subscription', options.model, valid);
           return defer.promise;
         }
+      }
+    }, this);
+  }
+
+  get search () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = this.origin;
+        if (options.query.subredditName) {
+          uri += `'/r/${options.query.subredditName}`;
+        }
+        uri += '/search.json';
+
+        return { uri, options }
+      },
+
+      get: function(options = {}) {
+        /*
+         * Params:
+         *  [q] - a string no longer than 512 characters
+         *  [limit] - the maximum number of items desired (default: 25, maximum: 100)
+         *  [after] - fullname of a thing
+         *  [before] -fullname of a thing
+         */
+        var { uri, options } = this.search.buildOptions(options);
+
+        return baseGet(this.cache.search, uri, options, this.request, (body) => {
+          if (body.data && body.data.children) {
+            return {
+              links: body.data.children.map(c => new Link(c.data).toJSON()),
+              subreddits: [],
+              meta: {
+                after: body.data.after,
+                before: body.data.before
+              }
+            };
+          } else {
+            return [];
+          }
+        });
       }
     }, this);
   }
