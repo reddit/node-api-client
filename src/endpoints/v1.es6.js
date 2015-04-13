@@ -273,8 +273,8 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = this.origin;
-        if (options.query.subredditName) {
-          uri += `'/r/${options.query.subredditName}`;
+        if (options.query.subreddit) {
+          uri += `'/r/${options.query.subreddit}`;
         }
         uri += '/search.json';
 
