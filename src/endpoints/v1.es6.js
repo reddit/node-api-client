@@ -233,28 +233,15 @@ class APIv1Endpoint {
         var { uri, options } = this.subreddits.buildOptions(options);
 
         return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
-          if (body) {
+          if (options.query.where && body.data && body.data.children) {
+            return body.data.children.map(c => new Subreddit(c.data).toJSON());
+          } else if (options.query.subreddit && body) {
             return new Subreddit(body.data || body).toJSON();
           } else {
             return null;
           }
         });
       },
-
-      popular: function (options = {}) {
-        options.query = options.query || {};
-        options.query.where = options.query.where || 'popular';
-
-        var { uri, options } = this.subreddits.buildOptions(options);
-
-        return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
-          if (body.data && body.data.children) {
-            return body.data.children.map(c => new Subreddit(c.data).toJSON());
-          } else {
-            return [];
-          }
-        });
-      }
     }, this);
   }
 
