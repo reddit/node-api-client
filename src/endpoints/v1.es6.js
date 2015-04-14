@@ -217,14 +217,19 @@ class APIv1Endpoint {
     cache.set(key, data);
   }
 
-  get subreddits () {
+  get subreddits() {
     return bind({
-      buildOptions: function(options) {
-        var uri = this.origin + `/r/${options.query.subreddit}/about.json`;
+      buildOptions: function (options) {
+        var uri = this.origin;
+        if (options.query.where) {
+          uri += `/subreddits/${options.query.where}.json`;
+        } else {
+          uri += `/r/${options.query.subreddit}/about.json`;
+        }
         return { uri, options };
       },
 
-      get: function(options = {}) {
+      get: function (options = {}) {
         var { uri, options } = this.subreddits.buildOptions(options);
 
         return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
@@ -232,6 +237,21 @@ class APIv1Endpoint {
             return new Subreddit(body.data || body).toJSON();
           } else {
             return null;
+          }
+        });
+      },
+
+      popular: function (options = {}) {
+        options.query = options.query || {};
+        options.query.where = options.query.where || 'popular';
+
+        var { uri, options } = this.subreddits.buildOptions(options);
+
+        return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
+          if (body.data && body.data.children) {
+            return body.data.children.map(c => new Subreddit(c.data).toJSON());
+          } else {
+            return [];
           }
         });
       }
@@ -274,7 +294,7 @@ class APIv1Endpoint {
       buildOptions: function(options) {
         var uri = this.origin;
         if (options.query.subreddit) {
-          uri += `'/r/${options.query.subreddit}`;
+          uri += `/r/${options.query.subreddit}`;
         }
         uri += '/search.json';
 
@@ -284,10 +304,12 @@ class APIv1Endpoint {
       get: function(options = {}) {
         /*
          * Params:
-         *  [q] - a string no longer than 512 characters
+         *  [q] - a query string no longer than 512 characters
          *  [limit] - the maximum number of items desired (default: 25, maximum: 100)
          *  [after] - fullname of a thing
          *  [before] -fullname of a thing
+         *  [subreddit] - the name of subreddit (optional)
+         *  [include_facets] - has to be "on" if you need summary of subreddits (optional)
          */
         var { uri, options } = this.search.buildOptions(options);
 
@@ -295,14 +317,14 @@ class APIv1Endpoint {
           if (body.data && body.data.children) {
             return {
               links: body.data.children.map(c => new Link(c.data).toJSON()),
-              subreddits: [],
+              subreddits: (body.data.facets || {}).subreddits || [],
               meta: {
                 after: body.data.after,
                 before: body.data.before
               }
             };
           } else {
-            return [];
+            return {};
           }
         });
       }
