@@ -221,8 +221,8 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function (options) {
         var uri = this.origin;
-        if (options.query.where) {
-          uri += `/subreddits/${options.query.where}.json`;
+        if (options.query.sort) {
+          uri += `/subreddits/${options.query.sort}.json`;
         } else {
           uri += `/r/${options.query.subreddit}/about.json`;
         }
@@ -233,7 +233,7 @@ class APIv1Endpoint {
         var { uri, options } = this.subreddits.buildOptions(options);
 
         return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
-          if (options.query.where && body.data && body.data.children) {
+          if (options.query.sort && body.data && body.data.children) {
             return body.data.children.map(c => new Subreddit(c.data).toJSON());
           } else if (options.query.subreddit && body) {
             return new Subreddit(body.data || body).toJSON();
