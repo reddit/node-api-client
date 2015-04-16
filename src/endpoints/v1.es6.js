@@ -282,6 +282,7 @@ class APIv1Endpoint {
         var uri = this.origin;
         if (options.query.subreddit) {
           uri += `/r/${options.query.subreddit}`;
+          options.query.restrict_sr = 'on';
         }
         uri += '/search.json';
 
