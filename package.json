@@ -20,13 +20,6 @@
     "url": "https://github.com/ajacksified/snoode/issues"
   },
   "homepage": "https://github.com/ajacksified/snoode",
-  "browserify": {
-    "transform": [
-      [
-        "babelify"
-      ]
-    ]
-  },
   "dependencies": {
     "lru-cache": "^2.5.0",
     "q": "^1.2.0",
