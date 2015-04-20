@@ -7,6 +7,7 @@ import Comment from '../models/comment';
 import Link from '../models/link';
 import Vote from '../models/vote';
 import Subreddit from '../models/subreddit';
+import Stylesheet from '../models/stylesheet';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
@@ -199,6 +200,10 @@ class APIv1Endpoint {
         unauthed: new LRU(defaultCacheConfig),
         authed: new LRU(defaultCacheConfig),
       },
+      stylesheets: {
+        unauthed: new LRU(defaultCacheConfig),
+        authed: new LRU(defaultCacheConfig),
+      },
     }
   }
 
@@ -311,6 +316,34 @@ class APIv1Endpoint {
                 before: body.data.before
               }
             };
+          } else {
+            return {};
+          }
+        });
+      }
+    }, this);
+  }
+
+  get stylesheet () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = this.origin;
+
+        if (options.query.op) {
+          uri += '/api/subreddit_stylesheet.json';
+        } else {
+          uri += `/r/${options.subredditName}/about/stylesheet.json`;
+        }
+
+        return { uri, options };
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.stylesheet.buildOptions(options);
+
+        return baseGet(this.cache.stylesheets, uri, options, this.request, (body) => {
+          if (body.data && body.data.images && body.data.stylesheet) {
+            return new Stylesheet(body.data).toJSON();
           } else {
             return {};
           }
