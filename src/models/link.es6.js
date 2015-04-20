@@ -20,9 +20,7 @@ class Link extends Base {
       (props.media_embed && props.media_embed.content)
     );
 
-    if (content) {
-      content = content.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
-    } else if (props.selftext) {
+    if (!content && props.selftext) {
       content = process(props.selftext);
     }
 
