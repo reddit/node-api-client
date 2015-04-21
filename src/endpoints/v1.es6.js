@@ -621,6 +621,9 @@ class APIv1Endpoint {
     }
 
     delete options.headers.host;
+    delete options.headers.Host;
+    delete options.headers.cookie;
+    delete options.headers.Cookie;
 
     return options;
   }
