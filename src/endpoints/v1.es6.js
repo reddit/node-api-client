@@ -176,6 +176,7 @@ class APIv1Endpoint {
   constructor (config = {}) {
     this.origin = config.origin || 'https://www.reddit.com';
     this.request = config.request || superagent;
+    this.defaultHeaders = config.defaultHeaders;
 
     this.cache = {
       links: {
@@ -618,7 +619,7 @@ class APIv1Endpoint {
     var options = {
       query: {},
       model: {},
-      headers: {},
+      headers: this.defaultHeaders || {},
     };
 
     if (auth) {
