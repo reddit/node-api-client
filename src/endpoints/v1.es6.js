@@ -614,15 +614,13 @@ class APIv1Endpoint {
       headers: {},
     };
 
-    Object.assign(options.headers, this.defaultHeaders || {}, headers)
+    Object.assign(options.headers, this.defaultHeaders || {}, headers);
 
     if (auth) {
       options.headers.Authorization = 'bearer ' + auth;
     }
 
-    if (userAgent) {
-      options.headers['User-Agent'] = userAgent;
-    }
+    delete options.headers.host;
 
     return options;
   }
