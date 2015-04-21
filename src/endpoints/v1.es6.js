@@ -177,8 +177,6 @@ class APIv1Endpoint {
     this.origin = config.origin || 'https://www.reddit.com';
     this.request = config.request || superagent;
 
-    this.userAgent = config.userAgent;
-
     this.cache = {
       links: {
         unauthed: new LRU(defaultCacheConfig),
@@ -616,7 +614,7 @@ class APIv1Endpoint {
     }, this)
   }
 
-  buildOptions (auth) {
+  buildOptions (auth, userAgent) {
     var options = {
       query: {},
       model: {},
@@ -625,6 +623,10 @@ class APIv1Endpoint {
 
     if (auth) {
       options.headers.Authorization = 'bearer ' + auth;
+    }
+
+    if (userAgent) {
+      options.headers['User-Agent'] = userAgent;
     }
 
     return options;
