@@ -58,10 +58,6 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
   var query = options.query || {};
   var headers = options.headers || {};
 
-  if (options.userAgent) {
-    headers['User-Agent'] = options.userAgent;
-  }
-
   var key = uri + '?' + querystring.stringify(query);
 
   if (options.useCache) {
@@ -122,10 +118,6 @@ function basePost(uri, options, request, formatBody) {
 
   var form = options.form || {};
   var headers = options.headers || {};
-
-  if (options.userAgent) {
-    headers['User-Agent'] = options.userAgent;
-  }
 
   request.post(uri)
     .set(headers)
@@ -615,20 +607,20 @@ class APIv1Endpoint {
     }, this)
   }
 
-  buildOptions (auth, userAgent) {
+  buildOptions (auth, headers = {}) {
     var options = {
       query: {},
       model: {},
-      headers: this.defaultHeaders || {},
+      headers: {},
     };
+
+    Object.assign(options.headers, this.defaultHeaders || {}, headers);
 
     if (auth) {
       options.headers.Authorization = 'bearer ' + auth;
     }
 
-    if (userAgent) {
-      options.headers['User-Agent'] = userAgent;
-    }
+    delete options.headers.host;
 
     return options;
   }
