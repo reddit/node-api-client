@@ -22,6 +22,7 @@ var api = require('snoode').v1;
 
 // Example call to get links for /r/homebrewing.
 api.links.get({
+  origin: 'https://ssl.reddit.com',
   subredditName: 'homebrewing',
   view: 'hot'
 }).then(function(listings) {
@@ -30,6 +31,7 @@ api.links.get({
 
 // Example call to get all comments for this particular listing.
 api.comments.get({
+  origin: 'https://ssl.reddit.com',
   linkId: 't3_ib4bk'
 }).then(function(comments, listing) {
   // do stuff with the array of comments
