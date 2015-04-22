@@ -51,10 +51,6 @@ function massageAPIv1JsonRes(res) {
 function baseGet(cache={}, uri, options={}, request, formatBody) {
   var defer = q.defer();
 
-  if (typeof options.useCache !== 'boolean') {
-    options.useCache = true;
-  }
-
   var query = options.query || {};
   var headers = options.headers || {};
 
@@ -65,13 +61,6 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
   var key = uri + '?' + querystring.stringify(query);
 
   if (options.useCache) {
-    if (headers.Authorization) {
-      cache = cache.authed;
-      key += '&auth=' + headers.Authorization;
-    } else {
-      cache = cache.unauthed;
-    }
-
     if (cache && cache.get(key)) {
       defer.resolve(cache.get(key));
       return defer.promise;
@@ -174,36 +163,17 @@ function bind(obj, context) {
 
 class APIv1Endpoint {
   constructor (config = {}) {
-    this.origin = config.origin || 'https://www.reddit.com';
     this.request = config.request || superagent;
     this.defaultHeaders = config.defaultHeaders;
 
     this.cache = {
-      links: {
-        unauthed: new LRU(defaultCacheConfig),
-        authed: new LRU(defaultCacheConfig),
-      },
-      comments: {
-        unauthed: new LRU(defaultCacheConfig),
-        authed: new LRU(defaultCacheConfig),
-      },
-      users: {
-        unauthed: new LRU(defaultCacheConfig),
-        authed: new LRU(defaultCacheConfig),
-      },
-      subreddits: {
-        unauthed: new LRU(defaultCacheConfig),
-        authed: new LRU(defaultCacheConfig),
-      },
-      search: {
-        unauthed: new LRU(defaultCacheConfig),
-        authed: new LRU(defaultCacheConfig),
-      },
-      stylesheets: {
-        unauthed: new LRU(defaultCacheConfig),
-        authed: new LRU(defaultCacheConfig),
-      },
-    }
+      links: new LRU(defaultCacheConfig),
+      comments: new LRU(defaultCacheConfig),
+      users: new LRU(defaultCacheConfig),
+      subreddits: new LRU(defaultCacheConfig),
+      search: new LRU(defaultCacheConfig),
+      stylesheets: new LRU(defaultCacheConfig),
+    };
   }
 
   hydrate (endpoint, options, data) {
@@ -212,19 +182,13 @@ class APIv1Endpoint {
 
     var key = uri + '?' + querystring.stringify(options.query);
 
-    if (options.headers.Authorization) {
-      cache = cache.authed;
-    } else {
-      cache = cache.unauthed;
-    }
-
     cache.set(key, data);
   }
 
   get subreddits() {
     return bind({
       buildOptions: function (options) {
-        var uri = this.origin;
+        var uri = options.origin;
         if (options.query.sort) {
           uri += `/subreddits/${options.query.sort}.json`;
         } else {
@@ -252,7 +216,7 @@ class APIv1Endpoint {
   get subscriptions() {
     return bind({
       post: function (options = {}) {
-        var uri = this.origin + '/api/subscribe';
+        var uri = options.origin + '/api/subscribe';
 
         if (!options.model) {
           throw new NoModelError('/api/subscribe');
@@ -283,7 +247,7 @@ class APIv1Endpoint {
   get search () {
     return bind({
       buildOptions: function(options) {
-        var uri = this.origin;
+        var uri = options.origin;
         if (options.query.subreddit) {
           uri += `/r/${options.query.subreddit}`;
           options.query.restrict_sr = 'on';
@@ -326,7 +290,7 @@ class APIv1Endpoint {
   get stylesheet () {
     return bind({
       buildOptions: function(options) {
-        var uri = this.origin;
+        var uri = options.origin;
 
         if (options.query.op) {
           uri += '/api/subreddit_stylesheet.json';
@@ -357,7 +321,7 @@ class APIv1Endpoint {
         var sort = options.query.sort || 'hot';
         options.query.feature = 'link_preview';
 
-        var uri = this.origin;
+        var uri = options.origin;
 
         if (options.user) {
           uri += '/user/' + options.user + '/submitted.json';
@@ -406,9 +370,9 @@ class APIv1Endpoint {
         var uri;
 
         if (options.user) {
-          uri = this.origin + '/user/' + options.user + '/comments.json';
+          uri = options.origin + '/user/' + options.user + '/comments.json';
         } else {
-          uri = this.origin + '/comments/' + options.linkId + '.json';
+          uri = options.origin + '/comments/' + options.linkId + '.json';
         }
         options.query.feature = 'link_preview';
 
@@ -435,7 +399,7 @@ class APIv1Endpoint {
       },
 
       post: function(options = {}) {
-        var uri = this.origin + '/api/comment';
+        var uri = options.origin + '/api/comment';
 
         if (!options.model) {
           throw new NoModelError('/api/comment');
@@ -452,7 +416,7 @@ class APIv1Endpoint {
             text: json.text,
           };
 
-          this.cache.comments.authed.reset();
+          this.cache.comments.reset();
 
           return basePost(uri, options, this.request, (body) => {
             if (body) {
@@ -474,7 +438,7 @@ class APIv1Endpoint {
   get users () {
     return bind({
       buildOptions: function(options) {
-        var uri = this.origin + '/';
+        var uri = options.origin + '/';
 
         if (options.user === 'me') { // current oauth doesn't return user id
           uri += 'api/v1/me';
@@ -502,7 +466,7 @@ class APIv1Endpoint {
   get trophies () {
     return bind({
       buildOptions: function(options) {
-        var uri = `${this.origin}/api/v1/user/${options.user}/trophies.json`;
+        var uri = `${options.origin}/api/v1/user/${options.user}/trophies.json`;
         return { uri, options }
       },
 
@@ -524,7 +488,7 @@ class APIv1Endpoint {
   get activities () {
     return bind({
       buildOptions: function(options) {
-        var uri = `${this.origin}/user/${options.user}/${options.activity}.json`;
+        var uri = `${options.origin}/user/${options.user}/${options.activity}.json`;
         options.query.feature = 'link_preview';
         return { uri, options }
       },
@@ -560,7 +524,7 @@ class APIv1Endpoint {
   get votes () {
     return bind({
       post: function(options = {}) {
-        var uri = this.origin + '/api/vote';
+        var uri = options.origin + '/api/vote';
 
         if (!options.model) {
           throw new NoModelError('/api/comment');
@@ -576,8 +540,8 @@ class APIv1Endpoint {
             };
           });
 
-          this.cache.links.authed.reset();
-          this.cache.comments.authed.reset();
+          this.cache.links.reset();
+          this.cache.comments.reset();
 
           return basePost(uri, options, this.request, () => null);
         } else {
@@ -590,7 +554,7 @@ class APIv1Endpoint {
   get reports () {
     return bind({
       post: function(options = {}) {
-        var uri = this.origin + '/api/report';
+        var uri = options.origin + '/api/report';
 
         if (!options.model) {
           throw new NoModelError('/api/report');
@@ -615,22 +579,17 @@ class APIv1Endpoint {
     }, this)
   }
 
-  buildOptions (auth, userAgent) {
-    var options = {
+  buildOptions (options) {
+    var fullHeaders = {};
+    Object.assign(fullHeaders, this.defaultHeaders, options.headers);
+
+    return {
       query: {},
       model: {},
-      headers: this.defaultHeaders || {},
+      headers: fullHeaders,
+      origin: options.origin,
+      useCache: options.useCache,
     };
-
-    if (auth) {
-      options.headers.Authorization = 'bearer ' + auth;
-    }
-
-    if (userAgent) {
-      options.headers['User-Agent'] = userAgent;
-    }
-
-    return options;
   }
 }
 
