@@ -173,6 +173,7 @@ class APIv1Endpoint {
       subreddits: new LRU(defaultCacheConfig),
       search: new LRU(defaultCacheConfig),
       stylesheets: new LRU(defaultCacheConfig),
+      activity: new LRU(defaultCacheConfig),
     };
   }
 
