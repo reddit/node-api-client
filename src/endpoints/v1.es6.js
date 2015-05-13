@@ -271,14 +271,27 @@ class APIv1Endpoint {
         var { uri, options } = this.search.buildOptions(options);
 
         return baseGet(this.cache.search, uri, options, this.request, (body) => {
-          if (body.data && body.data.children) {
-            return {
-              links: body.data.children.map(c => new Link(c.data).toJSON()),
-              subreddits: (body.data.facets || {}).subreddits || [],
-              meta: {
-                after: body.data.after,
-                before: body.data.before
+          if (body) {
+            // just in case. If only one type is returned body will still be an object
+            body = Array.isArray(body) ? body : [body];
+
+            var linkListing = [];
+            var subredditListing = [];
+            var meta = {};
+
+            body.map((listing) => {
+              if (listing.data.children[0].kind === 't3') {
+                linkListing = listing.data.children.map(c => new Link(c.data).toJSON())
+                meta.after = listing.data.after;
+                meta.before = listing.data.before;
+              } else {
+                subredditListing = listing.data.children.map(c => new Subreddit(c.data).toJSON())
               }
+            })
+            return {
+              links: linkListing,
+              subreddits: subredditListing,
+              meta: meta
             };
           } else {
             return {};
