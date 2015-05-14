@@ -3,6 +3,8 @@ import process from 'reddit-text-js';
 
 class Link extends Base {
   constructor(props) {
+    delete props.selftext_html;
+
     props._type = 'Link';
     super(props);
   }
