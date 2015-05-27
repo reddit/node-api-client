@@ -10,6 +10,7 @@ import PromoCampaign from './models/promocampaign';
 import Subreddit from './models/subreddit';
 import Subscription from './models/subscription';
 import Vote from './models/vote';
+import Report from './models/report';
 
 var models = {
   Account,
@@ -21,10 +22,11 @@ var models = {
   PromoCampaign,
   Subreddit,
   Subscription,
-  Vote
+  Vote,
+  Report,
 };
 
 export {
   v1,
-  models
-}
+  models,
+};

@@ -5,15 +5,25 @@ class Report extends Base {
     props._type = 'Report';
     super(props);
 
+    var report = this;
+
     this.validators = {
       reason: function() {
-        if (this.get('other_reason') && !this.get('reason' === 'other')) {
+        if (this.get('other_reason') && !(this.get('reason') === 'other')) {
           return false;
         }
 
-        return Base.validators.minLength(this.get('body'), 1) &&
-               Base.validators.maxLength(this.get('body'), 100);
-      },
+        var reasonValid = Base.validators.minLength(this.get('reason'), 1) &&
+                          Base.validators.maxLength(this.get('reason'), 100);
+
+        var otherReasonValid = !this.get('other_reason') ||
+                               (
+                                 Base.validators.minLength(this.get('other_reason'), 1) &&
+                                 Base.validators.maxLength(this.get('other_reason'), 100)
+                               );
+
+        return reasonValid && otherReasonValid;
+      }.bind(report),
 
       other_reason: function() {
         if (this.get('reason') !== 'other') {
@@ -25,14 +35,14 @@ class Report extends Base {
         }
 
         return Base.validators.maxLength(this.get('thing_id'), 100);
-      },
+      }.bind(report),
 
       thing_id: function() {
         return Base.validators.minLength(this.get('thing_id'), 6) &&
                Base.validators.maxLength(this.get('thing_id'), 10);
-      },
+      }.bind(report),
     };
   }
 };
 
-export default Comment;
+export default Report;

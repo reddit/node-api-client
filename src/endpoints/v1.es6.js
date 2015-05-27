@@ -582,6 +582,7 @@ class APIv1Endpoint {
         if (valid === true) {
           options.form = options.model.toJSON((props) => {
             return {
+              api_type: 'json',
               reason: props.reason,
               other_reason: props.other_reason,
               thing_id: props.thing_id,
