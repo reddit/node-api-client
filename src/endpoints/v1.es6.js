@@ -280,14 +280,17 @@ class APIv1Endpoint {
             var meta = {};
 
             body.map((listing) => {
-              if (listing.data.children[0].kind === 't3') {
-                linkListing = listing.data.children.map(c => new Link(c.data).toJSON())
-                meta.after = listing.data.after;
-                meta.before = listing.data.before;
-              } else {
-                subredditListing = listing.data.children.map(c => new Subreddit(c.data).toJSON())
+              if (listing.data.children.length) {
+                if (listing.data.children[0].kind === 't3') {
+                  linkListing = listing.data.children.map(c => new Link(c.data).toJSON())
+                  meta.after = listing.data.after;
+                  meta.before = listing.data.before;
+                } else {
+                  subredditListing = listing.data.children.map(c => new Subreddit(c.data).toJSON())
+                }
               }
             })
+
             return {
               links: linkListing,
               subreddits: subredditListing,
