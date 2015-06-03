@@ -245,6 +245,80 @@ class APIv1Endpoint {
     }, this);
   }
 
+  get saved() {
+    return bind({
+      post: function (options = {}) {
+        var uri = options.origin + '/api/save';
+
+        if (!options.id) {
+          throw('Must pass an `id` to `saved.post`.');
+        }
+
+        options.form = {
+          id: options.id,
+          category: options.category,
+        };
+
+        return basePost(uri, options, this.request, (body) => {
+          return body;
+        });
+      },
+      delete: function (options = {}) {
+        var uri = options.origin + '/api/unsave';
+
+        if (!options.id) {
+          throw('Must pass an `id` to `saved.delete`.');
+        }
+
+        options.form = {
+          id: options.id,
+          category: options.category,
+        };
+
+        return basePost(uri, options, this.request, (body) => {
+          return body;
+        });
+      }
+    }, this);
+  }
+
+  get hidden() {
+    return bind({
+      post: function (options = {}) {
+        var uri = options.origin + '/api/hide';
+
+        if (!options.id) {
+          throw('Must pass an `id` to `hidden.post`.');
+        }
+
+        options.form = {
+          id: options.id,
+          category: options.category,
+        };
+
+        return basePost(uri, options, this.request, (body) => {
+          return body;
+        });
+      },
+      delete: function (options = {}) {
+        var uri = options.origin + '/api/unhide';
+
+        if (!options.id) {
+          throw('Must pass an `id` to `hidden.delete`.');
+        }
+
+        options.form = {
+          id: options.id,
+          category: options.category,
+        };
+
+        return basePost(uri, options, this.request, (body) => {
+          return body;
+        });
+      }
+    }, this);
+  }
+
   get search () {
     return bind({
       buildOptions: function(options) {
