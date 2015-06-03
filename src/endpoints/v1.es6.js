@@ -253,7 +253,8 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var uri = `${options.origin}/user/${options.user}/saved.json`;
         options.query = {
-          feature: 'link_preview'
+          feature: 'link_preview',
+          sr_detail: 'true'
         };
 
         return baseGet(this.cache.saved, uri, options, this.request, (body) => {
@@ -320,7 +321,8 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var uri = `${options.origin}/user/${options.user}/hidden.json`;
         options.query = {
-          feature: 'link_preview'
+          feature: 'link_preview',
+          sr_detail: 'true'
         };
 
         return baseGet(this.cache.hidden, uri, options, this.request, (body) => {
@@ -495,6 +497,7 @@ class APIv1Endpoint {
       buildOptions: function(options) {
         var sort = options.query.sort || 'hot';
         options.query.feature = 'link_preview';
+        options.query.sr_detail = 'true';
 
         var uri = options.origin;
 
@@ -593,7 +596,9 @@ class APIv1Endpoint {
         } else {
           uri = options.origin + '/comments/' + options.linkId + '.json';
         }
+
         options.query.feature = 'link_preview';
+        options.query.sr_detail = 'true';
 
         if (options.comment) {
           options.query.comment = options.comment;
@@ -709,6 +714,7 @@ class APIv1Endpoint {
       buildOptions: function(options) {
         var uri = `${options.origin}/user/${options.user}/${options.activity}.json`;
         options.query.feature = 'link_preview';
+        options.query.sr_detail = 'true';
         return { uri, options }
       },
 
