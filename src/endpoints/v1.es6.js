@@ -8,6 +8,7 @@ import Link from '../models/link';
 import Vote from '../models/vote';
 import Subreddit from '../models/subreddit';
 import Stylesheet from '../models/stylesheet';
+import Preferences from '../models/preferences';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
@@ -398,6 +399,27 @@ class APIv1Endpoint {
         return baseGet(this.cache.stylesheets, uri, options, this.request, (body) => {
           if (body.data && body.data.images && body.data.stylesheet) {
             return new Stylesheet(body.data).toJSON();
+          } else {
+            return {};
+          }
+        });
+      }
+    }, this);
+  }
+
+  get preferences () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = options.origin + '/api/v1/me/prefs';
+        return { uri, options };
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.preferences.buildOptions(options);
+
+        return baseGet(this.cache.preferences, uri, options, this.request, (prefs) => {
+          if (prefs && typeof prefs === 'object') {
+            return new Preferences(prefs).toJSON();
           } else {
             return {};
           }
