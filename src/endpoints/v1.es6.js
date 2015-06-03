@@ -175,6 +175,8 @@ class APIv1Endpoint {
       search: new LRU(defaultCacheConfig),
       stylesheets: new LRU(defaultCacheConfig),
       activity: new LRU(defaultCacheConfig),
+      saved: new LRU(defaultCacheConfig),
+      hidden: new LRU(defaultCacheConfig),
     };
   }
 
@@ -248,6 +250,34 @@ class APIv1Endpoint {
 
   get saved() {
     return bind({
+      get: function(options = {}) {
+        var uri = `${options.origin}/user/${options.user}/saved.json`;
+        options.query = {
+          feature: 'link_preview'
+        };
+
+        return baseGet(this.cache.saved, uri, options, this.request, (body) => {
+          if (body) {
+            var things = body.data.children;
+            var data = [];
+
+            things.forEach(function(t) {
+              switch (t.kind) {
+                case 't1':
+                  data.push((new Comment(t.data)).toJSON());
+                  break;
+                case 't3':
+                  data.push((new Link(t.data)).toJSON());
+                  break;
+              }
+            });
+
+            return data;
+          }else {
+            return null;
+          }
+        });
+      },
       post: function (options = {}) {
         var uri = options.origin + '/api/save';
 
@@ -261,6 +291,7 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
+          this.cache.saved.reset();
           return body;
         });
       },
@@ -277,6 +308,7 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
+          this.cache.saved.reset();
           return body;
         });
       }
@@ -285,6 +317,34 @@ class APIv1Endpoint {
 
   get hidden() {
     return bind({
+      get: function(options = {}) {
+        var uri = `${options.origin}/user/${options.user}/hidden.json`;
+        options.query = {
+          feature: 'link_preview'
+        };
+
+        return baseGet(this.cache.hidden, uri, options, this.request, (body) => {
+          if (body) {
+            var things = body.data.children;
+            var data = [];
+
+            things.forEach(function(t) {
+              switch (t.kind) {
+                case 't1':
+                  data.push((new Comment(t.data)).toJSON());
+                  break;
+                case 't3':
+                  data.push((new Link(t.data)).toJSON());
+                  break;
+              }
+            });
+
+            return data;
+          }else {
+            return null;
+          }
+        });
+      },
       post: function (options = {}) {
         var uri = options.origin + '/api/hide';
 
@@ -298,6 +358,7 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
+          this.cache.hidden.reset();
           return body;
         });
       },
@@ -314,6 +375,7 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
+          this.cache.hidden.reset();
           return body;
         });
       }
