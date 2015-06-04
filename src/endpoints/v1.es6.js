@@ -523,6 +523,50 @@ class APIv1Endpoint {
             return [];
           }
         });
+      },
+
+      post: function(options = {}) {
+        var uri = options.origin + '/api/submit';
+
+        if (!options.model) {
+          throw new NoModelError('/api/submit');
+        }
+
+        var valid = options.model.validate();
+
+        if (valid === true) {
+          var json = options.model.toJSON();
+
+          options.form = {
+            api_type: 'json',
+            thing_id: json.thingId,
+            title: json.title,
+            kind: json.kind,
+            sendreplies: json.sendreplies,
+            sr: json.sr,
+            iden: json.iden,
+            captcha: json.captcha,
+            resubmit: json.resubmit,
+          };
+
+          if (json.text) {
+            options.form.text = json.text;
+          } else if (json.url) {
+            options.form.url = json.url;
+          }
+
+          return basePost(uri, options, this.request, (body) => {
+            if (body.json && body.json.errors.length === 0) {
+              if (!body.json.errors.length) {
+                return body.json.data;
+              }
+            } else {
+              throw body.json.errors;
+            }
+          });
+        } else {
+          throw new ValidationError('Link', options.model, valid);
+        }
       }
     }, this);
   }
@@ -751,6 +795,34 @@ class APIv1Endpoint {
         } else {
           throw new ValidationError('Report', options.model, valid);
         }
+      }
+    }, this)
+  }
+
+  get captcha () {
+    return bind({
+      get: function (options = {}) {
+        var uri = options.origin + '/api/needs_captcha';
+
+        return baseGet({}, uri, options, this.request, (body) => {
+          if (typeof body === 'boolean') {
+            return body
+          }else {
+            return null;
+          }
+        });
+      },
+
+      post: function(options = {}) {
+        var uri = options.origin + '/api/new_captcha';
+        
+        return basePost(uri, options, this.request, (body) => {
+          if (!body.json.errors.length) {
+            return body.json.data;
+          } else {
+            return body.json.errors;
+          }
+        }) 
       }
     }, this)
   }

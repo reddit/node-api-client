@@ -7,6 +7,15 @@ class Link extends Base {
 
     props._type = 'Link';
     super(props);
+
+    this.validators = {
+      title: function () {
+        return Base.validators.maxLength(this.get('title'), 300);
+      }.bind(this),
+      sendreplies: function() {
+        return typeof this.get('sendreplies') === 'boolean';
+      }.bind(this)
+    }
   }
 
   get expandContent () {
@@ -58,6 +67,7 @@ class Link extends Base {
   }
 
   unredditify (url) {
+    if (!url){ return; }
     return url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
   }
 
