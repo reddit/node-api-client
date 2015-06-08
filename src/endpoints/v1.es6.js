@@ -5,6 +5,7 @@ import querystring from 'querystring';
 import Account from '../models/account';
 import Comment from '../models/comment';
 import Link from '../models/link';
+import Message from '../models/message';
 import Vote from '../models/vote';
 import Subreddit from '../models/subreddit';
 import Stylesheet from '../models/stylesheet';
@@ -177,6 +178,8 @@ class APIv1Endpoint {
       activity: new LRU(defaultCacheConfig),
       saved: new LRU(defaultCacheConfig),
       hidden: new LRU(defaultCacheConfig),
+      notifications: new LRU(defaultCacheConfig),
+      messages: new LRU(defaultCacheConfig),
     };
   }
 
@@ -831,6 +834,73 @@ class APIv1Endpoint {
         }) 
       }
     }, this)
+  }
+
+  get notifications () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = options.origin + '/api/v1/me/notifications';
+
+        if (options.id) {
+          uri += '/' + options.id;
+        }
+
+        return { uri, options };
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.notifications.buildOptions(options);
+
+        return baseGet(this.cache.notifications, uri, options, this.request, (body) => {
+          return body;
+        });
+      }
+    }, this);
+  }
+
+  get messages () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = options.origin + '/message/' + (options.view || 'inbox');
+
+        return { uri, options };
+      },
+
+      get: function(options = {}) {
+        var { uri, options } = this.messages.buildOptions(options);
+        let data = [];
+
+        return baseGet(this.cache.messages, uri, options, this.request, (body) => {
+          if (body && body.data && body.data.children) {
+            body.data.children.forEach(function(t) {
+              switch (t.kind) {
+                case 't1':
+                  data.push((new Comment(t.data)).toJSON());
+                  break;
+                case 't3':
+                  data.push((new Link(t.data)).toJSON());
+                  break;
+                case 't4':
+                  data.push((new Message(t.data)).toJSON());
+                  break;
+              }
+            });
+          }
+
+          data.map(function(m) {
+            if (m.replies) {
+              m.replies = m.replies.data.children.filter(function(c) {
+                return c && c.data;
+              }).map(function(c){
+                return (new Message(c.data)).toJSON();
+              });
+            }
+          });
+
+          return data;
+        });
+      },
+    }, this);
   }
 
   buildOptions (options) {
