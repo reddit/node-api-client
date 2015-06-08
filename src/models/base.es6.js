@@ -107,6 +107,17 @@ Base.validators = {
   minLength: function (s, l) {
     return Base.validators.string(s) && Base.validators.min(s.length, l);
   },
+
+  regex: function(s, expr) {
+    return expr.test(s);
+  },
+
+  thingId: function(id) {
+    var expr = new RegExp('t\\d_[0-9a-z]+', 'i');
+
+    return id == null || Base.validators.regex(id, expr);
+  },
+
 }
 
 export default Base;
