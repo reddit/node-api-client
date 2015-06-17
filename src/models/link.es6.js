@@ -5,6 +5,34 @@ class Link extends Base {
   constructor(props) {
     delete props.selftext_html;
 
+    if (props.promoted) {
+      var resolutions = [];
+
+      if (props.mobile_ad_url) {
+        resolutions.push({
+          url: props.mobile_ad_url,
+          height: 628,
+          width: 1200,
+        });
+        delete props.mobile_ad_url;
+      }
+
+      if (props.thumbnail) {
+        resolutions.push({
+          url: props.thumbnail,
+          height: 140,
+          width: 140,
+        });
+        delete props.thumbnail;
+      }
+
+      props.preview = {
+        images: [{
+          resolutions: resolutions,
+        }],
+      };
+    }
+
     props._type = 'Link';
     super(props);
 
