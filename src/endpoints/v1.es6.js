@@ -573,6 +573,38 @@ class APIv1Endpoint {
         } else {
           throw new ValidationError('Link', options.model, valid);
         }
+      },
+
+      patch: function(options={}) {
+        var uri = options.origin + '/api/editusertext';
+
+        if (!options.model) {
+          throw new NoModelError('/api/editusertext');
+        }
+        // api only supports updating selftext
+        options.model.set('selftext', options.changeSet);
+
+        var valid = options.model.validate();
+
+        if (valid) {
+          var json = options.model.toJSON();
+          options.form = {
+            api_type: 'json',
+            text: json.selftext,
+            thing_id: json.name,
+          }
+
+          return basePost(uri, options, this.request, (body) => {
+            if (body.json.errors.length === 0) {
+              var updatedLink = body.json.data.things[0].data;
+              return new Link(updatedLink).toJSON();
+            } else {
+              throw body.json.errors;
+            }
+          })
+        } else {
+          throw new ValidationError('Link', options.model, valid);
+        }
       }
     }, this);
   }
@@ -657,6 +689,38 @@ class APIv1Endpoint {
           var defer = q.defer();
           defer.reject('Comment', options.model, valid);
           return defer.promise;
+        }
+      },
+
+      patch: function(options={}) {
+        var uri = options.origin + '/api/editusertext';
+
+        if (!options.model) {
+          throw new NoModelError('/api/editusertext');
+        }
+        // api only supports updating text
+        options.model.set('body', options.changeSet);
+
+        var valid = options.model.validate();
+
+        if (valid) {
+          var json = options.model.toJSON();
+          options.form = {
+            api_type: 'json',
+            text: json.body,
+            thing_id: json.name,
+          }
+
+          return basePost(uri, options, this.request, (body) => {
+            if (body.json.errors.length === 0) {
+              var updatedLink = body.json.data.things[0].data;
+              return new Comment(updatedLink).toJSON();
+            } else {
+              throw body.json.errors;
+            }
+          })
+        } else {
+          throw new ValidationError('Comment', options.model, valid);
         }
       }
     }, this);
