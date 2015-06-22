@@ -15,8 +15,9 @@ class Comment extends Base {
         return Base.validators.minLength(this.get('body'), 1);
       }.bind(comment),
       thingId: function() {
-        return Base.validators.minLength(this.get('thingId'), 6) &&
-               Base.validators.maxLength(this.get('thingId'), 10);
+        var thingId = this.get('thingId');
+
+        return Base.validators.thingId(thingId);
       }.bind(comment),
     };
   }

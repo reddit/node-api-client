@@ -14,8 +14,13 @@ class Link extends Base {
       }.bind(this),
       sendreplies: function() {
         return typeof this.get('sendreplies') === 'boolean';
-      }.bind(this)
-    }
+      }.bind(this),
+      thingId: function() {
+        var thingId = this.get('thingId');
+
+        return Base.validators.thingId(thingId);
+      }.bind(this),
+    };
   }
 
   get expandContent () {

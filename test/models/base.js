@@ -116,4 +116,32 @@ describe('Base model', function() {
       });
     });
   });
+
+  describe('static members', function() {
+    describe('validators', function() {
+      describe('regex', function() {
+        it('returns `false` when the passed in string doesn\'t match the `expr`', function() {
+          expect(Base.validators.regex('foo', /^bar$/i)).to.equal(false);
+        });
+
+        it('returns `true` when the passed in string matches the `expr`', function() {
+          expect(Base.validators.regex('bar', /^bar$/i)).to.equal(true);
+        });
+      });
+
+      describe('thingId', function() {
+        it('returns `true` when `id` is undefined.', function() {
+          expect(Base.validators.thingId(void 0)).to.equal(true);
+        });
+
+        it('returns `false` when the passed in `id` isn\'t a valid `thingId`', function() {
+          expect(Base.validators.thingId('abc4')).to.equal(false);
+        });
+
+        it('returns `true` when the passed in `id` is a valid `thingId`', function() {
+          expect(Base.validators.thingId('t3_1')).to.equal(true);
+        });
+      });
+    });
+  });
 });
