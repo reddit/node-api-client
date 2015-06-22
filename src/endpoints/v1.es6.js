@@ -900,6 +900,38 @@ class APIv1Endpoint {
           return data;
         });
       },
+
+      post: function(options = {}) {
+        var uri = options.origin + '/api/compose';
+
+        if (!options.model) {
+          throw new NoModelError('/api/messages');
+        }
+
+        var valid = options.model.validate();
+
+        if (valid) {
+          var json = options.model.toJSON();
+
+          options.form = {
+            api_type: 'json',
+            text: json.text,
+            captcha: json.captcha,
+            from_sr: json.from_sr,
+            iden: json.iden,
+            subject: json.subject,
+            to: json.to,
+          };
+
+          return basePost(uri, options, this.request, (body) => {
+            return body;
+          });
+        } else {
+          var defer = q.defer();
+          defer.reject('Message', options.model, valid);
+          return defer.promise;
+        }
+      },
     }, this);
   }
 
