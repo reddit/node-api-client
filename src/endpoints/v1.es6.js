@@ -900,6 +900,68 @@ class APIv1Endpoint {
           return data;
         });
       },
+      post: function(options = {}) {
+        // `api/comment` is intentional; message replies are treated as
+        // comments.
+        var uri = options.origin + '/api/comment';
+
+        // New messages (not replies) go to the api/compose endpoint.
+        if (!options.model.get('thingId')) {
+          uri = options.origin + '/api/compose';
+        }
+
+        if (!options.model) {
+          throw new NoModelError('/api/message');
+        }
+
+        var valid = options.model.validate();
+
+        if (valid === true) {
+          var json = options.model.toJSON();
+
+          options.form = {
+            api_type: 'json',
+            text: json.text,
+          };
+
+          if (json.thingId) {
+            options.form.thing_id = json.thingId;
+          }
+
+          if (json.fromSr) {
+            options.form.from_sr = json.fromSr;
+          }
+
+          if (json.catpcha) {
+            options.form.captcha = json.catpcha;
+          }
+
+          if (json.iden) {
+            options.form.iden = json.iden;
+          }
+
+          if(json.subject) {
+            options.form.subject = json.subject;
+          }
+
+          if (json.to) {
+            options.form.to = json.to;
+          }
+
+          return basePost(uri, options, this.request, (body) => {
+            if (body) {
+              var message = body.json.data.things[0].data;
+              return new Message(message).toJSON();
+            } else {
+              return null;
+            }
+          });
+        } else {
+          var defer = q.defer();
+          defer.reject('Comment', options.model, valid);
+          return defer.promise;
+        }
+      }
     }, this);
   }
 
