@@ -84,19 +84,15 @@ class Link extends Base {
 
   get thumbnail () {
     var props = this.props;
-    var thumbnailSrc = '/img/default.gif';
 
-    if (props.thumbnail) {
-      if (props.thumbnail === 'default' || props.thumbnail === 'self' || props.thumbnail === 'nsfw') {
-        thumbnailSrc = '/img/' + props.thumbnail + '.gif';
-      } else {
-        thumbnailSrc = props.thumbnail;
-      }
-    } else if (props.selftext) {
-      thumbnailSrc = '/img/self.gif';
+    if (props.thumbnail &&
+       (props.thumbnail === 'default' ||
+        props.thumbnail === 'self' ||
+        props.thumbnail === 'nsfw')) {
+      return;
     }
 
-    return thumbnailSrc;
+    return props.thumbnail;
   }
 
   unredditify (url) {
