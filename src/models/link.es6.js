@@ -5,7 +5,7 @@ class Link extends Base {
   constructor(props) {
     delete props.selftext_html;
 
-    if (props.promoted) {
+    if (props.promoted && !props.preview) {
       var resolutions = [];
 
       if (props.mobile_ad_url) {
