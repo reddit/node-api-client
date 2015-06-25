@@ -576,35 +576,7 @@ class APIv1Endpoint {
       },
 
       patch: function(options={}) {
-        var uri = options.origin + '/api/editusertext';
-
-        if (!options.model) {
-          throw new NoModelError('/api/editusertext');
-        }
-        // api only supports updating selftext
-        options.model.set('selftext', options.changeSet);
-
-        var valid = options.model.validate();
-
-        if (valid) {
-          var json = options.model.toJSON();
-          options.form = {
-            api_type: 'json',
-            text: json.selftext,
-            thing_id: json.name,
-          }
-
-          return basePost(uri, options, this.request, (body) => {
-            if (body.json.errors.length === 0) {
-              var updatedLink = body.json.data.things[0].data;
-              return new Link(updatedLink).toJSON();
-            } else {
-              throw body.json.errors;
-            }
-          })
-        } else {
-          throw new ValidationError('Link', options.model, valid);
-        }
+        return this.updateCommentOrLink(options);
       }
     }, this);
   }
@@ -693,35 +665,7 @@ class APIv1Endpoint {
       },
 
       patch: function(options={}) {
-        var uri = options.origin + '/api/editusertext';
-
-        if (!options.model) {
-          throw new NoModelError('/api/editusertext');
-        }
-        // api only supports updating text
-        options.model.set('body', options.changeSet);
-
-        var valid = options.model.validate();
-
-        if (valid) {
-          var json = options.model.toJSON();
-          options.form = {
-            api_type: 'json',
-            text: json.body,
-            thing_id: json.name,
-          }
-
-          return basePost(uri, options, this.request, (body) => {
-            if (body.json.errors.length === 0) {
-              var updatedLink = body.json.data.things[0].data;
-              return new Comment(updatedLink).toJSON();
-            } else {
-              throw body.json.errors;
-            }
-          })
-        } else {
-          throw new ValidationError('Comment', options.model, valid);
-        }
+        return this.updateCommentOrLink(options);
       }
     }, this);
   }
@@ -819,7 +763,7 @@ class APIv1Endpoint {
         var uri = options.origin + '/api/vote';
 
         if (!options.model) {
-          throw new NoModelError('/api/comment');
+          throw new NoModelError('/api/vote');
         }
 
         var valid = options.model.validate();
@@ -965,6 +909,43 @@ class APIv1Endpoint {
         });
       },
     }, this);
+  }
+
+  updateCommentOrLink (options) {
+    var uri = options.origin + '/api/editusertext';
+
+    if (!options.model) {
+      throw new NoModelError('/api/editusertext');
+    }
+    // api only supports updating selftext
+    var prop = options.model.get('selftext') ? 'selftext' : 'body';
+    options.model.set(prop, options.changeSet);
+
+    var valid = options.model.validate();
+
+    if (valid) {
+      var json = options.model.toJSON();
+      options.form = {
+        api_type: 'json',
+        text: json.selftext || json.body,
+        thing_id: json.name,
+      }
+
+      return basePost(uri, options, this.request, (body) => {
+        if (body.json.errors.length === 0) {
+          var updatedThing = body.json.data.things[0].data;
+           if (body.json.data.things[0].kind === 't3') {
+             return new Link(updatedThing).toJSON();
+           } else {
+             return new Comment(updatedThing).toJSON();
+           }
+        } else {
+          throw body.json.errors;
+        }
+      })
+    } else {
+      throw new ValidationError('Link', options.model, valid);
+    }
   }
 
   buildOptions (options) {
