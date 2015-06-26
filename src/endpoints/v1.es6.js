@@ -918,7 +918,7 @@ class APIv1Endpoint {
       throw new NoModelError('/api/editusertext');
     }
     // api only supports updating selftext
-    var prop = options.model.get('selftext') ? 'selftext' : 'body';
+    var prop = options.model._type === 'Link' ? 'selftext' : 'body';
     options.model.set(prop, options.changeSet);
 
     var valid = options.model.validate();
@@ -944,7 +944,7 @@ class APIv1Endpoint {
         }
       })
     } else {
-      throw new ValidationError('Link', options.model, valid);
+      throw new ValidationError(options.model._type, options.model, valid);
     }
   }
 
