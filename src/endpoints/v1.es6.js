@@ -832,14 +832,14 @@ class APIv1Endpoint {
 
       post: function(options = {}) {
         var uri = options.origin + '/api/new_captcha';
-        
+
         return basePost(uri, options, this.request, (body) => {
           if (!body.json.errors.length) {
             return body.json.data;
           } else {
             return body.json.errors;
           }
-        }) 
+        })
       }
     }, this)
   }
@@ -980,7 +980,7 @@ class APIv1Endpoint {
       throw new NoModelError('/api/editusertext');
     }
     // api only supports updating selftext
-    var prop = options.model._type === 'Link' ? 'selftext' : 'body';
+    var prop = options.model.props._type === 'Link' ? 'selftext' : 'body';
     options.model.set(prop, options.changeSet);
 
     var valid = options.model.validate();
