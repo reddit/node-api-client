@@ -577,6 +577,10 @@ class APIv1Endpoint {
 
       patch: function(options={}) {
         return this.updateCommentOrLink(options);
+      },
+
+      delete: function (options = {}) {
+        return this.deleteCommentOrLink(options);
       }
     }, this);
   }
@@ -666,6 +670,10 @@ class APIv1Endpoint {
 
       patch: function(options={}) {
         return this.updateCommentOrLink(options);
+      },
+
+      delete: function (options = {}) {
+        return this.deleteCommentOrLink(options);
       }
     }, this);
   }
@@ -1008,6 +1016,22 @@ class APIv1Endpoint {
     } else {
       throw new ValidationError(options.model._type, options.model, valid);
     }
+  }
+
+  deleteCommentOrLink (options) {
+    var uri = options.origin + '/api/del';
+
+    if (!options.id) {
+      throw('Must pass an `id` to `links.delete`.');
+    }
+
+    options.form = {
+      id: options.id,
+    };
+
+    // api returns 200 and empty body in all cases no point
+    // handling for now.
+    return basePost(uri, options, this.request);
   }
 
   buildOptions (options) {
