@@ -885,6 +885,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.messages.buildOptions(options);
         let data = [];
+        let read = [];
 
         return baseGet(this.cache.messages, uri, options, this.request, (body) => {
           if (body && body.data && body.data.children) {
@@ -897,10 +898,27 @@ class APIv1Endpoint {
                   data.push((new Link(t.data)).toJSON());
                   break;
                 case 't4':
+                  if (t.data.new) {
+                    read.push(t.data.name);
+                  }
+
                   data.push((new Message(t.data)).toJSON());
                   break;
               }
             });
+          }
+
+          // Mark messages as read after we fetch them
+          if (read.length > 0) {
+            var readUrl = options.origin + '/api/read_message';
+
+            var readOptions = Object.assign({
+              form: {
+                id: read.join(','),
+              }
+            }, options);
+
+            basePost(readUrl, readOptions, this.request, () => {});
           }
 
           data.map(function(m) {
