@@ -890,6 +890,10 @@ class APIv1Endpoint {
         return baseGet(this.cache.messages, uri, options, this.request, (body) => {
           if (body && body.data && body.data.children) {
             body.data.children.forEach(function(t) {
+              if (t.data.new) {
+                read.push(t.data.name);
+              }
+
               switch (t.kind) {
                 case 't1':
                   data.push((new Comment(t.data)).toJSON());
@@ -898,10 +902,6 @@ class APIv1Endpoint {
                   data.push((new Link(t.data)).toJSON());
                   break;
                 case 't4':
-                  if (t.data.new) {
-                    read.push(t.data.name);
-                  }
-
                   data.push((new Message(t.data)).toJSON());
                   break;
               }
