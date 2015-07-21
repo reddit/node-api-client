@@ -1173,12 +1173,12 @@ class APIv1Endpoint {
             options.form.thing_id = json.thingId;
           }
 
-          if (json.fromSr) {
-            options.form.from_sr = json.fromSr;
+          if (json.from) {
+            options.form.from_sr = json.from;
           }
 
-          if (json.catpcha) {
-            options.form.captcha = json.catpcha;
+          if (json.captcha) {
+            options.form.captcha = json.captcha;
           }
 
           if (json.iden) {
@@ -1194,15 +1194,19 @@ class APIv1Endpoint {
           }
 
           return this.basePost(uri, options, (body) => {
-            if (body) {
-              var message = body.json.data.things[0].data;
+            let res = body.json;
+
+            if (res && res.data) {
+              let message = res.data.things[0].data;
               return new Message(message).toJSON();
+            } else if (res.errors.length){
+              throw res;
+            } else {
+              return res;
             }
           });
         } else {
-          return new Promise(function(resolve, reject) {
-            reject('Comment', options.model, valid);
-          });
+          throw new ValidationError(options.model._type, options.model, valid);
         }
       }
     }, this);
