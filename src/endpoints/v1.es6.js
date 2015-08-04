@@ -484,7 +484,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.preferences.buildOptions(options);
 
-        return baseGet(this.cache.preferences, uri, options, this.request, (prefs) => {
+        return baseGet(this.cache.users, uri, options, this.request, (prefs) => {
           if (prefs && typeof prefs === 'object') {
             return new Preferences(prefs).toJSON();
           } else {
