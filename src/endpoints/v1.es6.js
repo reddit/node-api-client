@@ -1,5 +1,4 @@
 import superagent from 'superagent';
-import q from 'q';
 import querystring from 'querystring';
 
 import Account from '../models/account';
@@ -51,8 +50,6 @@ function massageAPIv1JsonRes(res) {
 }
 
 function baseGet(cache={}, uri, options={}, request, formatBody) {
-  var defer = q.defer();
-
   var query = options.query || {};
   var headers = options.headers || {};
 
@@ -64,52 +61,52 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
 
   if (options.useCache) {
     if (cache && cache.get(key)) {
-      defer.resolve(cache.get(key));
-      return defer.promise;
+      return new Promise(function(resolve) {
+        resolve(cache.get(key));
+      });
     }
   }
 
-  request.get(uri)
-    .set(headers)
-    .query(query)
-    .end((err, res) => {
-      if (err) {
-        return defer.reject(err);
-      }
-
-      if (!res.ok) {
-        return defer.reject(res);
-      }
-
-      try {
-        massageAPIv1JsonRes(res);
-        var body = res.body;
-
-        if (formatBody) {
-          body = formatBody(body);
+  return new Promise(function(resolve, reject) {
+    request.get(uri)
+      .set(headers)
+      .query(query)
+      .end((err, res) => {
+        if (err) {
+          return reject(err);
         }
 
-        var data = {
-          data: body,
-          meta: processMeta(res),
-        };
-
-        if (options.useCache && cache) {
-          cache.set(key, data);
+        if (!res.ok) {
+          return reject(res);
         }
 
-        defer.resolve(data);
-      } catch (e) {
-        defer.reject(e);
-      }
-    });
+        try {
+          massageAPIv1JsonRes(res);
+          var body = res.body;
 
-  return defer.promise;
+          if (formatBody) {
+            body = formatBody(body);
+          }
+
+          var data = {
+            data: body,
+            meta: processMeta(res),
+          };
+
+          if (options.useCache && cache) {
+            cache.set(key, data);
+          }
+
+          resolve(data);
+        } catch (e) {
+          reject(e);
+        }
+      });
+  });
 }
 
 function basePost(uri, options, request, formatBody) {
   var options = options || {};
-  var defer = q.defer();
 
   var form = options.form || {};
   var headers = options.headers || {};
@@ -118,39 +115,39 @@ function basePost(uri, options, request, formatBody) {
     headers['User-Agent'] = options.userAgent;
   }
 
-  request.post(uri)
-    .set(headers)
-    .send(form)
-    .type('form')
-    .end((err, res) => {
-      if (err) {
-        return defer.reject(err);
-      }
-
-      if (!res.ok) {
-        defer.reject(res);
-      }
-
-      try {
-        massageAPIv1JsonRes(res);
-        var body = res.body;
-
-        if (formatBody) {
-          body = formatBody(body);
+  return new Promise(function(resolve, reject) {
+    request.post(uri)
+      .set(headers)
+      .send(form)
+      .type('form')
+      .end((err, res) => {
+        if (err) {
+          return reject(err);
         }
 
-        var data = {
-          data: body,
-          meta: processMeta(res),
+        if (!res.ok) {
+          reject(res);
         }
 
-        defer.resolve(data);
-      } catch (e) {
-        defer.reject(e);
-      }
-    });
+        try {
+          massageAPIv1JsonRes(res);
+          var body = res.body;
 
-  return defer.promise;
+          if (formatBody) {
+            body = formatBody(body);
+          }
+
+          var data = {
+            data: body,
+            meta: processMeta(res),
+          }
+
+          resolve(data);
+        } catch (e) {
+          reject(e);
+        }
+      });
+  });
 }
 
 function bind(obj, context) {
@@ -243,9 +240,9 @@ class APIv1Endpoint {
             return body;
           });
         } else {
-          var defer = q.defer();
-          defer.reject('Subscription', options.model, valid);
-          return defer.promise;
+          return new Promise(function(resolve, reject) {
+            reject('Subscription', options.model, valid);
+          });
         }
       }
     }, this);
@@ -525,7 +522,7 @@ class APIv1Endpoint {
         return baseGet(this.cache.links, uri, options, this.request, (body) => {
           if (body.data && body.data.children) {
             return body.data.children.map(c => new Link(c.data).toJSON());
-          }else {
+          } else {
             return [];
           }
         });
@@ -662,9 +659,9 @@ class APIv1Endpoint {
             }
           });
         } else {
-          var defer = q.defer();
-          defer.reject('Comment', options.model, valid);
-          return defer.promise;
+          return new Promise(function(resolve, reject) {
+            reject('Comment', options.model, valid);
+          });
         }
       },
 
@@ -991,9 +988,9 @@ class APIv1Endpoint {
             }
           });
         } else {
-          var defer = q.defer();
-          defer.reject('Comment', options.model, valid);
-          return defer.promise;
+          return new Promise(function(resolve, reject) {
+            reject('Comment', options.model, valid);
+          });
         }
       }
     }, this);
