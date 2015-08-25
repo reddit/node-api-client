@@ -502,15 +502,19 @@ class APIv1Endpoint {
         var uri = options.origin;
 
         if (options.user) {
-          uri += '/user/' + options.user + '/submitted.json';
+          uri += `/user/${options.user}/submitted.json`;
+        } else if (options.query.id) {
+          uri += `/by_id/${options.query.id}.json`;
+        } else if (options.query.ids) {
+          uri += `/by_id/${options.query.id.join(',')}.json`;
         } else {
           if (options.query.subredditName) {
-            uri += '/r/' + options.query.subredditName;
+            uri += `/r/${options.query.subredditName}`;
           } else if (options.query.multi) {
-            uri += '/user/' + options.query.multiUser + '/m/' + options.query.multi;
+            uri += `/user/${options.query.multiUser}/m/${options.query.multi}`
           }
 
-          uri += '/' + sort + '.json';
+          uri += `/${sort}.json`;
         }
 
         return { uri, options }
@@ -521,7 +525,11 @@ class APIv1Endpoint {
 
         return baseGet(this.cache.links, uri, options, this.request, (body) => {
           if (body.data && body.data.children) {
-            return body.data.children.map(c => new Link(c.data).toJSON());
+            if (options.query.id) {
+              return new Link(body.data.children[0].data).toJSON();
+            } else {
+              return body.data.children.map(c => new Link(c.data).toJSON());
+            }
           } else {
             return [];
           }
