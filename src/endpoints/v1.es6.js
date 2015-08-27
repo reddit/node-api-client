@@ -13,13 +13,6 @@ import Preferences from '../models/preferences';
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
 
-import LRU from 'lru-cache';
-
-const defaultCacheConfig = {
- max: 500,
- maxAge: 1000 * 50 * 3,
-};
-
 function processMeta(res) {
   var headers = res.headers;
 
@@ -49,7 +42,7 @@ function massageAPIv1JsonRes(res) {
   }
 }
 
-function baseGet(cache={}, uri, options={}, request, formatBody) {
+function baseGet(uri, options={}, request, formatBody) {
   var query = options.query || {};
   var headers = options.headers || {};
 
@@ -58,14 +51,6 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
   }
 
   var key = uri + '?' + querystring.stringify(query);
-
-  if (options.useCache) {
-    if (cache && cache.get(key)) {
-      return new Promise(function(resolve) {
-        resolve(cache.get(key));
-      });
-    }
-  }
 
   return new Promise(function(resolve, reject) {
     request.get(uri)
@@ -92,10 +77,6 @@ function baseGet(cache={}, uri, options={}, request, formatBody) {
             data: body,
             meta: processMeta(res),
           };
-
-          if (options.useCache && cache) {
-            cache.set(key, data);
-          }
 
           resolve(data);
         } catch (e) {
@@ -164,29 +145,12 @@ class APIv1Endpoint {
   constructor (config = {}) {
     this.request = config.request || superagent;
     this.defaultHeaders = config.defaultHeaders;
-
-    this.cache = {
-      links: new LRU(defaultCacheConfig),
-      comments: new LRU(defaultCacheConfig),
-      users: new LRU(defaultCacheConfig),
-      subreddits: new LRU(defaultCacheConfig),
-      search: new LRU(defaultCacheConfig),
-      stylesheets: new LRU(defaultCacheConfig),
-      activity: new LRU(defaultCacheConfig),
-      saved: new LRU(defaultCacheConfig),
-      hidden: new LRU(defaultCacheConfig),
-      notifications: new LRU(defaultCacheConfig),
-      messages: new LRU(defaultCacheConfig),
-    };
   }
 
   hydrate (endpoint, options, data) {
-    var cache = this.cache[endpoint];
     var { uri, options } = this[endpoint].buildOptions(options);
 
     var key = uri + '?' + querystring.stringify(options.query);
-
-    cache.set(key, data);
   }
 
   get subreddits() {
@@ -204,7 +168,7 @@ class APIv1Endpoint {
       get: function (options = {}) {
         var { uri, options } = this.subreddits.buildOptions(options);
 
-        return baseGet(this.cache.subreddits, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (options.query.sort && body.data && body.data.children) {
             return body.data.children.map(c => new Subreddit(c.data).toJSON());
           } else if (options.query.subreddit && body) {
@@ -257,7 +221,7 @@ class APIv1Endpoint {
           sr_detail: 'true'
         };
 
-        return baseGet(this.cache.saved, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body) {
             var things = body.data.children;
             var data = [];
@@ -292,7 +256,6 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
-          this.cache.saved.reset();
           return body;
         });
       },
@@ -309,7 +272,6 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
-          this.cache.saved.reset();
           return body;
         });
       }
@@ -325,7 +287,7 @@ class APIv1Endpoint {
           sr_detail: 'true'
         };
 
-        return baseGet(this.cache.hidden, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body) {
             var things = body.data.children;
             var data = [];
@@ -360,7 +322,6 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
-          this.cache.hidden.reset();
           return body;
         });
       },
@@ -377,7 +338,6 @@ class APIv1Endpoint {
         };
 
         return basePost(uri, options, this.request, (body) => {
-          this.cache.hidden.reset();
           return body;
         });
       }
@@ -409,7 +369,7 @@ class APIv1Endpoint {
          */
         var { uri, options } = this.search.buildOptions(options);
 
-        return baseGet(this.cache.search, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body) {
             // just in case. If only one type is returned body will still be an object
             body = Array.isArray(body) ? body : [body];
@@ -460,7 +420,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.stylesheet.buildOptions(options);
 
-        return baseGet(this.cache.stylesheets, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body.data && body.data.images && body.data.stylesheet) {
             return new Stylesheet(body.data).toJSON();
           } else {
@@ -481,7 +441,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.preferences.buildOptions(options);
 
-        return baseGet(this.cache.preferences, uri, options, this.request, (prefs) => {
+        return baseGet(uri, options, this.request, (prefs) => {
           if (prefs && typeof prefs === 'object') {
             return new Preferences(prefs).toJSON();
           } else {
@@ -523,7 +483,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.links.buildOptions(options);
 
-        return baseGet(this.cache.links, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body.data && body.data.children) {
             if (options.query.id) {
               return new Link(body.data.children[0].data).toJSON();
@@ -630,7 +590,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.comments.buildOptions(options);
 
-        return baseGet(this.cache.comments, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           return {
             listing: new Link(body[0].data.children[0].data).toJSON(),
             comments: body[1].data.children.map(mapReplies)
@@ -655,8 +615,6 @@ class APIv1Endpoint {
             thing_id: json.thingId,
             text: json.text,
           };
-
-          this.cache.comments.reset();
 
           return basePost(uri, options, this.request, (body) => {
             if (body) {
@@ -700,7 +658,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.users.buildOptions(options);
 
-        return baseGet(this.cache.users, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body) {
             return new Account(body.data || body).toJSON();
           }else {
@@ -745,7 +703,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.activities.buildOptions(options);
 
-        return baseGet(this.cache.activity, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body) {
             var activities = body.data.children;
             var data = [];
@@ -788,9 +746,6 @@ class APIv1Endpoint {
               dir: props.direction,
             };
           });
-
-          this.cache.links.reset();
-          this.cache.comments.reset();
 
           return basePost(uri, options, this.request, () => null);
         } else {
@@ -872,7 +827,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.notifications.buildOptions(options);
 
-        return baseGet(this.cache.notifications, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           return body;
         });
       }
@@ -892,7 +847,7 @@ class APIv1Endpoint {
         let data = [];
         let read = [];
 
-        return baseGet(this.cache.messages, uri, options, this.request, (body) => {
+        return baseGet(uri, options, this.request, (body) => {
           if (body && body.data && body.data.children) {
             body.data.children.forEach(function(t) {
               if (t.data.new) {
@@ -1066,7 +1021,6 @@ class APIv1Endpoint {
       model: {},
       headers: fullHeaders,
       origin: options.origin,
-      useCache: options.useCache,
     };
   }
 }
