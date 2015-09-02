@@ -22,6 +22,7 @@
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
     "reddit-text-js": "0.5.4",
+    "restcache": "0.1.0",
     "superagent": "^1.1.0"
   },
   "devDependencies": {

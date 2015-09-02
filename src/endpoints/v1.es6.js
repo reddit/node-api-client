@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import querystring from 'querystring';
+import Cache from 'restcache';
 
 import Account from '../models/account';
 import Comment from '../models/comment';
@@ -12,15 +13,6 @@ import Preferences from '../models/preferences';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
-
-function processMeta(res) {
-  var headers = res.headers;
-
-  return {
-    moose: headers['x-moose'],
-    tracking: headers['x-reddit-tracking'],
-  }
-}
 
 // decode websafe_json encoding
 function unsafeJson(text) {
@@ -42,20 +34,11 @@ function massageAPIv1JsonRes(res) {
   }
 }
 
-function baseGet(uri, options={}, request, formatBody) {
-  var query = options.query || {};
-  var headers = options.headers || {};
-
-  if (options.userAgent) {
-    headers['User-Agent'] = options.userAgent;
-  }
-
-  var key = uri + '?' + querystring.stringify(query);
-
-  return new Promise(function(resolve, reject) {
-    request.get(uri)
-      .set(headers)
-      .query(query)
+function returnGETPromise (options, formatBody) {
+ return new Promise(function(resolve, reject) {
+    superagent.get(options.uri)
+      .set(options.headers || {})
+      .query(options.query || {})
       .end((err, res) => {
         if (err) {
           return reject(err);
@@ -73,57 +56,7 @@ function baseGet(uri, options={}, request, formatBody) {
             body = formatBody(body);
           }
 
-          var data = {
-            data: body,
-            meta: processMeta(res),
-          };
-
-          resolve(data);
-        } catch (e) {
-          reject(e);
-        }
-      });
-  });
-}
-
-function basePost(uri, options, request, formatBody) {
-  var options = options || {};
-
-  var form = options.form || {};
-  var headers = options.headers || {};
-
-  if (options.userAgent) {
-    headers['User-Agent'] = options.userAgent;
-  }
-
-  return new Promise(function(resolve, reject) {
-    request.post(uri)
-      .set(headers)
-      .send(form)
-      .type('form')
-      .end((err, res) => {
-        if (err) {
-          return reject(err);
-        }
-
-        if (!res.ok) {
-          reject(res);
-        }
-
-        try {
-          massageAPIv1JsonRes(res);
-          var body = res.body;
-
-          if (formatBody) {
-            body = formatBody(body);
-          }
-
-          var data = {
-            data: body,
-            meta: processMeta(res),
-          }
-
-          resolve(data);
+          resolve(body);
         } catch (e) {
           reject(e);
         }
@@ -141,10 +74,108 @@ function bind(obj, context) {
   return obj;
 }
 
+const CACHE_RULES = [
+  function cacheCheck(options) {
+    // Do not cache if you're on the server and logged in
+    return !(options.env === 'SERVER' && options.headers['Authorization']);
+  }
+]
+
 class APIv1Endpoint {
   constructor (config = {}) {
-    this.request = config.request || superagent;
     this.defaultHeaders = config.defaultHeaders;
+
+    // Set up a cache for links and subreddit data
+    this.cache = new Cache({
+      dataTypes: {
+        links: {
+          idProperty: 'name',
+          cache: {
+            max: 100,
+            maxAge: 1000 * 60 * 5,
+          },
+        },
+        subreddits: {
+          idProperty: 'name',
+          cache: {
+            max: 200,
+            maxAge: 1000 * 60 * 5,
+          },
+        }
+      }
+    });
+
+  }
+
+  baseGet (uri, options={}, formatBody) {
+    var query = options.query || {};
+    var headers = options.headers || {};
+
+    if (!options.env) {
+      options.env = 'SERVER';
+    }
+
+    if (options.userAgent) {
+      headers['User-Agent'] = options.userAgent;
+    }
+
+    var key = uri + '?' + querystring.stringify(query);
+    options.uri = uri;
+
+    if (options.cache) {
+      let cacheOptions = Object.assign({
+        name: uri,
+        rules: CACHE_RULES,
+      }, options.cache)
+
+      if (options.id) {
+        return this.cache.getById('links', options.id, returnGETPromise, [options, formatBody], cacheOptions);
+      } else {
+        return this.cache.get(returnGETPromise, [options, formatBody], cacheOptions);
+      }
+    } else {
+      return returnGETPromise(options, formatBody);
+    }
+  }
+
+  basePost (uri, options, formatBody) {
+    var options = options || {};
+
+    var form = options.form || {};
+    var headers = options.headers || {};
+
+    if (options.userAgent) {
+      headers['User-Agent'] = options.userAgent;
+    }
+
+    return new Promise(function(resolve, reject) {
+      superagent.post(uri)
+        .set(headers)
+        .send(form)
+        .type('form')
+        .end((err, res) => {
+          if (err) {
+            return reject(err);
+          }
+
+          if (!res.ok) {
+            reject(res);
+          }
+
+          try {
+            massageAPIv1JsonRes(res);
+            var body = res.body;
+
+            if (formatBody) {
+              body = formatBody(body);
+            }
+
+            resolve(body);
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
   }
 
   hydrate (endpoint, options, data) {
@@ -162,19 +193,31 @@ class APIv1Endpoint {
         } else {
           uri += `/r/${options.query.subreddit}/about.json`;
         }
+
+        options.cache = {
+          cache: {
+            max: 1,
+            maxAge: 1000 * 60 * 5,
+          },
+          format: function(d) {
+            return { subreddits: d };
+          },
+          unformat: function(d) {
+            return d.subreddits;
+          }
+        };
+
         return { uri, options };
       },
 
       get: function (options = {}) {
         var { uri, options } = this.subreddits.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (options.query.sort && body.data && body.data.children) {
             return body.data.children.map(c => new Subreddit(c.data).toJSON());
           } else if (options.query.subreddit && body) {
             return new Subreddit(body.data || body).toJSON();
-          } else {
-            return null;
           }
         });
       },
@@ -200,7 +243,7 @@ class APIv1Endpoint {
             sr: json.sr
           };
 
-          return basePost(uri, options, this.request, (body) => {
+          return this.basePost(uri, options, (body) => {
             return body;
           });
         } else {
@@ -216,12 +259,13 @@ class APIv1Endpoint {
     return bind({
       get: function(options = {}) {
         var uri = `${options.origin}/user/${options.user}/saved.json`;
+
         options.query = {
           feature: 'link_preview',
           sr_detail: 'true'
         };
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body) {
             var things = body.data.children;
             var data = [];
@@ -238,8 +282,6 @@ class APIv1Endpoint {
             });
 
             return data;
-          }else {
-            return null;
           }
         });
       },
@@ -255,7 +297,7 @@ class APIv1Endpoint {
           category: options.category,
         };
 
-        return basePost(uri, options, this.request, (body) => {
+        return this.basePost(uri, options, (body) => {
           return body;
         });
       },
@@ -271,7 +313,7 @@ class APIv1Endpoint {
           category: options.category,
         };
 
-        return basePost(uri, options, this.request, (body) => {
+        return this.basePost(uri, options, (body) => {
           return body;
         });
       }
@@ -287,7 +329,7 @@ class APIv1Endpoint {
           sr_detail: 'true'
         };
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body) {
             var things = body.data.children;
             var data = [];
@@ -304,8 +346,6 @@ class APIv1Endpoint {
             });
 
             return data;
-          }else {
-            return null;
           }
         });
       },
@@ -321,7 +361,7 @@ class APIv1Endpoint {
           category: options.category,
         };
 
-        return basePost(uri, options, this.request, (body) => {
+        return this.basePost(uri, options, (body) => {
           return body;
         });
       },
@@ -337,7 +377,7 @@ class APIv1Endpoint {
           category: options.category,
         };
 
-        return basePost(uri, options, this.request, (body) => {
+        return this.basePost(uri, options, (body) => {
           return body;
         });
       }
@@ -369,7 +409,7 @@ class APIv1Endpoint {
          */
         var { uri, options } = this.search.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body) {
             // just in case. If only one type is returned body will still be an object
             body = Array.isArray(body) ? body : [body];
@@ -420,7 +460,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.stylesheet.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body.data && body.data.images && body.data.stylesheet) {
             return new Stylesheet(body.data).toJSON();
           } else {
@@ -441,7 +481,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.preferences.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (prefs) => {
+        return this.baseGet(uri, options, (prefs) => {
           if (prefs && typeof prefs === 'object') {
             return new Preferences(prefs).toJSON();
           } else {
@@ -463,10 +503,10 @@ class APIv1Endpoint {
 
         if (options.user) {
           uri += `/user/${options.user}/submitted.json`;
-        } else if (options.query.id) {
-          uri += `/by_id/${options.query.id}.json`;
+        } else if (options.id) {
+          uri += `/by_id/${options.id}.json`;
         } else if (options.query.ids) {
-          uri += `/by_id/${options.query.id.join(',')}.json`;
+          uri += `/by_id/${options.query.ids.join(',')}.json`;
         } else {
           if (options.query.subredditName) {
             uri += `/r/${options.query.subredditName}`;
@@ -477,21 +517,32 @@ class APIv1Endpoint {
           uri += `/${sort}.json`;
         }
 
+        options.cache = {
+          cache: {
+            max: 5,
+            maxAge: 1000 * 60 * 5,
+          },
+          format: function(d) {
+            return { links: d }
+          },
+          unformat: function(d) {
+            return d.links;
+          }
+        };
+
         return { uri, options }
       },
 
       get: function(options = {}) {
         var { uri, options } = this.links.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body.data && body.data.children) {
-            if (options.query.id) {
-              return new Link(body.data.children[0].data).toJSON();
+            if (options.id) {
+              return new Link(body.data.children[0].data).toJSON()
             } else {
-              return body.data.children.map(c => new Link(c.data).toJSON());
+              return body.data.children.map(c => new Link(c.data).toJSON())
             }
-          } else {
-            return [];
           }
         });
       },
@@ -526,7 +577,7 @@ class APIv1Endpoint {
             options.form.url = json.url;
           }
 
-          return basePost(uri, options, this.request, (body) => {
+          return this.basePost(uri, options, (body) => {
             if (body.json && body.json.errors.length === 0) {
               if (!body.json.errors.length) {
                 return body.json.data;
@@ -590,11 +641,8 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.comments.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
-          return {
-            listing: new Link(body[0].data.children[0].data).toJSON(),
-            comments: body[1].data.children.map(mapReplies)
-          }
+        return this.baseGet(uri, options, (body) => {
+          return body[1].data.children.map(mapReplies)
         });
       },
 
@@ -616,12 +664,10 @@ class APIv1Endpoint {
             text: json.text,
           };
 
-          return basePost(uri, options, this.request, (body) => {
+          return this.basePost(uri, options, (body) => {
             if (body) {
               var comment = body.json.data.things[0].data;
               return new Comment(comment).toJSON();
-            } else {
-              return null;
             }
           });
         } else {
@@ -658,11 +704,9 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.users.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body) {
             return new Account(body.data || body).toJSON();
-          }else {
-            return null;
           }
         });
       }
@@ -679,12 +723,10 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.trophies.buildOptions(options);
 
-        return baseGet(null, uri, options, this.request, (body) => {
+        return this.baseGet(null, uri, options, (body) => {
           if (body) {
             var trophies = body.data;
             return new Award(user).toJSON();
-          }else {
-            return null;
           }
         });
       }
@@ -703,7 +745,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.activities.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body) {
             var activities = body.data.children;
             var data = [];
@@ -720,8 +762,6 @@ class APIv1Endpoint {
             });
 
             return data;
-          }else {
-            return null;
           }
         });
       }
@@ -747,7 +787,7 @@ class APIv1Endpoint {
             };
           });
 
-          return basePost(uri, options, this.request, () => null);
+          return this.basePost(uri, options, () => null);
         } else {
           throw new ValidationError('Vote', options.model, valid);
         }
@@ -776,7 +816,7 @@ class APIv1Endpoint {
             };
           });
 
-          return basePost(uri, options, this.request, () => null);
+          return this.basePost(uri, options, () => null);
         } else {
           throw new ValidationError('Report', options.model, valid);
         }
@@ -789,11 +829,9 @@ class APIv1Endpoint {
       get: function (options = {}) {
         var uri = options.origin + '/api/needs_captcha';
 
-        return baseGet({}, uri, options, this.request, (body) => {
+        return this.baseGet({}, uri, options, (body) => {
           if (typeof body === 'boolean') {
-            return body
-          }else {
-            return null;
+            return body;
           }
         });
       },
@@ -801,7 +839,7 @@ class APIv1Endpoint {
       post: function(options = {}) {
         var uri = options.origin + '/api/new_captcha';
 
-        return basePost(uri, options, this.request, (body) => {
+        return this.basePost(uri, options, (body) => {
           if (!body.json.errors.length) {
             return body.json.data;
           } else {
@@ -827,7 +865,7 @@ class APIv1Endpoint {
       get: function(options = {}) {
         var { uri, options } = this.notifications.buildOptions(options);
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           return body;
         });
       }
@@ -847,7 +885,7 @@ class APIv1Endpoint {
         let data = [];
         let read = [];
 
-        return baseGet(uri, options, this.request, (body) => {
+        return this.baseGet(uri, options, (body) => {
           if (body && body.data && body.data.children) {
             body.data.children.forEach(function(t) {
               if (t.data.new) {
@@ -878,7 +916,7 @@ class APIv1Endpoint {
               }
             }, options);
 
-            basePost(readUrl, readOptions, this.request, () => {});
+            basePost(readUrl, readOptions, () => {});
           }
 
           data.map(function(m) {
@@ -942,12 +980,10 @@ class APIv1Endpoint {
             options.form.to = json.to;
           }
 
-          return basePost(uri, options, this.request, (body) => {
+          return this.basePost(uri, options, (body) => {
             if (body) {
               var message = body.json.data.things[0].data;
               return new Message(message).toJSON();
-            } else {
-              return null;
             }
           });
         } else {
@@ -979,7 +1015,7 @@ class APIv1Endpoint {
         thing_id: json.name,
       }
 
-      return basePost(uri, options, this.request, (body) => {
+      return this.basePost(uri, options, (body) => {
         if (body.json.errors.length === 0) {
           var updatedThing = body.json.data.things[0].data;
            if (body.json.data.things[0].kind === 't3') {
@@ -1009,7 +1045,7 @@ class APIv1Endpoint {
 
     // api returns 200 and empty body in all cases no point
     // handling for now.
-    return basePost(uri, options, this.request);
+    return this.basePost(uri, options);
   }
 
   buildOptions (options) {
