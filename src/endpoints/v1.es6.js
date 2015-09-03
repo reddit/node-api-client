@@ -76,8 +76,9 @@ function bind(obj, context) {
 
 const CACHE_RULES = [
   function cacheCheck(options) {
+    var params = options[0];
     // Do not cache if you're on the server and logged in
-    return !(options.env === 'SERVER' && options.headers['Authorization']);
+    return !(params.env === 'SERVER' && params.headers['Authorization']);
   }
 ]
 
@@ -138,7 +139,7 @@ class APIv1Endpoint {
     }
   }
 
-  basePost (uri, options, formatBody) {
+  basePost (uri, options, formatBody, dataType, id, mergeOpts) {
     var options = options || {};
 
     var form = options.form || {};
@@ -147,6 +148,8 @@ class APIv1Endpoint {
     if (options.userAgent) {
       headers['User-Agent'] = options.userAgent;
     }
+
+    var cache = this.cache;
 
     return new Promise(function(resolve, reject) {
       superagent.post(uri)
@@ -159,7 +162,20 @@ class APIv1Endpoint {
           }
 
           if (!res.ok) {
-            reject(res);
+            return reject(res);
+          }
+
+          if (dataType && options.env === 'CLIENT') {
+            if (!id) {
+              cache.resetData(dataType);
+            }
+
+            if (!mergeOpts) {
+              cache.dataCache[dataType].del(id);
+            }
+
+            var data = cache.dataCache[dataType].get(id);
+            cache.dataCache[dataType].set(id, Object.assign(data, mergeOpts));
           }
 
           try {
@@ -245,6 +261,8 @@ class APIv1Endpoint {
 
           return this.basePost(uri, options, (body) => {
             return body;
+          }, 'subreddits', json.sr, {
+            user_is_subscribed: true
           });
         } else {
           return new Promise(function(resolve, reject) {
@@ -299,6 +317,8 @@ class APIv1Endpoint {
 
         return this.basePost(uri, options, (body) => {
           return body;
+        }, options.type + 's', options.id, {
+          saved: true
         });
       },
       delete: function (options = {}) {
@@ -315,6 +335,8 @@ class APIv1Endpoint {
 
         return this.basePost(uri, options, (body) => {
           return body;
+        }, options.type + 's', options.id, {
+          saved: false
         });
       }
     }, this);
@@ -363,6 +385,8 @@ class APIv1Endpoint {
 
         return this.basePost(uri, options, (body) => {
           return body;
+        }, options.type + 's', options.id, {
+          hidden: true
         });
       },
       delete: function (options = {}) {
@@ -379,6 +403,8 @@ class APIv1Endpoint {
 
         return this.basePost(uri, options, (body) => {
           return body;
+        }, options.type + 's', options.id, {
+          hidden: false
         });
       }
     }, this);
@@ -585,7 +611,7 @@ class APIv1Endpoint {
             } else {
               throw body.json.errors;
             }
-          });
+          }, 'links');
         } else {
           throw new ValidationError('Link', options.model, valid);
         }
@@ -596,6 +622,7 @@ class APIv1Endpoint {
       },
 
       delete: function (options = {}) {
+        options.type = 'link';
         return this.deleteCommentOrLink(options);
       }
     }, this);
@@ -669,7 +696,7 @@ class APIv1Endpoint {
               var comment = body.json.data.things[0].data;
               return new Comment(comment).toJSON();
             }
-          });
+          }, options.parentType + 's', options.form.thing_id);
         } else {
           return new Promise(function(resolve, reject) {
             reject('Comment', options.model, valid);
@@ -682,6 +709,7 @@ class APIv1Endpoint {
       },
 
       delete: function (options = {}) {
+        options.type = 'comment';
         return this.deleteCommentOrLink(options);
       }
     }, this);
@@ -787,7 +815,21 @@ class APIv1Endpoint {
             };
           });
 
-          return this.basePost(uri, options, () => null);
+          var likes;
+
+          if (options.model.props.direction === -1) {
+            likes = false;
+          } else if (options.model.props.direction === 1) {
+            likes = true;
+          }
+
+          return this.basePost(uri, options, () => null,
+                               options.type.toLowerCase() + 's',
+                               options.form.id,
+                               {
+                                likes: likes,
+                                score: options.score,
+                               });
         } else {
           throw new ValidationError('Vote', options.model, valid);
         }
@@ -816,7 +858,13 @@ class APIv1Endpoint {
             };
           });
 
-          return this.basePost(uri, options, () => null);
+          return this.basePost(uri, options, () => null, 
+                              options.model.props._type.toLowerCase() + 's',
+                              options.form.thing_id,
+                              {
+                                hidden: true,
+                              }
+                              );
         } else {
           throw new ValidationError('Report', options.model, valid);
         }
@@ -1026,7 +1074,9 @@ class APIv1Endpoint {
         } else {
           throw body.json.errors;
         }
-      })
+      }, options.model.props._type.toLowerCase() + 's', options.form.thing_id, {
+        text: options.form.text,
+      });
     } else {
       throw new ValidationError(options.model._type, options.model, valid);
     }
@@ -1045,7 +1095,9 @@ class APIv1Endpoint {
 
     // api returns 200 and empty body in all cases no point
     // handling for now.
-    return this.basePost(uri, options);
+    return this.basePost(uri, options, ()=>{},
+                          options.type.toLowerCase() + 's',
+                          options.form.id);
   }
 
   buildOptions (options) {
