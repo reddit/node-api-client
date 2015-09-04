@@ -165,17 +165,20 @@ class APIv1Endpoint {
             return reject(res);
           }
 
-          if (dataType && options.env === 'CLIENT') {
-            if (!id) {
+          if (cache.dataCache[dataType] && dataType && options.env === 'CLIENT') {
+            if (!options.id) {
               cache.resetData(dataType);
-            }
+            } else {
+              if (!mergeOpts) {
+                cache.dataCache[dataType].del(options.id);
+              }
 
-            if (!mergeOpts) {
-              cache.dataCache[dataType].del(id);
-            }
+              var data = cache.dataCache[dataType].get(options.id);
 
-            var data = cache.dataCache[dataType].get(id);
-            cache.dataCache[dataType].set(id, Object.assign(data, mergeOpts));
+              if (data) {
+                cache.dataCache[dataType].set(options.id, Object.assign(data, mergeOpts));
+              }
+            }
           }
 
           try {
@@ -964,7 +967,7 @@ class APIv1Endpoint {
               }
             }, options);
 
-            basePost(readUrl, readOptions, () => {});
+            this.basePost(readUrl, readOptions, () => {});
           }
 
           data.map(function(m) {
@@ -1104,12 +1107,12 @@ class APIv1Endpoint {
     var fullHeaders = {};
     Object.assign(fullHeaders, this.defaultHeaders, options.headers);
 
-    return {
+    return Object.assign({
       query: {},
       model: {},
       headers: fullHeaders,
       origin: options.origin,
-    };
+    }, options);
   }
 }
 
