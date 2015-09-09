@@ -971,8 +971,8 @@ class APIv1Endpoint {
             options.form.from_sr = json.fromSr;
           }
 
-          if (json.catpcha) {
-            options.form.captcha = json.catpcha;
+          if (json.captcha) {
+            options.form.captcha = json.captcha;
           }
 
           if (json.iden) {
@@ -988,10 +988,16 @@ class APIv1Endpoint {
           }
 
           return basePost(uri, options, this.request, (body) => {
-            if (body) {
+            if (body.json.data) {
               var message = body.json.data.things[0].data;
               return new Message(message).toJSON();
+            } else if (body.json.captcha) {
+              return body.json;
+            } else if (body.json.errors.length){
+              throw body.json.errors;
             } else {
+              // for successful new messages in compose
+              // no data is returned
               return null;
             }
           });
