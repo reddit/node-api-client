@@ -130,7 +130,7 @@ class APIv1Endpoint {
       }, options.cache)
 
       if (options.id) {
-        return this.cache.getById('links', options.id, returnGETPromise, [options, formatBody], cacheOptions);
+        return this.cache.getById(cacheOptions.type, options.id, returnGETPromise, [options, formatBody], cacheOptions);
       } else {
         return this.cache.get(returnGETPromise, [options, formatBody], cacheOptions);
       }
@@ -214,6 +214,7 @@ class APIv1Endpoint {
         }
 
         options.cache = {
+          type: 'subreddits',
           cache: {
             max: 1,
             maxAge: 1000 * 60 * 5,
@@ -547,6 +548,7 @@ class APIv1Endpoint {
         }
 
         options.cache = {
+          type: 'links',
           cache: {
             max: 5,
             maxAge: 1000 * 60 * 5,
