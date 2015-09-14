@@ -105,7 +105,6 @@ class APIv1Endpoint {
         }
       }
     });
-
   }
 
   baseGet (uri, options={}, formatBody) {
@@ -120,7 +119,6 @@ class APIv1Endpoint {
       headers['User-Agent'] = options.userAgent;
     }
 
-    var key = uri + '?' + querystring.stringify(query);
     options.uri = uri;
 
     if (options.cache) {
@@ -197,10 +195,20 @@ class APIv1Endpoint {
     });
   }
 
-  hydrate (endpoint, options, data) {
-    var { uri, options } = this[endpoint].buildOptions(options);
+  hydrate (endpoint, baseOptions, data) {
+    let { uri, options } = this[endpoint].buildOptions(baseOptions);
+    options.uri = uri;
 
-    var key = uri + '?' + querystring.stringify(options.query);
+    if (!options.cache || !this[endpoint].formatBody) { return; }
+
+    let formatBody = this[endpoint].formatBody(options);
+    let hash = Cache.generateHash([options, formatBody]);
+
+    if (options.cache.format) {
+      data = options.cache.format(data);
+    }
+
+    this.cache.setCaches(uri, hash, data, options.cache);
   }
 
   get subreddits() {
@@ -232,14 +240,17 @@ class APIv1Endpoint {
 
       get: function (options = {}) {
         var { uri, options } = this.subreddits.buildOptions(options);
+        return this.baseGet(uri, options, this.subreddits.formatBody(options));
+      },
 
-        return this.baseGet(uri, options, (body) => {
+      formatBody: function(options) {
+        return function(body) {
           if (options.query.sort && body.data && body.data.children) {
             return body.data.children.map(c => new Subreddit(c.data).toJSON());
           } else if (options.query.subreddit && body) {
             return new Subreddit(body.data || body).toJSON();
           }
-        });
+        }
       },
     }, this);
   }
@@ -566,8 +577,11 @@ class APIv1Endpoint {
 
       get: function(options = {}) {
         var { uri, options } = this.links.buildOptions(options);
+        return this.baseGet(uri, options, this.links.formatBody(options));
+      },
 
-        return this.baseGet(uri, options, (body) => {
+      formatBody: function(options) {
+        return function(body) {
           if (body.data && body.data.children) {
             if (options.id) {
               return new Link(body.data.children[0].data).toJSON()
@@ -575,7 +589,7 @@ class APIv1Endpoint {
               return body.data.children.map(c => new Link(c.data).toJSON())
             }
           }
-        });
+        }
       },
 
       post: function(options = {}) {
