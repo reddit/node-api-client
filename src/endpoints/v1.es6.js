@@ -1,4 +1,7 @@
 import superagent from 'superagent';
+import retry from 'superagent-retry';
+retry(superagent);
+
 import querystring from 'querystring';
 import Cache from 'restcache';
 
@@ -37,6 +40,7 @@ function massageAPIv1JsonRes(res) {
 function returnGETPromise (options, formatBody) {
  return new Promise(function(resolve, reject) {
     superagent.get(options.uri)
+      .retry(options.retries || 3)
       .set(options.headers || {})
       .query(options.query || {})
       .end((err, res) => {
