@@ -37,6 +37,13 @@ function massageAPIv1JsonRes(res) {
   }
 }
 
+function processMeta(headers) {
+  return {
+    moose: headers['x-moose'],
+    tracking: headers['x-reddit-tracking'],
+  }
+}
+
 function returnGETPromise (options, formatBody) {
  return new Promise(function(resolve, reject) {
     superagent.get(options.uri)
@@ -60,9 +67,12 @@ function returnGETPromise (options, formatBody) {
             body = formatBody(body);
           }
 
-          resolve(body);
+          return resolve({
+            headers: processMeta(res.headers),
+            body: body,
+          });
         } catch (e) {
-          reject(e);
+          return reject(e);
         }
       });
   });
@@ -209,10 +219,14 @@ class APIv1Endpoint {
     let hash = Cache.generateHash([options, formatBody]);
 
     if (options.cache.format) {
-      data = options.cache.format(data);
+      data.body = options.cache.format(data.body);
     }
 
     this.cache.setCaches(uri, hash, data, options.cache);
+
+    if (options.cache.unformat) {
+      data.body = options.cache.unformat(data.body);
+    }
   }
 
   get subreddits() {
