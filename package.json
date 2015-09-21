@@ -1,6 +1,6 @@
 {
   "name": "snoode",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "node and browser reddit api library",
   "main": "src/api.es6.js",
   "scripts": {
