@@ -1138,15 +1138,13 @@ class APIv1Endpoint {
   }
 
   buildOptions (options) {
-    var fullHeaders = {};
-    Object.assign(fullHeaders, this.defaultHeaders, options.headers);
+    options.headers = options.headers || {};
+    options.query = options.query || {};
+    options.model = options.model || {};
 
-    return Object.assign({
-      query: {},
-      model: {},
-      headers: fullHeaders,
-      origin: options.origin,
-    }, options);
+    Object.assign(options.headers, this.defaultHeaders, options.headers);
+
+    return options;
   }
 }
 
