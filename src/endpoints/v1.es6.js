@@ -111,7 +111,7 @@ class APIv1Endpoint {
           },
         },
         subreddits: {
-          idProperty: 'name',
+          idProperty: 'id',
           cache: {
             max: 200,
             maxAge: 1000 * 60 * 5,
@@ -210,6 +210,16 @@ class APIv1Endpoint {
   }
 
   hydrate (endpoint, baseOptions, data) {
+    var cacheData;
+
+    if (!data.body && !Array.isArray(data)) {
+      cacheData = {
+        body: [data],
+      }
+    } else {
+      cacheData = Object.assign({}, data);
+    }
+
     let { uri, options } = this[endpoint].buildOptions(baseOptions);
     options.uri = uri;
 
@@ -219,13 +229,13 @@ class APIv1Endpoint {
     let hash = Cache.generateHash([options, formatBody]);
 
     if (options.cache.format) {
-      data.body = options.cache.format(data.body);
+      cacheData.body = options.cache.format(cacheData.body);
     }
 
-    this.cache.setCaches(uri, hash, data, options.cache);
+    this.cache.setCaches(uri, hash, cacheData, options.cache);
 
     if (options.cache.unformat) {
-      data.body = options.cache.unformat(data.body);
+      cacheData.body = options.cache.unformat(cacheData.body);
     }
   }
 
@@ -236,7 +246,7 @@ class APIv1Endpoint {
         if (options.query.sort) {
           uri += `/subreddits/${options.query.sort}.json`;
         } else {
-          uri += `/r/${options.query.subreddit}/about.json`;
+          uri += `/r/${options.id}/about.json`;
         }
 
         options.cache = {
@@ -246,6 +256,17 @@ class APIv1Endpoint {
             maxAge: 1000 * 60 * 5,
           },
           format: function(d) {
+            if (d && Array.isArray(d)) {
+              return {
+                subreddits: d.map(function(s) {
+                  s.id = s.display_name.toLowerCase();
+                  return s;
+                })
+              };
+            } else if (d) {
+              d.id = d.display_name.toLowerCase();
+            }
+
             return { subreddits: d };
           },
           unformat: function(d) {
@@ -265,7 +286,7 @@ class APIv1Endpoint {
         return function(body) {
           if (options.query.sort && body.data && body.data.children) {
             return body.data.children.map(c => new Subreddit(c.data).toJSON());
-          } else if (options.query.subreddit && body) {
+          } else if (options.id && body) {
             return new Subreddit(body.data || body).toJSON();
           }
         }
