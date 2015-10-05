@@ -580,6 +580,26 @@ class APIv1Endpoint {
             return {};
           }
         });
+      },
+
+      patch: function(options = {}) {
+
+        var { uri, options } = this.preferences.buildOptions(options);
+        options.form = {
+          api_type: 'json',
+        };
+
+        options.changeSet.forEach((prop) => {
+          options.form[prop] = options.model.get(prop);
+        })
+
+        return this.basePatch(uri, options, (body) => {
+          if (body) {
+            return new Preferences(body).toJSON();
+          } else {
+            return {};
+          }
+        }, 'preferences');
       }
     }, this);
   }
