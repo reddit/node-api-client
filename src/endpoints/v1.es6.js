@@ -151,7 +151,15 @@ class APIv1Endpoint {
     }
   }
 
-  basePost (uri, options, formatBody, dataType, id, mergeOpts) {
+  basePost(uri, options, formatBody, dataType, id, mergeOpts) {
+    return this.save('post', ...arguments);
+  }
+
+  basePatch(uri, options, formatBody, dataType, id, mergeOpts) {
+    return this.save('patch', ...arguments);
+  }
+
+  save(method, uri, options, formatBody, dataType, id, mergeOpts) {
     var options = options || {};
 
     var form = options.form || {};
@@ -161,13 +169,17 @@ class APIv1Endpoint {
       headers['User-Agent'] = options.userAgent;
     }
 
-    var cache = this.cache;
+    let cache = this.cache;
+    let type = method === 'patch' ? 'json' : 'form';
+    if (type === 'json') {
+      form = JSON.stringify(form);
+    }
 
     return new Promise(function(resolve, reject) {
-      superagent.post(uri)
+      superagent[method](uri)
         .set(headers)
         .send(form)
-        .type('form')
+        .type(type)
         .end((err, res) => {
           if (err) {
             return reject(err);
