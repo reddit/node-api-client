@@ -701,12 +701,18 @@ class APIv1Endpoint {
 
     return bind({
       buildOptions: function(options) {
-        var uri;
+        let uri = options.origin;
 
         if (options.user) {
-          uri = options.origin + '/user/' + options.user + '/comments.json';
+          uri += `/user/${options.user}/comments.json`;
+        } else if (options.query.ids) {
+          uri += `/api/morechildren.json`;
+          options.query.children = options.query.ids;
+          options.query.api_type = 'json';
+          options.query.link_id = options.linkId;
+          delete options.query.ids;
         } else {
-          uri = options.origin + '/comments/' + options.linkId + '.json';
+          uri += `/comments/${options.linkId}.json`;
         }
 
         options.query.feature = 'link_preview';
@@ -727,7 +733,11 @@ class APIv1Endpoint {
         var { uri, options } = this.comments.buildOptions(options);
 
         return this.baseGet(uri, options, (body) => {
-          return body[1].data.children.map(mapReplies)
+          if (Array.isArray(body)) {
+            return body[1].data.children.map(mapReplies);
+          } else if (body.json && body.json.data) {
+            return body.json.data.things.map(mapReplies);
+          }
         });
       },
 
