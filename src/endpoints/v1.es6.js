@@ -741,11 +741,9 @@ class APIv1Endpoint {
 
           return this.basePost(uri, options, (body) => {
             if (body.json && body.json.errors.length === 0) {
-              if (!body.json.errors.length) {
                 return body.json.data;
-              }
             } else {
-              throw body.json.errors;
+              throw body.json;
             }
           }, 'links');
         } else {
