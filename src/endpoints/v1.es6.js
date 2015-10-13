@@ -116,6 +116,20 @@ class APIv1Endpoint {
             max: 200,
             maxAge: 1000 * 60 * 5,
           },
+        },
+        preferences: {
+          idProperty: 'id',
+          cache: {
+            max: 1,
+            maxAge: 1000 * 60 * 30,
+          },
+        },
+        users: {
+          idProperty: 'name',
+          cache: {
+            max: 5,
+            maxAge: 1000 * 60 * 30,
+          },
         }
       }
     });
@@ -567,19 +581,44 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = options.origin + '/api/v1/me/prefs';
+
+        options.cache = {
+          type: 'preferences',
+          cache: {
+            max: 1,
+            maxAge: 1000 * 60 * 30,
+          },
+          format: function(d) {
+            if (d && Array.isArray(d)) {
+              d[0].id = 'me';
+              return { preferences: d[0] };
+            } else if (d) {
+              d.id = 'me';
+              return { preferences: d };
+            }
+          },
+          unformat: function(d) {
+            return d.preferences;
+          }
+        };
+
         return { uri, options };
       },
 
       get: function(options = {}) {
         var { uri, options } = this.preferences.buildOptions(options);
 
-        return this.baseGet(uri, options, (prefs) => {
+        return this.baseGet(uri, options, this.preferences.formatBody(options));
+      },
+
+      formatBody: function(options) {
+        return function(prefs) {
           if (prefs && typeof prefs === 'object') {
             return new Preferences(prefs).toJSON();
           } else {
             return {};
           }
-        });
+        };
       },
 
       patch: function(options = {}) {
@@ -826,18 +865,37 @@ class APIv1Endpoint {
           uri += 'user/' + options.user + '/about.json';
         }
 
+        options.cache = {
+          type: 'users',
+          cache: {
+            max: 1,
+            maxAge: 1000 * 60 * 30,
+          },
+          format: function(d) {
+            return { users: d };
+          },
+          unformat: function(d) {
+            return d.users;
+          }
+        };
+
         return { uri, options }
       },
 
       get: function(options = {}) {
         var { uri, options } = this.users.buildOptions(options);
 
-        return this.baseGet(uri, options, (body) => {
+        return this.baseGet(uri, options, this.users.formatBody(options));
+      },
+
+      formatBody: function(options) {
+        return function(body) {
           if (body) {
             return new Account(body.data || body).toJSON();
           }
-        });
-      }
+        }
+      },
+
     }, this);
   }
 
