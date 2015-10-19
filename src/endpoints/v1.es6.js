@@ -89,9 +89,9 @@ function bind(obj, context) {
 }
 
 const CACHE_RULES = [
-  function cacheCheck(options) {
+  function shouldCache(options) {
     var params = options[0];
-    // Do not cache if you're on the server and logged in
+    // Do not cache if the rendering environment is the server
     return params.env !== 'SERVER';
   }
 ]
