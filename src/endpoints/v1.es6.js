@@ -92,7 +92,7 @@ const CACHE_RULES = [
   function cacheCheck(options) {
     var params = options[0];
     // Do not cache if you're on the server and logged in
-    return !(params.env === 'SERVER' && params.headers['Authorization']);
+    return params.env !== 'SERVER';
   }
 ]
 
