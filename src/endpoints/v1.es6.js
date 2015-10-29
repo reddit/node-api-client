@@ -698,6 +698,8 @@ class APIv1Endpoint {
             } else {
               return body.data.children.map(c => new Link(c.data).toJSON())
             }
+          } else if (body.data.children) {
+            return [];
           }
         }
       },
