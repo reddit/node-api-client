@@ -697,7 +697,7 @@ class APIv1Endpoint {
 
       formatBody: function(options) {
         return function(body) {
-          if (body.data && body.data.children) {
+          if (body.data && body.data.children && body.data.children[0]) {
             if (options.id) {
               return new Link(body.data.children[0].data).toJSON()
             } else {
