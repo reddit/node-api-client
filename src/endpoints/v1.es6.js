@@ -494,14 +494,10 @@ class APIv1Endpoint {
     return bind({
       buildOptions: function(options) {
         var uri = options.origin;
-
         if (options.query.subreddit) {
           uri += `/r/${options.query.subreddit}`;
           options.query.restrict_sr = 'on';
         }
-
-        options.query.obey_over18 = 'true';
-
         uri += '/search.json';
 
         return { uri, options }
@@ -653,7 +649,6 @@ class APIv1Endpoint {
         var sort = options.query.sort || 'hot';
         options.query.feature = 'link_preview';
         options.query.sr_detail = 'true';
-        options.query.obey_over18 = 'true';
 
         var uri = options.origin;
 
