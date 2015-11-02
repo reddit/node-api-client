@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import retry from 'superagent-retry';
+
 retry(superagent);
 
 import querystring from 'querystring';
@@ -44,12 +45,16 @@ function processMeta(headers) {
   }
 }
 
+const TIMEOUT = 5000;
+
 function returnGETPromise (options, formatBody) {
  return new Promise(function(resolve, reject) {
-    superagent.get(options.uri)
-      .retry(options.retries || 3)
+    superagent
+      .get(options.uri)
       .set(options.headers || {})
       .query(options.query || {})
+      .timeout(TIMEOUT)
+      .retry(3)
       .end((err, res) => {
         if (err) {
           return reject(err);
