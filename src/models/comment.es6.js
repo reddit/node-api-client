@@ -4,7 +4,6 @@ import process from 'reddit-text-js';
 class Comment extends Base {
   constructor(props) {
     props._type = 'Comment';
-    delete props.subreddit;
 
     super(props);
 
