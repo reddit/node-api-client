@@ -49,37 +49,41 @@ const TIMEOUT = 5000;
 
 function returnGETPromise (options, formatBody) {
  return new Promise(function(resolve, reject) {
-    superagent
+    let sa = superagent
       .get(options.uri)
       .set(options.headers || {})
       .query(options.query || {})
       .timeout(TIMEOUT)
-      .retry(3)
-      .end((err, res) => {
-        if (err) {
-          return reject(err);
+
+    if (options.env !== 'SERVER') {
+      sa.retry(3)
+    }
+
+    sa.end((err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      if (!res.ok) {
+        return reject(res);
+      }
+
+      try {
+        massageAPIv1JsonRes(res);
+        var body = res.body;
+
+        if (formatBody) {
+          body = formatBody(body);
         }
 
-        if (!res.ok) {
-          return reject(res);
-        }
-
-        try {
-          massageAPIv1JsonRes(res);
-          var body = res.body;
-
-          if (formatBody) {
-            body = formatBody(body);
-          }
-
-          return resolve({
-            headers: processMeta(res.headers),
-            body: body,
-          });
-        } catch (e) {
-          return reject(e);
-        }
-      });
+        return resolve({
+          headers: processMeta(res.headers),
+          body: body,
+        });
+      } catch (e) {
+        return reject(e);
+      }
+    });
   });
 }
 
