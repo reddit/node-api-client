@@ -47,19 +47,30 @@ function processMeta(headers) {
 
 const TIMEOUT = 5000;
 
-function returnGETPromise (options, formatBody) {
- return new Promise(function(resolve, reject) {
+function returnGETPromise (options, formatBody, log) {
+  return new Promise(function(resolve, reject) {
+    let time = Date.now();
+
+    log('requesting', 'GET', options.uri, options);
+
     let sa = superagent
-      .get(options.uri)
-      .set(options.headers || {})
-      .query(options.query || {})
-      .timeout(TIMEOUT)
+     .get(options.uri)
+     .set(options.headers || {})
+     .query(options.query || {})
+     .timeout(TIMEOUT)
 
     if (options.env !== 'SERVER') {
       sa.retry(3)
     }
 
     sa.end((err, res) => {
+      let status = res ? res.status : 500;
+      if (err && err.timeout) {
+        status = 'timeout';
+      }
+
+      log('response', 'GET', options.uri, options, status, err, Date.now() - time);
+
       if (err) {
         return reject(err);
       }
@@ -107,7 +118,7 @@ const CACHE_RULES = [
 
 class APIv1Endpoint {
   constructor (config = {}) {
-    this.defaultHeaders = config.defaultHeaders;
+    this.config = config;
 
     // Set up a cache for links and subreddit data
     this.cache = new Cache({
@@ -144,9 +155,20 @@ class APIv1Endpoint {
     });
   }
 
+  log (state, method, uri, options, status, err, duration) {
+    if (this.config.debugLevel === 'info') {
+      if (this.config.log) {
+        this.config.log(...arguments);
+      } else {
+        console.log(...arguments);
+      }
+    }
+  }
+
   baseGet (uri, options={}, formatBody) {
     var query = options.query || {};
     var headers = options.headers || {};
+    let log = this.log.bind(this);
 
     if (!options.env) {
       options.env = 'SERVER';
@@ -165,12 +187,12 @@ class APIv1Endpoint {
       }, options.cache)
 
       if (options.id) {
-        return this.cache.getById(cacheOptions.type, options.id, returnGETPromise, [options, formatBody], cacheOptions);
+        return this.cache.getById(cacheOptions.type, options.id, returnGETPromise, [options, formatBody, log], cacheOptions);
       } else {
-        return this.cache.get(returnGETPromise, [options, formatBody], cacheOptions);
+        return this.cache.get(returnGETPromise, [options, formatBody, log], cacheOptions);
       }
     } else {
-      return returnGETPromise(options, formatBody);
+      return returnGETPromise(options, formatBody, log);
     }
   }
 
@@ -194,16 +216,29 @@ class APIv1Endpoint {
 
     let cache = this.cache;
     let type = method === 'patch' ? 'json' : 'form';
+    let log = this.log.bind(this);
+
     if (type === 'json') {
       form = JSON.stringify(form);
     }
 
+    let time = Date.now();
+
     return new Promise(function(resolve, reject) {
+      log('requesting', method, uri, options);
+
       superagent[method](uri)
         .set(headers)
         .send(form)
         .type(type)
         .end((err, res) => {
+          let status = res ? res.status : 500;
+          if (err && err.timeout) {
+            status = 'timeout';
+          }
+
+          log('response', method, uri, options, status, err, Date.now() - time);
+
           if (err) {
             return reject(err);
           }
@@ -1276,7 +1311,7 @@ class APIv1Endpoint {
     options.query = options.query || {};
     options.model = options.model || {};
 
-    Object.assign(options.headers, this.defaultHeaders, options.headers);
+    Object.assign(options.headers, this.config.defaultHeaders, options.headers);
 
     return options;
   }
