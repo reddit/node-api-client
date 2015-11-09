@@ -61,10 +61,14 @@ function returnGETPromise (options, formatBody, log) {
 
     if (options.env !== 'SERVER') {
       sa.retry(3)
+    } else {
+      // redirects break on the server, thanks superagent
+      sa.redirects(0);
     }
 
     sa.end((err, res) => {
       let status = res ? res.status : 500;
+
       if (err && err.timeout) {
         status = 'timeout';
       }
@@ -72,6 +76,13 @@ function returnGETPromise (options, formatBody, log) {
       log('response', 'GET', options.uri, options, status, err, Date.now() - time);
 
       if (err) {
+        // Sometimes the API decides to send back a 302 instead of a 404; for
+        // example, unfound subs will redirect you to the search page.
+        if (status === 302) {
+          err.status = 404;
+          return reject(err);
+        }
+
         return reject(err);
       }
 
