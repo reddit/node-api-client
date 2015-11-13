@@ -71,6 +71,7 @@ function returnGETPromise (options, formatBody, log) {
 
       if (err && err.timeout) {
         status = 'timeout';
+        err.status = 504;
       }
 
       log('response', 'GET', options.uri, options, status, err, Date.now() - time);
