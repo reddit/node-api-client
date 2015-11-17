@@ -1,6 +1,6 @@
 {
   "name": "snoode",
-  "version": "1.14.1",
+  "version": "1.14.2",
   "description": "node and browser reddit api library",
   "main": "src/api.es6.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
     "reddit-text-js": "0.5.4",
-    "restcache": "1.0.4",
+    "restcache": "1.0.5",
     "superagent": "1.3.0",
     "superagent-retry": "git://github.com/ajacksified/superagent-retry#7530ab7ab24ead56de2eeecc8d31d9a86896bc5a"
   },
