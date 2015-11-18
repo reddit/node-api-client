@@ -57,7 +57,7 @@ function returnGETPromise (options, formatBody, log) {
      .get(options.uri)
      .set(options.headers || {})
      .query(options.query || {})
-     .timeout(TIMEOUT)
+     .timeout(options.timeout)
 
     if (options.env !== 'SERVER') {
       sa.retry(3)
@@ -185,6 +185,8 @@ class APIv1Endpoint {
     if (!options.env) {
       options.env = 'SERVER';
     }
+
+    options.timeout = this.config.timeout || TIMEOUT;
 
     if (options.userAgent) {
       headers['User-Agent'] = options.userAgent;
