@@ -15,6 +15,10 @@ import Vote from '../models/vote';
 import Subreddit from '../models/subreddit';
 import Stylesheet from '../models/stylesheet';
 import Preferences from '../models/preferences';
+import WikiPage from '../models/WikiPage';
+import WikiRevision from '../models/WikiRevision';
+import WikiPageListing from '../models/WikiPageListing';
+import WikiPageSettings from '../models/WikiPageSettings';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
@@ -688,8 +692,7 @@ class APIv1Endpoint {
           api_type: 'json',
         };
 
-        options.changeSet.forEach((prop) => {
-          options.form[prop] = options.model.get(prop);
+        options.changeSet.forEach((prop) => {options.form[prop] = options.model.get(prop);
         })
 
         return this.basePatch(uri, options, (body) => {
@@ -1263,6 +1266,57 @@ class APIv1Endpoint {
         } else {
           throw new ValidationError(options.model._type, options.model, valid);
         }
+      }
+    }, this);
+  }
+
+  get wiki () {
+    return bind({
+      buildOptions: function(options) {
+        var uri = options.origin;
+        if (options.subreddit) {
+          uri += `/r/${options.subreddit}/wiki/${options.path}.json`;
+        } else {
+          uri += `/wiki/${options.path}.json`;
+        }
+
+        return { uri, options };
+      },
+
+      get: function(options={}) {
+        var { uri, options } = this.wiki.buildOptions(options);
+
+        return this.baseGet(uri, options, (body) => {
+          const type = body.type || body.kind;
+          switch (type) {
+            case 'wikipage':
+              return new WikiPage(body.data).toJSON();
+              break;
+            case 'Listing':
+              if (body.data) {
+                let children = body.data.children;
+                
+                if (children.length && children[0].kind === 't3') {
+                  return {
+                    conversations: children.map(c => new Link(c.data).toJSON()),
+                    _type: 't3',
+                  }
+                } else {
+                  return {
+                    revisions: body.data.children.map(c => new WikiRevision(c).toJSON()),
+                    _type: 'WikiRevision',
+                  }
+                }
+              }
+              break;
+            case 'wikipagelisting':
+              return new WikiPageListing(body).toJSON();
+              break;
+            case 'wikipagesettings':
+              return new WikiPageSettings(body.data).toJSON();
+              break;
+          }
+        });
       }
     }, this);
   }
