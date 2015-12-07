@@ -5,6 +5,7 @@ retry(superagent);
 
 import querystring from 'querystring';
 import Cache from 'restcache';
+import has from 'lodash/object/has';
 
 import Account from '../models/account';
 import Comment from '../models/comment';
@@ -889,9 +890,11 @@ class APIv1Endpoint {
           };
 
           return this.basePost(uri, options, (body) => {
-            if (body) {
-              var comment = body.json.data.things[0].data;
+            if (has(body, 'json.data.things.0.data')) {
+              const comment = body.json.data.things[0].data;
               return new Comment(comment).toJSON();
+            } else {
+              throw body.json;
             }
           }, options.parentType + 's', options.form.thing_id);
         } else {
