@@ -10,15 +10,6 @@ class WikiPage extends Base {
     
     super(props);
   }
-
-  toJSON () {
-    let props = this.props;
-    props._type = this.constructor._type;
-
-    return props;
-  }
-
-  static _type = 'Wikipage';
 };
 
 export default WikiPage;

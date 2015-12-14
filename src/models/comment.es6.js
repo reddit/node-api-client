@@ -3,8 +3,6 @@ import process from 'reddit-text-js';
 
 class Comment extends Base {
   constructor(props) {
-    props._type = 'Comment';
-
     super(props);
 
     var comment = this;
@@ -27,6 +25,7 @@ class Comment extends Base {
 
   toJSON () {
     var props = this.props;
+    props._type = this.type;
 
     props.bodyHtml = this.bodyHtml;
 

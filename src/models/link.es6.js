@@ -33,7 +33,6 @@ class Link extends Base {
       };
     }
 
-    props._type = 'Link';
     super(props);
 
     this.validators = {
@@ -102,6 +101,7 @@ class Link extends Base {
 
   toJSON () {
     var props = this.props;
+    props._type = this.type;
 
     props.thumbnail = this.thumbnail;
     props.expandable = this.expandable;

@@ -2,7 +2,6 @@ import Base from './base';
 
 class Report extends Base {
   constructor(props) {
-    props._type = 'Report';
     super(props);
 
     var report = this;

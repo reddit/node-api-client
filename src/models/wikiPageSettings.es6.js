@@ -18,15 +18,6 @@ class WikiPageSettings extends Base {
     super(props);
   }
 
-  toJSON () {
-    let props = this.props
-    props._type = WikiPageSettings._type;
-
-    return props;
-  }
-
-  static _type = 'WikipageSettings';
-
   static _permissionLevels = {
     0: 'use wiki settings',
     1: 'only approved editors',

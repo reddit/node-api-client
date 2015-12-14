@@ -8,16 +8,6 @@ class WikiPageListing extends Base {
 
     super(props);
   }
-
-  toJSON () {
-    let props = this.props
-    props._type = WikiPageListing._type;
-
-    return props;
-  }
-
-  static _type = 'WikipageListing';
-
 };
 
 export default WikiPageListing;

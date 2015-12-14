@@ -9,7 +9,6 @@ function unsafeJson(text) {
 
 class Stylesheet extends Base {
     constructor(props) {
-        props._type = 'Stylesheet';
         super(props);
     }
 
