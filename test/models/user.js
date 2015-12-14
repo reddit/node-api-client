@@ -9,9 +9,9 @@ var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai)
 
-var Account = require('../../src/api').models.Account;
+var User = require('../../src/api').models.User;
 
-describe('Account model', function() {
+describe('User model', function() {
 
   describe('validation', function() {
     var validAttrs = {
@@ -19,13 +19,13 @@ describe('Account model', function() {
     };
 
     it('expects `thingId` to be a valid id', function() {
-      var account = new Account(validAttrs);
+      var user = new User(validAttrs);
 
-      expect(account.validate()).to.equal(true);
+      expect(user.validate()).to.equal(true);
 
-      account.set('thingId', 'invalid');
+      user.set('thingId', 'invalid');
 
-      var errors = account.validate();
+      var errors = user.validate();
 
       expect(errors.length).to.equal(1);
       expect(errors[0]).to.equal('thingId');
