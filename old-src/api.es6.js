@@ -1,7 +1,7 @@
 import v1 from './endpoints/v1';
 
-import Account from './models/account';
-import Award from './models/award';
+import User from './models/user';
+import Trophy from './models/trophy';
 import Base from './models/base';
 import Comment from './models/comment';
 import Link from './models/link';
@@ -14,8 +14,8 @@ import Vote from './models/vote';
 import Report from './models/report';
 
 var models = {
-  Account,
-  Award,
+  User,
+  Trophy,
   Base,
   Comment,
   Link,

@@ -1,20 +1,20 @@
 import Base from './base';
 
-class Account extends Base {
+class User extends Base {
   constructor(props) {
-    props._type = 'Account';
+    props._type = 'User';
     super(props);
 
-    var account = this;
+    var user = this;
 
     this.validators = {
       thingId: function() {
         var thingId = this.get('thingId');
 
         return Base.validators.thingId(thingId);
-      }.bind(account),
+      }.bind(user),
     };
   }
 };
 
-export default Account;
+export default User;

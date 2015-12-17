@@ -1,8 +1,8 @@
 {
   "name": "snoode",
-  "version": "1.15.1",
+  "version": "2.0.0",
   "description": "node and browser reddit api library",
-  "main": "src/api.es6.js",
+  "main": "src/api",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --harmony --recursive ./test/"
   },
