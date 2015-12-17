@@ -403,15 +403,59 @@ class APIv1Endpoint {
           };
 
           return this.basePost(uri, options, (body) => {
+            // Update the subscriber request cache to include or exclude
+            // the new subreddit if the request didn't fail
+            if (!Object.keys(body).length) {
+              this.subscriptions.updateSubscribedCache(options, json.action);
+            }
+
             return body;
           }, 'subreddits', json.sr, {
-            user_is_subscribed: true
+            user_is_subscriber: json.action === 'sub',
           });
         } else {
           return new Promise(function(resolve, reject) {
             reject('Subscription', options.model, valid);
           });
         }
+      },
+      updateSubscribedCache: function(options, action) {
+        if (!options.id || !options.id.length || !action.length) {
+          return;
+        }
+
+        const subscribedCacheKey = `${options.origin}/subreddits/mine/subscriber.json`;
+
+        const subscribedRequestCache = this.cache.requestCache.get(subscribedCacheKey);
+
+        if (!subscribedRequestCache) { return };
+
+        // if there's not the default entry we'll assume something fancy
+        // is going on and not update the cache
+        const keys = subscribedRequestCache.keys();
+        if (keys.length !== 1) {
+          // if there's more keys just blow away the cache
+          subscribedRequestCache.reset();
+          return;
+        };
+
+        const key = keys[0];
+        const requestCache = subscribedRequestCache.get(key);
+        if (!requestCache) { return; }
+
+        let subreddits = requestCache.subreddits || [];
+        const updateId = options.id;
+        if (action === 'unsub') {
+          subreddits = subreddits.filter(function(id) {
+            return id !== updateId;
+          });
+        } else {
+          if (!subreddits.some(function(id) { return id === updateId; })) {
+            subreddits.push(updateId);
+          }
+        }
+
+        subscribedRequestCache.set(key, {subreddits: subreddits});
       }
     }, this);
   }
@@ -1081,7 +1125,7 @@ class APIv1Endpoint {
             };
           });
 
-          return this.basePost(uri, options, () => null, 
+          return this.basePost(uri, options, () => null,
                               options.model.props._type.toLowerCase() + 's',
                               options.form.thing_id,
                               {
