@@ -6,21 +6,21 @@ class Report extends Base {
   constructor(props) {
     super(props);
 
-    var report = this;
+    const report = this;
 
     this.validators = {
       reason: function() {
-        if (this.get('other_reason') && !(this.get('reason') === 'other')) {
+        if (report.get('other_reason') && !(report.get('reason') === 'other')) {
           return false;
         }
 
-        var reasonValid = Base.validators.minLength(this.get('reason'), 1) &&
-                          Base.validators.maxLength(this.get('reason'), 100);
+        const reasonValid = Base.validators.minLength(report.get('reason'), 1) &&
+                          Base.validators.maxLength(report.get('reason'), 100);
 
-        var otherReasonValid = !this.get('other_reason') ||
+        const otherReasonValid = !report.get('other_reason') ||
                                (
-                                 Base.validators.minLength(this.get('other_reason'), 1) &&
-                                 Base.validators.maxLength(this.get('other_reason'), 100)
+                                 Base.validators.minLength(report.get('other_reason'), 1) &&
+                                 Base.validators.maxLength(report.get('other_reason'), 100)
                                );
 
         return reasonValid && otherReasonValid;
@@ -44,6 +44,6 @@ class Report extends Base {
       }.bind(report),
     };
   }
-};
+}
 
 export default Report;

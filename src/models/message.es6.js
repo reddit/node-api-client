@@ -6,7 +6,7 @@ class Message extends Base {
   constructor(props) {
     super(props);
 
-    var message = this;
+    const message = this;
 
     this.validators = {
       text: function() {

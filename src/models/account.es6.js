@@ -6,16 +6,15 @@ class Account extends Base {
   constructor(props) {
     super(props);
 
-    var account = this;
+    const account = this;
 
     this.validators = {
       thingId: function() {
-        var thingId = this.get('thingId');
-
+        const thingId = this.get('thingId');
         return Base.validators.thingId(thingId);
       }.bind(account),
     };
   }
-};
+}
 
 export default Account;

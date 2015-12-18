@@ -1,5 +1,3 @@
-import { EventEmitter } from 'events';
-
 class Base {
   _type = 'Base';
 
@@ -7,7 +5,6 @@ class Base {
     this.props = {};
     this.validators = opts.validators || [];
     this.formatters = opts.formatters || [];
-    this.emitter = opts.emitter || new EventEmitter();
 
     for (var p in props) {
       this.props[p] = props[p];
@@ -18,32 +15,15 @@ class Base {
     return this.format(name, this.props[name]);
   }
 
-  set (name, value, emit = { value: true, base: true}) {
+  set (name, value) {
     if (typeof name === 'object') {
-      for (var n in name) {
-        this.set(n, name[n], { value: true });
-      }
-
-      this.emit('set', name);
+      this.props = {
+        ...this.props,
+        ...value,
+      };
     } else {
       this.props[name] = value;
-
-      if(emit && emit.base) {
-        this.emit('set', name, value);
-      }
-
-      if(emit && emit.value) {
-        this.emit('set:' + name, value);
-      }
     }
-  }
-
-  emit (...args) {
-    this.emitter.emit.apply(this, args);
-  }
-
-  on (...args) {
-    this.emitter.on.apply(this, args);
   }
 
   validate () {
@@ -64,11 +44,10 @@ class Base {
       return true;
     }
 
-    this.emit('validationError', invalid);
     return invalid;
   }
 
-  format (prop, value){
+  format (prop, value) {
     if (!this.formatters || !this.formatters[prop]) {
       return value;
     }
@@ -86,43 +65,42 @@ class Base {
 
     return props;
   }
-}
 
-Base.validators = {
-  integer: function(i) {
-    return i === parseInt(i);
-  },
+  static validators = {
+    integer: function(i) {
+      return i === parseInt(i);
+    },
 
-  string: function(s) {
-    return s === s.toString();
-  },
+    string: function(s) {
+      return s === s.toString();
+    },
 
-  min: function (i, min) {
-    return i >= min;
-  },
+    min: function (i, min) {
+      return i >= min;
+    },
 
-  max: function (i, max) {
-    return i <= max;
-  },
+    max: function (i, max) {
+      return i <= max;
+    },
 
-  maxLength: function (s, l) {
-    return Base.validators.string(s) && Base.validators.max(s.length, l);
-  },
+    maxLength: function (s, l) {
+      return Base.validators.string(s) && Base.validators.max(s.length, l);
+    },
 
-  minLength: function (s, l) {
-    return Base.validators.string(s) && Base.validators.min(s.length, l);
-  },
+    minLength: function (s, l) {
+      return Base.validators.string(s) && Base.validators.min(s.length, l);
+    },
 
-  regex: function(s, expr) {
-    return expr.test(s);
-  },
+    regex: function(s, expr) {
+      return expr.test(s);
+    },
 
-  thingId: function(id) {
-    var expr = new RegExp('t\\d_[0-9a-z]+', 'i');
+    thingId: function(id) {
+      var expr = new RegExp('t\\d_[0-9a-z]+', 'i');
 
-    return id == null || Base.validators.regex(id, expr);
-  },
-
+      return id == null || Base.validators.regex(id, expr);
+    },
+  }
 }
 
 export default Base;

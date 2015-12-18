@@ -8,7 +8,7 @@ class Link extends Base {
     delete props.selftext_html;
 
     if (props.promoted && !props.preview) {
-      var resolutions = [];
+      let resolutions = [];
 
       if (props.mobile_ad_url) {
         resolutions.push({
@@ -37,18 +37,19 @@ class Link extends Base {
 
     super(props);
 
+    const link = this;
+
     this.validators = {
       title: function () {
-        return Base.validators.maxLength(this.get('title'), 300);
-      }.bind(this),
+        return Base.validators.maxLength(link.get('title'), 300);
+      }.bind(link),
       sendreplies: function() {
-        return typeof this.get('sendreplies') === 'boolean';
-      }.bind(this),
+        return typeof link.get('sendreplies') === 'boolean';
+      }.bind(link),
       thingId: function() {
-        var thingId = this.get('thingId');
-
+        const thingId = link.get('thingId');
         return Base.validators.thingId(thingId);
-      }.bind(this),
+      }.bind(link),
     };
   }
 
@@ -57,8 +58,8 @@ class Link extends Base {
       return;
     }
 
-    var props = this.props;
-    var content;
+    let props = this.props;
+    let content;
 
     content = (
       (props.secure_media_embed && props.secure_media_embed.content) ||
@@ -97,7 +98,7 @@ class Link extends Base {
   }
 
   unredditify (url) {
-    if (!url){ return; }
+    if (!url) { return; }
     return url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
   }
 
@@ -114,6 +115,6 @@ class Link extends Base {
 
     return props;
   }
-};
+}
 
 export default Link;

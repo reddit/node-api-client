@@ -2,7 +2,7 @@ import Base from './base';
 
 const _subscriptionAllowedActions = {
   'sub': true,
-  'unsub': true
+  'unsub': true,
 };
 
 class Subscription extends Base {
@@ -11,15 +11,16 @@ class Subscription extends Base {
   constructor(props) {
     super(props);
 
-    var subscription = this;
+    const subscription = this;
 
     this.validators = {
       'action': function (value) {
         return _subscriptionAllowedActions[value];
       }.bind(subscription),
+
       'sr': function (value) {
         return Base.validators.string(value);
-      }.bind(subscription)
+      }.bind(subscription),
     };
   }
 }
