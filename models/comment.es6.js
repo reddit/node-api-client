@@ -7,14 +7,14 @@ class Comment extends Base {
 
     super(props);
 
-    var comment = this;
+    let comment = this;
 
     this.validators = {
       body: function() {
         return Base.validators.minLength(this.get('body'), 1);
       }.bind(comment),
       thingId: function() {
-        var thingId = this.get('thingId');
+        let thingId = this.get('thingId');
 
         return Base.validators.thingId(thingId);
       }.bind(comment),
@@ -26,12 +26,12 @@ class Comment extends Base {
   }
 
   toJSON () {
-    var props = this.props;
+    let props = this.props;
 
     props.bodyHtml = this.bodyHtml;
 
     return props;
   }
-};
+}
 
 export default Comment;

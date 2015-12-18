@@ -5,7 +5,7 @@ class Report extends Base {
     props._type = 'Report';
     super(props);
 
-    var report = this;
+    let report = this;
 
     this.validators = {
       reason: function() {
@@ -13,10 +13,10 @@ class Report extends Base {
           return false;
         }
 
-        var reasonValid = Base.validators.minLength(this.get('reason'), 1) &&
+        let reasonValid = Base.validators.minLength(this.get('reason'), 1) &&
                           Base.validators.maxLength(this.get('reason'), 100);
 
-        var otherReasonValid = !this.get('other_reason') ||
+        let otherReasonValid = !this.get('other_reason') ||
                                (
                                  Base.validators.minLength(this.get('other_reason'), 1) &&
                                  Base.validators.maxLength(this.get('other_reason'), 100)

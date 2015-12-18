@@ -5,16 +5,16 @@ class User extends Base {
     props._type = 'User';
     super(props);
 
-    var user = this;
+    let user = this;
 
     this.validators = {
       thingId: function() {
-        var thingId = this.get('thingId');
+        const thingId = this.get('thingId');
 
         return Base.validators.thingId(thingId);
       }.bind(user),
     };
   }
-};
+}
 
 export default User;

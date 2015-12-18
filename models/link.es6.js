@@ -6,7 +6,7 @@ class Link extends Base {
     delete props.selftext_html;
 
     if (props.promoted && !props.preview) {
-      var resolutions = [];
+      let resolutions = [];
 
       if (props.mobile_ad_url) {
         resolutions.push({
@@ -28,26 +28,31 @@ class Link extends Base {
 
       props.preview = {
         images: [{
-          resolutions: resolutions,
+          resolutions,
         }],
       };
     }
 
     props._type = 'Link';
+
     super(props);
+
+    const link = this;
 
     this.validators = {
       title: function () {
         return Base.validators.maxLength(this.get('title'), 300);
-      }.bind(this),
+      }.bind(link),
+
       sendreplies: function() {
         return typeof this.get('sendreplies') === 'boolean';
-      }.bind(this),
+      }.bind(link),
+
       thingId: function() {
-        var thingId = this.get('thingId');
+        let thingId = this.get('thingId');
 
         return Base.validators.thingId(thingId);
-      }.bind(this),
+      }.bind(link),
     };
   }
 
@@ -56,8 +61,8 @@ class Link extends Base {
       return;
     }
 
-    var props = this.props;
-    var content;
+    let props = this.props;
+    let content;
 
     content = (
       (props.secure_media_embed && props.secure_media_embed.content) ||
@@ -72,7 +77,7 @@ class Link extends Base {
   }
 
   get expandable () {
-    var props = this.props;
+    let props = this.props;
 
     // If it has secure_media, or media, or selftext, it has expandable.
     return !!(
@@ -83,7 +88,7 @@ class Link extends Base {
   }
 
   get thumbnail () {
-    var props = this.props;
+    let props = this.props;
 
     if (props.thumbnail &&
        (props.thumbnail === 'default' ||
@@ -96,12 +101,12 @@ class Link extends Base {
   }
 
   unredditify (url) {
-    if (!url){ return; }
+    if (!url) { return; }
     return url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
   }
 
   toJSON () {
-    var props = this.props;
+    let props = this.props;
 
     props.thumbnail = this.thumbnail;
     props.expandable = this.expandable;
@@ -112,6 +117,6 @@ class Link extends Base {
 
     return props;
   }
-};
+}
 
 export default Link;

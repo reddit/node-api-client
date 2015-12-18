@@ -263,7 +263,7 @@ class BaseAPI {
   notImplemented (method) {
     return function() {
       throw new NotImplementedError(method, this.api);
-    }
+    };
   }
 
   handle = (resolve, reject) => {
