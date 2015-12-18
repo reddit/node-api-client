@@ -6,7 +6,6 @@ class Subreddit extends Base {
     delete props.description_html;
     delete props.public_description_html;
 
-
     props._type = 'Subreddit';
     super(props);
   }
