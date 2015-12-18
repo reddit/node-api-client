@@ -40,8 +40,30 @@ class Subscriptions extends BaseAPI {
     // Save, then update the data in the cache
     super.save(method, data);
 
-    // TODO update subreddit by real id and set subscribed to true or false
-    // const subscribed = method === 'post' ? true : false;
+    // Manually update request and data caches to show the new subscription
+    // status
+    const subscribed = method === 'post';
+
+    let subreddit = this.dataCache.subreddits.get(data.subreddit);
+
+    if (subreddit) {
+      subreddit.subscribed = subscribed;
+      this.dataCache.subreddits.set(data.subreddit, subreddit.subscribed);
+    }
+
+    let requests = this.requestCache.get(this.path());
+
+    if (typeof requests !== 'undefined') {
+      if (subscribed) {
+        requests.append(subreddit.id);
+      } else {
+        requests = requests.filter(function(r) {
+          return r.id !== subreddit.id;
+        });
+      }
+
+      this.requestCache.set(this.path(), requests);
+    }
   }
 }
 
