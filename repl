@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const repl = require('repl');
+const q = require('querystring');
+
+const packageInfo = require('./package.json');
+console.log(`Starting snoode v${packageInfo.version} repl`);
+console.log('Enter `help()` for information.');
+
+const API = require('./run');
+const api = new API();
+
+const local = repl.start('$> ');
+
+function help () {
+  const help = [
+    'To try out the API, use the available instance of `api` to make requests.',
+    'For example, try writing: `api.subreddits.get({ id: "coffee" });',
+    'The latest API error can be accessed at `error`. Requests and responses',
+    'can be accessed at `request` and `response`.'
+  ].join(' ');
+
+  console.log(help);
+}
+
+api.event.on('response', function printResponse (req, res) {
+  console.log(`${req.method} ${req.url} returned ${res.statusCode}`);
+  local.context.request = res;
+  local.context.response = res;
+});
+
+api.event.on('error', function printResponse (e, req) {
+  console.log(`${req.method} ${req.url} returned error:`);
+  console.log(e.toString());
+  local.context.error = e;
+});
+
+api.event.on('request', function printRequest (req) {
+  console.log(`Initiating ${req.method} to ${req.url}`);
+});
+
+local.context.api = api;
+local.context.help = help;
