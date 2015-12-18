@@ -418,6 +418,7 @@ class APIv1Endpoint {
         var uri = `${options.origin}/user/${options.user}/saved.json`;
 
         options.query = {
+          ...options.query,
           feature: 'link_preview',
           sr_detail: 'true'
         };
