@@ -8,6 +8,6 @@ class WikiRevision extends Base {
 
     super(props);
   } 
-};
+}
 
 export default WikiRevision;

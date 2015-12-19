@@ -3,24 +3,30 @@ import Base from './base';
 class Message extends Base {
   _type = 'Message';
 
-  constructor(props) {
-    super(props);
+  validators () {
+    const text = this.textValidator;
+    const subject = this.subjectValidator;
+    const to = this.toValidator;
 
-    const message = this;
-
-    this.validators = {
-      text: function() {
-        return Base.validators.minLength(this.get('text'), 1) &&
-               Base.validators.maxLength(this.get('text'), 10000);
-      }.bind(message),
-      subject: function() {
-        return Base.validators.minLength(this.get('subject'), 1) &&
-               Base.validators.maxLength(this.get('subject'), 100);
-      }.bind(message),
-      to: function() {
-        return Base.validators.minLength(this.get('to'), 1);
-      }.bind(message),
+    return {
+      text,
+      subject,
+      to,
     };
+  }
+
+  textValidator () {
+    return Base.validators.minLength(this.get('text'), 1) &&
+           Base.validators.maxLength(this.get('text'), 10000);
+  }
+
+  subjectValidator () {
+    return Base.validators.minLength(this.get('subject'), 1) &&
+           Base.validators.maxLength(this.get('subject'), 100);
+  }
+
+  toValidator () {
+    return Base.validators.minLength(this.get('to'), 1);
   }
 }
 

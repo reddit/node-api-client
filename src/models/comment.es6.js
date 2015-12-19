@@ -4,20 +4,23 @@ import process from 'reddit-text-js';
 class Comment extends Base {
   _type = 'Comment';
 
-  constructor(props) {
-    super(props);
+  validators () {
+    const body = this.bodyValidator;
+    const thingId = this.thingIdValidator;
 
-    const comment = this;
-
-    this.validators = {
-      body: function() {
-        return Base.validators.minLength(this.get('body'), 1);
-      }.bind(comment),
-      thingId: function() {
-        const thingId = this.get('thingId');
-        return Base.validators.thingId(thingId);
-      }.bind(comment),
+    return {
+      body,
+      thingId,
     };
+  }
+
+  bodyValidator () {
+    return Base.validators.minLength(this.get('body'), 1);
+  }
+
+  thingIdValidator () {
+    const thingId = this.get('thingId');
+    return Base.validators.thingId(thingId);
   }
 
   get bodyHtml () {
@@ -28,6 +31,7 @@ class Comment extends Base {
     let props = this.props;
     props._type = this._type;
     props.bodyHtml = this.bodyHtml;
+    props._type = this._type;
     return props;
   }
 }

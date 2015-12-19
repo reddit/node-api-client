@@ -8,20 +8,22 @@ const _subscriptionAllowedActions = {
 class Subscription extends Base {
   _type = 'Subscription';
 
-  constructor(props) {
-    super(props);
+  validators () {
+    const action = this.actionValidator;
+    const sr = this.srValidator;
 
-    const subscription = this;
-
-    this.validators = {
-      'action': function (value) {
-        return _subscriptionAllowedActions[value];
-      }.bind(subscription),
-
-      'sr': function (value) {
-        return Base.validators.string(value);
-      }.bind(subscription),
+    return {
+      action,
+      sr,
     };
+  }
+
+  actionValidator (val) {
+    return _subscriptionAllowedActions[val];
+  }
+
+  srValidator (val) {
+    return Base.validators.string(val);
   }
 }
 

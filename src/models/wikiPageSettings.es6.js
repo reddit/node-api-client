@@ -4,7 +4,6 @@ class WikiPageSettings extends Base {
   _type = 'WikiPageSettings';
 
   constructor(props) {
-    
     props.pageEditorsList = props.editors.map(function (item) {
       return item.data;
     });
@@ -25,7 +24,6 @@ class WikiPageSettings extends Base {
     1: 'only approved editors',
     2: 'only Mods',
   }
-  
-};
+}
 
 export default WikiPageSettings;

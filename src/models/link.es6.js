@@ -30,27 +30,37 @@ class Link extends Base {
 
       props.preview = {
         images: [{
-          resolutions: resolutions,
+          resolutions,
         }],
       };
     }
 
     super(props);
+  }
 
-    const link = this;
+  validators () {
+    const title = this.titleValidator;
+    const sendReplies = this.sendRepliesValidator;
+    const thingId = this.thingIdValidator;
 
     this.validators = {
-      title: function () {
-        return Base.validators.maxLength(link.get('title'), 300);
-      }.bind(link),
-      sendreplies: function() {
-        return typeof link.get('sendreplies') === 'boolean';
-      }.bind(link),
-      thingId: function() {
-        const thingId = link.get('thingId');
-        return Base.validators.thingId(thingId);
-      }.bind(link),
+      title,
+      sendReplies,
+      thingId,
     };
+  }
+
+  titleValidator () {
+    return Base.validators.maxLength(this.get('title'), 300);
+  }
+
+  sendRepliesValidator () {
+    return typeof this.get('sendreplies') === 'boolean';
+  }
+
+  thingIdValidator () {
+    const thingId = this.get('thingId');
+    return Base.validators.thingId(thingId);
   }
 
   get expandContent () {

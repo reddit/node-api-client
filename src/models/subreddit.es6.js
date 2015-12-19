@@ -10,6 +10,6 @@ class Subreddit extends Base {
 
     super(props);
   }
-};
+}
 
 export default Subreddit;

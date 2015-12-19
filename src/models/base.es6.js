@@ -1,14 +1,18 @@
+const THING_ID_REGEX = new RegExp('t\\d_[0-9a-z]+', 'i');
+
 class Base {
   _type = 'Base';
 
-  constructor (props={}, opts={}) {
+  constructor (props={}) {
     this.props = {};
-    this.validators = opts.validators || [];
-    this.formatters = opts.formatters || [];
 
-    for (var p in props) {
+    for (let p in props) {
       this.props[p] = props[p];
     }
+  }
+
+  validators () {
+    return;
   }
 
   get (name) {
@@ -27,15 +31,16 @@ class Base {
   }
 
   validate () {
-    if (!this.validators) {
+    const validators = this.validators();
+    if (!validators()) {
       return true;
     }
 
-    var invalid = [];
-    var p;
+    let invalid = [];
+    let p;
 
     for (p in this.props) {
-      if (this.validators[p] && !this.validators[p](this.props[p])) {
+      if (validators[p] && !validators[p](this.props[p])) {
         invalid.push(p);
       }
     }
@@ -45,14 +50,6 @@ class Base {
     }
 
     return invalid;
-  }
-
-  format (prop, value) {
-    if (!this.formatters || !this.formatters[prop]) {
-      return value;
-    }
-
-    return this.formatters[prop](value);
   }
 
   toJSON (formatter) {
@@ -96,9 +93,7 @@ class Base {
     },
 
     thingId: function(id) {
-      var expr = new RegExp('t\\d_[0-9a-z]+', 'i');
-
-      return id == null || Base.validators.regex(id, expr);
+      return id == null || Base.validators.regex(id, THING_ID_REGEX);
     },
   }
 }

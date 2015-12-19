@@ -9,9 +9,9 @@ class WikiPage extends Base {
     if (props.revision_by) {
       props.revision_by = props.revision_by.data;  
     }
-    
+
     super(props);
   }
-};
+}
 
 export default WikiPage;

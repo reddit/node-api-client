@@ -3,17 +3,17 @@ import Base from './base';
 class Account extends Base {
   _type = 'Account';
 
-  constructor(props) {
-    super(props);
+  validators () {
+    const thingId = this.thingIdValidator;
 
-    const account = this;
-
-    this.validators = {
-      thingId: function() {
-        const thingId = this.get('thingId');
-        return Base.validators.thingId(thingId);
-      }.bind(account),
+    return {
+      thingId,
     };
+  }
+
+  thingIdValidator () {
+    const thingId = this.get('thingId');
+    return Base.validators.thingId(thingId);
   }
 }
 

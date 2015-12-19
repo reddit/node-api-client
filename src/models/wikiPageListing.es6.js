@@ -10,6 +10,6 @@ class WikiPageListing extends Base {
 
     super(props);
   }
-};
+}
 
 export default WikiPageListing;
