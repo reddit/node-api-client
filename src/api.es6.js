@@ -17,7 +17,7 @@ import WikiRevision from './models/wikiRevision';
 import WikiPageListing from './models/wikiPageListing';
 import WikiPageSettings from './models/wikiPageSettings';
 
-var models = {
+const models = {
   Account,
   Award,
   Base,

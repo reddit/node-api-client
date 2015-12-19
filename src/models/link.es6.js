@@ -39,11 +39,11 @@ class Link extends Base {
   }
 
   validators () {
-    const title = this.titleValidator;
-    const sendReplies = this.sendRepliesValidator;
-    const thingId = this.thingIdValidator;
+    const title = this.titleValidator.bind(this);
+    const sendReplies = this.sendRepliesValidator.bind(this);
+    const thingId = this.thingIdValidator.bind(this);
 
-    this.validators = {
+    return {
       title,
       sendReplies,
       thingId,
@@ -84,7 +84,7 @@ class Link extends Base {
   }
 
   get expandable () {
-    var props = this.props;
+    const props = this.props;
 
     // If it has secure_media, or media, or selftext, it has expandable.
     return !!(
@@ -95,7 +95,7 @@ class Link extends Base {
   }
 
   get thumbnail () {
-    var props = this.props;
+    const props = this.props;
 
     if (props.thumbnail &&
        (props.thumbnail === 'default' ||
@@ -113,7 +113,7 @@ class Link extends Base {
   }
 
   toJSON () {
-    var props = this.props;
+    const props = this.props;
     props._type = this._type;
 
     props.thumbnail = this.thumbnail;
@@ -122,6 +122,8 @@ class Link extends Base {
 
     props.cleanPermalink = this.unredditify(props.permalink);
     props.cleanUrl = this.unredditify(props.url);
+
+    props._type = this._type;
 
     return props;
   }

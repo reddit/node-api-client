@@ -4,7 +4,7 @@ class Vote extends Base {
   _type = 'Vote';
 
   validators () {
-    const direction = this.directionValidator;
+    const direction = this.directionValidator.bind(this);
 
     return {
       direction,

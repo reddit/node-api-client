@@ -5,8 +5,8 @@ class Comment extends Base {
   _type = 'Comment';
 
   validators () {
-    const body = this.bodyValidator;
-    const thingId = this.thingIdValidator;
+    const body = this.bodyValidator.bind(this);
+    const thingId = this.thingIdValidator.bind(this);
 
     return {
       body,

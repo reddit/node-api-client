@@ -4,9 +4,9 @@ class Message extends Base {
   _type = 'Message';
 
   validators () {
-    const text = this.textValidator;
-    const subject = this.subjectValidator;
-    const to = this.toValidator;
+    const text = this.textValidator.bind(this);
+    const subject = this.subjectValidator.bind(this);
+    const to = this.toValidator.bind(this);
 
     return {
       text,

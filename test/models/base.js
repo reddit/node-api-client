@@ -35,13 +35,15 @@ describe('Base model', function() {
   describe('validation', function() {
     it('returns invalid properties', function() {
       var invalid;
-      var child = new Base({}, {
-        validators: {
+      var child = new Base({});
+
+      child.validators = function() {
+        return {
           val: function(v) {
             return v == 1;
-          }
-        }
-      });
+          },
+        };
+      };
 
       child.set('val', 1);
       invalid = child.validate();
@@ -52,52 +54,6 @@ describe('Base model', function() {
       invalid = child.validate();
 
       expect(invalid).to.have.members(['val']);
-    });
-  });
-
-  describe('events', function() {
-    it('publishes events when setting properties', function() {
-      var base = new Base({
-        test: 'wat'
-      });
-
-      var setSpy = sinon.spy();
-      var baseSetSpy = sinon.spy();
-
-      base.on('set:test', setSpy);
-      base.on('set', baseSetSpy);
-
-      base.set('test',  'value');
-
-      expect(setSpy).to.have.been.calledWith('value');
-      expect(baseSetSpy).to.have.been.calledWith('test', 'value');
-    });
-
-    it('publishes events properly when setting with an object', function() {
-      var base = new Base({
-        test: 'wat'
-      });
-
-      var value = {
-        test: 'changed',
-        anotherProperty: 'added',
-      }
-
-      var setSpy = sinon.spy();
-      var baseSetSpy = sinon.spy();
-
-      base.on('set:anotherProperty', setSpy);
-      base.on('set:test', setSpy);
-      base.on('set', baseSetSpy);
-
-      base.set(value);
-
-      expect(setSpy).to.have.been.calledWith('changed');
-      expect(setSpy).to.have.been.calledWith('added');
-      expect(setSpy).to.have.been.called.twice;
-
-      expect(baseSetSpy).to.have.been.calledWith(value);
-      expect(baseSetSpy).to.have.been.called.once;
     });
   });
 

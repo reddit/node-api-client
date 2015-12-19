@@ -3,6 +3,18 @@ import Base from './base';
 class Report extends Base {
   _type = 'Report';
 
+  validators () {
+    const reason = this.reasonValidator.bind(this);
+    const otherReason = this.otherReasonValidator.bind(this);
+    const thingId = this.thingIdValidator.bind(this);
+
+    this.validators = {
+      reason,
+      otherReason,
+      thingId,
+    };
+  }
+
   reasonValidator () {
     if (this.get('other_reason') && !(this.get('reason') === 'other')) {
       return false;

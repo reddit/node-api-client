@@ -16,15 +16,12 @@ class Base {
   }
 
   get (name) {
-    return this.format(name, this.props[name]);
+    return this.props[name];
   }
 
   set (name, value) {
     if (typeof name === 'object') {
-      this.props = {
-        ...this.props,
-        ...value,
-      };
+      Object.assign(this.props, name);
     } else {
       this.props[name] = value;
     }
@@ -32,7 +29,8 @@ class Base {
 
   validate () {
     const validators = this.validators();
-    if (!validators()) {
+
+    if (!validators) {
       return true;
     }
 
@@ -52,7 +50,7 @@ class Base {
     return invalid;
   }
 
-  toJSON (formatter) {
+  toJSON (formatter=this.noopFormat) {
     let props = this.props;
     props._type = this._type;
 
@@ -81,11 +79,11 @@ class Base {
     },
 
     maxLength: function (s, l) {
-      return Base.validators.string(s) && Base.validators.max(s.length, l);
+      return Base.validators.max(s.length, l);
     },
 
     minLength: function (s, l) {
-      return Base.validators.string(s) && Base.validators.min(s.length, l);
+      return Base.validators.min(s.length, l);
     },
 
     regex: function(s, expr) {

@@ -4,7 +4,7 @@ class Account extends Base {
   _type = 'Account';
 
   validators () {
-    const thingId = this.thingIdValidator;
+    const thingId = this.thingIdValidator.bind(this);
 
     return {
       thingId,

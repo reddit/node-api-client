@@ -3,15 +3,14 @@ import retry from 'superagent-retry';
 
 retry(superagent);
 
-import querystring from 'querystring';
 import Cache from 'restcache';
 import has from 'lodash/object/has';
 
 import Account from '../models/account';
+import Award from '../models/award';
 import Comment from '../models/comment';
 import Link from '../models/link';
 import Message from '../models/message';
-import Vote from '../models/vote';
 import Subreddit from '../models/subreddit';
 import Stylesheet from '../models/stylesheet';
 import Preferences from '../models/preferences';
@@ -23,6 +22,12 @@ import WikiPageSettings from '../models/wikiPageSettings';
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
 
+const TYPES = {
+  COMMENT: 't1',
+  LINK: 't3',
+  MESSAGE: 't4',
+};
+
 // decode websafe_json encoding
 function unsafeJson(text) {
   return text.replace(/&gt;/g, '>')
@@ -30,15 +35,15 @@ function unsafeJson(text) {
              .replace(/&amp;/g, '&');
 }
 
-function res_type(str){
+function res_type(str) {
   return str.split(/ *; */).shift();
-};
+}
 
 function massageAPIv1JsonRes(res) {
   // API v1 actually returns JSON with extra HTML escaping surprises,
   // re-parse the body in that case.
   if (res_type(res.headers['content-type'] || '') === 'application/json') {
-    var text = res.text && res.text.replace(/^\s*|\s*$/g, '');
+    const text = res.text && res.text.replace(/^\s*|\s*$/g, '');
     res.body = text && JSON.parse(unsafeJson(text));
   }
 }
@@ -69,16 +74,15 @@ function returnGETPromise (options, formatBody, log) {
     log('requesting', 'GET', options.uri, options);
 
     let sa = superagent
-     .get(options.uri)
-     .set(options.headers || {})
-     .query(options.query || {})
-     .timeout(options.timeout)
+      .get(options.uri)
+      .set(options.headers || {})
+      .query(options.query || {})
+      .timeout(options.timeout);
 
-    if (options.env !== 'SERVER') {
-      sa.retry(3)
-    } else {
-      // redirects break on the server, thanks superagent
+    if (options.env === 'SERVER') {
       sa.redirects(0);
+    } else {
+      sa.retry(3);
     }
 
     sa.end((err, res) => {
@@ -108,7 +112,7 @@ function returnGETPromise (options, formatBody, log) {
 
       try {
         massageAPIv1JsonRes(res);
-        var body = res.body;
+        let body = res.body;
 
         if (formatBody) {
           body = formatBody(body);
@@ -116,7 +120,7 @@ function returnGETPromise (options, formatBody, log) {
 
         return resolve({
           headers: processMeta(res.headers, res.body),
-          body: body,
+          body,
         });
       } catch (e) {
         return reject(e);
@@ -125,9 +129,9 @@ function returnGETPromise (options, formatBody, log) {
   });
 }
 
-function bind(obj, context) {
-  for (var p in obj) {
-    if(obj.hasOwnProperty(p) && typeof obj[p] == 'function' ) {
+function bindAll(obj, context) {
+  for (let p in obj) {
+    if (obj.hasOwnProperty(p) && typeof obj[p] == 'function') {
       obj[p] = obj[p].bind(context);
     }
   }
@@ -137,11 +141,11 @@ function bind(obj, context) {
 
 const CACHE_RULES = [
   function shouldCache(options) {
-    var params = options[0];
+    const params = options[0];
     // Do not cache if the rendering environment is the server
     return params.env !== 'SERVER';
-  }
-]
+  },
+];
 
 class APIv1Endpoint {
   constructor (config = {}) {
@@ -177,8 +181,8 @@ class APIv1Endpoint {
             max: 5,
             maxAge: 1000 * 60 * 30,
           },
-        }
-      }
+        },
+      },
     });
   }
 
@@ -193,8 +197,7 @@ class APIv1Endpoint {
   }
 
   baseGet (uri, options={}, formatBody) {
-    var query = options.query || {};
-    var headers = options.headers || {};
+    let headers = options.headers || {};
     let log = this.log.bind(this);
 
     if (!options.env) {
@@ -213,10 +216,16 @@ class APIv1Endpoint {
       let cacheOptions = Object.assign({
         name: uri,
         rules: CACHE_RULES,
-      }, options.cache)
+      }, options.cache);
 
       if (options.id) {
-        return this.cache.getById(cacheOptions.type, options.id, returnGETPromise, [options, formatBody, log], cacheOptions);
+        return this.cache.getById(
+          cacheOptions.type,
+          options.id,
+          returnGETPromise,
+          [options, formatBody, log],
+          cacheOptions
+        );
       } else {
         return this.cache.get(returnGETPromise, [options, formatBody, log], cacheOptions);
       }
@@ -234,10 +243,10 @@ class APIv1Endpoint {
   }
 
   save(method, uri, options, formatBody, dataType, id, mergeOpts) {
-    var options = options || {};
+    options = options || {};
 
-    var form = options.form || {};
-    var headers = options.headers || {};
+    let form = options.form || {};
+    let headers = options.headers || {};
 
     if (options.userAgent) {
       headers['User-Agent'] = options.userAgent;
@@ -284,7 +293,7 @@ class APIv1Endpoint {
                 cache.dataCache[dataType].del(options.id);
               }
 
-              var data = cache.dataCache[dataType].get(options.id);
+              const data = cache.dataCache[dataType].get(options.id);
 
               if (data) {
                 cache.dataCache[dataType].set(options.id, Object.assign(data, mergeOpts));
@@ -294,7 +303,7 @@ class APIv1Endpoint {
 
           try {
             massageAPIv1JsonRes(res);
-            var body = res.body;
+            let body = res.body;
 
             if (formatBody) {
               body = formatBody(body);
@@ -309,12 +318,12 @@ class APIv1Endpoint {
   }
 
   hydrate (endpoint, baseOptions, data) {
-    var cacheData;
+    let cacheData;
 
     if (!data.body && !Array.isArray(data)) {
       cacheData = {
         body: [data],
-      }
+      };
     } else {
       cacheData = Object.assign({}, data);
     }
@@ -339,9 +348,10 @@ class APIv1Endpoint {
   }
 
   get subreddits() {
-    return bind({
+    return bindAll({
       buildOptions: function (options) {
-        var uri = options.origin;
+        let uri = options.origin;
+
         if (options.query.sort) {
           uri += `/subreddits/${options.query.sort}.json`;
         } else {
@@ -362,7 +372,7 @@ class APIv1Endpoint {
                 subreddits: d.map(function(s) {
                   s.id = s.display_name.toLowerCase();
                   return s;
-                })
+                }),
               };
             } else if (d) {
               d.id = d.display_name.toLowerCase();
@@ -372,14 +382,14 @@ class APIv1Endpoint {
           },
           unformat: function(d) {
             return d.subreddits;
-          }
+          },
         };
 
         return { uri, options };
       },
 
-      get: function (options = {}) {
-        var { uri, options } = this.subreddits.buildOptions(options);
+      get: function (opts={}) {
+        const { uri, options } = this.subreddits.buildOptions(opts);
         return this.baseGet(uri, options, this.subreddits.formatBody(options));
       },
 
@@ -390,28 +400,28 @@ class APIv1Endpoint {
           } else if (options.id && body) {
             return new Subreddit(body.data || body).toJSON();
           }
-        }
+        };
       },
     }, this);
   }
 
   get subscriptions() {
-    return bind({
+    return bindAll({
       post: function (options = {}) {
-        var uri = options.origin + '/api/subscribe';
+        const uri = options.origin + '/api/subscribe';
 
         if (!options.model) {
           throw new NoModelError('/api/subscribe');
         }
 
-        var valid = options.model.validate();
+        const valid = options.model.validate();
         if (valid) {
-          var json = options.model.toJSON();
+          const json = options.model.toJSON();
 
           options.form = {
             api_type: 'json',
             action: json.action,
-            sr: json.sr
+            sr: json.sr,
           };
 
           return this.basePost(uri, options, (body) => {
@@ -473,27 +483,27 @@ class APIv1Endpoint {
   }
 
   get saved() {
-    return bind({
+    return bindAll({
       get: function(options = {}) {
-        var uri = `${options.origin}/user/${options.user}/saved.json`;
+        const uri = `${options.origin}/user/${options.user}/saved.json`;
 
         options.query = {
           ...options.query,
           feature: 'link_preview',
-          sr_detail: 'true'
+          sr_detail: 'true',
         };
 
         return this.baseGet(uri, options, (body) => {
           if (body) {
-            var things = body.data.children;
-            var data = [];
+            const things = body.data.children;
+            const data = [];
 
             things.forEach(function(t) {
               switch (t.kind) {
-                case 't1':
+                case TYPES.COMMENT:
                   data.push((new Comment(t.data)).toJSON());
                   break;
-                case 't3':
+                case TYPES.LINK:
                   data.push((new Link(t.data)).toJSON());
                   break;
               }
@@ -504,10 +514,10 @@ class APIv1Endpoint {
         });
       },
       post: function (options = {}) {
-        var uri = options.origin + '/api/save';
+        const uri = options.origin + '/api/save';
 
         if (!options.id) {
-          throw('Must pass an `id` to `saved.post`.');
+          throw new Error('Must pass an `id` to `saved.post`.');
         }
 
         options.form = {
@@ -518,14 +528,14 @@ class APIv1Endpoint {
         return this.basePost(uri, options, (body) => {
           return body;
         }, options.type + 's', options.id, {
-          saved: true
+          saved: true,
         });
       },
       delete: function (options = {}) {
-        var uri = options.origin + '/api/unsave';
+        const uri = options.origin + '/api/unsave';
 
         if (!options.id) {
-          throw('Must pass an `id` to `saved.delete`.');
+          throw new Error('Must pass an `id` to `saved.delete`.');
         }
 
         options.form = {
@@ -536,32 +546,33 @@ class APIv1Endpoint {
         return this.basePost(uri, options, (body) => {
           return body;
         }, options.type + 's', options.id, {
-          saved: false
+          saved: false,
         });
-      }
+      },
     }, this);
   }
 
   get hidden() {
-    return bind({
+    return bindAll({
       get: function(options = {}) {
-        var uri = `${options.origin}/user/${options.user}/hidden.json`;
+        const uri = `${options.origin}/user/${options.user}/hidden.json`;
+
         options.query = {
           feature: 'link_preview',
-          sr_detail: 'true'
+          sr_detail: 'true',
         };
 
         return this.baseGet(uri, options, (body) => {
           if (body) {
-            var things = body.data.children;
-            var data = [];
+            const things = body.data.children;
+            let data = [];
 
             things.forEach(function(t) {
               switch (t.kind) {
-                case 't1':
+                case TYPES.COMMENT:
                   data.push((new Comment(t.data)).toJSON());
                   break;
-                case 't3':
+                case TYPES.LINK:
                   data.push((new Link(t.data)).toJSON());
                   break;
               }
@@ -572,10 +583,10 @@ class APIv1Endpoint {
         });
       },
       post: function (options = {}) {
-        var uri = options.origin + '/api/hide';
+        const uri = options.origin + '/api/hide';
 
         if (!options.id) {
-          throw('Must pass an `id` to `hidden.post`.');
+          throw new Error('Must pass an `id` to `hidden.post`.');
         }
 
         options.form = {
@@ -586,14 +597,14 @@ class APIv1Endpoint {
         return this.basePost(uri, options, (body) => {
           return body;
         }, options.type + 's', options.id, {
-          hidden: true
+          hidden: true,
         });
       },
       delete: function (options = {}) {
-        var uri = options.origin + '/api/unhide';
+        const uri = options.origin + '/api/unhide';
 
         if (!options.id) {
-          throw('Must pass an `id` to `hidden.delete`.');
+          throw new Error('Must pass an `id` to `hidden.delete`.');
         }
 
         options.form = {
@@ -604,26 +615,28 @@ class APIv1Endpoint {
         return this.basePost(uri, options, (body) => {
           return body;
         }, options.type + 's', options.id, {
-          hidden: false
+          hidden: false,
         });
-      }
+      },
     }, this);
   }
 
   get search () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = options.origin;
+        let uri = options.origin;
+
         if (options.query.subreddit) {
           uri += `/r/${options.query.subreddit}`;
           options.query.restrict_sr = 'on';
         }
+
         uri += '/search.json';
 
-        return { uri, options }
+        return { uri, options };
       },
 
-      get: function(options = {}) {
+      get: function(opts={}) {
         /*
          * Params:
          *  [q] - a query string no longer than 512 characters
@@ -633,46 +646,50 @@ class APIv1Endpoint {
          *  [subreddit] - the name of subreddit (optional)
          *  [include_facets] - has to be "on" if you need summary of subreddits (optional)
          */
-        var { uri, options } = this.search.buildOptions(options);
+        const { uri, options } = this.search.buildOptions(opts);
 
         return this.baseGet(uri, options, (body) => {
           if (body) {
             // just in case. If only one type is returned body will still be an object
             body = Array.isArray(body) ? body : [body];
 
-            var linkListing = [];
-            var subredditListing = [];
-            var meta = {};
+            let linkListing = [];
+            let subredditListing = [];
+            let meta = {};
 
             body.map((listing) => {
               if (listing.data.children.length) {
                 if (listing.data.children[0].kind === 't3') {
-                  linkListing = listing.data.children.map(c => new Link(c.data).toJSON())
+                  linkListing = listing.data.children.map(function(c) {
+                    return new Link(c.data).toJSON();
+                  });
                   meta.after = listing.data.after;
                   meta.before = listing.data.before;
                 } else {
-                  subredditListing = listing.data.children.map(c => new Subreddit(c.data).toJSON())
+                  subredditListing = listing.data.children.map(function(c) {
+                    return new Subreddit(c.data).toJSON();
+                  });
                 }
               }
-            })
+            });
 
             return {
+              meta,
               links: linkListing,
               subreddits: subredditListing,
-              meta: meta
             };
           } else {
             return {};
           }
         });
-      }
+      },
     }, this);
   }
 
   get stylesheet () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = options.origin;
+        let uri = options.origin;
 
         if (options.query.op) {
           uri += '/api/subreddit_stylesheet.json';
@@ -683,8 +700,8 @@ class APIv1Endpoint {
         return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.stylesheet.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.stylesheet.buildOptions(opts);
 
         return this.baseGet(uri, options, (body) => {
           if (body.data && body.data.images && body.data.stylesheet) {
@@ -693,14 +710,14 @@ class APIv1Endpoint {
             return {};
           }
         });
-      }
+      },
     }, this);
   }
 
   get preferences () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = options.origin + '/api/v1/me/prefs';
+        let uri = options.origin + '/api/v1/me/prefs';
 
         options.cache = {
           type: 'preferences',
@@ -719,15 +736,14 @@ class APIv1Endpoint {
           },
           unformat: function(d) {
             return d.preferences;
-          }
+          },
         };
 
         return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.preferences.buildOptions(options);
-
+      get: function(opts={}) {
+        const { uri, options } = this.preferences.buildOptions(opts);
         return this.baseGet(uri, options, this.preferences.formatBody(options));
       },
 
@@ -741,15 +757,16 @@ class APIv1Endpoint {
         };
       },
 
-      patch: function(options = {}) {
+      patch: function(opts={}) {
+        const { uri, options } = this.preferences.buildOptions(opts);
 
-        var { uri, options } = this.preferences.buildOptions(options);
         options.form = {
           api_type: 'json',
         };
 
-        options.changeSet.forEach((prop) => {options.form[prop] = options.model.get(prop);
-        })
+        options.changeSet.forEach((prop) => {
+          options.form[prop] = options.model.get(prop);
+        });
 
         return this.basePatch(uri, options, (body) => {
           if (body) {
@@ -758,18 +775,19 @@ class APIv1Endpoint {
             return {};
           }
         }, 'preferences');
-      }
+      },
     }, this);
   }
 
   get links () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var sort = options.query.sort || 'hot';
+        const sort = options.query.sort || 'hot';
+
         options.query.feature = 'link_preview';
         options.query.sr_detail = 'true';
 
-        var uri = options.origin;
+        let uri = options.origin;
 
         if (options.user) {
           uri += `/user/${options.user}/submitted.json`;
@@ -781,7 +799,7 @@ class APIv1Endpoint {
           if (options.query.subredditName) {
             uri += `/r/${options.query.subredditName}`;
           } else if (options.query.multi) {
-            uri += `/user/${options.query.multiUser}/m/${options.query.multi}`
+            uri += `/user/${options.query.multiUser}/m/${options.query.multi}`;
           }
 
           uri += `/${sort}.json`;
@@ -794,18 +812,18 @@ class APIv1Endpoint {
             maxAge: 1000 * 60 * 5,
           },
           format: function(d) {
-            return { links: d }
+            return { links: d };
           },
           unformat: function(d) {
             return d.links;
-          }
+          },
         };
 
-        return { uri, options }
+        return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.links.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.links.buildOptions(opts);
         return this.baseGet(uri, options, this.links.formatBody(options));
       },
 
@@ -813,27 +831,27 @@ class APIv1Endpoint {
         return function(body) {
           if (body.data && body.data.children && body.data.children[0]) {
             if (options.id) {
-              return new Link(body.data.children[0].data).toJSON()
+              return new Link(body.data.children[0].data).toJSON();
             } else {
-              return body.data.children.map(c => new Link(c.data).toJSON())
+              return body.data.children.map(c => new Link(c.data).toJSON());
             }
           } else if (body.data.children) {
             return [];
           }
-        }
+        };
       },
 
       post: function(options = {}) {
-        var uri = options.origin + '/api/submit';
+        const uri = options.origin + '/api/submit';
 
         if (!options.model) {
           throw new NoModelError('/api/submit');
         }
 
-        var valid = options.model.validate();
+        const valid = options.model.validate();
 
         if (valid === true) {
-          var json = options.model.toJSON();
+          const json = options.model.toJSON();
 
           options.form = {
             api_type: 'json',
@@ -855,7 +873,7 @@ class APIv1Endpoint {
 
           return this.basePost(uri, options, (body) => {
             if (body.json && body.json.errors.length === 0) {
-                return body.json.data;
+              return body.json.data;
             } else {
               throw body.json;
             }
@@ -872,13 +890,13 @@ class APIv1Endpoint {
       delete: function (options = {}) {
         options.type = 'link';
         return this.deleteCommentOrLink(options);
-      }
+      },
     }, this);
   }
 
   get comments () {
-    function mapReplies (comment) {
-      var comment = comment.data;
+    function mapReplies (data) {
+      let comment = data.data;
 
       if (comment.replies) {
         comment.replies = comment.replies.data.children.map(mapReplies);
@@ -889,7 +907,7 @@ class APIv1Endpoint {
       return new Comment(comment).toJSON();
     }
 
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
         let uri = options.origin;
 
@@ -916,11 +934,11 @@ class APIv1Endpoint {
           options.query.sort = options.sort;
         }
 
-        return { uri, options }
+        return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.comments.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.comments.buildOptions(opts);
 
         return this.baseGet(uri, options, (body) => {
           if (Array.isArray(body)) {
@@ -931,17 +949,17 @@ class APIv1Endpoint {
         });
       },
 
-      post: function(options = {}) {
-        var uri = options.origin + '/api/comment';
+      post: function(options={}) {
+        const uri = options.origin + '/api/comment';
 
         if (!options.model) {
           throw new NoModelError('/api/comment');
         }
 
-        var valid = options.model.validate();
+        const valid = options.model.validate();
 
         if (valid === true) {
-          var json = options.model.toJSON();
+          const json = options.model.toJSON();
 
           options.form = {
             api_type: 'json',
@@ -968,17 +986,17 @@ class APIv1Endpoint {
         return this.updateCommentOrLink(options);
       },
 
-      delete: function (options = {}) {
+      delete: function (options={}) {
         options.type = 'comment';
         return this.deleteCommentOrLink(options);
-      }
+      },
     }, this);
   }
 
   get users () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = options.origin + '/';
+        let uri = options.origin + '/';
 
         if (options.user === 'me') { // current oauth doesn't return user id
           uri += 'api/v1/me';
@@ -997,15 +1015,14 @@ class APIv1Endpoint {
           },
           unformat: function(d) {
             return d.users;
-          }
+          },
         };
 
-        return { uri, options }
+        return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.users.buildOptions(options);
-
+      get: function(opts={}) {
+        const { uri, options } = this.users.buildOptions(opts);
         return this.baseGet(uri, options, this.users.formatBody(options));
       },
 
@@ -1014,55 +1031,57 @@ class APIv1Endpoint {
           if (body) {
             return new Account(body.data || body).toJSON();
           }
-        }
+        };
       },
 
     }, this);
   }
 
   get trophies () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = `${options.origin}/api/v1/user/${options.user}/trophies.json`;
-        return { uri, options }
+        const uri = `${options.origin}/api/v1/user/${options.user}/trophies.json`;
+        return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.trophies.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.trophies.buildOptions(opts);
 
         return this.baseGet(null, uri, options, (body) => {
           if (body) {
-            var trophies = body.data;
-            return new Award(user).toJSON();
+            const trophies = body.data;
+            return trophies.map(function(t) {
+              return new Award(t).toJSON();
+            });
           }
         });
-      }
+      },
     }, this);
   }
 
   get activities () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = `${options.origin}/user/${options.user}/${options.activity}.json`;
+        const uri = `${options.origin}/user/${options.user}/${options.activity}.json`;
         options.query.feature = 'link_preview';
         options.query.sr_detail = 'true';
-        return { uri, options }
+        return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.activities.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.activities.buildOptions(opts);
 
         return this.baseGet(uri, options, (body) => {
           if (body) {
-            var activities = body.data.children;
-            var data = [];
+            const activities = body.data.children;
+            let data = [];
 
             activities.forEach(function(a) {
               switch (a.kind) {
-                case 't1':
+                case TYPES.COMMENT:
                   data.push((new Comment(a.data)).toJSON());
                   break;
-                case 't3':
+                case TYPES.LINK:
                   data.push((new Link(a.data)).toJSON());
                   break;
               }
@@ -1071,20 +1090,20 @@ class APIv1Endpoint {
             return data;
           }
         });
-      }
+      },
     }, this);
   }
 
   get votes () {
-    return bind({
+    return bindAll({
       post: function(options = {}) {
-        var uri = options.origin + '/api/vote';
+        const uri = options.origin + '/api/vote';
 
         if (!options.model) {
           throw new NoModelError('/api/vote');
         }
 
-        var valid = options.model.validate();
+        const valid = options.model.validate();
 
         if (valid === true) {
           options.form = options.model.toJSON((props) => {
@@ -1094,7 +1113,7 @@ class APIv1Endpoint {
             };
           });
 
-          var likes;
+          let likes;
 
           if (options.model.props.direction === -1) {
             likes = false;
@@ -1104,28 +1123,27 @@ class APIv1Endpoint {
 
           return this.basePost(uri, options, () => null,
                                options.type.toLowerCase() + 's',
-                               options.form.id,
-                               {
-                                likes: likes,
-                                score: options.score,
+                               options.form.id, {
+                                 likes: likes,
+                                 score: options.score,
                                });
         } else {
           throw new ValidationError('Vote', options.model, valid);
         }
-      }
-    }, this)
+      },
+    }, this);
   }
 
   get reports () {
-    return bind({
+    return bindAll({
       post: function(options = {}) {
-        var uri = options.origin + '/api/report';
+        const uri = options.origin + '/api/report';
 
         if (!options.model) {
           throw new NoModelError('/api/report');
         }
 
-        var valid = options.model.validate();
+        const valid = options.model.validate();
 
         if (valid === true) {
           options.form = options.model.toJSON((props) => {
@@ -1137,24 +1155,25 @@ class APIv1Endpoint {
             };
           });
 
-          return this.basePost(uri, options, () => null,
+          return this.basePost(
+                              uri,
+                              options,
+                              () => null,
                               options.model.props._type.toLowerCase() + 's',
-                              options.form.thing_id,
-                              {
+                              options.form.thing_id, {
                                 hidden: true,
-                              }
-                              );
+                              });
         } else {
           throw new ValidationError('Report', options.model, valid);
         }
-      }
-    }, this)
+      },
+    }, this);
   }
 
   get captcha () {
-    return bind({
+    return bindAll({
       get: function (options = {}) {
-        var uri = options.origin + '/api/needs_captcha';
+        const uri = options.origin + '/api/needs_captcha';
 
         return this.baseGet({}, uri, options, (body) => {
           if (typeof body === 'boolean') {
@@ -1164,7 +1183,7 @@ class APIv1Endpoint {
       },
 
       post: function(options = {}) {
-        var uri = options.origin + '/api/new_captcha';
+        const uri = options.origin + '/api/new_captcha';
 
         return this.basePost(uri, options, (body) => {
           if (!body.json.errors.length) {
@@ -1172,15 +1191,15 @@ class APIv1Endpoint {
           } else {
             return body.json.errors;
           }
-        })
-      }
-    }, this)
+        });
+      },
+    }, this);
   }
 
   get notifications () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = options.origin + '/api/v1/me/notifications';
+        let uri = options.origin + '/api/v1/me/notifications';
 
         if (options.id) {
           uri += '/' + options.id;
@@ -1189,26 +1208,26 @@ class APIv1Endpoint {
         return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.notifications.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.notifications.buildOptions(opts);
 
         return this.baseGet(uri, options, (body) => {
           return body;
         });
-      }
+      },
     }, this);
   }
 
   get messages () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
-        var uri = options.origin + '/message/' + (options.view || 'inbox');
+        const uri = options.origin + '/message/' + (options.view || 'inbox');
 
         return { uri, options };
       },
 
-      get: function(options = {}) {
-        var { uri, options } = this.messages.buildOptions(options);
+      get: function(opts={}) {
+        const { uri, options } = this.messages.buildOptions(opts);
         let data = [];
         let read = [];
 
@@ -1220,13 +1239,13 @@ class APIv1Endpoint {
               }
 
               switch (t.kind) {
-                case 't1':
+                case TYPES.COMMENT:
                   data.push((new Comment(t.data)).toJSON());
                   break;
-                case 't3':
+                case TYPES.LINK:
                   data.push((new Link(t.data)).toJSON());
                   break;
-                case 't4':
+                case TYPES.MESSAGE:
                   data.push((new Message(t.data)).toJSON());
                   break;
               }
@@ -1235,13 +1254,13 @@ class APIv1Endpoint {
 
           // Mark messages as read after we fetch them
           if (read.length > 0) {
-            var readUrl = options.origin + '/api/read_message';
+            const readUrl = opts.origin + '/api/read_message';
 
-            var readOptions = Object.assign({
+            const readOptions = Object.assign({
               form: {
                 id: read.join(','),
-              }
-            }, options);
+              },
+            }, opts);
 
             this.basePost(readUrl, readOptions, () => {});
           }
@@ -1250,7 +1269,7 @@ class APIv1Endpoint {
             if (m.replies) {
               m.replies = m.replies.data.children.filter(function(c) {
                 return c && c.data;
-              }).map(function(c){
+              }).map(function(c) {
                 return (new Message(c.data)).toJSON();
               });
             }
@@ -1262,7 +1281,7 @@ class APIv1Endpoint {
       post: function(options = {}) {
         // `api/comment` is intentional; message replies are treated as
         // comments.
-        var uri = options.origin + '/api/comment';
+        let uri = options.origin + '/api/comment';
 
         // New messages (not replies) go to the api/compose endpoint.
         if (!options.model.get('thingId')) {
@@ -1273,10 +1292,10 @@ class APIv1Endpoint {
           throw new NoModelError('/api/message');
         }
 
-        var valid = options.model.validate();
+        const valid = options.model.validate();
 
         if (valid === true) {
-          var json = options.model.toJSON();
+          const json = options.model.toJSON();
 
           options.form = {
             api_type: 'json',
@@ -1299,7 +1318,7 @@ class APIv1Endpoint {
             options.form.iden = json.iden;
           }
 
-          if(json.subject) {
+          if (json.subject) {
             options.form.subject = json.subject;
           }
 
@@ -1313,7 +1332,7 @@ class APIv1Endpoint {
             if (res && res.data) {
               let message = res.data.things[0].data;
               return new Message(message).toJSON();
-            } else if (res.errors.length){
+            } else if (res.errors.length) {
               throw res;
             } else {
               return res;
@@ -1322,7 +1341,7 @@ class APIv1Endpoint {
         } else {
           throw new ValidationError(options.model._type, options.model, valid);
         }
-      }
+      },
     }, this);
   }
 
@@ -1385,33 +1404,33 @@ class APIv1Endpoint {
   }
 
   updateCommentOrLink (options) {
-    var uri = options.origin + '/api/editusertext';
+    const uri = options.origin + '/api/editusertext';
 
     if (!options.model) {
       throw new NoModelError('/api/editusertext');
     }
     // api only supports updating selftext
-    var prop = options.model.props._type === 'Link' ? 'selftext' : 'body';
+    const prop = options.model.props._type === 'Link' ? 'selftext' : 'body';
     options.model.set(prop, options.changeSet);
 
-    var valid = options.model.validate();
+    const valid = options.model.validate();
 
     if (valid) {
-      var json = options.model.toJSON();
+      const json = options.model.toJSON();
       options.form = {
         api_type: 'json',
         text: json.selftext || json.body,
         thing_id: json.name,
-      }
+      };
 
       return this.basePost(uri, options, (body) => {
         if (body.json.errors.length === 0) {
-          var updatedThing = body.json.data.things[0].data;
-           if (body.json.data.things[0].kind === 't3') {
-             return new Link(updatedThing).toJSON();
-           } else {
-             return new Comment(updatedThing).toJSON();
-           }
+          const updatedThing = body.json.data.things[0].data;
+          if (body.json.data.things[0].kind === 't3') {
+            return new Link(updatedThing).toJSON();
+          } else {
+            return new Comment(updatedThing).toJSON();
+          }
         } else {
           throw body.json.errors;
         }
@@ -1424,10 +1443,10 @@ class APIv1Endpoint {
   }
 
   deleteCommentOrLink (options) {
-    var uri = options.origin + '/api/del';
+    const uri = options.origin + '/api/del';
 
     if (!options.id) {
-      throw('Must pass an `id` to `links.delete`.');
+      throw new Error('Must pass an `id` to `links.delete`.');
     }
 
     options.form = {

@@ -9,8 +9,8 @@ class Subscription extends Base {
   _type = 'Subscription';
 
   validators () {
-    const action = this.actionValidator;
-    const sr = this.srValidator;
+    const action = this.actionValidator.bind(this);
+    const sr = this.srValidator.bind(this);
 
     return {
       action,
