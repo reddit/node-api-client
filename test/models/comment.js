@@ -1,7 +1,3 @@
-require('babel/register')({
-  extensions: ['.js', '.es6.js']
-});
-
 var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon');
