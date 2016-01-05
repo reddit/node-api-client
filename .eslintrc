@@ -1,0 +1,70 @@
+{
+  "parser": "babel-eslint",
+
+  "root": true,
+
+  "env": {
+    // I write for browser
+    "browser": true,
+    // in CommonJS
+    "node": true
+  },
+
+  "extends": "eslint:recommended",
+
+  // plugins let use use custom rules below
+  "plugins": [
+    "babel",
+    "react"
+  ],
+
+  "ecmaFeatures": {
+      "jsx": true,
+      "es6": true,
+    },
+
+  "rules": {
+    // 0 = off
+    // 1 = warn
+    // 2 = error
+
+    // React specifc rules
+    "react/jsx-boolean-value": 0,
+    "react/jsx-closing-bracket-location": 1,
+    "react/jsx-curly-spacing": [2, "always"],
+    "react/jsx-indent-props": [1, 2],
+    "react/jsx-no-undef": 1,
+    "react/jsx-uses-react": 1,
+    "react/jsx-uses-vars": 1,
+    "react/wrap-multilines": 1,
+    "react/react-in-jsx-scope": 1,
+    "react/prefer-es6-class": 1,
+    // no binding functions in render for perf
+    "react/jsx-no-bind": 1,
+
+    // handle async/await functions correctly
+    // "babel/generator-star-spacing": 1,
+    // handle object spread
+    "babel/object-shorthand": 1,
+
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "max-len": [1, 100, 2, {"ignoreComments": true}],
+    "no-unused-vars": 1,
+    "no-console": 0,
+    // semicolons
+    "semi": [2, "always"],
+    "brace-style": [2, "1tbs", { "allowSingleLine": true }],
+    "comma-dangle": [2, "always-multiline"],
+    "consistent-return": 0,
+    "no-underscore-dangle": 0,
+    "quotes": [2, "single"],
+    "space-after-keywords": [2, "always"],
+    "space-before-blocks": [2, "always"],
+    "space-before-function-parentheses": [0, "never"],
+    "space-in-brackets": [0, "never"],
+    "space-in-parens": [2, "never"],
+    "space-return-throw-case": 1,
+    "space-unary-ops": [1, { "words": true, "nonwords": false }],
+    "strict": [2, "never"],
+  }
+}
