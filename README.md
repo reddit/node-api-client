@@ -1,6 +1,8 @@
 snoode
 ======
 
+[![Build Status](https://travis-ci.org/reddit/snoode.svg)](https://travis-ci.org/reddit/snoode)
+
 Someday, it will be a reddit API library.
 
 For now, it handles only a few resources. Building in parallel with
