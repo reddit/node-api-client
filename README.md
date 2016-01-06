@@ -1,7 +1,7 @@
 snoode
 ======
 
-[![Build Status](https://travis-ci.org/reddit/snoode.svg)](https://travis-ci.org/reddit/snoode)
+[![Build Status](https://travis-ci.org/reddit/snoode.svg?branch=master)](https://travis-ci.org/reddit/snoode)
 
 Someday, it will be a reddit API library.
 
