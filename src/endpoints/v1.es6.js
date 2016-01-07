@@ -15,10 +15,10 @@ import Vote from '../models/vote';
 import Subreddit from '../models/subreddit';
 import Stylesheet from '../models/stylesheet';
 import Preferences from '../models/preferences';
-import WikiPage from '../models/WikiPage';
-import WikiRevision from '../models/WikiRevision';
-import WikiPageListing from '../models/WikiPageListing';
-import WikiPageSettings from '../models/WikiPageSettings';
+import WikiPage from '../models/wikiPage';
+import WikiRevision from '../models/wikiRevision';
+import WikiPageListing from '../models/wikiPageListing';
+import WikiPageSettings from '../models/wikiPageSettings';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
