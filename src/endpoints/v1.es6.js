@@ -338,6 +338,8 @@ class APIv1Endpoint {
           uri += `/r/${options.id}/about.json`;
         }
 
+        options.query.feature = 'mobile_settings';
+
         options.cache = {
           type: 'subreddits',
           cache: {
