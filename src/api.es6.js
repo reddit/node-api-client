@@ -12,10 +12,10 @@ import Subreddit from './models/subreddit';
 import Subscription from './models/subscription';
 import Vote from './models/vote';
 import Report from './models/report';
-import WikiPage from './models/WikiPage';
-import WikiRevision from './models/WikiRevision';
-import WikiPageListing from './models/WikiPageListing';
-import WikiPageSettings from './models/WikiPageSettings';
+import WikiPage from './models/wikiPage';
+import WikiRevision from './models/wikiRevision';
+import WikiPageListing from './models/wikiPageListing';
+import WikiPageSettings from './models/wikiPageSettings';
 
 var models = {
   Account,
