@@ -6,6 +6,8 @@ const _subscriptionAllowedActions = {
 };
 
 class Subscription extends Base {
+  _type = 'Subscription';
+
   constructor(props) {
     super(props);
 

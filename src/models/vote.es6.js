@@ -1,6 +1,8 @@
 import Base from './base';
 
 class Vote extends Base {
+  _type = 'Vote';
+
   constructor(props) {
     super(props);
   }

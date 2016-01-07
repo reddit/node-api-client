@@ -2,6 +2,8 @@ import Base from './base';
 import process from 'reddit-text-js';
 
 class Link extends Base {
+  _type = 'Link';
+
   constructor(props) {
     delete props.selftext_html;
 
@@ -101,7 +103,7 @@ class Link extends Base {
 
   toJSON () {
     var props = this.props;
-    props._type = this.type;
+    props._type = this._type;
 
     props.thumbnail = this.thumbnail;
     props.expandable = this.expandable;

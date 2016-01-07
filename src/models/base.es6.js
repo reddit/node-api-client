@@ -12,10 +12,6 @@ class Base {
     }
   }
 
-  get type () {
-    return this.constructor.name;
-  }
-
   get (name) {
     return this.format(name, this.props[name]);
   }
@@ -80,7 +76,7 @@ class Base {
 
   toJSON (formatter) {
     let props = this.props;
-    props._type = this.type;
+    props._type = this._type;
 
     if (formatter && typeof formatter === 'function') {
       return formatter(props);

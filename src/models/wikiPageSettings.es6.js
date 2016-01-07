@@ -1,6 +1,8 @@
 import Base from './base';
 
 class WikiPageSettings extends Base {
+  _type = 'WikiPageSettings';
+
   constructor(props) {
     
     props.pageEditorsList = props.editors.map(function (item) {

@@ -1,6 +1,8 @@
 import Base from './base';
 
 class WikiPage extends Base {
+  _type = 'WikiPage';
+
   constructor(props) {
     delete props.content_html;
 

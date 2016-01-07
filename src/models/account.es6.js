@@ -1,6 +1,8 @@
 import Base from './base';
 
 class Account extends Base {
+  _type = 'Account';
+
   constructor(props) {
     super(props);
 

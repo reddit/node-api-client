@@ -1,6 +1,8 @@
 import Base from './base';
 
 class Message extends Base {
+  _type = 'Message';
+
   constructor(props) {
     super(props);
 

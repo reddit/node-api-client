@@ -1,6 +1,8 @@
 import Base from './base';
 
 class Report extends Base {
+  _type = 'Report';
+
   constructor(props) {
     super(props);
 

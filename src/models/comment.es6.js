@@ -2,6 +2,8 @@ import Base from './base';
 import process from 'reddit-text-js';
 
 class Comment extends Base {
+  _type = 'Comment';
+
   constructor(props) {
     super(props);
 
