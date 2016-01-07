@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events';
 
 class Base {
+  _type = 'Base';
+
   constructor (props={}, opts={}) {
     this.props = {};
     this.validators = opts.validators || [];

@@ -108,7 +108,8 @@ describe('Base model', function() {
       });
 
       expect(base.toJSON()).deep.equals({
-        testA: 'A'
+        testA: 'A',
+        _type: 'Base'
       });
     });
   });
