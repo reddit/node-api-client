@@ -1275,7 +1275,7 @@ class APIv1Endpoint {
   get wiki () {
     return bind({
       buildOptions: function(options) {
-        var uri = options.origin;
+        let uri = options.origin;
         if (options.subreddit) {
           uri += `/r/${options.subreddit}/wiki/${options.path}.json`;
         } else {
@@ -1285,25 +1285,26 @@ class APIv1Endpoint {
         return { uri, options };
       },
 
-      get: function(options={}) {
-        var { uri, options } = this.wiki.buildOptions(options);
-
-        return this.baseGet(uri, options, (body) => {
+      formatBody: function(options) {
+        return function(body) {
           const type = body.type || body.kind;
           switch (type) {
             case 'wikipage':
               return new WikiPage(body.data).toJSON();
               break;
             case 'Listing':
-              if (body.data) {
-                let children = body.data.children;
+              if (body.data && body.data.children) {
+                const children = body.data.children;
                 
-                if (children.length && children[0].kind === 't3') {
+                // when either discussions or revisions requests have nothing to show
+                // the response looks identical, so we pass in a type when the request
+                // is made.
+                if (options.type === 'discussions') {
                   return {
                     conversations: children.map(c => new Link(c.data).toJSON()),
                     _type: 't3',
                   }
-                } else {
+                } else if (options.type === 'revisions') {
                   return {
                     revisions: body.data.children.map(c => new WikiRevision(c).toJSON()),
                     _type: 'WikiRevision',
@@ -1318,7 +1319,13 @@ class APIv1Endpoint {
               return new WikiPageSettings(body.data).toJSON();
               break;
           }
-        });
+        }
+      },
+
+      get: function(reqOptions={}) {
+        const { uri, options } = this.wiki.buildOptions(reqOptions);
+
+        return this.baseGet(uri, options, this.wiki.formatBody(options));
       }
     }, this);
   }
