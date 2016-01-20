@@ -43,11 +43,21 @@ function massageAPIv1JsonRes(res) {
   }
 }
 
-function processMeta(headers) {
-  return {
+function processMeta(headers, body) {
+  let meta = {
     moose: headers['x-moose'],
     tracking: headers['x-reddit-tracking'],
+  };
+
+  if (body.hasOwnProperty('before')) {
+    meta.before = body.before;
   }
+
+  if (body.hasOwnProperty('after')) {
+    meta.after = body.after;
+  }
+
+  return meta;
 }
 
 const TIMEOUT = 5000;
@@ -105,7 +115,7 @@ function returnGETPromise (options, formatBody, log) {
         }
 
         return resolve({
-          headers: processMeta(res.headers),
+          headers: processMeta(res.headers, res.body),
           body: body,
         });
       } catch (e) {
