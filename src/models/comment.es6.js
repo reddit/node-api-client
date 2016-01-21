@@ -8,6 +8,8 @@ class Comment extends Base {
     super(props);
 
     var comment = this;
+    
+    this.props.deleted = props.author === '[deleted]';
 
     this.validators = {
       body: function() {
