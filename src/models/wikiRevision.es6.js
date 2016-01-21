@@ -4,7 +4,9 @@ class WikiRevision extends Base {
   _type = 'WikiRevision';
 
   constructor(props) {
-    props.author = props.author.data;
+    if (props.author && props.author.data) {
+      props.author = props.author.data; 
+    }
 
     super(props);
   } 
