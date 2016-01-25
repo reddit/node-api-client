@@ -1346,7 +1346,7 @@ class APIv1Endpoint {
   }
 
   get wiki () {
-    return bind({
+    return bindAll({
       buildOptions: function(options) {
         let uri = options.origin;
         if (options.subreddit) {
@@ -1364,7 +1364,6 @@ class APIv1Endpoint {
           switch (type) {
             case 'wikipage':
               return new WikiPage(body.data).toJSON();
-              break;
             case 'Listing':
               if (body.data && body.data.children) {
                 const children = body.data.children;
@@ -1376,30 +1375,28 @@ class APIv1Endpoint {
                   return {
                     conversations: children.map(c => new Link(c.data).toJSON()),
                     _type: 't3',
-                  }
+                  };
                 } else if (options.type === 'revisions') {
                   return {
                     revisions: body.data.children.map(c => new WikiRevision(c).toJSON()),
                     _type: 'WikiRevision',
-                  }
+                  };
                 }
               }
               break;
             case 'wikipagelisting':
               return new WikiPageListing(body).toJSON();
-              break;
             case 'wikipagesettings':
               return new WikiPageSettings(body.data).toJSON();
-              break;
           }
-        }
+        };
       },
 
       get: function(reqOptions={}) {
         const { uri, options } = this.wiki.buildOptions(reqOptions);
 
         return this.baseGet(uri, options, this.wiki.formatBody(options));
-      }
+      },
     }, this);
   }
 
