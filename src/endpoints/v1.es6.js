@@ -151,6 +151,7 @@ const CACHE_RULES = [
 class APIv1Endpoint {
   constructor (config = {}) {
     this.config = config;
+    this.log = this.log.bind(this);
 
     // Set up a cache for links and subreddit data
     this.cache = new Cache({
@@ -199,7 +200,6 @@ class APIv1Endpoint {
 
   baseGet (uri, options={}, formatBody) {
     let headers = options.headers || {};
-    let log = this.log.bind(this);
 
     if (!options.env) {
       options.env = 'SERVER';
@@ -224,14 +224,14 @@ class APIv1Endpoint {
           cacheOptions.type,
           options.id,
           returnGETPromise,
-          [options, formatBody, log],
+          [options, formatBody, this.log],
           cacheOptions
         );
       } else {
-        return this.cache.get(returnGETPromise, [options, formatBody, log], cacheOptions);
+        return this.cache.get(returnGETPromise, [options, formatBody, this.log], cacheOptions);
       }
     } else {
-      return returnGETPromise(options, formatBody, log);
+      return returnGETPromise(options, formatBody, this.log);
     }
   }
 
@@ -330,12 +330,16 @@ class APIv1Endpoint {
     }
 
     let { uri, options } = this[endpoint].buildOptions(baseOptions);
-    options.uri = uri;
+
+    Object.assign(options, {
+      uri,
+      timeout: this.config.timeout || TIMEOUT,
+    });
 
     if (!options.cache || !this[endpoint].formatBody) { return; }
 
     let formatBody = this[endpoint].formatBody(options);
-    let hash = Cache.generateHash([options, formatBody]);
+    let hash = Cache.generateHash([options, formatBody, this.log]);
 
     if (options.cache.format) {
       cacheData.body = options.cache.format(cacheData.body);
@@ -1368,7 +1372,7 @@ class APIv1Endpoint {
             case 'Listing':
               if (body.data && body.data.children) {
                 const children = body.data.children;
-                
+
                 // when either discussions or revisions requests have nothing to show
                 // the response looks identical, so we pass in a type when the request
                 // is made.
