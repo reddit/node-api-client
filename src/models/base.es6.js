@@ -93,7 +93,7 @@ class Base {
     thingId: function(id) {
       return id == null || Base.validators.regex(id, THING_ID_REGEX);
     },
-  }
+  };
 }
 
 export default Base;

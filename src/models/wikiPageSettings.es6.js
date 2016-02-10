@@ -23,7 +23,7 @@ class WikiPageSettings extends Base {
     0: 'use wiki settings',
     1: 'only approved editors',
     2: 'only Mods',
-  }
+  };
 }
 
 export default WikiPageSettings;
