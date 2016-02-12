@@ -19,6 +19,7 @@ import WikiPageSettings from './models/wikiPageSettings';
 
 import NoModelError from './errors/noModelError';
 import ResponseError from './errors/responseError';
+import { DisconnectedError } from './errors/responseError';
 import ValidationError from './errors/validationError';
 
 const models = {
@@ -44,6 +45,7 @@ const errors = {
   NoModelError,
   ValidationError,
   ResponseError,
+  DisconnectedError,
 };
 
 export {
