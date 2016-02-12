@@ -17,6 +17,10 @@ import WikiRevision from './models/wikiRevision';
 import WikiPageListing from './models/wikiPageListing';
 import WikiPageSettings from './models/wikiPageSettings';
 
+import NoModelError from './errors/noModelError';
+import ResponseError from './errors/responseError';
+import ValidationError from './errors/validationError';
+
 const models = {
   Account,
   Award,
@@ -36,7 +40,14 @@ const models = {
   WikiPageSettings,
 };
 
+const errors = {
+  NoModelError,
+  ValidationError,
+  ResponseError,
+};
+
 export {
   v1,
   models,
+  errors,
 };

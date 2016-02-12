@@ -21,6 +21,7 @@ import WikiPageSettings from '../models/wikiPageSettings';
 
 import NoModelError from '../errors/noModelError';
 import ValidationError from '../errors/validationError';
+import ResponseError from '../errors/responseError';
 
 const TYPES = {
   COMMENT: 't1',
@@ -100,14 +101,14 @@ function returnGETPromise (options, formatBody, log) {
         // example, unfound subs will redirect you to the search page.
         if (status === 302) {
           err.status = 404;
-          return reject(err);
+          return reject(new ResponseError(err, options.uri));
         }
 
-        return reject(err);
+        return reject(new ResponseError(err, options.uri));
       }
 
       if (!res.ok) {
-        return reject(res);
+        return reject(new ResponseError(res, options.uri));
       }
 
       try {
@@ -123,7 +124,7 @@ function returnGETPromise (options, formatBody, log) {
           body,
         });
       } catch (e) {
-        return reject(e);
+        return reject(new ResponseError(e, options.uri));
       }
     });
   });
@@ -278,11 +279,11 @@ class APIv1Endpoint {
           log('response', method, uri, options, status, err, Date.now() - time);
 
           if (err) {
-            return reject(err);
+            return reject(new ResponseError(err, uri));
           }
 
           if (!res.ok) {
-            return reject(res);
+            return reject(new ResponseError(res, uri));
           }
 
           if (cache.dataCache[dataType] && dataType && options.env === 'CLIENT') {
@@ -311,7 +312,7 @@ class APIv1Endpoint {
 
             resolve(body);
           } catch (e) {
-            reject(e);
+            reject(new ResponseError(e, uri));
           }
         });
     });
