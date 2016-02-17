@@ -24,7 +24,7 @@
   "dependencies": {
     "lodash": "^3.10.1",
     "reddit-text-js": "0.5.4",
-    "restcache": "1.0.5",
+    "restcache": "1.1.0",
     "superagent": "1.3.0",
     "superagent-retry": "git://github.com/ajacksified/superagent-retry#7530ab7ab24ead56de2eeecc8d31d9a86896bc5a"
   },
