@@ -74,10 +74,13 @@ function returnGETPromise (options, formatBody, log) {
 
     log('requesting', 'GET', options.uri, options);
 
+    const query = options.query || {};
+    query.app = `mweb-${options.env.toLowerCase()}`;
+
     let sa = superagent
       .get(options.uri)
+      .query(query)
       .set(options.headers || {})
-      .query(options.query || {})
       .timeout(options.timeout);
 
     if (options.env === 'SERVER') {
@@ -249,6 +252,10 @@ class APIv1Endpoint {
     let form = options.form || {};
     let headers = options.headers || {};
 
+
+    const query = options.query || {};
+    query.app = `mweb-${options.env.toLowerCase()}`;
+
     if (options.userAgent) {
       headers['User-Agent'] = options.userAgent;
     }
@@ -267,6 +274,7 @@ class APIv1Endpoint {
       log('requesting', method, uri, options);
 
       superagent[method](uri)
+        .query(query)
         .set(headers)
         .send(form)
         .type(type)
