@@ -26,7 +26,7 @@
     "reddit-text-js": "0.5.4",
     "restcache": "1.1.0",
     "superagent": "1.3.0",
-    "superagent-retry": "git://github.com/ajacksified/superagent-retry#7530ab7ab24ead56de2eeecc8d31d9a86896bc5a"
+    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4"
   },
   "devDependencies": {
     "babel": "^5.0.0",

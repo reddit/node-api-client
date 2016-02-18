@@ -75,7 +75,7 @@ function returnGETPromise (options, formatBody, log) {
     log('requesting', 'GET', options.uri, options);
 
     const query = options.query || {};
-    query.app = `mweb-${options.env.toLowerCase()}`;
+    query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
 
     let sa = superagent
       .get(options.uri)
@@ -153,6 +153,8 @@ const CACHE_RULES = [
 
 class APIv1Endpoint {
   constructor (config = {}) {
+    config.appName = config.appName || 'snoode';
+
     this.config = config;
     this.log = this.log.bind(this);
 
@@ -254,7 +256,7 @@ class APIv1Endpoint {
 
 
     const query = options.query || {};
-    query.app = `mweb-${options.env.toLowerCase()}`;
+    query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
 
     if (options.userAgent) {
       headers['User-Agent'] = options.userAgent;
