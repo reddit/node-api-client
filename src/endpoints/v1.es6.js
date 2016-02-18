@@ -68,68 +68,6 @@ function processMeta(headers, body) {
 
 const TIMEOUT = 5000;
 
-function returnGETPromise (options, formatBody, log) {
-  return new Promise(function(resolve, reject) {
-    let time = Date.now();
-
-    log('requesting', 'GET', options.uri, options);
-
-    let sa = superagent
-      .get(options.uri)
-      .query(options.query)
-      .set(options.headers || {})
-      .timeout(options.timeout);
-
-    if (options.env === 'SERVER') {
-      sa.redirects(0);
-    } else {
-      sa.retry(3);
-    }
-
-    sa.end((err, res) => {
-      let status = res ? res.status : 500;
-
-      if (err && err.timeout) {
-        status = 'timeout';
-        err.status = 504;
-      }
-
-      log('response', 'GET', options.uri, options, status, err, Date.now() - time);
-
-      if (err) {
-        // Sometimes the API decides to send back a 302 instead of a 404; for
-        // example, unfound subs will redirect you to the search page.
-        if (status === 302) {
-          err.status = 404;
-          return reject(new ResponseError(err, options.uri));
-        }
-
-        return reject(new ResponseError(err, options.uri));
-      }
-
-      if (!res.ok) {
-        return reject(new ResponseError(res, options.uri));
-      }
-
-      try {
-        massageAPIv1JsonRes(res);
-        let body = res.body;
-
-        if (formatBody) {
-          body = formatBody(body);
-        }
-
-        return resolve({
-          headers: processMeta(res.headers, res.body),
-          body,
-        });
-      } catch (e) {
-        return reject(new ResponseError(e, options.uri));
-      }
-    });
-  });
-}
-
 function bindAll(obj, context) {
   for (let p in obj) {
     if (obj.hasOwnProperty(p) && typeof obj[p] == 'function') {
@@ -190,6 +128,73 @@ class APIv1Endpoint {
     });
   }
 
+  returnGETPromise (options, formatBody, log) {
+    const { appName } = this.config;
+
+    return new Promise(function(resolve, reject) {
+      let time = Date.now();
+
+      log('requesting', 'GET', options.uri, options);
+
+      const query = options.query || {};
+      query.app = `${appName}-${options.env.toLowerCase()}`;
+
+      let sa = superagent
+        .get(options.uri)
+        .query(query)
+        .set(options.headers || {})
+        .timeout(options.timeout);
+
+      if (options.env === 'SERVER') {
+        sa.redirects(0);
+      } else {
+        sa.retry(3);
+      }
+
+      sa.end((err, res) => {
+        let status = res ? res.status : 500;
+
+        if (err && err.timeout) {
+          status = 'timeout';
+          err.status = 504;
+        }
+
+        log('response', 'GET', options.uri, options, status, err, Date.now() - time);
+
+        if (err) {
+          // Sometimes the API decides to send back a 302 instead of a 404; for
+          // example, unfound subs will redirect you to the search page.
+          if (status === 302) {
+            err.status = 404;
+            return reject(new ResponseError(err, options.uri));
+          }
+
+          return reject(new ResponseError(err, options.uri));
+        }
+
+        if (!res.ok) {
+          return reject(new ResponseError(res, options.uri));
+        }
+
+        try {
+          massageAPIv1JsonRes(res);
+          let body = res.body;
+
+          if (formatBody) {
+            body = formatBody(body);
+          }
+
+          return resolve({
+            headers: processMeta(res.headers, res.body),
+            body,
+          });
+        } catch (e) {
+          return reject(new ResponseError(e, options.uri));
+        }
+      });
+    });
+  }
+
   log (state, method, uri, options, status, err, duration) {
     if (this.config.debugLevel === 'info') {
       if (this.config.log) {
@@ -215,8 +220,7 @@ class APIv1Endpoint {
 
     options.uri = uri;
 
-    options.query = options.query || {};
-    options.query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
+    const get = this.returnGETPromise.bind(this);
 
     if (options.cache) {
       let cacheOptions = Object.assign({
@@ -228,15 +232,15 @@ class APIv1Endpoint {
         return this.cache.getById(
           cacheOptions.type,
           options.id,
-          returnGETPromise,
+          get,
           [options, formatBody, this.log],
           cacheOptions
         );
       } else {
-        return this.cache.get(returnGETPromise, [options, formatBody, this.log], cacheOptions);
+        return this.cache.get(get, [options, formatBody, this.log], cacheOptions);
       }
     } else {
-      return returnGETPromise(options, formatBody, this.log);
+      return get(options, formatBody, this.log);
     }
   }
 
