@@ -74,12 +74,9 @@ function returnGETPromise (options, formatBody, log) {
 
     log('requesting', 'GET', options.uri, options);
 
-    const query = options.query || {};
-    query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
-
     let sa = superagent
       .get(options.uri)
-      .query(query)
+      .query(options.query)
       .set(options.headers || {})
       .timeout(options.timeout);
 
@@ -218,6 +215,9 @@ class APIv1Endpoint {
 
     options.uri = uri;
 
+    options.query = options.query || {};
+    options.query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
+
     if (options.cache) {
       let cacheOptions = Object.assign({
         name: uri,
@@ -253,7 +253,6 @@ class APIv1Endpoint {
 
     let form = options.form || {};
     let headers = options.headers || {};
-
 
     const query = options.query || {};
     query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
