@@ -1,4 +1,6 @@
-class NoModelError extends Error {
+import FakeError from './error';
+
+class NoModelError extends FakeError {
   constructor (endpoint) {
     super(endpoint);
 

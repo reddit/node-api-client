@@ -1,4 +1,6 @@
-class ValidationError extends Error {
+import FakeError from './error';
+
+class ValidationError extends FakeError {
   constructor (name, model, errors) {
     super(name);
 

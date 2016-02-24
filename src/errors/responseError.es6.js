@@ -1,4 +1,6 @@
-export class DisconnectedError extends Error {
+import FakeError from './error';
+
+export class DisconnectedError extends FakeError {
   constructor(error, url) {
     super(error);
     Object.assign(this, error);
@@ -11,7 +13,7 @@ const codeMap = {
   ENOTFOUND: DisconnectedError,
 };
 
-export default class ResponseError extends Error {
+export default class ResponseError extends FakeError {
   constructor (error, url) {
     // Make sure an error and url were actually passed in
     if (!error) { throw new Error('No error passed to ResponseError'); }
