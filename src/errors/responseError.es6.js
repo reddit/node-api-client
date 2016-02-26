@@ -15,6 +15,7 @@ const codeMap = {
 
 export default class ResponseError extends FakeError {
   constructor (error, url) {
+    super(error);
     // Make sure an error and url were actually passed in
     if (!error) { throw new Error('No error passed to ResponseError'); }
     if (!url) { throw new Error('No url passed to ResponseError'); }
@@ -24,7 +25,6 @@ export default class ResponseError extends FakeError {
       return ResponseError.getSystemLevelError(error, url);
     }
 
-    super(error);
     Object.assign(this, error);
 
     this.name = 'ResponseError';
