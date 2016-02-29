@@ -847,13 +847,13 @@ class APIv1Endpoint {
 
       formatBody: function(options) {
         return function(body) {
-          if (body.data && body.data.children && body.data.children[0]) {
+          if (has(body, 'data.children.0')) {
             if (options.id) {
               return new Link(body.data.children[0].data).toJSON();
             } else {
               return body.data.children.map(c => new Link(c.data).toJSON());
             }
-          } else if (body.data.children) {
+          } else if (has(body, 'data.children')) {
             return [];
           }
         };
