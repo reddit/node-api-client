@@ -1,6 +1,6 @@
 import BaseAPI from './base.es6.js';
 
-import Account from '../models/user.es6.js';
+import Account from '../models/account.es6.js';
 
 class Accounts extends BaseAPI {
   static dataCacheConfig = {

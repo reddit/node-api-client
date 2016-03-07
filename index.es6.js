@@ -22,7 +22,7 @@ const APIs = {
   subreddits,
   subscriptions,
   trophies,
-  users,
+  accounts,
 };
 
 class Snoode {
