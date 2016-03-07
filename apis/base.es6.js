@@ -165,7 +165,7 @@ class BaseAPI {
         model = new this.model(data);
         const valid = model.validate();
 
-        if (!valid) {
+        if (valid !== true) {
           return reject(new ValidationError(this.api, model));
         }
         model = model.toJSON();
