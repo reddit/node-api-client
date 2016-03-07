@@ -168,6 +168,7 @@ class BaseAPI {
         if (!valid) {
           return reject(new ValidationError(this.api, model));
         }
+        model = model.toJSON();
       } else {
         model = data;
       }
@@ -184,7 +185,7 @@ class BaseAPI {
         s.set('Authorization', 'bearer ' + this.config.token);
       }
 
-      s.send(model.toJSON()).end((err, res) => {
+      s.send(model).end((err, res) => {
         const fakeReq = {
           origin,
           path,
