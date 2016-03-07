@@ -280,12 +280,10 @@ class BaseAPI {
 
       this.event.emit(EVENTS.response, req, res);
 
-      const response = {
-        headers: this.formatMeta(res),
-        body: this.formatBody(res, req),
-      };
+      const headers = this.formatMeta(res);
+      const body = this.formatBody(res, req);
 
-      resolve(response);
+      resolve({ headers, body });
     };
   }
 

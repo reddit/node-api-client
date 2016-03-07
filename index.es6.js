@@ -13,6 +13,8 @@ import subscriptions from './apis/subscriptions';
 import trophies from './apis/trophies';
 import accounts from './apis/accounts';
 import votes from './apis/votes';
+import links from './apis/links';
+import comments from './apis/comments';
 
 const APIs = {
   activities,
@@ -25,6 +27,8 @@ const APIs = {
   trophies,
   accounts,
   votes,
+  links,
+  comments,
 };
 
 class Snoode {

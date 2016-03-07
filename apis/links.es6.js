@@ -25,18 +25,20 @@ class Links extends BaseAPI {
 
   getPath (query) {
     if (query.user) {
-      return `/user/${query.user}/submitted.json`;
+      return `user/${query.user}/submitted.json`;
     } else if (query.id) {
-      return `/by_id/${query.id}.json`;
-    } else if (query.query.ids) {
-      return `/by_id/${query.query.ids.join(',')}.json`;
-    } else if (query.query.subredditName) {
-      return `/r/${query.subredditName}`;
-    } else if (query.query.multi) {
-      return `/user/${query.multiUser}/m/${query.multi}`;
+      return `by_id/${query.id}.json`;
+    } else if (query.ids) {
+      return `by_id/${query.query.ids.join(',')}.json`;
+    } else if (query.subredditName) {
+      return `r/${query.subredditName}.json`;
+    } else if (query.multi) {
+      return `user/${query.multiUser}/m/${query.multi}.json`;
     }
 
-    return `/${query.sort}.json`;
+    query.sort = query.sort || 'hot';
+
+    return `${query.sort}.json`;
   }
 
   postPath () {
@@ -69,13 +71,13 @@ class Links extends BaseAPI {
     const { body } = res;
 
     if (req.method === 'GET') {
-      const data = body.data.children;
+      const { data } = body;
 
-      if (body.data && body.data.children && body.data.children[0]) {
-        if (data.length === 1) {
-          return new Link(data[0].data).toJSON();
+      if (data && data.children && data.children[0]) {
+        if (data.children.length === 1) {
+          return new Link(data.children[0].data).toJSON();
         } else {
-          return data.map(c => new Link(c.data).toJSON());
+          return data.children.map(c => new Link(c.data).toJSON());
         }
       } else if (data) {
         return [];

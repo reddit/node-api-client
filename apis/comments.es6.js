@@ -25,27 +25,25 @@ class Comments extends BaseAPI {
   model = Comment;
 
   formatQuery (query) {
-    const q = super.formatQuery(query);
-
-    if (q.ids) {
-      q.children = query.query.ids;
-      q.api_type = 'json';
-      q.link_id = query.linkId;
+    if (query.ids) {
+      query.children = query.ids.join(',');
+      query.api_type = 'json';
+      query.link_id = query.linkId;
 
       delete query.ids;
       delete query.linkId;
     }
 
-    return q;
+    return query;
   }
 
   getPath (query) {
     if (query.user) {
-      return `/user/${query.user}/comments.json`;
+      return `user/${query.user}/comments.json`;
     } else if (query.ids) {
-      return `/api/morechildren.json`;
+      return `api/morechildren.json`;
     } else {
-      return `/comments/${query.linkId}.json`;
+      return `comments/${query.linkId}.json`;
     }
   }
 
