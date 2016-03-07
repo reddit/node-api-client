@@ -83,7 +83,7 @@ class BaseAPI {
     return res.headers;
   }
 
-  formatBody(res) {
+  formatBody(res, req) {
     return res.body;
   }
 
@@ -282,7 +282,7 @@ class BaseAPI {
 
       const response = {
         headers: this.formatMeta(res),
-        body: this.formatBody(res),
+        body: this.formatBody(res, req),
       };
 
       resolve(response);
