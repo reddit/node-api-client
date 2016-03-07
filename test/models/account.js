@@ -5,7 +5,7 @@ var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai)
 
-var User = require('../../src/api').models.User;
+var User = require('../../old-src/api').models.User;
 
 describe('User model', function() {
 
