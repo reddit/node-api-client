@@ -6,7 +6,8 @@
   "main": "src/api",
   "scripts": {
     "test": "mocha test/index.js",
-    "lint": "eslint . --ext .js,.jsx"
+    "lint": "eslint . --ext .js,.jsx",
+    "repl": "./repl"
   },
   "repository": {
     "type": "git",
