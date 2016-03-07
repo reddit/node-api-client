@@ -15,9 +15,11 @@ import accounts from './apis/accounts';
 import votes from './apis/votes';
 import links from './apis/links';
 import comments from './apis/comments';
+import captcha from './apis/captcha';
 
 const APIs = {
   activities,
+  captcha,
   hidden,
   saves,
   search,
