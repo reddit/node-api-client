@@ -127,13 +127,18 @@ class BaseAPI {
 
     return new Promise((resolve, reject) => {
       let s = superagent[method](path).timeout(this.config.timeout || 5000);
-      s.redirects(0);
+
+      if (s.redirects) {
+        s.redirects(0);
+      }
+
       s.query(query);
 
       s.set(this.buildAuthHeader());
       s.set(this.buildHeaders());
 
       if (query.id && !Array.isArray(query.id)) {
+
         delete query.id;
       }
 
@@ -274,7 +279,12 @@ class BaseAPI {
   }
 
   handle = (resolve, reject) => {
-    return (err, res, req=res.request) => {
+    return (err, res, req) => {
+      // lol handle the twelve ways superagent sends request back
+      if (!req) {
+        req = res.request || res.req;
+      }
+
       if (err || !res.ok) {
         this.event.emit(EVENTS.error, err, req);
         if (this.config.defaultErrorHandler) {
