@@ -19,6 +19,7 @@ import captcha from './apis/captcha';
 import reports from './apis/reports';
 import messages from './apis/messages';
 import modListing from './apis/modListing';
+import subredditRelationships from './apis/subredditRelationships';
 
 const APIs = {
   activities,
@@ -37,6 +38,7 @@ const APIs = {
   reports,
   messages,
   modListing,
+  subredditRelationships,
 };
 
 class Snoode {
