@@ -17,6 +17,7 @@ import links from './apis/links';
 import comments from './apis/comments';
 import captcha from './apis/captcha';
 import reports from './apis/reports';
+import messages from './apis/messages';
 
 const APIs = {
   activities,
@@ -33,6 +34,7 @@ const APIs = {
   links,
   comments,
   reports,
+  messages,
 };
 
 class Snoode {

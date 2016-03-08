@@ -109,7 +109,7 @@ class BaseAPI {
     return this.config.defaultHeaders || {};
   }
 
-  formatQuery (query) {
+  formatQuery (query, method) {
     return query;
   }
 
@@ -159,6 +159,9 @@ class BaseAPI {
         return reject(new NoModelError(this.api));
       }
 
+      const path = this.fullPath(method, data);
+      data = this.formatQuery(data, method);
+
       let model;
 
       if (this.model) {
@@ -174,8 +177,6 @@ class BaseAPI {
       }
 
       method = data._method || method;
-
-      const path = this.fullPath(method, model);
       const origin = this.origin;
 
       let s = superagent[method](path);
