@@ -20,6 +20,7 @@ import reports from './apis/reports';
 import messages from './apis/messages';
 import modListing from './apis/modListing';
 import subredditRelationships from './apis/subredditRelationships';
+import rules from './apis/rules';
 
 const APIs = {
   activities,
@@ -39,6 +40,7 @@ const APIs = {
   messages,
   modListing,
   subredditRelationships,
+  rules,
 };
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';
