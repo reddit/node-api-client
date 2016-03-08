@@ -25,9 +25,9 @@ class Accounts extends BaseAPI {
 
   path (method, query={}) {
     if (query.user === 'me') {
-      return '/api/v1/me';
+      return 'api/v1/me';
     } else {
-      return `/user/${query.user}/about.json`;
+      return `user/${query.user}/about.json`;
     }
   }
 

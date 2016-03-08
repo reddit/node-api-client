@@ -18,7 +18,7 @@ class Saves extends BaseAPI {
     let path = '';
 
     if (query.subreddit) {
-      path = `/r/${query.subreddit}`;
+      path = `r/${query.subreddit}`;
     }
 
     return `${path}/search.json`;

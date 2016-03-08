@@ -13,10 +13,10 @@ class Stylesheets extends BaseAPI {
 
   path (method, query={}) {
     if (query.subredditName) {
-      return `/r/${query.subredditName}/about/stylesheet.json`;
+      return `r/${query.subredditName}/about/stylesheet.json`;
     }
 
-    return '/api/subreddit_stylesheet.json';
+    return 'api/subreddit_stylesheet.json';
   }
 
   formatBody (res) {
