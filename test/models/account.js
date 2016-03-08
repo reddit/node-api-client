@@ -1,11 +1,9 @@
-var chai = require('chai');
-var expect = chai.expect;
-var sinon = require('sinon');
-var sinonChai = require('sinon-chai');
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+chai.use(sinonChai);
+const expect = chai.expect;
 
-chai.use(sinonChai)
-
-var User = require('../../old-src/api').models.User;
+import Account from '../../models/account';
 
 describe('User model', function() {
 
@@ -15,13 +13,13 @@ describe('User model', function() {
     };
 
     it('expects `thingId` to be a valid id', function() {
-      var user = new User(validAttrs);
+      var account = new Account(validAttrs);
 
-      expect(user.validate()).to.equal(true);
+      expect(account.validate()).to.equal(true);
 
-      user.set('thingId', 'invalid');
+      account.set('thingId', 'invalid');
 
-      var errors = user.validate();
+      var errors = account.validate();
 
       expect(errors.length).to.equal(1);
       expect(errors[0]).to.equal('thingId');

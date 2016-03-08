@@ -6,22 +6,22 @@ retry(superagent);
 import Cache from 'restcache';
 import has from 'lodash/object/has';
 
-import Account from '../models/account';
-import Award from '../models/award';
-import Comment from '../models/comment';
-import Link from '../models/link';
-import Message from '../models/message';
-import Subreddit from '../models/subreddit';
-import Stylesheet from '../models/stylesheet';
-import Preferences from '../models/preferences';
-import WikiPage from '../models/wikiPage';
-import WikiRevision from '../models/wikiRevision';
-import WikiPageListing from '../models/wikiPageListing';
-import WikiPageSettings from '../models/wikiPageSettings';
+import Account from '../../models/account';
+import Award from '../../models/award';
+import Comment from '../../models/comment';
+import Link from '../../models/link';
+import Message from '../../models/message';
+import Subreddit from '../../models/subreddit';
+import Stylesheet from '../../models/stylesheet';
+import Preferences from '../../models/preferences';
+import WikiPage from '../../models/wikiPage';
+import WikiRevision from '../../models/wikiRevision';
+import WikiPageListing from '../../models/wikiPageListing';
+import WikiPageSettings from '../../models/wikiPageSettings';
 
-import NoModelError from '../errors/noModelError';
-import ValidationError from '../errors/validationError';
-import ResponseError from '../errors/responseError';
+import NoModelError from '../../errors/noModelError';
+import ValidationError from '../../errors/validationError';
+import ResponseError from '../../errors/responseError';
 
 const TYPES = {
   COMMENT: 't1',

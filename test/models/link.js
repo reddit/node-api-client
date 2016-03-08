@@ -1,11 +1,9 @@
-var chai = require('chai');
-var expect = chai.expect;
-var sinon = require('sinon');
-var sinonChai = require('sinon-chai');
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+chai.use(sinonChai);
+const expect = chai.expect;
 
-chai.use(sinonChai)
-
-var Link = require('../../src/api').models.Link;
+import Link from '../../models/link';
 
 describe('Link model', function() {
 

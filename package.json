@@ -31,11 +31,19 @@
     "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4"
   },
   "devDependencies": {
-    "babel": "^5.0.0",
-    "chai": "^1.9.1",
+    "babel-core": "6.5.1",
+    "babel-plugin-syntax-trailing-function-commas": "6.5.0",
+    "babel-plugin-transform-async-to-generator": "6.5.0",
+    "babel-plugin-transform-class-properties": "6.5.0",
+    "babel-plugin-transform-object-rest-spread": "6.5.0",
+    "babel-polyfill": "6.5.0",
+    "babel-preset-es2015": "6.5.0",
+    "babel-register": "6.5.1",
+    "chai": "3.5.0",
     "eslint": "^1.10.3",
-    "mocha": "^1.21.4",
-    "sinon": "^1.10.3",
-    "sinon-chai": "^2.5.0"
+    "eslint-plugin-babel": "2.1.1",
+    "mocha": "2.4.5",
+    "sinon": "1.17.1",
+    "sinon-chai": "2.8.0"
   }
 }
