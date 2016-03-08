@@ -4,9 +4,13 @@ import NoModelError from '../errors/noModelError';
 class BaseContent extends BaseAPI {
   put = this.notImplemented('put');
 
-  formatQuery (query) {
+  formatQuery (query, method) {
     query.feature = 'link_preview';
     query.sr_detail = 'true';
+
+    if (method === 'del') {
+      query._method = 'post';
+    }
 
     return query;
   }
@@ -18,17 +22,17 @@ class BaseContent extends BaseAPI {
       return this.postPath(query);
     } else if (method === 'patch') {
       return this.patchPath(query);
-    } else if (method === 'delete') {
+    } else if (method === 'del') {
       return this.deletePath(query);
     }
   }
 
   patchPath () {
-    return '/api/editusertext';
+    return 'api/editusertext';
   }
 
   deletePath () {
-    return '/api/del';
+    return 'api/del';
   }
 
   patch (data) {

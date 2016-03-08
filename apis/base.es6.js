@@ -114,8 +114,7 @@ class BaseAPI {
   }
 
   runQuery = (method, query) => {
-    method = query._method || method;
-    delete query._method;
+    query = this.formatQuery(query, method);
 
     let handle = this.handle;
     let path = this.fullPath(method, query);
@@ -123,9 +122,10 @@ class BaseAPI {
     const fakeReq = { url: path, method, query };
     this.event.emit(EVENTS.request, fakeReq);
 
-    query = this.formatQuery(query);
+    method = query._method || method;
+    delete query._method;
 
-    return new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => {
       let s = superagent[method](path).timeout(this.config.timeout || 5000);
       s.redirects(0);
       s.query(query);
@@ -198,7 +198,7 @@ class BaseAPI {
         this.handle(resolve, reject)(err, res, req);
 
         if (!err && res) {
-          if (this.cache.dataCache[this.dataType]) {
+          if (this.cache.dataCache[this.dataType] && this.cache.requestCache.get(this.api)) {
             this.cache.resetRequests(this.api);
             this.cache.resetData(this.dataType, res.body);
           }
@@ -220,7 +220,7 @@ class BaseAPI {
   get (query) {
     query = {
       raw_json: 1,
-      ...(query || {})
+      ...(query || {}),
     };
 
     if (query.id) {
@@ -242,7 +242,12 @@ class BaseAPI {
 
   del (query={}) {
     if (this.cache.dataCache[this.dataType]) {
-      this.cache.deleteData(this.dataType);
+      if (query.id) {
+        this.cache.deleteData(this.dataType, query.id);
+      } else {
+        this.cache.resetData(this.dataType);
+      }
+
       this.cache.resetRequests(this.api);
     }
 

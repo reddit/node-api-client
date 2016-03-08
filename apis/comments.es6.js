@@ -24,7 +24,10 @@ class Comments extends BaseAPI {
 
   model = Comment;
 
-  formatQuery (query) {
+  formatQuery (query, method) {
+    query = super.formatQuery(query, method);
+    console.log(query);
+
     if (query.ids) {
       query.children = query.ids.join(',');
       query.api_type = 'json';
