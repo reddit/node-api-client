@@ -304,7 +304,7 @@ class BaseAPI {
   };
 
   static thingType (id) {
-    return TYPES[id];
+    return TYPES[id.substring(0, 2)];
   }
 
   static EVENTS = EVENTS;
