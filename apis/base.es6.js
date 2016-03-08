@@ -125,7 +125,7 @@ class BaseAPI {
     method = query._method || method;
     delete query._method;
 
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let s = superagent[method](path).timeout(this.config.timeout || 5000);
       s.redirects(0);
       s.query(query);
@@ -270,7 +270,7 @@ class BaseAPI {
   notImplemented (method) {
     return function() {
       throw new NotImplementedError(method, this.api);
-    }
+    };
   }
 
   handle = (resolve, reject) => {
