@@ -294,12 +294,13 @@ class BaseAPI {
   handle = (resolve, reject) => {
     return (err, res, req) => {
       // lol handle the twelve ways superagent sends request back
-      if (!req) {
+      if (res && !req) {
         req = res.request || res.req;
       }
 
-      if (err || !res.ok) {
-        this.event.emit(EVENTS.error, err, req);
+      if (err || (res && !res.ok)) {
+        //this.event.emit(EVENTS.error, err, req);
+
         if (this.config.defaultErrorHandler) {
           return this.config.defaultErrorHandler(err || 500);
         } else {
