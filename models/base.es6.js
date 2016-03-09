@@ -27,7 +27,7 @@ class Base {
     }
   }
 
-  validate () {
+  validate (keys) {
     const validators = this.validators();
 
     if (!validators) {
@@ -38,8 +38,11 @@ class Base {
     let p;
 
     for (p in this.props) {
-      if (validators[p] && !validators[p](this.props[p])) {
-        invalid.push(p);
+      // Optionally, send in an array of keys to validate
+      if (keys && keys.includes(p)) {
+        if (validators[p] && !validators[p](this.props[p])) {
+          invalid.push(p);
+        }
       }
     }
 

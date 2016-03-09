@@ -158,57 +158,72 @@ class BaseAPI {
     });
   }
 
+  rawSend(method, path, data, cb) {
+    const origin = this.origin;
+
+    let s = superagent[method](`${origin}/${path}`);
+    s.type('form');
+
+    if (this.config.token) {
+      s.set('Authorization', 'bearer ' + this.config.token);
+    }
+
+    console.log(method, path, data);
+
+    s.send(data).end((err, res) => {
+      const fakeReq = {
+        origin,
+        path,
+        method,
+        query: data,
+      };
+
+      const req = res ? res.request : fakeReq;
+      cb(err, res, req);
+    });
+  }
+
   save (method, data={}) {
     return new Promise((resolve, reject) => {
       if (!data) {
         return reject(new NoModelError(this.api));
       }
 
-      const path = this.fullPath(method, data);
       data = this.formatQuery(data, method);
 
-      let model;
+      if (this.model) {
+        let model = new this.model(data);
 
-      if (this.model && method !== 'patch') {
-        model = new this.model(data);
-        const valid = model.validate();
+        let keys;
+
+        // Only validate keys being sent in, if this is a patch
+        if (method === 'patch') {
+          keys = Object.keys(data);
+        }
+
+        const valid = model.validate(keys);
 
         if (valid !== true) {
           return reject(new ValidationError(this.api, model));
         }
-        model = model.toJSON();
-      } else {
-        model = data;
+
+        if (method !== 'patch') {
+          data = model.toJSON();
+        }
       }
 
+      const path = this.path(method, data);
       method = data._method || method;
-      const origin = this.origin;
 
-      let s = superagent[method](path);
-      s.type('form');
-
-      if (this.config.token) {
-        s.set('Authorization', 'bearer ' + this.config.token);
-      }
-
-      s.send(model).end((err, res) => {
-        const fakeReq = {
-          origin,
-          path,
-          method,
-          query: model,
-        };
-
-        const req = res ? res.request : fakeReq;
-
-        this.handle(resolve, reject)(err, res, req);
-
+      this.rawSend(method, path, data, (err, res, req) => {
         if (!err && res) {
           if (this.cache.dataCache[this.dataType] && this.cache.requestCache.get(this.api)) {
             this.cache.resetRequests(this.api);
             this.cache.resetData(this.dataType, res.body);
           }
         }
+
+        this.handle(resolve, reject)(err, res, req);
       });
     });
   }
