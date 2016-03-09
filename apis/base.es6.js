@@ -169,7 +169,7 @@ class BaseAPI {
 
       let model;
 
-      if (this.model) {
+      if (this.model && method !== 'patch') {
         model = new this.model(data);
         const valid = model.validate();
 

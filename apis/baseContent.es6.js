@@ -27,7 +27,10 @@ class BaseContent extends BaseAPI {
     }
   }
 
-  patchPath () {
+  patchPath (query) {
+    if (query.modAction) {
+      return `api/${query.modAction}`;
+    }
     return 'api/editusertext';
   }
 
@@ -38,6 +41,11 @@ class BaseContent extends BaseAPI {
   patch (data) {
     if (!data) {
       throw new NoModelError('/api/editusertext');
+    }
+
+    if (data.modAction) {
+      data.api_type = 'json';
+      return this.save('patch', data);
     }
 
     const type = BaseAPI.thingType(data.id);
@@ -51,7 +59,7 @@ class BaseContent extends BaseAPI {
       thing_id: data.id,
     };
 
-    this.save('patch', json);
+    return this.save('patch', json);
   }
 }
 
