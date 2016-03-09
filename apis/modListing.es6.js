@@ -21,13 +21,15 @@ class ModListing extends BaseAPI {
     return `r/${subreddit}/about/${modPath}.json`;
   }
 
-  formatQuery (options, method) {
+  formatQuery (options) {
     options.sr_detail = 'true';
 
     return options;
   }
 
-  formatBody(res, req) {
+  formatBody(res) {
+    const { body } = res;
+
     if (has(body, 'data.children.0')) {
       return body.data.children.map(c => {
         if (c.kind == 't3') {
