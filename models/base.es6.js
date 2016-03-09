@@ -39,7 +39,7 @@ class Base {
 
     for (p in this.props) {
       // Optionally, send in an array of keys to validate
-      if (keys && keys.includes(p)) {
+      if (!keys || keys.includes(p)) {
         if (validators[p] && !validators[p](this.props[p])) {
           invalid.push(p);
         }
