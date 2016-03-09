@@ -26,11 +26,15 @@ class BaseAPI {
     this.cache = base.cache;
     this.event = base.event;
 
-    if (base.config && base.config.origins) {
-      let name = this.constructor.name.toLowerCase();
+    if (base.config) {
+      this.origin = base.config.origin;
 
-      this.origin = base.config.origins[name] ||
-                    this.config.origin;
+      if (base.config.origins) {
+        let name = this.constructor.name.toLowerCase();
+
+        this.origin = base.config.origins[name] ||
+                      this.config.origin;
+      }
     }
   }
 
@@ -72,7 +76,7 @@ class BaseAPI {
   }
 
   fullPath (method, query={}) {
-    return `${this.config.origin}/${this.path(method, query)}`;
+    return `${this.origin}/${this.path(method, query)}`;
   }
 
   formatMeta(res) {
@@ -143,7 +147,7 @@ class BaseAPI {
           err.status = 504;
         }
 
-        const origin = this.config.origin;
+        const origin = this.origin;
         const path = this.path(method, query);
 
         const fakeReq = { origin, path, method, query };
@@ -155,7 +159,7 @@ class BaseAPI {
   }
 
   rawSend(method, path, data, cb) {
-    const origin = this.config.origin;
+    const origin = this.origin;
 
     let s = superagent[method](`${origin}/${path}`);
     s.type('form');
