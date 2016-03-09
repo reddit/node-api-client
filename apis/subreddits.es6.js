@@ -71,8 +71,6 @@ class Subreddits extends BaseAPI {
             sr: sub.name,
           }, Object.keys(DEFAULT_SUBREDDIT_OPTIONS));
 
-          console.log(postData);
-
           return post(postData);
         }, x);
       });

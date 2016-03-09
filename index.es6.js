@@ -129,7 +129,8 @@ class Snoode {
 
   loginAndSave(username, pass) {
     this.login(username, pass).then((token) => {
-      this.config.token = token;
+      this.config.token = token.access_token;
+      this.config.refreshToken = token.refresh_token;
       this.config.origin = this.config.authedOrigin || AUTHED_API_ORIGIN;
     }, err => { throw err; });
   }

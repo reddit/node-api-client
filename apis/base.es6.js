@@ -26,15 +26,11 @@ class BaseAPI {
     this.cache = base.cache;
     this.event = base.event;
 
-    if (base.config) {
-      this.origin = base.config.origin;
+    if (base.config && base.config.origins) {
+      let name = this.constructor.name.toLowerCase();
 
-      if (base.config.origins) {
-        let name = this.constructor.name.toLowerCase();
-
-        this.origin = base.config.origins[name] ||
-                      base.origin;
-      }
+      this.origin = base.config.origins[name] ||
+                    this.config.origin;
     }
   }
 
@@ -159,7 +155,7 @@ class BaseAPI {
   }
 
   rawSend(method, path, data, cb) {
-    const origin = this.origin;
+    const origin = this.config.origin;
 
     let s = superagent[method](`${origin}/${path}`);
     s.type('form');
@@ -167,8 +163,6 @@ class BaseAPI {
     if (this.config.token) {
       s.set('Authorization', 'bearer ' + this.config.token);
     }
-
-    console.log(method, path, data);
 
     s.send(data).end((err, res) => {
       const fakeReq = {
