@@ -1,8 +1,8 @@
 {
   "name": "snoode",
-  "version": "2.0.0",
+  "version": "1.20.0",
   "description": "node and browser reddit api library",
-  "main": "src/api",
+  "main": "index.es6.js",
   "scripts": {
     "test": "mocha test/index.js",
     "lint": "eslint . --ext .js,.jsx",

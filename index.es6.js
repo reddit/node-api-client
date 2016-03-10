@@ -22,6 +22,8 @@ import modListing from './apis/modListing';
 import subredditRelationships from './apis/subredditRelationships';
 import rules from './apis/rules';
 
+import { v1 as _v1, errors as _errors, models as _models } from './old-src/api';
+
 const APIs = {
   activities,
   captcha,
@@ -237,7 +239,9 @@ class Snoode {
         });
     });
   }
-
 }
 
 export default Snoode;
+export const v1 = _v1;
+export const models = _models;
+export const errors = _errors;
