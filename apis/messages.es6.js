@@ -31,8 +31,12 @@ export default class Messages extends BaseAPI {
   }
 
   path(method, query={}) {
-    if (method === 'get') { return `message/${query.view || 'inbox'}`; }
-    if (!query.thingId) { return 'api/compose'; }
+    const { subreddit, view, thingId } = query;
+    if (method === 'get') {
+      const sub = subreddit ? `r/${subreddit}/` : '';
+      return `${sub}message/${view || 'inbox'}`;
+    }
+    if (!thingId) { return 'api/compose'; }
     return 'api/comment';
   }
 
