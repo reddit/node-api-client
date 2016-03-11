@@ -39,17 +39,17 @@ class SubredditRelationships extends BaseAPI {
 
   get(data) {
     data.count = 25;
-    super.get(data);
+    return super.get(data);
   }
 
   post(data) {
     data.api_type = 'json';
-    super.post(data)
+    return super.post(data);
   }
 
   del(data) {
     data._method = 'post';
-    super.del(data);
+    return super.del(data);
   }
 }
 
