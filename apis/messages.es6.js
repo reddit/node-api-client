@@ -43,12 +43,20 @@ export default class Messages extends BaseAPI {
   formatBody(res, req) {
     const { body } = res;
 
-    switch(req.method) {
+    switch (req.method) {
       case 'GET': {
         if (body) {
           return body.data.children.map(data => {
             const constructor = CONSTRUCTORS[data.kind];
-            return new constructor(data.data).toJSON();
+            const thing = new constructor(data.data).toJSON();
+            if (constructor === CONSTRUCTORS.t4 &&
+                typeof thing.replies === 'object' &&
+                Array.isArray(thing.replies.data.children)) {
+              thing.replies = thing.replies.data.children.map((m) => {
+                return new Message(m.data).toJSON();
+              });
+            }
+            return thing;
           });
         }
       }

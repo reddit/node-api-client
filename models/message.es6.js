@@ -2,6 +2,13 @@ import Base from './base';
 
 class Message extends Base {
   _type = 'Message';
+  constructor(props) {
+    if (props.replies === '') {
+      props.replies = [];
+    }
+
+    super(props);
+  }
 
   validators () {
     const text = this.textValidator.bind(this);
