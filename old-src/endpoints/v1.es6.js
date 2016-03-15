@@ -1287,7 +1287,8 @@ class APIv1Endpoint {
           }
 
           data.map(function(m) {
-            if (m.replies) {
+            if ((!Array.isArray(m.replies) && m._type === 'Message') ||
+                m._type === 'Comment' && m.replies) {
               m.replies = m.replies.data.children.filter(function(c) {
                 return c && c.data;
               }).map(function(c) {
