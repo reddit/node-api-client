@@ -1,6 +1,9 @@
 import Base from './base';
 import process from 'reddit-text-js';
 
+const I_IMGUR_DOMAIN = /i\.imgur\.com/;
+const I_IMGUR_URL_RE = /https?:\/\/i\.imgur\.com/;
+
 class Link extends Base {
   _type = 'Link';
 
@@ -122,6 +125,10 @@ class Link extends Base {
 
     props.cleanPermalink = this.unredditify(props.permalink);
     props.cleanUrl = this.unredditify(props.url);
+
+    props.cleanUrl = props.cleanUrl.replace(I_IMGUR_URL_RE, 'https://imgur.com');
+    props.url = props.url.replace(I_IMGUR_URL_RE, 'https://imgur.com');
+    props.domain = props.domain.replace(I_IMGUR_DOMAIN, 'imgur.com');
 
     props._type = this._type;
 
