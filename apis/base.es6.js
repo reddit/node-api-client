@@ -1,8 +1,8 @@
 import superagent from 'superagent';
 
 import ValidationError from '../errors/validationError';
-import NoModelError from '../errors/NoModelError';
-import NotImplementedError from '../errors/NotImplementedError';
+import NoModelError from '../errors/noModelError';
+import NotImplementedError from '../errors/notImplementedError';
 
 const EVENTS = {
   request: 'request',
