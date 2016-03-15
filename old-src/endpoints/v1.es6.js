@@ -1239,7 +1239,10 @@ class APIv1Endpoint {
   get messages () {
     return bindAll({
       buildOptions: function(options) {
-        const uri = options.origin + '/message/' + (options.view || 'inbox');
+        const { filter, subredditName, origin, view = 'inbox' } = options;
+        const sub = subredditName ? `/r/${subredditName}` : '';
+        const filterPath = filter ? `/${filter}` : '';
+        const uri = `${origin}${sub}/message/${view}${filterPath}`;
 
         return { uri, options };
       },
