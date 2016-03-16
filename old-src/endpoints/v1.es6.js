@@ -23,6 +23,8 @@ import NoModelError from '../../errors/noModelError';
 import ValidationError from '../../errors/validationError';
 import ResponseError from '../../errors/responseError';
 
+import treeifyComments from '../../lib/treeifyComments';
+
 const TYPES = {
   COMMENT: 't1',
   LINK: 't3',
@@ -962,6 +964,9 @@ class APIv1Endpoint {
           if (Array.isArray(body)) {
             return body[1].data.children.map(mapReplies);
           } else if (body.json && body.json.data) {
+            if (options.query.children) { // treeify 'load more comments' replies
+              return treeifyComments(body.json.data.things.map(mapReplies));
+            }
             return body.json.data.things.map(mapReplies);
           }
         });

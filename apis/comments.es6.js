@@ -1,6 +1,7 @@
+import has from 'lodash/object/has';
 import BaseAPI from './baseContent.es6.js';
 import Comment from '../models/comment.es6.js';
-import has from 'lodash/object/has';
+import treeifyComments from '../lib/treeifyComments';
 
 class Comments extends BaseAPI {
   // TODO set cache rules
@@ -64,12 +65,16 @@ class Comments extends BaseAPI {
   }
 
   formatBody(res, req) {
+    const { query } = req;
     const { body } = res;
 
     if (req.method === 'GET') {
       if (Array.isArray(body)) {
         return body[1].data.children.map(Comments.mapReplies);
       } else if (body.json && body.json.data) {
+        if (query.children) { // treeify 'load more comments' replies
+          return treeifyComments(body.json.data.things.map(mapReplies));
+        }
         return body.json.data.things.map(Comments.mapReplies);
       }
     } else {
