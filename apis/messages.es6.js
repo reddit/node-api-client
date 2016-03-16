@@ -50,6 +50,7 @@ export default class Messages extends BaseAPI {
             const constructor = CONSTRUCTORS[data.kind];
             const thing = new constructor(data.data).toJSON();
             if (constructor === CONSTRUCTORS.t4 &&
+                !Array.isArray(thing.replies) &&
                 typeof thing.replies === 'object' &&
                 Array.isArray(thing.replies.data.children)) {
               thing.replies = thing.replies.data.children.map((m) => {
