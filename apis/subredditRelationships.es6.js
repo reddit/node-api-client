@@ -7,6 +7,7 @@ const MODACTIONS = {
   leaveMod: 'leavemoderator',
   acceptModInvite: 'accept_moderator_invite',
   banned: 'friend',
+  muted: 'friend',
   wikibanned: 'friend',
   wikicontributor: 'friend',
 };
@@ -24,7 +25,7 @@ class SubredditRelationships extends BaseAPI {
   path(method, query={}) {
     const { subreddit, type, filter } = query;
     if (method === 'get') {
-      return path = `r/${subreddit}/about/${query.filter}`;
+      return path = `r/${subreddit}/about/${filter}`;
     }
 
     const sub = subreddit ? `r/${subreddit}/` : '';
