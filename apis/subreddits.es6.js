@@ -79,11 +79,6 @@ class Subreddits extends BaseAPI {
     return super.post(data);
   }
 
-  get (query) {
-    delete query.view;
-    return super.get(query);
-  }
-
   post (data) {
     const postData = pick({
       ...DEFAULT_SUBREDDIT_OPTIONS,
