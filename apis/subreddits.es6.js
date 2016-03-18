@@ -1,4 +1,5 @@
 import pick from 'lodash/object/pick';
+import isEmpty from 'lodash/lang/isEmpty';
 
 import BaseAPI from './base';
 import Subreddit from '../models/subreddit';
@@ -134,7 +135,7 @@ class Subreddits extends BaseAPI {
       return body.data.children.map(c => new Subreddit(c.data).toJSON());
       // sometimes, we get back empty object and 200 for invalid sorts like
       // `mine` when logged out
-    } else if (body && body.id || body.data && body.data.id) {
+    } else if (!isEmpty(body)) {
       return new Subreddit(body.data || body).toJSON();
     }
   }
