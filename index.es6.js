@@ -21,6 +21,7 @@ import messages from './apis/messages';
 import modListing from './apis/modListing';
 import subredditRelationships from './apis/subredditRelationships';
 import rules from './apis/rules';
+import wiki from './apis/wiki';
 
 import { v1 as _v1, errors as _errors, models as _models } from './old-src/api';
 
@@ -43,6 +44,7 @@ const APIs = {
   modListing,
   subredditRelationships,
   rules,
+  wiki,
 };
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';
