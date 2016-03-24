@@ -4,11 +4,8 @@ import Save from '../models/save.es6.js';
 import Comment from '../models/comment.es6.js';
 import Link from '../models/comment.es6.js';
 
-class Saves extends BaseAPI {
+export default class Search extends BaseAPI {
   model = Save;
-  static dataCacheConfig = null;
-
-  get requestCacheRules () { return null; }
 
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
@@ -50,5 +47,3 @@ class Saves extends BaseAPI {
     });
   }
 }
-
-export default Saves;
