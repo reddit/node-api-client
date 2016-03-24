@@ -38,7 +38,7 @@ class Saves extends BaseAPI {
 
   formatBody (res) {
     const { body } = res;
-    const things = body.data;
+    const things = body.data.children;
 
     return things.map(function(t) {
       switch (t.kind) {
