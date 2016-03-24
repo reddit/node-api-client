@@ -56,6 +56,8 @@ const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
                'modwiki,privatemessages,report,wikiedit,wikiread';
 
 class Snoode {
+  static APIs = Object.keys(APIs);
+
   constructor(config={}) {
     this.config = {
       origin: DEFAULT_API_ORIGIN,
