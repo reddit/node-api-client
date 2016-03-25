@@ -118,6 +118,8 @@ class Snoode {
       origin: DEFAULT_API_ORIGIN,
       event: new EventEmitter(),
       userAgent: 'snoodev2',
+      appName: 'snoodev2',
+      env: 'dev',
       ...config,
     };
 

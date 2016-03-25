@@ -103,6 +103,7 @@ class BaseAPI {
   runQuery = (method, rawQuery) => {
     const originalMethod = method;
     const query = this.formatQuery({ ...rawQuery}, method);
+    query.app = this.appParameter;
 
     let handle = this.handle;
     let path = this.fullPath(method, { ...rawQuery});
@@ -168,6 +169,10 @@ class BaseAPI {
     });
   }
 
+  get appParameter() {
+    return `${this.config.appName}-${this.config.env}`;
+  }
+
   save (method, data={}) {
     return new Promise((resolve, reject) => {
       if (!data) {
@@ -175,6 +180,7 @@ class BaseAPI {
       }
 
       data = this.formatQuery(data, method);
+      data.app = this.appParameter;
 
       if (this.model) {
         let model = new this.model(data);
