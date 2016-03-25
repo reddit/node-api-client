@@ -21,5 +21,4 @@ export default class Reports extends BaseAPI {
       reason: 'other',
       api_type: 'json',
     });
-  }
 }
