@@ -15,4 +15,4 @@ require('babel-register')({
 });
 
 const Snoode = require('./index').default;
-module.exports = new Snoode();
+module.exports = Snoode;
