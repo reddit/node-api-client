@@ -25,7 +25,7 @@ class Saves extends BaseAPI {
         return `user/${query.user}/saved.json`;
       case 'post' :
         return 'api/save';
-      case 'delete':
+      case 'del':
         return 'api/unsave';
     }
   }

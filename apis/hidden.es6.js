@@ -9,7 +9,7 @@ class Hidden extends Saves {
         return `user/${query.user}/hidden.json`;
       case 'post' :
         return 'api/hide';
-      case 'delete':
+      case 'del':
         return 'api/unhide';
     }
   }
