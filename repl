@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
-'use strict';
-
 const repl = require('repl');
-const q = require('querystring');
+const uuid = require('uuid').v4;
 
 const packageInfo = require('./package.json');
 console.log(`Starting snoode v${packageInfo.version} repl`);
 console.log('Enter `help()` for information.');
 
 const API = require('./run');
-const api = new API();
+const api = new API({
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  deviceId: process.env.DEVICE_ID || uuid(),
+});
 
 const local = repl.start('$> ');
 
@@ -19,7 +21,7 @@ function help () {
     'To try out the API, use the available instance of `api` to make requests.',
     'For example, try writing: `api.subreddits.get({ id: "coffee" });',
     'The latest API error can be accessed at `error`. Requests and responses',
-    'can be accessed at `request` and `response`.'
+    'can be accessed at `request` and `response`.',
   ].join(' ');
 
   console.log(help);
