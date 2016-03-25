@@ -25,17 +25,6 @@ class BaseAPI {
     this.config = base.config;
     this.cache = base.cache;
     this.event = base.event;
-
-    if (base.config) {
-      this.origin = base.config.origin;
-
-      if (base.config.origins) {
-        let name = this.constructor.name.toLowerCase();
-
-        this.origin = base.config.origins[name] ||
-                      this.config.origin;
-      }
-    }
   }
 
   // Used to format/unformat for caching; `links` or `comments`, for example.
@@ -76,7 +65,7 @@ class BaseAPI {
   }
 
   fullPath (method, query={}) {
-    return `${this.origin}/${this.path(method, query)}`;
+    return `${this.config.origin}/${this.path(method, query)}`;
   }
 
   formatMeta(res) {
@@ -147,7 +136,7 @@ class BaseAPI {
           err.status = 504;
         }
 
-        const origin = this.origin;
+        const origin = this.config.origin;
         const path = this.path(method, query);
 
         const fakeReq = { origin, path, method, query };
@@ -159,7 +148,7 @@ class BaseAPI {
   }
 
   rawSend(method, path, data, cb) {
-    const origin = this.origin;
+    const origin = this.config.origin;
 
     let s = superagent[method](`${origin}/${path}`);
     s.type('form');
