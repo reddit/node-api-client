@@ -4,7 +4,7 @@ import url from 'url';
 
 import activities from './apis/activities';
 import hidden from './apis/hidden';
-import saves from './apis/saves';
+import saved from './apis/saved';
 import search from './apis/search';
 import stylesheets from './apis/stylesheets';
 import subreddits from './apis/subreddits';
@@ -28,7 +28,7 @@ export const APIs = {
   activities,
   captcha,
   hidden,
-  saves,
+  saved,
   search,
   stylesheets,
   subreddits,

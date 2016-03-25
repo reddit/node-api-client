@@ -9,8 +9,7 @@ const CONSTRUCTORS = {
   t3: Link,
 };
 
-
-class Saves extends BaseAPI {
+export default class Saved extends BaseAPI {
   model = Save;
 
   move = this.notImplemented('move');
@@ -63,5 +62,3 @@ class Saves extends BaseAPI {
     });
   }
 }
-
-export default Saves;
