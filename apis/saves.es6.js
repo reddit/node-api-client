@@ -84,7 +84,7 @@ class Saves extends BaseAPI {
 
   formatBody (res) {
     const { body } = res;
-    const things = body.data;
+    const things = body.data || [];
 
     return things.map(function(t) {
       const constructor = CONSTRUCTORS[t.kind];
