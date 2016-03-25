@@ -1,23 +1,23 @@
 import Base from './base';
 
-class Save extends Base {
-  constructor(props) {
-    props._type = 'Save';
-    super(props);
+export default class Save extends Base {
+  _type = 'Save';
 
-    var save = this;
+  validators() {
+    const id = Base.validators.id;
+    const category = this.categoryValidator;
 
-    this.validators = {
-      id: function() {
-        var id = this.get('id');
-        return Base.validators.id(id);
-      }.bind(save),
-      category: function() {
-        var category = this.get('category');
-        return Base.validators.string(category);
-      }.bind(save),
+    return {
+      id,
+      category,
     };
   }
-};
 
-export default Save;
+  categoryValidator(category) {
+    if (!category) {
+      return true;
+    }
+
+    return Base.validators.string(category);
+  }
+}
