@@ -95,16 +95,17 @@ class BaseAPI {
     return query;
   }
 
+
   formatData (data) {
     return data;
   }
 
-  runQuery = (method, query) => {
+  runQuery = (method, rawQuery) => {
     const originalMethod = method;
-    query = this.formatQuery(query, method);
+    const query = this.formatQuery({ ...rawQuery}, method);
 
     let handle = this.handle;
-    let path = this.fullPath(method, query);
+    let path = this.fullPath(method, { ...rawQuery});
 
     const fakeReq = { url: path, method, query };
     this.event.emit(EVENTS.request, fakeReq);
@@ -134,7 +135,7 @@ class BaseAPI {
         }
 
         const origin = this.origin;
-        const path = this.path(method, query);
+        const path = this.path(method, rawQuery);
 
         const fakeReq = { origin, path, method, query };
         const req = res ? res.request : fakeReq;
