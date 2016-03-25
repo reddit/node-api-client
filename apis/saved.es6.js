@@ -1,8 +1,10 @@
 import BaseAPI from './base.es6.js';
 import Save from '../models/save.es6.js';
 
+import has from 'lodash/object/has';
+
 import Comment from '../models/comment.es6.js';
-import Link from '../models/comment.es6.js';
+import Link from '../models/link.es6.js';
 
 const CONSTRUCTORS = {
   t1: Comment,
@@ -84,7 +86,11 @@ export default class Saved extends BaseAPI {
 
   formatBody (res) {
     const { body } = res;
-    const things = body.data || [];
+    if (!has(body, 'data.children')) {
+      return [];
+    }
+
+    const things = body.data.children;
 
     return things.map(function(t) {
       const constructor = CONSTRUCTORS[t.kind];
