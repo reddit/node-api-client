@@ -1,15 +1,13 @@
-import BaseAPI from './base.es6.js';
-import Save from '../models/save.es6.js';
-import Saves from './saves.es6.js';
+import Saved from './saved.es6.js';
 
-class Hidden extends Saves {
+class Hidden extends Saved {
   path (method, query={}) {
     switch (method) {
       case 'get':
         return `user/${query.user}/hidden.json`;
       case 'post' :
         return 'api/hide';
-      case 'delete':
+      case 'del':
         return 'api/unhide';
     }
   }

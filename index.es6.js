@@ -5,7 +5,7 @@ import url from 'url';
 
 import activities from './apis/activities';
 import hidden from './apis/hidden';
-import saves from './apis/saves';
+import saved from './apis/saved';
 import search from './apis/search';
 import stylesheets from './apis/stylesheets';
 import subreddits from './apis/subreddits';
@@ -29,7 +29,7 @@ const APIs = {
   activities,
   captcha,
   hidden,
-  saves,
+  saved,
   search,
   stylesheets,
   subreddits,
@@ -56,11 +56,15 @@ const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
                'modwiki,privatemessages,report,wikiedit,wikiread';
 
 class Snoode {
+  static APIs = Object.keys(APIs);
+
   constructor(config={}) {
     this.config = {
       origin: DEFAULT_API_ORIGIN,
       event: new EventEmitter(),
       userAgent: 'snoodev2',
+      appName: 'snoodev2',
+      env: 'dev',
       ...config,
     };
 

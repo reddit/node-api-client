@@ -25,11 +25,7 @@ export default class Reports extends BaseAPI {
     });
   }
 
-  save(method, data={}) {
-    // Do the save and then update the cache to make the object as
-    // hidden
-    super.save(method, data);
-
+  updateCache(data) {
     const id = data.thing_id;
     const type = BaseAPI.thingType(id);
 
@@ -40,5 +36,10 @@ export default class Reports extends BaseAPI {
         dataCache.set(id, { ...data, hidden: true});
       }
     }
+  }
+
+  save(method, data={}) {
+    this.updateCache(data);
+    return super.save(method, data);
   }
 }

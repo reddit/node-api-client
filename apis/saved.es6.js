@@ -1,15 +1,17 @@
 import BaseAPI from './base.es6.js';
 import Save from '../models/save.es6.js';
 
+import has from 'lodash/object/has';
+
 import Comment from '../models/comment.es6.js';
-import Link from '../models/comment.es6.js';
+import Link from '../models/link.es6.js';
 
 const CONSTRUCTORS = {
   t1: Comment,
   t3: Link,
 };
 
-class Saves extends BaseAPI {
+export default class Saved extends BaseAPI {
   static dataCacheConfig = null;
 
   get requestCacheRules () { return null; }
@@ -25,7 +27,7 @@ class Saves extends BaseAPI {
         return `user/${query.user}/saved.json`;
       case 'post' :
         return 'api/save';
-      case 'delete':
+      case 'del':
         return 'api/unsave';
     }
   }
@@ -54,23 +56,41 @@ class Saves extends BaseAPI {
     return super.del(postData);
   }
 
-  save (method, data={}) {
-    // Save, then update the data in the cache (since `saved` model changes also
-    // update `link` or `comment` models)
-    super.save(method, data);
+  updateCache (method, data) {
     const saved = method === 'post' ? true : false;
 
     const type = BaseAPI.thingType(data.id);
 
-    this.cache.resetData(type, data.id, {
-      ...this.dataCache[type].get(data.id),
+    const dataCache = this.cache.dataCache[type];
+    if (!dataCache) {
+      return;
+    }
+
+    const thing = dataCache.get(data.id);
+    if (!thing) {
+      return;
+    }
+
+    const updatedThing = {
+      ...thing,
       saved,
-    });
+    };
+
+    this.cache.resetData(type, updatedThing);
+  }
+
+  save (method, data={}) {
+    this.updateCache(method, data);
+    return super.save(method, data);
   }
 
   formatBody (res) {
     const { body } = res;
-    const things = body.data;
+    if (!has(body, 'data.children')) {
+      return [];
+    }
+
+    const things = body.data.children;
 
     return things.map(function(t) {
       const constructor = CONSTRUCTORS[t.kind];
@@ -78,5 +98,3 @@ class Saves extends BaseAPI {
     });
   }
 }
-
-export default Saves;

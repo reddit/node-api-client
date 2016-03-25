@@ -113,11 +113,12 @@ class BaseAPI {
     return query;
   }
 
-  runQuery = (method, query) => {
-    query = this.formatQuery(query, method);
+  runQuery = (method, rawQuery) => {
+    const query = this.formatQuery({ ...rawQuery}, method);
+    query.app = this.appParameter;
 
     let handle = this.handle;
-    let path = this.fullPath(method, query);
+    let path = this.fullPath(method, { ...rawQuery});
 
     const fakeReq = { url: path, method, query };
     this.event.emit(EVENTS.request, fakeReq);
@@ -148,7 +149,7 @@ class BaseAPI {
         }
 
         const origin = this.origin;
-        const path = this.path(method, query);
+        const path = this.path(method, rawQuery);
 
         const fakeReq = { origin, path, method, query };
         const req = res ? res.request : fakeReq;
@@ -181,6 +182,10 @@ class BaseAPI {
     });
   }
 
+  get appParameter() {
+    return `${this.config.appName}-${this.config.env}`;
+  }
+
   save (method, data={}) {
     return new Promise((resolve, reject) => {
       if (!data) {
@@ -188,6 +193,7 @@ class BaseAPI {
       }
 
       data = this.formatQuery(data, method);
+      data.app = this.appParameter;
 
       if (this.model) {
         let model = new this.model(data);

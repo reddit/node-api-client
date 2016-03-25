@@ -1,10 +1,11 @@
-import BaseAPI from './base.es6.js';
-import Save from '../models/save.es6.js';
+import BaseAPI from './base';
 
-import Comment from '../models/comment.es6.js';
-import Link from '../models/comment.es6.js';
+import Link from '../models/link';
+import Subreddit from '../models/subreddit';
 
-class Saves extends BaseAPI {
+const LINK_TYPE = 't3';
+
+export default class Search extends BaseAPI {
   static dataCacheConfig = null;
 
   get requestCacheRules () { return null; }
@@ -33,19 +34,42 @@ class Saves extends BaseAPI {
     return query;
   }
 
-  formatBody (res) {
+  listsFromResponse(res) {
     const { body } = res;
-    const things = body.data;
+    if (!body) { return []; }
 
-    return things.map(function(t) {
-      switch (t.kind) {
-        case 't1':
-          return ((new Comment(t.data)).toJSON());
-        case 't3':
-          return ((new Link(t.data)).toJSON());
+    // If only one type is returned body will be an object;
+    return Array.isArray(body) ? body : [body];
+  }
+
+  formatBody (res) {
+    const lists = this.listsFromResponse(res);
+
+    const meta = {};
+    let links = [];
+    let subreddits = [];
+
+    lists.forEach((listing) => {
+      if (listing.data.children.length) {
+        if (listing.data.children[0].kind === LINK_TYPE) {
+          links = listing.data.children.map((link) => {
+            return new Link(link.data).toJSON();
+          });
+
+          meta.after = listing.data.after;
+          meta.before = listing.data.before;
+        } else {
+          subreddits = listing.data.children.map((subreddit) => {
+            return new Subreddit(subreddit.data).toJSON();
+          });
+        }
       }
     });
+
+    return {
+      meta,
+      links,
+      subreddits,
+    };
   }
 }
-
-export default Saves;
