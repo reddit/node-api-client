@@ -9,7 +9,7 @@ const CONSTRUCTORS = {
   t3: Link,
 };
 
-class Saves extends BaseAPI {
+export default class Saved extends BaseAPI {
   static dataCacheConfig = null;
 
   get requestCacheRules () { return null; }
@@ -92,5 +92,3 @@ class Saves extends BaseAPI {
     });
   }
 }
-
-export default Saves;
