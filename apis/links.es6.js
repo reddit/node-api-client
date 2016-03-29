@@ -47,7 +47,7 @@ class Links extends BaseAPI {
 
   post (data) {
     const postData = {
-      api_type: 'data',
+      api_type: 'json',
       thing_id: data.thingId,
       title: data.title,
       kind: data.kind,
@@ -67,10 +67,10 @@ class Links extends BaseAPI {
     super.post(postData);
   }
 
-  formatBody(res, req) {
+  formatBody(res, req, method) {
     const { body } = res;
 
-    if (req.method === 'GET') {
+    if (method === 'get') {
       const { data } = body;
 
       if (data && data.children && data.children[0]) {
@@ -82,7 +82,7 @@ class Links extends BaseAPI {
       } else if (data) {
         return [];
       }
-    } else {
+    } else if (method !== 'del') {
       if (body.json && body.json.errors.length === 0) {
         return body.json.data;
       } else {

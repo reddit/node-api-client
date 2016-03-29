@@ -83,7 +83,7 @@ class BaseAPI {
     return res.headers;
   }
 
-  formatBody(res, req) {
+  formatBody(res) {
     return res.body;
   }
 
@@ -109,11 +109,12 @@ class BaseAPI {
     return this.config.defaultHeaders || {};
   }
 
-  formatQuery (query, method) {
+  formatQuery (query) {
     return query;
   }
 
   runQuery = (method, query) => {
+    const originalMethod = method;
     query = this.formatQuery(query, method);
 
     let handle = this.handle;
@@ -153,7 +154,7 @@ class BaseAPI {
         const fakeReq = { origin, path, method, query };
         const req = res ? res.request : fakeReq;
 
-        handle(resolve, reject)(err, res, req);
+        handle(resolve, reject)(err, res, req, originalMethod);
       });
     });
   }
@@ -221,7 +222,7 @@ class BaseAPI {
           }
         }
 
-        this.handle(resolve, reject)(err, res, req);
+        this.handle(resolve, reject)(err, res, req, method);
       });
     });
   }
@@ -292,7 +293,7 @@ class BaseAPI {
   }
 
   handle = (resolve, reject) => {
-    return (err, res, req) => {
+    return (err, res, req, method) => {
       // lol handle the twelve ways superagent sends request back
       if (res && !req) {
         req = res.request || res.req;
@@ -310,8 +311,15 @@ class BaseAPI {
 
       this.event.emit(EVENTS.response, req, res);
 
-      const headers = this.formatMeta(res);
-      const body = this.formatBody(res, req);
+      let headers;
+      let body;
+
+      try {
+        headers = this.formatMeta(res, req, method);
+        body = this.formatBody(res, req, method);
+      } catch (e) {
+        return reject(e);
+      }
 
       resolve({ headers, body });
     };
