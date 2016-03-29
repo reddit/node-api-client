@@ -56,9 +56,9 @@ use!) An api instance is created in the global scope (`api`), from which you
 can call any of the API methods. Use `help` in the repl to learn more.
 
 Mancy
-____________________
+-----
 
-If you install (Mancy)[https://github.com/princejwesley/Mancy] you can have a nicer version of using the repl. To set it up, open mancy, and go to `Preferences`. Under `Add node modules path` add your local install of Snoode. Then under `Startup script` add `mancyStart.js`. You can edit `mancyStart.js` to include your token and you can then either use `api` or `authed` as you'd expect. Mancy supports lots of inspecting and autocomplete tools out of the box.
+If you install [Mancy](https://github.com/princejwesley/Mancy) you can have a nicer version of using the repl. To set it up, open mancy, and go to `Preferences`. Under `Add node modules path` add your local install of Snoode. Then under `Startup script` add `mancyStart.js`. You can edit `mancyStart.js` to include your token and you can then either use `api` or `authed` as you'd expect. Mancy supports lots of inspecting and autocomplete tools out of the box.
 
 Example `mancyStart.js`:
 ```
