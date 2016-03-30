@@ -19,6 +19,7 @@ import captcha from './apis/captcha';
 import reports from './apis/reports';
 import messages from './apis/messages';
 import modListing from './apis/modListing';
+import preferences from './apis/preferences';
 import subredditRelationships from './apis/subredditRelationships';
 import rules from './apis/rules';
 import wiki from './apis/wiki';
@@ -48,6 +49,7 @@ const APIs = {
   reports,
   messages,
   modListing,
+  preferences,
   subredditRelationships,
   rules,
   wiki,

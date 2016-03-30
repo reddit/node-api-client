@@ -162,11 +162,11 @@ class BaseAPI {
     });
   }
 
-  rawSend(method, path, data, cb) {
+  rawSend(method, path, data, type='form', cb) {
     const origin = this.origin;
 
     let s = superagent[method](`${origin}/${path}`);
-    s.type('form');
+    s.type(type);
 
     if (this.config.token) {
       s.set('Authorization', 'bearer ' + this.config.token);
@@ -218,10 +218,10 @@ class BaseAPI {
       const _method = method;
 
       method = data._method || method;
-
+      const type = data._type;
       data = this.formatData(data, _method);
 
-      this.rawSend(method, path, data, (err, res, req) => {
+      this.rawSend(method, path, data, type, (err, res, req) => {
         if (!err && res) {
           if (this.cache.dataCache[this.dataType] && this.cache.requestCache.get(this.api)) {
             this.cache.resetRequests(this.api);
