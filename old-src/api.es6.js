@@ -3,6 +3,7 @@ import v1 from './endpoints/v1';
 import Account from '../models/account';
 import Award from '../models/award';
 import Base from '../models/base';
+import Block from '../models/block';
 import Comment from '../models/comment';
 import Link from '../models/link';
 import Message from '../models/message';
@@ -26,6 +27,7 @@ const models = {
   Account,
   Award,
   Base,
+  Block,
   Comment,
   Link,
   Message,
