@@ -1193,6 +1193,32 @@ class APIv1Endpoint {
     }, this);
   }
 
+  get blocks () {
+    return bindAll({
+      post: function(options = {}) {
+        const uri = `${options.origin}/api/block`;
+        const { model } = options;
+
+        if (!model) {
+          throw new NoModelError('/api/block');
+        }
+
+        const valid = model.validate();
+        if (!valid) {
+          throw new ValidationError('Block', model, valid);
+        }
+
+        options.form = model.toJSON((props) => {
+          return {
+            id: props.thingId,
+          };
+        });
+
+        return this.basePost(uri, options, () => null);
+      }
+    }, this);
+  }
+
   get captcha () {
     return bindAll({
       get: function (options = {}) {
