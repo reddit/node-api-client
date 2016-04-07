@@ -4,6 +4,7 @@ import Account from '../models/account';
 import Award from '../models/award';
 import Base from '../models/base';
 import Block from '../models/block';
+import BlockedUser from '../models/BlockedUser';
 import Comment from '../models/comment';
 import Link from '../models/link';
 import Message from '../models/message';
@@ -28,6 +29,7 @@ const models = {
   Award,
   Base,
   Block,
+  BlockedUser,
   Comment,
   Link,
   Message,
