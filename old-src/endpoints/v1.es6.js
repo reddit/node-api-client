@@ -1278,8 +1278,16 @@ class APIv1Endpoint {
             });
           }
 
+          // Reset users so that the current user's inbox_count is set to zero.
+          // So, the thing is, we don't know _which_ user should be set to
+          // zero, so we reset all of them. User caches aren't used that often
+          // anyways, so it shouldn't be a particularly big hit.
+          if (this.cache.dataCache.users) {
+            this.cache.dataCache.users.reset();
+          }
+
           // Mark messages as read after we fetch them
-          if (read.length > 0) {
+          if (!options.leaveUnread && read.length > 0) {
             const readUrl = opts.origin + '/api/read_message';
 
             const readOptions = Object.assign({
