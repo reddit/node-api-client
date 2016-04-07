@@ -8,6 +8,7 @@ import has from 'lodash/object/has';
 
 import Account from '../../models/account';
 import Award from '../../models/award';
+import BlockedUser from '../../models/BlockedUser';
 import Comment from '../../models/comment';
 import Link from '../../models/link';
 import Message from '../../models/message';
@@ -29,6 +30,7 @@ import treeifyComments from '../../lib/treeifyComments';
 
 const TYPES = {
   COMMENT: 't1',
+  USER: 't2',
   LINK: 't3',
   MESSAGE: 't4',
 };
@@ -1229,6 +1231,49 @@ class APIv1Endpoint {
             id: props.thingId,
           };
         });
+
+        return this.basePost(uri, options, () => null);
+      },
+
+      get: function(options = {}) {
+        const uri = `${options.origin}/prefs/blocked`;
+
+        return this.baseGet(uri, options, (body) => {
+          if (has(body, 'data.children') && Array.isArray(body.data.children)) {
+            return body.data.children.map(b => (new BlockedUser(b).toJSON()));
+          } else {
+            return [];
+          }
+        });
+      },
+
+      del: function(options = {}) {
+        const uri = `${options.origin}/api/unfriend`;
+        const { model } = options;
+
+        if (!model) {
+          throw new NoModelError('/api/unblock');
+        }
+
+        const valid = model.validate();
+        if (!valid) {
+          throw new ValidationError('BlockedUser', model, valid);
+        }
+
+        if (!options.myUserId) {
+          throw new ValidationError('/api/unblock', options, false);
+        }
+
+        const container = `${TYPES.USER}_${options.myUserId}`;
+        delete options.myUserId;
+
+        options.form = model.toJSON((props) => {
+          return {
+            id: props.id,
+            type: 'enemy',
+            container,
+          };
+        })
 
         return this.basePost(uri, options, () => null);
       }
