@@ -11,6 +11,8 @@ import Award from '../../models/award';
 import Comment from '../../models/comment';
 import Link from '../../models/link';
 import Message from '../../models/message';
+import Multi from '../../models/multi';
+import MultiSubscription from '../../models/multiSubscription';
 import Subreddit from '../../models/subreddit';
 import Stylesheet from '../../models/stylesheet';
 import Preferences from '../../models/preferences';
@@ -500,6 +502,20 @@ class APIv1Endpoint {
         subscribedRequestCache.set(key, {subreddits: subreddits});
       }
     }, this);
+  }
+
+  get multis () {
+    return bindAll({
+      get: function (options = {}) {
+      },
+    });
+  }
+
+  get multiSubscriptoins () {
+    return bindAll({
+      get: function (options = {}) {
+      },
+    });
   }
 
   get saved() {

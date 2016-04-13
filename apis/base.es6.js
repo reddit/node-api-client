@@ -143,7 +143,6 @@ class BaseAPI {
       s.set(this.buildHeaders());
 
       if (query.id && !Array.isArray(query.id)) {
-
         delete query.id;
       }
 

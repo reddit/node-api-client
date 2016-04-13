@@ -22,6 +22,8 @@ import modListing from './apis/modListing';
 import subredditRelationships from './apis/subredditRelationships';
 import rules from './apis/rules';
 import wiki from './apis/wiki';
+import multis from './apis/multis';
+import multiSubscriptions from './apis/multiSubscriptions';
 
 import NotImplementedError from './errors/notImplementedError';
 
@@ -49,6 +51,8 @@ const APIs = {
   subredditRelationships,
   rules,
   wiki,
+  multis,
+  multiSubscriptions,
 };
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';
