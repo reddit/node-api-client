@@ -23,7 +23,7 @@ export default class Messages extends BaseAPI {
   patch = this.notImplemented('patch');
   del = this.notImplemented('del');
 
-  formatQuery(query, method) {
+  formatQuery(query) {
     return {
       ...omit(query, 'thingId'),
       api_type: 'json',

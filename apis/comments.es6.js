@@ -76,7 +76,7 @@ class Comments extends BaseAPI {
         return body[1].data.children.map(Comments.mapReplies);
       } else if (body.json && body.json.data) {
         if (query.children) { // treeify 'load more comments' replies
-          return treeifyComments(body.json.data.things.map(mapReplies));
+          return treeifyComments(body.json.data.things.map(Comments.mapReplies));
         }
         return body.json.data.things.map(Comments.mapReplies);
       }

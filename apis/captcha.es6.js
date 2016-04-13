@@ -14,7 +14,7 @@ class Captcha extends BaseAPI {
   patch = this.notImplemented('patch');
   del = this.notImplemented('del');
 
-  path(method, query={}) {
+  path(method) {
     return `api/${method === 'post' ? 'new_captcha' : 'needs_captcha'}`;
   }
 
