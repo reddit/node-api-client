@@ -10,6 +10,8 @@ export default class Votes extends BaseAPI {
 
   model = Vote;
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   get = this.notImplemented('get');
   put = this.notImplemented('put');
   patch = this.notImplemented('patch');

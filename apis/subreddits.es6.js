@@ -51,6 +51,8 @@ class Subreddits extends BaseAPI {
 
   model = Subreddit;
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   del = this.notImplemented('del');
 
   patch (data) {

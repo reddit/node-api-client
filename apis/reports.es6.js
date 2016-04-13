@@ -8,6 +8,8 @@ export default class Reports extends BaseAPI {
 
   model = Report;
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   get = this.notImplemented('get');
   put = this.notImplemented('put');
   patch = this.notImplemented('patch');

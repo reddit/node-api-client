@@ -19,6 +19,9 @@ class Comments extends BaseAPI {
     return new Comment(comment).toJSON();
   }
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
+
   get requestCacheRules () {
     return undefined;
   }

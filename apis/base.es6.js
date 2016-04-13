@@ -286,6 +286,34 @@ class BaseAPI {
     return this.save('patch', data);
   }
 
+  // Get the source, then save it, modified by data.
+  copy (fromId, data) {
+    return new Promise((resolve, reject) => {
+      this.get(fromId).then(oldData => {
+        this.save('copy', {
+          ...oldData,
+          _method: data.id ? 'put' : 'post',
+          ...data,
+        }).then(resolve, reject);
+      });
+    });
+  }
+
+  // Get the old one, save the new one, then delete the old one if save succeeded
+  move (fromId, toId) {
+    return new Promise((resolve, reject) => {
+      this.get(fromId).then(oldData => {
+        this.save('move', {
+          _method: 'put',
+          ...oldData,
+          id: toId,
+        }).then(data => {
+          this.del({ id: fromId }).then(() => { resolve(data); }, reject);
+        }, reject);
+      });
+    });
+  }
+
   notImplemented (method) {
     return function() {
       throw new NotImplementedError(method, this.api);

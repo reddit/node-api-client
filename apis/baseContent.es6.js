@@ -36,6 +36,8 @@ const MOD_ACTION_MAP = {
 };
 
 class BaseContent extends BaseAPI {
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   put = this.notImplemented('put');
 
   formatQuery (query, method) {

@@ -19,6 +19,8 @@ class SubredditRelationships extends BaseAPI {
     return undefined;
   }
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   put = this.notImplemented('put');
   patch = this.notImplemented('patch');
 

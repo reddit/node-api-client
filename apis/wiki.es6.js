@@ -11,6 +11,8 @@ export default class Votes extends BaseAPI {
 
   get requestCacheRules() { return null; }
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   put = this.notImplemented('put');
   del = this.notImplemented('del');
 

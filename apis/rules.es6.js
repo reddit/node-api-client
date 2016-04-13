@@ -14,6 +14,8 @@ export default class Rules extends BaseAPI {
 
   model = Rule;
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   put = this.notImplemented('put');
 
   formatQuery(query, method) {

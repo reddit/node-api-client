@@ -16,6 +16,8 @@ class Saves extends BaseAPI {
 
   model = Save;
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   put = this.notImplemented('put');
   patch = this.notImplemented('patch');
 

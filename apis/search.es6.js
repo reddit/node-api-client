@@ -9,6 +9,8 @@ class Saves extends BaseAPI {
 
   get requestCacheRules () { return null; }
 
+  move = this.notImplemented('move');
+  copy = this.notImplemented('copy');
   put = this.notImplemented('put');
   patch = this.notImplemented('patch');
   post = this.notImplemented('post');
