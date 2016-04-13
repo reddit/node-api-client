@@ -142,6 +142,10 @@ class Snoode {
       this.config.token = token.access_token;
       this.config.refreshToken = token.refresh_token;
       this.config.origin = this.config.authedOrigin || AUTHED_API_ORIGIN;
+
+      for (let a in APIs) {
+        this[a] = new APIs[a](this);
+      }
     }, err => { throw err; });
   }
 
