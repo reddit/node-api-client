@@ -133,12 +133,10 @@ export default class Rules extends BaseAPI {
   }
 
   formatUpdateRuleBody(body, res, req) {
-    console.log('runing patch body');
     return { body, res, req };
   }
 
   formatRemoveRuleBody(body) {
-    console.log('running remove');
     if (has(body, 'json.errors') && body.json.errors.length) {
       throw body.json.errors;
     }

@@ -64,7 +64,7 @@ class Links extends BaseAPI {
       postData.url = data.url;
     }
 
-    super.post(postData);
+    return super.post(postData);
   }
 
   formatBody(res, req, method) {

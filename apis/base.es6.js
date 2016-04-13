@@ -113,6 +113,10 @@ class BaseAPI {
     return query;
   }
 
+  formatData (data) {
+    return data;
+  }
+
   runQuery = (method, query) => {
     const originalMethod = method;
     query = this.formatQuery(query, method);
@@ -212,7 +216,11 @@ class BaseAPI {
       }
 
       const path = this.path(method, data);
+      const _method = method;
+
       method = data._method || method;
+
+      data = this.formatData(data, _method);
 
       this.rawSend(method, path, data, (err, res, req) => {
         if (!err && res) {
@@ -300,13 +308,14 @@ class BaseAPI {
   }
 
   // Get the old one, save the new one, then delete the old one if save succeeded
-  move (fromId, toId) {
+  move (fromId, toId, data) {
     return new Promise((resolve, reject) => {
       this.get(fromId).then(oldData => {
         this.save('move', {
           _method: 'put',
           ...oldData,
           id: toId,
+          ...data,
         }).then(data => {
           this.del({ id: fromId }).then(() => { resolve(data); }, reject);
         }, reject);
