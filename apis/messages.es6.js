@@ -1,4 +1,4 @@
-import omit from 'lodash/object/omit';
+import { omit } from 'lodash/object';
 import BaseAPI from './base.es6.js';
 import Comment from '../models/comment.es6.js';
 import Link from '../models/comment.es6.js';

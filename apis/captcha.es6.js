@@ -1,5 +1,5 @@
 import BaseAPI from './base.es6.js';
-import has from 'lodash/object/has';
+import { has } from 'lodash/object';
 
 class Captcha extends BaseAPI {
   static dataCacheConfig = null;

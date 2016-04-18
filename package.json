@@ -1,6 +1,6 @@
 {
   "name": "snoode",
-  "version": "1.22.0",
+  "version": "2.0.0",
   "description": "node and browser reddit api library",
   "main": "index.es6.js",
   "scripts": {
@@ -23,11 +23,14 @@
   },
   "homepage": "https://github.com/ajacksified/snoode",
   "dependencies": {
-    "lodash": "^3.10.1",
-    "reddit-text-js": "0.5.4",
-    "restcache": "1.1.3",
-    "superagent": "1.3.0",
-    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4"
+    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
+    "sanitize-html": "git://github.com/ajacksified/sanitize-html.git#b0856080e6eb0feb2dfc28b357161986dcab0124",
+    "snuownd": "git://github.com/reddit/snuownd.git#06a1abc16ad06a1a6eff14afb7f9bcdb34e8ad01",
+    "restcache": "1.x"
+  },
+  "peerDependencies": {
+    "lodash": "4.x",
+    "superagent": "1.x"
   },
   "devDependencies": {
     "babel-core": "6.5.1",

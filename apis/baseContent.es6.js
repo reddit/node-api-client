@@ -1,4 +1,4 @@
-import pick from 'lodash/object/pick';
+import { pick } from 'lodash/object';
 import BaseAPI from './base.es6.js';
 import NoModelError from '../errors/noModelError';
 

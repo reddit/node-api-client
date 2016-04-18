@@ -1,5 +1,5 @@
-import pick from 'lodash/object/pick';
-import isEmpty from 'lodash/lang/isEmpty';
+import { pick } from 'lodash/object';
+import { isEmpty } from 'lodash/lang';
 
 import BaseAPI from './base';
 import Subreddit from '../models/subreddit';

@@ -1,4 +1,4 @@
-import has from 'lodash/object/has';
+import { has } from 'lodash/object';
 import BaseAPI from './baseContent.es6.js';
 import Comment from '../models/comment.es6.js';
 import treeifyComments from '../lib/treeifyComments';
