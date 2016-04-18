@@ -1,5 +1,5 @@
 import Base from './base';
-import process from 'reddit-text-js';
+import process from '../lib/markdown';
 
 class Comment extends Base {
   _type = 'Comment';

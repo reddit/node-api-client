@@ -1,6 +1,6 @@
 import BaseAPI from './baseContent.es6.js';
 import Rule from '../models/rule.es6.js';
-import has from 'lodash/object/has';
+import { has } from 'lodash/object';
 
 const SUBREDDIT_REGEX =  /.*\/r\/(.+)\/about\/rules\.json.*/;
 const ADD_RULE_PATH = 'api/add_subreddit_rule';

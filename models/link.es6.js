@@ -1,5 +1,5 @@
 import Base from './base';
-import process from 'reddit-text-js';
+import process from '../lib/markdown';
 
 class Link extends Base {
   _type = 'Link';

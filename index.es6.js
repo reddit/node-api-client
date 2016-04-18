@@ -25,13 +25,7 @@ import wiki from './apis/wiki';
 import multis from './apis/multis';
 import multiSubscriptions from './apis/multiSubscriptions';
 
-import NotImplementedError from './errors/notImplementedError';
-
-import { v1 as _v1, errors as _errors, models as _models } from './old-src/api';
-
-_errors.NotImplementedError = NotImplementedError;
-
-const APIs = {
+export const APIs = {
   activities,
   captcha,
   hidden,
@@ -53,6 +47,60 @@ const APIs = {
   wiki,
   multis,
   multiSubscriptions,
+};
+
+import NoModelError from './errors/noModelError';
+import ResponseError from './errors/responseError';
+import { DisconnectedError } from './errors/responseError';
+import ValidationError from './errors/validationError';
+import NotImplementedError from './errors/notImplementedError';
+
+export const errors = {
+  NoModelError,
+  ValidationError,
+  ResponseError,
+  DisconnectedError,
+  NotImplementedError,
+};
+
+import Account from './models/account';
+import Award from './models/award';
+import Base from './models/base';
+import Block from './models/block';
+import BlockedUser from './models/BlockedUser';
+import Comment from './models/comment';
+import Link from './models/link';
+import Message from './models/message';
+import PromoCampaign from './models/promocampaign';
+import Preferences from './models/preferences';
+import Subreddit from './models/subreddit';
+import Subscription from './models/subscription';
+import Vote from './models/vote';
+import Report from './models/report';
+import WikiPage from './models/wikiPage';
+import WikiRevision from './models/wikiRevision';
+import WikiPageListing from './models/wikiPageListing';
+import WikiPageSettings from './models/wikiPageSettings';
+
+export const models = {
+  Account,
+  Award,
+  Base,
+  Block,
+  BlockedUser,
+  Comment,
+  Link,
+  Message,
+  PromoCampaign,
+  Preferences,
+  Subreddit,
+  Subscription,
+  Vote,
+  Report,
+  WikiPage,
+  WikiRevision,
+  WikiPageListing,
+  WikiPageSettings,
 };
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';
@@ -256,6 +304,3 @@ class Snoode {
 }
 
 export default Snoode;
-export const v1 = _v1;
-export const models = _models;
-export const errors = _errors;
