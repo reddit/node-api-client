@@ -1,4 +1,3 @@
-import Cache from 'restcache';
 import { EventEmitter } from 'events';
 import superagent from 'superagent';
 import url from 'url';
@@ -122,26 +121,9 @@ class Snoode {
 
     this.event = this.config.event;
 
-    this.cache = new Cache(this.buildCacheConfig());
-
     for (let a in APIs) {
       this[a] = new APIs[a](this);
     }
-  }
-
-  buildCacheConfig() {
-    let dataTypes = {};
-
-    for (let a in APIs) {
-      let API = APIs[a];
-      let apiName = (new API({})).api;
-
-      dataTypes[apiName] = API.dataCacheConfig;
-    }
-
-    return {
-      dataTypes,
-    };
   }
 
   withAuth (token) {

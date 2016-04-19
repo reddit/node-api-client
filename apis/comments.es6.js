@@ -4,9 +4,6 @@ import Comment from '../models/comment.es6.js';
 import treeifyComments from '../lib/treeifyComments';
 
 class Comments extends BaseAPI {
-  // TODO set cache rules
-  static dataCacheConfig = undefined;
-
   static mapReplies (data) {
     let comment = data.data;
 

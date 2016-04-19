@@ -10,10 +10,6 @@ const CONSTRUCTORS = {
 };
 
 class Saves extends BaseAPI {
-  static dataCacheConfig = null;
-
-  get requestCacheRules () { return null; }
-
   model = Save;
 
   move = this.notImplemented('move');
@@ -54,20 +50,6 @@ class Saves extends BaseAPI {
     };
 
     return super.del(postData);
-  }
-
-  save (method, data={}) {
-    // Save, then update the data in the cache (since `saved` model changes also
-    // update `link` or `comment` models)
-    super.save(method, data);
-    const saved = method === 'post' ? true : false;
-
-    const type = BaseAPI.thingType(data.id);
-
-    this.cache.resetData(type, data.id, {
-      ...this.dataCache[type].get(data.id),
-      saved,
-    });
   }
 
   formatBody (res) {

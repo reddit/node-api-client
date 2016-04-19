@@ -2,25 +2,6 @@ import BaseAPI from './baseContent.es6.js';
 import Link from '../models/link.es6.js';
 
 class Links extends BaseAPI {
-  // TODO set cache rules
-  static dataCacheConfig = {
-    idProperty: 'name',
-    cache: {
-      max: 100,
-      maxAge: 1000 * 60 * 5,
-    },
-  };
-
-  get requestCacheRules () {
-    return {
-      ...super.requestCacheRules,
-      cache: {
-        max: 5,
-        maxAge: 1000 * 60 * 5,
-      },
-    };
-  }
-
   model = Link;
 
   getPath (query) {

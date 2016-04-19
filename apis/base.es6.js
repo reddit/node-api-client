@@ -23,7 +23,6 @@ const TYPES = {
 class BaseAPI {
   constructor(base) {
     this.config = base.config;
-    this.cache = base.cache;
     this.event = base.event;
 
     if (base.config) {
@@ -46,23 +45,6 @@ class BaseAPI {
 
   get api () {
     return this.constructor.name.toLowerCase();
-  }
-
-  get requestCacheRules () {
-    let api = this;
-
-    return {
-      name: api.api,
-      cache: {
-        max: 10,
-        maxAge: 1000 * 60 * 5,
-      },
-      format: api.formatCacheData,
-      unformat: api.unformatCacheData,
-      rules: [
-        api.clientCacheRule,
-      ],
-    };
   }
 
   path (method, query={}) {
@@ -222,25 +204,12 @@ class BaseAPI {
       data = this.formatData(data, _method);
 
       this.rawSend(method, path, data, (err, res, req) => {
-        if (!err && res) {
-          if (this.cache.dataCache[this.dataType] && this.cache.requestCache.get(this.api)) {
-            this.cache.resetRequests(this.api);
-            this.cache.resetData(this.dataType, res.body);
-          }
-        }
-
         this.handle(resolve, reject)(err, res, req, method);
       });
     });
   }
 
   head (query={}) {
-    const headCache = this.cache.head(this.api, this.buildQueryParams('get', query));
-
-    if (headCache) {
-      return Promise.resolve(headCache);
-    }
-
     return this.runQuery('head', query);
   }
 
@@ -250,34 +219,10 @@ class BaseAPI {
       ...(query || {}),
     };
 
-    if (query.id) {
-      return this.cache.getById(
-        this.fullPath('get', query),
-        query.id,
-        this.runQuery,
-        ['get', query],
-        this.requestCacheRules
-      );
-    }
-
-    return this.cache.get(
-      this.runQuery,
-      ['get', query],
-      this.requestCacheRules
-    );
+    return this.runQuery('get', query);
   }
 
   del (query={}) {
-    if (this.cache.dataCache[this.dataType]) {
-      if (query.id) {
-        this.cache.deleteData(this.dataType, query.id);
-      } else {
-        this.cache.resetData(this.dataType);
-      }
-
-      this.cache.resetRequests(this.api);
-    }
-
     return this.runQuery('del', query);
   }
 
@@ -360,22 +305,6 @@ class BaseAPI {
       resolve({ headers, body });
     };
   }
-
-  formatCacheData = (data) => {
-    let api = this.dataType;
-
-    return {
-      [api]: data,
-    };
-  }
-
-  unformatCacheData = (data) => {
-    return data[this.dataType];
-  }
-
-  clientCacheRule = (/*options*/) => {
-    return this.config.env === 'CLIENT';
-  };
 
   static thingType (id) {
     return TYPES[id.substring(0, 2)];
