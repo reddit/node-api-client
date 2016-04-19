@@ -126,8 +126,12 @@ class Snoode {
     }
   }
 
-  withAuth (token) {
-    return new Snoode({...this.config, token});
+  withAuth (token, changeOrigin=true) {
+    return new Snoode({
+      ...this.config,
+      token,
+      origin: changeOrigin ? AUTHED_API_ORIGIN : this.config.origin,
+    });
   }
 
   withConfig (config) {

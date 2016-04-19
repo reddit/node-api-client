@@ -3,32 +3,27 @@ snoode
 
 [![Build Status](https://travis-ci.org/reddit/snoode.svg?branch=master)](https://travis-ci.org/reddit/snoode)
 
-Someday, it will be a reddit API library.
-
-For now, it handles only a few resources. Building in parallel with
-[reddit-mobile](https://github.com/reddit/reddit-mobile).
-
-Works both client-side and server-side.
+A reddit API library for node and browsers.
 
 Example
 -------
 
 ```javascript
 // Require snoode.
-import { v1 } from 'snoode';
-const api = new v1();
+import Snoode from 'snoode';
+const api = new Snoode();
 
 // Example call to get links for /r/homebrewing.
 api.links.get({
-  subredditName: 'homebrewing',
-}).then(function(data) {
+  subreddit: 'homebrewing',
+}).then(data => {
   console.log(data.body);
 });
 
 // Example call to get all comments for this particular listing.
 api.comments.get({
   linkId: 't3_ib4bk'
-}).then(function(data) {
+}).then(data => {
   console.log(data.body);
 });
 
@@ -38,14 +33,9 @@ api.comments.get({
 // merged with the new config.
 
 const myOauthToken = 'abcdef1234567890';
-const authedAPI = api.withConfig({
-  token: myOauthToken,
-  origin: 'https://oauth.reddit.com'
-});
+const authedAPI = api.withAuth(myOauthToken);
 
-authedAPI.subscriptions.get().then(function(data) {
-  console.log(data.body)
-});
+authedAPI.subscriptions.post({ subreddit: 'homebrewing' }).then(console.log);
 ```
 
 Development / Testing
