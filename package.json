@@ -1,5 +1,5 @@
 {
-  "name": "snoode",
+  "name": "@r/api-client",
   "version": "2.0.0",
   "description": "node and browser reddit api library",
   "main": "index.es6.js",
