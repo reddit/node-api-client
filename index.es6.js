@@ -1,4 +1,4 @@
-import Cache from 'restcache';
+import Cache from '@r/rest-cache';
 import { EventEmitter } from 'events';
 import superagent from 'superagent';
 import url from 'url';

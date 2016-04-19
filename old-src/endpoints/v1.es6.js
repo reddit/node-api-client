@@ -3,7 +3,7 @@ import retry from 'superagent-retry';
 
 retry(superagent);
 
-import Cache from 'restcache';
+import Cache from '@r/rest-cache';
 import has from 'lodash/object/has';
 
 import Account from '../../models/account';
