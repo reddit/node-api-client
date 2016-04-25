@@ -1,7 +1,7 @@
 import BaseAPI from './base.es6.js';
 import Save from '../models/save.es6.js';
 
-import has from 'lodash/object/has';
+import { has } from 'lodash/object';
 
 import Comment from '../models/comment.es6.js';
 import Link from '../models/link.es6.js';
