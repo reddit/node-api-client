@@ -33,15 +33,15 @@ class Activities extends BaseAPI {
     return `user/${query.user}/${query.activity}.json`;
   }
 
-  formatBody (res) {
+  parseBody(res, apiResponse) {
     const { body } = res;
 
     if (body) {
       const activities = body.data.children;
 
-      return activities.map(function(a) {
+      activities.map(function(a) {
         const constructor = CONSTRUCTORS[a.kind];
-        return new constructor(a.data).toJSON();
+        apiResponse.addResult(new constructor(a.data).toJSON());
       });
     }
   }

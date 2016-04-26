@@ -29,6 +29,7 @@ class Comment extends Base {
 
   toJSON () {
     let props = this.props;
+    props.uuid = this.uuid(props);
     props._type = this._type;
     props.bodyHtml = this.bodyHtml;
     props._type = this._type;
