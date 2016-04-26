@@ -303,6 +303,10 @@ class BaseAPI {
           body = this.formatBody(res, req, method);
         }
       } catch (e) {
+        if (process.env.DEBUG_API_CLIENT_BASE) {
+          console.trace(e);
+        }
+
         return reject(e);
       }
 
