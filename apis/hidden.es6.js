@@ -1,6 +1,6 @@
 import Saved from './saved.es6.js';
 
-class Hidden extends Saved {
+export default class Hidden extends Saved {
   path (method, query={}) {
     switch (method) {
       case 'get':
@@ -12,5 +12,3 @@ class Hidden extends Saved {
     }
   }
 }
-
-export default Hidden;

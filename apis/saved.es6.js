@@ -19,7 +19,7 @@ export default class Saved extends BaseAPI {
   put = this.notImplemented('put');
   patch = this.notImplemented('patch');
 
-  path (method, query={}) {
+  path(method, query={}) {
     switch (method) {
       case 'get':
         return `user/${query.user}/saved.json`;
@@ -30,12 +30,12 @@ export default class Saved extends BaseAPI {
     }
   }
 
-  formatQuery (query) {
+  formatQuery(query) {
     delete query.user;
     return query;
   }
 
-  post (data) {
+  post(data) {
     const postData = {
       id: data.id,
       category: data.category,
@@ -44,7 +44,7 @@ export default class Saved extends BaseAPI {
     return super.post(postData);
   }
 
-  del (data) {
+  del(data) {
     const postData = {
       id: data.id,
       category: data.category,
@@ -54,7 +54,7 @@ export default class Saved extends BaseAPI {
     return super.del(postData);
   }
 
-  formatBody (res) {
+  parseBody(res, apiResponse) {
     const { body } = res;
     if (!has(body, 'data.children')) {
       return [];
@@ -62,9 +62,9 @@ export default class Saved extends BaseAPI {
 
     const things = body.data.children;
 
-    return things.map(function(t) {
+    things.forEach(function(t) {
       const constructor = CONSTRUCTORS[t.kind];
-      return new constructor(t.data).toJSON();
+      apiResponse.addResult(new constructor(t.data).toJSON());
     });
   }
 }
