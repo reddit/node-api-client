@@ -29,15 +29,15 @@ class ModListing extends BaseAPI {
     return options;
   }
 
-  formatBody(res) {
+  parseBody(res, apiResponse) {
     const { body } = res;
 
     if (has(body, 'data.children.0')) {
-      return body.data.children.map(c => {
+      body.data.children.forEach(c => {
         if (c.kind == 't3') {
-          return new Link(c.data).toJSON();
+          apiResponse.addResult(new Link(c.data).toJSON());
         } else if (c.kind === 't1') {
-          return new Comment(c.data).toJSON();
+          apiResponse.addResult(new Comment(c.data).toJSON());
         }
       });
     }
