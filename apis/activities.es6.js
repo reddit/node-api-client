@@ -39,7 +39,7 @@ class Activities extends BaseAPI {
     if (body) {
       const activities = body.data.children;
 
-      activities.map(function(a) {
+      activities.forEach(function(a) {
         const constructor = CONSTRUCTORS[a.kind];
         apiResponse.addResult(new constructor(a.data).toJSON());
       });

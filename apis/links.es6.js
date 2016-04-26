@@ -59,7 +59,7 @@ class Links extends BaseAPI {
           apiResponse.addResult(new Link(data.children[0].data).toJSON());
           return;
         } else {
-          data.children.map(c => apiResponse.addResult(new Link(c.data).toJSON()));
+          data.children.forEach(c => apiResponse.addResult(new Link(c.data).toJSON()));
           return;
         }
       } else if (data) {
