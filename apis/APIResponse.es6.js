@@ -5,6 +5,7 @@ import {
   USER,
   LINK,
   MESSAGE,
+  SUBREDDIT,
  } from './thingTypes';
 
 export default class APIResponse {
@@ -16,12 +17,14 @@ export default class APIResponse {
     this.comments = {};
     this.users = {};
     this.messages = {};
+    this.subreddits = {};
 
     this.typeToTable = {
       [COMMENT]: this.comments,
       [LINK]: this.links,
       [USER]: this.users,
       [MESSAGE]: this.messages,
+      [SUBREDDIT]: this.subreddits,
     };
   }
 

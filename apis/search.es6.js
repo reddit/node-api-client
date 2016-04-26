@@ -3,8 +3,7 @@ import Save from '../models/save';
 
 import Link from '../models/link';
 import Subreddit from '../models/subreddit';
-
-const LINK_TYPE = 't3';
+import { LINK_TYPE } from '../apis/thingTypes';
 
 export default class Search extends BaseAPI {
   model = Save;
@@ -43,34 +42,24 @@ export default class Search extends BaseAPI {
     return Array.isArray(body) ? body : [body];
   }
 
-  formatBody (res) {
+  parseBody(res, apiResponse) {
     const lists = this.listsFromResponse(res);
-
-    const meta = {};
-    let links = [];
-    let subreddits = [];
 
     lists.forEach((listing) => {
       if (listing.data.children.length) {
         if (listing.data.children[0].kind === LINK_TYPE) {
-          links = listing.data.children.map((link) => {
-            return new Link(link.data).toJSON();
+          listing.data.children.forEach((link) => {
+            apiResponse.addResult(new Link(link.data).toJSON());
           });
 
-          meta.after = listing.data.after;
-          meta.before = listing.data.before;
+          apiResponse.meta.after = listing.data.after;
+          apiResponse.meta.before = listing.data.before;
         } else {
-          subreddits = listing.data.children.map((subreddit) => {
-            return new Subreddit(subreddit.data).toJSON();
+          listing.data.children.forEach((subreddit) => {
+            apiResponse.addResult(new Subreddit(subreddit.data).toJSON());
           });
         }
       }
     });
-
-    return {
-      meta,
-      links,
-      subreddits,
-    };
   }
 }
