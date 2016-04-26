@@ -1,8 +1,3 @@
-import Link from '../models/link';
-import Comment from '../models/comment';
-import Message from '../models/message';
-import User from '../models/account';
-
 import {
   thingType,
   COMMENT,
@@ -44,25 +39,22 @@ export default class APIResponse {
   }
 
   makeRecord(model) {
-    let type = thingType(model.name);
-    if (type) {
-      return { type, id: model.name };
-    }
+    const { uuid } = model;
+    if (!uuid) { return; }
 
-    type = thingType(model.id);
-    if (type) {
-      return { type, id: model.id };
-    }
+    const type = thingType(uuid);
+    if (!type) { return; }
+    return { type, uuid };
   }
 
   addToTable(record, model) {
     const table = this.typeToTable[record.type];
-    if (table) { table[record.id] = model; }
+    if (table) { table[record.uuid] = model; }
     return this;
   }
 
   getModelFromRecord(record) {
     const table = this.typeToTable[record.type];
-    if (table) { return table[record.id]; }
+    if (table) { return table[record.uuid]; }
   }
 }

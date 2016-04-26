@@ -1,23 +1,7 @@
 import BaseAPI from './base.es6.js';
-
 import Account from '../models/account.es6.js';
 
-class Accounts extends BaseAPI {
-  static dataCacheConfig = {
-    max: 5,
-    maxAge: 1000 * 60 * 30,
-  };
-
-  get requestCacheRules () {
-    return {
-      ...super.requestCacheRules,
-      ...{
-        max: 10,
-        maxAge: 1000 * 60 * 30,
-      },
-    };
-  }
-
+export default class Accounts extends BaseAPI {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -25,7 +9,7 @@ class Accounts extends BaseAPI {
   post = this.notImplemented('post');
   del = this.notImplemented('del');
 
-  path (method, query={}) {
+  path(method, query={}) {
     if (query.user === 'me') {
       return 'api/v1/me';
     } else {
@@ -33,13 +17,11 @@ class Accounts extends BaseAPI {
     }
   }
 
-  formatBody (res) {
+  parseBody(res, apiResponse) {
     const { body } = res;
 
     if (body) {
-      return new Account(body.data || body).toJSON();
+      apiResponse.addResult(new Account(body.data || body).toJSON());
     }
   }
 }
-
-export default Accounts;

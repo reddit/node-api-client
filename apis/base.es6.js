@@ -297,7 +297,7 @@ class BaseAPI {
       try {
         meta = this.formatMeta(res, req, method);
         apiResponse = new APIResponse(meta);
-        this.parseBody(res, req, method, apiResponse);
+        this.parseBody(res, apiResponse, req, method);
         // body = this.formatBody(res, req, method);
       } catch (e) {
         return reject(e);

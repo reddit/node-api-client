@@ -1,6 +1,6 @@
-const THING_ID_REGEX = new RegExp('t\\d_[0-9a-z]+', 'i');
+const THING_ID_REGEX = new RegExp('^t\\d_[0-9a-z]+', 'i');
 
-class Base {
+export default class Base {
   _type = 'Base';
 
   constructor (props={}) {
@@ -53,9 +53,18 @@ class Base {
     return invalid;
   }
 
+  uuid(props) {
+    if (Base.validators.thingId(props.name)) {
+      return props.name;
+    } else if (Base.validators.thingId(props.id)) {
+      return props.id;
+    }
+  }
+
   toJSON (formatter=this.noopFormat) {
     let props = this.props;
     props._type = this._type;
+    props.uuid = this.uuid(props);
 
     if (formatter && typeof formatter === 'function') {
       return formatter(props);
@@ -98,5 +107,3 @@ class Base {
     },
   };
 }
-
-export default Base;

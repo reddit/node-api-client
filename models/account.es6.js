@@ -1,4 +1,5 @@
 import Base from './base';
+import { USER_TYPE } from '../apis/thingTypes';
 
 export default class Account extends Base {
   _type = 'Account';
@@ -9,6 +10,14 @@ export default class Account extends Base {
     return {
       thingId,
     };
+  }
+
+  uuid(props) {
+    if (Base.validators.thingId(props.id)) {
+      return props.id;
+    }
+
+    return `${USER_TYPE}_${props.id}`;
   }
 
   thingIdValidator () {

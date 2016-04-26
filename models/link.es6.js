@@ -115,6 +115,7 @@ class Link extends Base {
   toJSON () {
     const props = this.props;
     props._type = this._type;
+    props.uuid = this.uuid(props);
 
     props.thumbnail = this.thumbnail;
     props.expandable = this.expandable;
