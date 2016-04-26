@@ -11,12 +11,6 @@ const CONSTRUCTORS = {
 };
 
 export default class Messages extends BaseAPI {
-  static dataCacheConfig = undefined;
-
-  get requestCacheRules() {
-    return undefined;
-  }
-
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -42,36 +36,35 @@ export default class Messages extends BaseAPI {
     return 'api/comment';
   }
 
-  formatBody(res, req) {
+  parseBody(res, apiResponse, req, method) {
     const { body } = res;
 
-    switch (req.method) {
-      case 'GET': {
-        if (body) {
-          return body.data.children.map(data => {
-            const constructor = CONSTRUCTORS[data.kind];
-            const thing = new constructor(data.data).toJSON();
-            if (constructor === CONSTRUCTORS.t4 &&
-                !Array.isArray(thing.replies) &&
-                typeof thing.replies === 'object' &&
-                Array.isArray(thing.replies.data.children)) {
-              thing.replies = thing.replies.data.children.map((m) => {
-                return new Message(m.data).toJSON();
-              });
-            }
-            return thing;
+    if (method === 'get') {
+      if (!body) { return; }
+
+      body.data.children.forEach(datum => {
+        const thing = new CONSTRUCTORS[datum.kind](datum.data).toJSON();
+
+        if (datum.kind === 't4' && thing.replies && thing.replies.data
+            && thing.replies.data.children) {
+
+          thing.replies = thing.replies.data.children.map(messageDatum => {
+            const message = new Message(messageDatum.data).toJSON();
+            apiResponse.addModel(message);
+            return apiResponse.makeRecord(message);
           });
         }
-      }
-      case 'POST': {
-        if (body && body.json) {
-          const message = body.json.things[0].data;
-          return new Message(message).toJSON();
-        } else if (body && body.json.errors.length) {
-          throw body.json.errors;
-        } else {
-          return res;
-        }
+
+        apiResponse.addResult(thing);
+      });
+    } else if (method === 'post') {
+      if (body && body.json) {
+        const message = body.json.things[0].data;
+        apiResponse.addResult(new Message(message).toJSON());
+      } else if (body && body.json.errors.length) {
+        throw body.json.errors;
+      } else {
+        apiResponse.addResult(res);
       }
     }
   }
