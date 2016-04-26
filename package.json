@@ -2,8 +2,10 @@
   "name": "@r/api-client",
   "version": "3.2.0",
   "description": "node and browser reddit api library",
-  "main": "index.es6.js",
+  "main": "apiClient.js",
   "scripts": {
+    "watch": "blueprints -w",
+    "build": "blueprints",
     "test": "mocha test/index.js",
     "lint": "eslint . --ext .js,.jsx",
     "repl": "./repl"
@@ -22,16 +24,13 @@
     "url": "https://github.com/ajacksified/snoode/issues"
   },
   "homepage": "https://github.com/ajacksified/snoode",
-  "dependencies": {
-    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
-    "sanitize-html": "git://github.com/ajacksified/sanitize-html.git#b0856080e6eb0feb2dfc28b357161986dcab0124",
-    "snuownd": "git://github.com/reddit/snuownd.git#06a1abc16ad06a1a6eff14afb7f9bcdb34e8ad01"
-  },
   "peerDependencies": {
+    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
     "lodash": "4.x",
     "superagent": "1.x"
   },
   "devDependencies": {
+    "@r/build": "0.0.11",
     "babel-core": "6.5.1",
     "babel-eslint": "4.1.7",
     "babel-plugin-syntax-trailing-function-commas": "^6.5.0",
@@ -50,6 +49,7 @@
     "eslint-plugin-react": "3.16.1",
     "mocha": "2.4.5",
     "sinon": "1.17.1",
-    "sinon-chai": "2.8.0"
+    "sinon-chai": "2.8.0",
+    "webpack": "2.1.0-beta.6"
   }
 }
