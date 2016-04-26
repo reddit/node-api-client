@@ -1,4 +1,5 @@
 import {
+  TYPES,
   thingType,
   COMMENT,
   USER,
@@ -35,6 +36,16 @@ export default class APIResponse {
       this.results.push(record);
       this.addToTable(record, model);
     }
+
+    return this;
+  }
+
+  addModel(model) {
+    const record = this.makeRecord(model);
+    if (record) {
+      this.addToTable(record, model);
+    }
+
     return this;
   }
 
@@ -42,7 +53,7 @@ export default class APIResponse {
     const { uuid } = model;
     if (!uuid) { return; }
 
-    const type = thingType(uuid);
+    const type = TYPES[model.kind] || thingType(uuid);
     if (!type) { return; }
     return { type, uuid };
   }

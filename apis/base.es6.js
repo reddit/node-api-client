@@ -56,10 +56,6 @@ class BaseAPI {
     return res.headers;
   }
 
-  formatBody(res) {
-    return res.body;
-  }
-
   buildQueryParams(method, data) {
     return [
       data,
@@ -86,6 +82,10 @@ class BaseAPI {
     return query;
   }
 
+  parseBody(res, apiResponse/*, req, method*/) {
+    apiResponse.addResult(res.body);
+    return;
+  }
 
   formatData (data) {
     return data;
@@ -291,19 +291,22 @@ class BaseAPI {
       this.event.emit(EVENTS.response, req, res);
 
       let meta;
-      let body = { results: [] };
+      let body;
       let apiResponse;
 
       try {
         meta = this.formatMeta(res, req, method);
         apiResponse = new APIResponse(meta);
         this.parseBody(res, apiResponse, req, method);
-        // body = this.formatBody(res, req, method);
+
+        if (this.formatBody) { // shim for older apis or ones were we haven't figured out normalization yet
+          body = this.formatBody(res, req, method);
+        }
       } catch (e) {
         return reject(e);
       }
 
-      resolve(apiResponse);
+      resolve(body || apiResponse);
     };
   }
 

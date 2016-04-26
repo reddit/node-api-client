@@ -56,7 +56,6 @@ class Links extends BaseAPI {
 
       if (data && data.children && data.children[0]) {
         if (data.children.length === 1) {
-          console.log('calling to json?');
           apiResponse.addResult(new Link(data.children[0].data).toJSON());
           return;
         } else {

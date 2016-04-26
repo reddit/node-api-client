@@ -1,31 +1,23 @@
 import { has } from 'lodash/object';
-import BaseAPI from './baseContent.es6.js';
-import Comment from '../models/comment.es6.js';
-import treeifyComments from '../lib/treeifyComments';
 
-class Comments extends BaseAPI {
-  static mapReplies (data) {
-    let comment = data.data;
+import BaseAPI from './baseContent';
+import Comment from '../models/comment';
+import Link from '../models/link';
 
-    if (comment.replies) {
-      comment.replies = comment.replies.data.children.map(Comments.mapReplies);
-    } else {
-      comment.replies = [];
-    }
+import {
+  treeifyComments,
+  parseCommentList,
+  normalizeCommentReplies,
+} from '../lib/commentTreeUtils';
 
-    return new Comment(comment).toJSON();
-  }
+export default class Comments extends BaseAPI {
+  model = Comment;
 
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
 
-  get requestCacheRules () {
-    return undefined;
-  }
 
-  model = Comment;
-
-  formatQuery (query, method) {
+  formatQuery(query, method) {
     query = super.formatQuery(query, method);
 
     if (query.ids) {
@@ -40,7 +32,7 @@ class Comments extends BaseAPI {
     return query;
   }
 
-  getPath (query) {
+  getPath(query) {
     if (query.user) {
       return `user/${query.user}/comments.json`;
     } else if (query.ids) {
@@ -50,11 +42,11 @@ class Comments extends BaseAPI {
     }
   }
 
-  postPath () {
+  postPath() {
     return 'api/comment';
   }
 
-  post (data) {
+  post(data) {
     const postData = {
       api_type: 'json',
       thing_id: data.thingId,
@@ -64,26 +56,46 @@ class Comments extends BaseAPI {
     return super.post(postData);
   }
 
-  formatBody(res, req) {
+  parseBody(res, apiResponse, req, originalMethod) {
     const { query } = req;
     const { body } = res;
+    let comments = [];
 
-    if (req.method === 'GET') {
+    if (originalMethod === 'get') {
       if (Array.isArray(body)) {
-        return body[1].data.children.map(Comments.mapReplies);
+        // The first part of the response is a link
+        const linkData = body[0].data;
+
+        if (linkData && linkData.children && linkData.children.length) {
+          linkData.children.forEach(link => {
+            apiResponse.addModel(new Link(link.data).toJSON());
+          });
+        }
+
+        comments = treeifyComments(parseCommentList(body[1].data.children));
       } else if (body.json && body.json.data) {
         if (query.children) { // treeify 'load more comments' replies
-          return treeifyComments(body.json.data.things.map(Comments.mapReplies));
+          comments = treeifyComments(parseCommentList(body.json.data.things));
+        } else {
+          comments = parseCommentList(body.json.data.things);
         }
-        return body.json.data.things.map(Comments.mapReplies);
       }
+
+      normalizeCommentReplies(comments, (comment, isTopLevel) => {
+        if (isTopLevel) {
+          apiResponse.addResult(comment);
+        } else {
+          apiResponse.addModel(comment);
+        }
+
+        // this sets replies to be records for consistency
+        return apiResponse.makeRecord(comment);
+      });
     } else {
       if (has(body, 'json.data.things.0.data')) {
         const comment = body.json.data.things[0].data;
-        return new Comment(comment).toJSON();
+        apiResponse.addResult(new Comment(comment).toJSON());
       }
     }
   }
 }
-
-export default Comments;
