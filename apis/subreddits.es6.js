@@ -35,20 +35,6 @@ const DEFAULT_SUBREDDIT_OPTIONS = {
 };
 
 class Subreddits extends BaseAPI {
-  static dataCacheConfig = {
-    max: 1,
-    maxAge: 1000 * 60 * 5,
-  };
-
-  get requestCacheRules () {
-    return {
-      ...super.requestCacheRules,
-      ...{
-        max: 1,
-      },
-    };
-  }
-
   model = Subreddit;
 
   move = this.notImplemented('move');
@@ -101,28 +87,7 @@ class Subreddits extends BaseAPI {
     return super.post(postData);
   }
 
-  formatCacheData = (data) => {
-    const api = this.api;
-
-    // Set a custom id for easier lookups - using the subreddit name as the id,
-    // rather than the base36 id.
-    if (data && Array.isArray(data)) {
-      return {
-        subreddits: data.map(function(s) {
-          s.id = s.display_name.toLowerCase();
-          return s;
-        }),
-      };
-    } else if (data) {
-      data.id = data.display_name.toLowerCase();
-    }
-
-    return {
-      [api]: data,
-    };
-  }
-
-  formatQuery (query, method) {
+  formatQuery(query, method) {
     if (method !== 'get') {
       query.api_type = 'json';
     }
@@ -130,19 +95,19 @@ class Subreddits extends BaseAPI {
     return query;
   }
 
-  formatBody (res) {
+  parseBody(res, apiResponse) {
     const { body } = res;
 
     if (body.data && Array.isArray(body.data.children)) {
-      return body.data.children.map(c => new Subreddit(c.data).toJSON());
+      body.data.children.forEach(c => apiResponse.addResult(new Subreddit(c.data).toJSON()));
       // sometimes, we get back empty object and 200 for invalid sorts like
       // `mine` when logged out
     } else if (!isEmpty(body)) {
-      return new Subreddit(body.data || body).toJSON();
+      apiResponse.addResult(new Subreddit(body.data || body).toJSON());
     }
   }
 
-  path (method, query={}) {
+  path(method, query={}) {
     if (method === 'get') {
       if (query.id && query.view === 'mod') {
         return `r/${query.id}/about/edit.json`;
