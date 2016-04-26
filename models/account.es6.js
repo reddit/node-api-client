@@ -1,6 +1,6 @@
 import Base from './base';
 
-class Account extends Base {
+export default class Account extends Base {
   _type = 'Account';
 
   validators () {
@@ -16,5 +16,3 @@ class Account extends Base {
     return Base.validators.thingId(thingId);
   }
 }
-
-export default Account;

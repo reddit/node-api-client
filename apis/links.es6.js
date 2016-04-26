@@ -48,7 +48,7 @@ class Links extends BaseAPI {
     return super.post(postData);
   }
 
-  formatBody(res, req, method) {
+  parseBody(res, req, method, apiResponse) {
     const { body } = res;
 
     if (method === 'get') {
@@ -56,16 +56,19 @@ class Links extends BaseAPI {
 
       if (data && data.children && data.children[0]) {
         if (data.children.length === 1) {
-          return new Link(data.children[0].data).toJSON();
+          apiResponse.addResult(new Link(data.children[0].data).toJSON());
+          return;
         } else {
-          return data.children.map(c => new Link(c.data).toJSON());
+          data.children.map(c => apiResponse.addResult(new Link(c.data).toJSON()));
+          return;
         }
       } else if (data) {
-        return [];
+        return;
       }
     } else if (method !== 'del') {
       if (body.json && body.json.errors.length === 0) {
-        return body.json.data;
+        apiResponse.addResult(body.json.data);
+        return;
       } else {
         throw body.json;
       }

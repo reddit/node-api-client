@@ -1,23 +1,14 @@
 import superagent from 'superagent';
-
+import { thingType } from './thingTypes';
 import ValidationError from '../errors/validationError';
 import NoModelError from '../errors/noModelError';
 import NotImplementedError from '../errors/notImplementedError';
+import APIResponse from './APIResponse';
 
 const EVENTS = {
   request: 'request',
   response: 'response',
   error: 'error',
-};
-
-const TYPES = {
-  't1': 'comments',
-  't2': 'users',
-  't3': 'links',
-  't4': 'messages',
-  't5': 'subreddits',
-  't6': 'trophies',
-  't8': 'promocampaigns',
 };
 
 class BaseAPI {
@@ -299,22 +290,40 @@ class BaseAPI {
 
       this.event.emit(EVENTS.response, req, res);
 
-      let headers;
-      let body;
+      let meta;
+      let body = { results: [] };
+      let apiResponse;
 
       try {
-        headers = this.formatMeta(res, req, method);
-        body = this.formatBody(res, req, method);
+        meta = this.formatMeta(res, req, method);
+        apiResponse = new APIResponse(meta);
+        this.parseBody(res, req, method, apiResponse);
+        // body = this.formatBody(res, req, method);
       } catch (e) {
         return reject(e);
       }
 
-      resolve({ headers, body });
+      resolve(apiResponse);
     };
   }
 
+  buildResponse(body, meta) {
+    const { results, errors, users, links, comments, messages, subreddits } = body;
+    if (errors) {
+      return { errors, meta };
+    }
+
+    let response = { results, meta };
+    if (users) { response.users = users; }
+    if (links) { response.links = links; }
+    if (comments) { response.comments = comments; }
+    if (messages) { response.messages = messages; }
+    if (subreddits) { response.subreddits = subreddits; }
+    return response;
+  }
+
   static thingType (id) {
-    return TYPES[id.substring(0, 2)];
+    return thingType(id);
   }
 
   static EVENTS = EVENTS;
