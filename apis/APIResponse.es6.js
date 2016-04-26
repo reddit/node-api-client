@@ -11,7 +11,6 @@ export default class APIResponse {
   constructor(meta={}) {
     this.meta = meta;
     this.results = [];
-    this.errors;
 
     this.links = {};
     this.comments = {};
@@ -24,10 +23,6 @@ export default class APIResponse {
       [USER]: this.users,
       [MESSAGE]: this.messages,
     };
-  }
-
-  setErrors(errors) {
-    this.errors = errors;
   }
 
   addResult(model) {
