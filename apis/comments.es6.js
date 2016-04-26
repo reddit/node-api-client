@@ -16,7 +16,6 @@ export default class Comments extends BaseAPI {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
 
-
   formatQuery(query, method) {
     query = super.formatQuery(query, method);
 
