@@ -2513,7 +2513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else if (query.ids) {
 	        return 'api/morechildren.json';
 	      } else {
-	        return 'comments/' + query.linkId + '.json';
+	        return 'comments/' + query.linkId.replace(/^t3_/, '') + '.json';
 	      }
 	    }
 	  }, {
