@@ -60,11 +60,14 @@ export default class Model {
     link: val => unredditifyLink(Model.Types.string(val)),
   };
 
-  // TYPES I'd like to
+  // TYPES I'd like to add
   // mod: (type) => type
   // useage: bannedBy: T.mod(T.string),
   // purpose: Just to document that a field is only going to be there as a moderator
   //
+  // record: val => val instanceOf Record ? val : new Record()
+  // usage: replies: T.arrayOf(T.record)
+  // purposed: Enforce that model relations are defined as records
 
   static MockTypes = {
     string: () => Math.random().toString(36).substring(Math.floor(Math.random() * 10) + 5),
