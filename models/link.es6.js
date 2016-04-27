@@ -1,12 +1,9 @@
 import Base from './base';
-import process from 'reddit-text-js';
 
 class Link extends Base {
   _type = 'Link';
 
   constructor(props) {
-    delete props.selftext_html;
-
     if (props.promoted && !props.preview) {
       let resolutions = [];
 
@@ -76,8 +73,8 @@ class Link extends Base {
       (props.media_embed && props.media_embed.content)
     );
 
-    if (!content && props.selftext) {
-      content = process(props.selftext);
+    if (!content && props.selftext_html) {
+      content = props.selftext_html;
     }
 
     return content;
@@ -90,7 +87,7 @@ class Link extends Base {
     return !!(
       (props.secure_media && props.secure_media.content) ||
       (props.media_embed && props.media_embed.content) ||
-      (props.selftext)
+      (props.selftext_html)
     );
   }
 

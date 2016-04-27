@@ -4,7 +4,7 @@ class WikiPage extends Base {
   _type = 'WikiPage';
 
   constructor(props) {
-    delete props.content_html;
+    delete props.content;
 
     if (props.revision_by) {
       props.revision_by = props.revision_by.data;  

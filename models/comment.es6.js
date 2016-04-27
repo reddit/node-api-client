@@ -1,21 +1,20 @@
 import Base from './base';
-import process from 'reddit-text-js';
 
 class Comment extends Base {
   _type = 'Comment';
 
   validators () {
-    const body = this.bodyValidator.bind(this);
+    const body_html = this.bodyHtmlValidator.bind(this);
     const thingId = this.thingIdValidator.bind(this);
 
     return {
-      body,
+      body_html,
       thingId,
     };
   }
 
-  bodyValidator () {
-    return Base.validators.minLength(this.get('body'), 1);
+  bodyHtmlValidator () {
+    return Base.validators.minLength(this.get('body_html'), 1);
   }
 
   thingIdValidator () {
@@ -23,14 +22,9 @@ class Comment extends Base {
     return Base.validators.thingId(thingId);
   }
 
-  get bodyHtml () {
-    return process(this.get('body'));
-  }
-
   toJSON () {
     let props = this.props;
     props._type = this._type;
-    props.bodyHtml = this.bodyHtml;
     props._type = this._type;
     return props;
   }

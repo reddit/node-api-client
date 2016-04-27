@@ -9,7 +9,7 @@ describe('Comment model', function() {
 
   describe('validation', function() {
     var validAttrs = {
-      body: 'anything',
+      body_html: '<p>anything</p>',
       thingId: 't1_valid',
     };
 
@@ -26,17 +26,17 @@ describe('Comment model', function() {
       expect(errors[0]).to.equal('thingId');
     });
 
-    it('expects `body` to be at least 1 character', function() {
+    it('expects `body_html` to be at least 1 character', function() {
       var comment = new Comment(validAttrs);
 
       expect(comment.validate()).to.equal(true);
 
-      comment.set('body', '');
+      comment.set('body_html', '');
 
       var errors = comment.validate();
 
       expect(errors.length).to.equal(1);
-      expect(errors[0]).to.equal('body');
+      expect(errors[0]).to.equal('body_html');
     });
   });
 });

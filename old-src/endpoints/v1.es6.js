@@ -32,13 +32,6 @@ const TYPES = {
   MESSAGE: 't4',
 };
 
-// decode websafe_json encoding
-function unsafeJson(text) {
-  return text.replace(/&gt;/g, '>')
-             .replace(/&lt;/g, '<')
-             .replace(/&amp;/g, '&');
-}
-
 function res_type(str) {
   return str.split(/ *; */).shift();
 }
@@ -48,7 +41,7 @@ function massageAPIv1JsonRes(res) {
   // re-parse the body in that case.
   if (res_type(res.headers['content-type'] || '') === 'application/json') {
     const text = res.text && res.text.replace(/^\s*|\s*$/g, '');
-    res.body = text && JSON.parse(unsafeJson(text));
+    res.body = text && JSON.parse(text);
   }
 }
 
@@ -139,8 +132,11 @@ class APIv1Endpoint {
 
       log('requesting', 'GET', options.uri, options);
 
-      const query = options.query || {};
-      query.app = `${appName}-${options.env.toLowerCase()}`;
+      const query = {
+        raw_json: 1,
+        ...options.query,
+        app: `${appName}-${options.env.toLowerCase()}`
+      };
 
       let sa = superagent
         .get(options.uri)
@@ -259,8 +255,12 @@ class APIv1Endpoint {
     let form = options.form || {};
     let headers = options.headers || {};
 
-    const query = options.query || {};
-    query.app = `${this.config.appName}-${options.env.toLowerCase()}`;
+    const query = {
+      raw_json: 1,
+      ...options.query,
+      app: `${this.config.appName}-${options.env.toLowerCase()}`
+    };
+
 
     if (options.userAgent) {
       headers['User-Agent'] = options.userAgent;
