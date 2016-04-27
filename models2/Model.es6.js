@@ -67,7 +67,11 @@ export default class Model {
   //
   // record: val => val instanceOf Record ? val : new Record()
   // usage: replies: T.arrayOf(T.record)
-  // purposed: Enforce that model relations are defined as records
+  // purpose: Enforce that model relations are defined as records
+  //
+  // model: ModelClass => val => ModelClass.fromJSON(val)
+  // usage: srDetail: T.model(SubredditDetailModel)
+  // purpose: express nested model parsing for one off nested parts of your model
 
   static MockTypes = {
     string: () => Math.random().toString(36).substring(Math.floor(Math.random() * 10) + 5),

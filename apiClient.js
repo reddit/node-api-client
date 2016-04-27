@@ -5726,6 +5726,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // put value transformers here. They'll take input and pseudo-validate it and
 	    // transform it. You'll put thme in your subclasses PROPERITES dictionary.
 
+
+	    // TYPES I'd like to add
+	    // mod: (type) => type
+	    // useage: bannedBy: T.mod(T.string),
+	    // purpose: Just to document that a field is only going to be there as a moderator
+	    //
+	    // record: val => val instanceOf Record ? val : new Record()
+	    // usage: replies: T.arrayOf(T.record)
+	    // purpose: Enforce that model relations are defined as records
+	    //
+	    // model: ModelClass => val => ModelClass.fromJSON(val)
+	    // usage: srDetail: T.model(SubredditDetailModel)
+	    // purpose: express nested model parsing for one off nested parts of your model
+
 	  }, {
 	    key: 'Mock',
 	    value: function Mock() {
