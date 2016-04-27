@@ -1,5 +1,5 @@
 import Base from './base';
-import { USER_TYPE } from '../apis/thingTypes';
+import { USER_TYPE } from '../models2/thingTypes';
 
 export default class Account extends Base {
   _type = 'Account';

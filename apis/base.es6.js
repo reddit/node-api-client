@@ -1,5 +1,5 @@
 import superagent from 'superagent';
-import { thingType } from './thingTypes';
+import { thingType } from '../models2/thingTypes';
 import ValidationError from '../errors/validationError';
 import NoModelError from '../errors/noModelError';
 import NotImplementedError from '../errors/notImplementedError';
@@ -296,8 +296,10 @@ class BaseAPI {
 
       try {
         meta = this.formatMeta(res, req, method);
+        const start = Date.now();
         apiResponse = new APIResponse(meta);
         this.parseBody(res, apiResponse, req, method);
+        this.parseTime = Date.now() - start;
 
         if (this.formatBody) { // shim for older apis or ones were we haven't figured out normalization yet
           body = this.formatBody(res, req, method);

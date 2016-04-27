@@ -6,7 +6,7 @@ import {
   LINK,
   MESSAGE,
   SUBREDDIT,
- } from './thingTypes';
+} from '../models2/thingTypes';
 
 export default class APIResponse {
   constructor(meta={}) {
@@ -29,6 +29,7 @@ export default class APIResponse {
   }
 
   addResult(model) {
+    if (!model) { return this; }
     const record = this.makeRecord(model);
     if (record) {
       this.results.push(record);
@@ -39,6 +40,7 @@ export default class APIResponse {
   }
 
   addModel(model) {
+    if (!model) { return this; }
     const record = this.makeRecord(model);
     if (record) {
       this.addToTable(record, model);
@@ -48,6 +50,7 @@ export default class APIResponse {
   }
 
   makeRecord(model) {
+    if (model.toRecord) { return model.toRecord(); }
     const { uuid } = model;
     if (!uuid) { return; }
 

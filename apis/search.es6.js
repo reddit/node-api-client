@@ -3,7 +3,7 @@ import Save from '../models/save';
 
 import Link from '../models/link';
 import Subreddit from '../models/subreddit';
-import { LINK_TYPE } from '../apis/thingTypes';
+import { LINK_TYPE } from '../models2/thingTypes';
 
 export default class Search extends BaseAPI {
   model = Save;

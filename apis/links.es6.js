@@ -1,5 +1,6 @@
 import BaseAPI from './baseContent.es6.js';
-import Link from '../models/link.es6.js';
+import OldLink from '../models/link';
+import Link from '../models2/Link';
 
 class Links extends BaseAPI {
   model = Link;
@@ -48,6 +49,46 @@ class Links extends BaseAPI {
     return super.post(postData);
   }
 
+  time(times, parseTimes) {
+    const start = Date.now();
+    return this.get({ subredditName: 'earthporn', limit: 100}).then(res => {
+      const time = Date.now() - start;
+      times.push(time);
+      parseTimes.push(this.parseTime);
+      console.log(`took ${time} -- parseTime ${this.parseTime}`);
+      console.log(`num results? ${res.results.length}`);
+    });
+  }
+
+  printTimeStats(kind, times) {
+    console.log(`KIND: ${kind}`);
+    const average = times.reduce((total, x) => x + total, 0) / times.length;
+    const min = times.reduce((x, y) => Math.min(x, y), Infinity);
+    const max = times.reduce((x, y) => Math.max(x, y), -Infinity);
+    console.log(`\t${times.length} took ${average} averaged`);
+    console.log(`\tMax: ${max} -- Min: ${min}`);
+    return;
+  }
+
+  async timeAverages(numTimes, times = [], parseTimes=[]) {
+    this.printTimeStats('Overall', times);
+    this.printTimeStats('PARSING', parseTimes);
+
+    if (numTimes === 0) {
+      return;
+    } else {
+      console.log(`pending requests ${numTimes}`);
+    }
+
+    await this.time(times, parseTimes);
+    return this.timeAverages(numTimes - 1, times, parseTimes);
+  }
+
+  parse(data) {
+    // return new OldLink(data).toJSON();
+    return Link.fromJSON(data);
+  }
+
   parseBody(res, apiResponse, req, method) {
     const { body } = res;
 
@@ -56,10 +97,10 @@ class Links extends BaseAPI {
 
       if (data && data.children && data.children[0]) {
         if (data.children.length === 1) {
-          apiResponse.addResult(new Link(data.children[0].data).toJSON());
+          apiResponse.addResult(this.parse((data.children[0].data)));
           return;
         } else {
-          data.children.forEach(c => apiResponse.addResult(new Link(c.data).toJSON()));
+          data.children.forEach(c => apiResponse.addResult(this.parse((c.data))));
           return;
         }
       } else if (data) {
