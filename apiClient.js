@@ -2635,8 +2635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseContent_es6_js__ = __webpack_require__(6);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_link__ = __webpack_require__(4);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_Link__ = __webpack_require__(62);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models2_Link__ = __webpack_require__(62);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -2648,7 +2647,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -2667,7 +2665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Links)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.model = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Link__["a"], _temp), _possibleConstructorReturn(_this, _ret);
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Links)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.model = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_Link__["a"], _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Links, [{
@@ -2746,12 +2744,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }, -Infinity);
 	      console.log('\t' + times.length + ' took ' + average + ' averaged');
 	      console.log('\tMax: ' + max + ' -- Min: ' + min);
+	      times.sort(function (a, b) {
+	        return a - b;
+	      });
+	      console.log('\ttimes ' + times);
 	      return;
 	    }
 	  }, {
 	    key: 'timeAverages',
 	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(numTimes) {
+	        var _this3 = this;
+
 	        var times = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 	        var parseTimes = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -2776,7 +2780,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return this.time(times, parseTimes);
 
 	              case 9:
-	                return _context.abrupt('return', this.timeAverages(numTimes - 1, times, parseTimes));
+	                setTimeout(function () {
+	                  console.log('next');
+	                  _this3.timeAverages(numTimes - 1, times, parseTimes);
+	                }, 10);
 
 	              case 10:
 	              case 'end':
@@ -2793,16 +2800,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return timeAverages;
 	    }()
 	  }, {
-	    key: 'parse',
-	    value: function parse(data) {
-	      // return new OldLink(data).toJSON();
-	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Link__["a"].fromJSON(data);
-	    }
-	  }, {
 	    key: 'parseBody',
 	    value: function parseBody(res, apiResponse, req, method) {
-	      var _this3 = this;
-
 	      var body = res.body;
 
 
@@ -2812,11 +2811,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (data && data.children && data.children[0]) {
 	          if (data.children.length === 1) {
-	            apiResponse.addResult(this.parse(data.children[0].data));
+	            apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_Link__["a"].fromJSON(data.children[0].data));
 	            return;
 	          } else {
 	            data.children.forEach(function (c) {
-	              return apiResponse.addResult(_this3.parse(c.data));
+	              return apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_Link__["a"].fromJSON(c.data));
 	            });
 	            return;
 	          }
@@ -6091,7 +6090,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        height: 628,
 	        width: 1200
 	      });
-	      delete data.mobile_ad_url;
 	    }
 
 	    if (data.thumbnail) {
@@ -6100,7 +6098,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        height: 140,
 	        width: 140
 	      });
-	      delete data.thumbnail;
 	    }
 
 	    return {
@@ -6116,16 +6113,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_object__ = __webpack_require__(3);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_object___default = __WEBPACK_IMPORTED_MODULE_0_lodash_object__ && __WEBPACK_IMPORTED_MODULE_0_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_object__; }
-	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_object___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__thingTypes__ = __webpack_require__(5);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Record__ = __webpack_require__(64);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_isThingID__ = __webpack_require__(57);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_markdown__ = __webpack_require__(12);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_unredditifyLink__ = __webpack_require__(58);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mockgenerators_mockHTML__ = __webpack_require__(65);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__mockgenerators_mockLink__ = __webpack_require__(66);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__thingTypes__ = __webpack_require__(5);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Record__ = __webpack_require__(64);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_isThingID__ = __webpack_require__(57);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_markdown__ = __webpack_require__(12);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_unredditifyLink__ = __webpack_require__(58);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mockgenerators_mockHTML__ = __webpack_require__(65);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mockgenerators_mockLink__ = __webpack_require__(66);
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -6147,15 +6141,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-
-	var addGetter = function addGetter(instance, key, value) {
-	  Object.defineProperty(instance, key, {
-	    value: value,
-	    writable: false,
-	    enumerable: true
-	  });
-	};
-
 	var fakeUUID = function fakeUUID() {
 	  return Math.toFixed(Math.random() * 16);
 	};
@@ -6175,7 +6160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//    score_hidden: 'scoreHidden',
 	//   }
 	//
-	//  static PROPERITES = {
+	//  static PROPERTIES = {
 	//    id: T.string,
 	//    author: T.string,
 	//    bodyHTML: T.html,
@@ -6191,10 +6176,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'fromJSON',
 	    value: function fromJSON(obj) {
 	      return new this(obj);
-	      // todo, this is were we could do somee validation
-	      // we might also want to explicity omit stuff, but
-	      // we check the Properties map anyway so it should be fine
-	      // return new this(omit(obj, '__type'));
 	    }
 
 	    // put value transformers here. They'll take input and pseudo-validate it and
@@ -6213,66 +6194,96 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }]);
 
-	  function Model(data) {
-	    var _this2 = this;
-
+	  function Model(data, SUPER_SECRET_SHOULD_FREEZE_FLAG_THAT_ONLY_STUBS_CAN_USE) {
 	    _classCallCheck(this, Model);
 
 	    var _constructor = this.constructor;
 	    var API_ALIASES = _constructor.API_ALIASES;
 	    var PROPERTIES = _constructor.PROPERTIES;
 	    var DERIVED_PROPERTIES = _constructor.DERIVED_PROPERTIES;
+	    // Please note: the use of for loops and adding properties directly
+	    // and then freezing (versus using defineProperty with writeable false)
+	    // is very intentional. Because performance. Please consult schwers or frontend-platform
+	    // before modifying
 
-
-	    Object.keys(data).forEach(function (key) {
-	      var keyName = API_ALIASES[key] ? API_ALIASES[key] : key;
-
-	      if (PROPERTIES[keyName]) {
-	        addGetter(_this2, keyName, PROPERTIES[keyName](data[key]));
+	    var dataKeys = Object.keys(data);
+	    for (var i = 0; i < dataKeys.length; i++) {
+	      var key = dataKeys[i];
+	      if (DERIVED_PROPERTIES[key]) {
+	        // skip if there's a dervied key of the same name
+	        continue;
 	      }
-	    });
 
-	    Object.keys(DERIVED_PROPERTIES).forEach(function (derivedKey) {
-	      if (PROPERTIES[derivedKey]) {
-	        addGetter(_this2, derivedKey, DERIVED_PROPERTIES[derivedKey](data));
+	      var keyName = API_ALIASES[key];
+	      if (!keyName) {
+	        keyName = key;
 	      }
-	    });
 
-	    addGetter(this, 'uuid', this.makeUUID(data));
-	    addGetter(this, 'type', this.getType(data, this.uuid));
-	    this.set = this._set.bind(this, data);
+	      var typeFn = PROPERTIES[keyName];
+	      if (typeFn) {
+	        this[keyName] = typeFn(data[key]);
+	      }
+	    }
+
+	    var derivedKeys = Object.keys(DERIVED_PROPERTIES);
+	    for (var _i = 0; _i < derivedKeys.length; _i++) {
+	      var derivedKey = derivedKeys[_i];
+	      var derviceFn = DERIVED_PROPERTIES[derivedKey];
+	      var _typeFn = PROPERTIES[derivedKey];
+
+	      if (derviceFn && _typeFn) {
+	        this[derivedKey] = _typeFn(derviceFn(data));
+	      }
+	    }
+
+	    this.uuid = this.makeUUID(data);
+	    this.type = this.getType(data, this.uuid);
+
+	    if (!SUPER_SECRET_SHOULD_FREEZE_FLAG_THAT_ONLY_STUBS_CAN_USE) {
+	      Object.freeze(this);
+	    }
 	  }
 
 	  _createClass(Model, [{
-	    key: '_set',
-	    value: function _set(data, keyOrObject, value) {
-	      var diff = (typeof keyOrObject === 'undefined' ? 'undefined' : _typeof(keyOrObject)) === 'object' ? keyOrObject : _defineProperty({}, keyOrObject, value);
-
-	      return new this.constructor(_extends({}, data, diff));
+	    key: '_diff',
+	    value: function _diff(keyOrObject, value) {
+	      return (typeof keyOrObject === 'undefined' ? 'undefined' : _typeof(keyOrObject)) === 'object' ? keyOrObject : _defineProperty({}, keyOrObject, value);
+	    }
+	  }, {
+	    key: 'set',
+	    value: function set(keyOrObject, value) {
+	      return new this.constructor(_extends({}, this.toJSON(), this._diff(keyOrObject, value)));
 	    }
 
-	    // .stub() is for encoding optimistic and transient states during async actions
+	    // .stub() is for encoding optimistic updates and other transient states
+	    //    while waiting for async actions.
 	    //
 	    // A reddit-example is voting. `link.upvote()` needs to handle
 	    // a few edgecases like: 'you already upvoted, let's toggle your vote',
 	    // 'you downvoted, so the score increase is really +2 for ui (instead of +1)',
 	    // and 'we need to add +1 to the score'.
 	    // It also needs to handle failure cases like 'that upvote failed, undo everything'.
-	    // Stubs provide a way of providing an optimistic ui update that includes
+	    //
+	    // Stubs provide a way of encoding an optimistic ui update that includes
 	    // all of these cases, that use javascript promises to encode the completion
-	    // and final state of this
+	    // and final state of this.
 	    //
 	    // With stubs, `.upvote()` can return a stub object so that you can:
 	    // ```javascript
-	    // const stub = link.upvote();
-	    // dispatch(newLinkData(stub));
-	    // stub.then(finalLink => dispatch(newLinkData(finalLink));
-	    // stub.reject(error => {
-	    //  dispatch(failedToUpvote(link));
-	    //  // Undo the optimistic ui update. Note: .upvote can choose to
-	    //  // catch the reject and pass the old version back in Promise.resolve()
-	    //  disaptch(newLinkData(link))
-	    // });
+	    // /* upvoteLink is a dispatch thunk */
+	    // const upvoteLink = link => (dispatch, getState) => () => {
+	    //    const stub = link.upvote();
+	    //    dispatch(newLinkData(stub));
+	    //
+	    //    stub.reject(error => {
+	    //      dispatch(failedToUpvote(link));
+	    //      // Undo the optimistic ui update. Note: .upvote can choose to
+	    //      // catch the reject and pass the old version back in Promise.resolve()
+	    //      disaptch(newLinkData(link))
+	    //   });
+	    //
+	    //   return stub.then(finalLink => dispatch(newLinkData(finalLink));
+	    // };
 	    // ```
 
 	  }, {
@@ -6281,18 +6292,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var keyOrObject = _ref2.keyOrObject;
 	      var value = _ref2.value;
 
-	      var stub = this.set(keyOrObject, value);
-	      addGetter(stub, 'then', promise.then);
-	      addGetter(stub, 'reject', promise.reject);
+	      var next = _extends({}, this.toJSON(), this._diff(keyOrObject, value));
+	      var stub = new this.constructor(next, true);
+	      stub.then = promise.then;
+	      stub.reject = promise.reject;
+	      Object.freeze(stub); // super important, don't break the super secret flag
 	      return stub;
 	    }
 	  }, {
 	    key: 'makeUUID',
 	    value: function makeUUID(data) {
-	      if (/* harmony import */__WEBPACK_IMPORTED_MODULE_3__lib_isThingID__["a"].bind()(data.name)) {
+	      if (/* harmony import */__WEBPACK_IMPORTED_MODULE_2__lib_isThingID__["a"].bind()(data.name)) {
 	        return data.name;
 	      }
-	      if (/* harmony import */__WEBPACK_IMPORTED_MODULE_3__lib_isThingID__["a"].bind()(data.id)) {
+	      if (/* harmony import */__WEBPACK_IMPORTED_MODULE_2__lib_isThingID__["a"].bind()(data.id)) {
 	        return data.id;
 	      }
 	      // todo: make build smarter about injecting build info
@@ -6302,22 +6315,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getType',
 	    value: function getType(data, uuid) {
-	      return this.constructor.type || /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["f"][data.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["g"].bind()(uuid) || 'Unknown';
+	      return this.constructor.type || /* harmony import */__WEBPACK_IMPORTED_MODULE_0__thingTypes__["f"][data.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_0__thingTypes__["g"].bind()(uuid) || 'Unknown';
 	    }
 	  }, {
 	    key: 'toRecord',
 	    value: function toRecord() {
-	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_2__Record__["a"](this.type, this.uuid);
+	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_1__Record__["a"](this.type, this.uuid);
 	    }
 	  }, {
 	    key: 'toJSON',
 	    value: function toJSON() {
-	      var _this3 = this;
+	      var _this2 = this;
 
 	      var obj = {};
 	      Object.keys(this).forEach(function (key) {
-	        if (_this3.constructor.PROPERTIES[key]) {
-	          obj[key] = _this3[key];
+	        if (_this2.constructor.PROPERTIES[key]) {
+	          obj[key] = _this2[key];
 	        }
 	      });
 
@@ -6334,7 +6347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return val ? String(val) : '';
 	  },
 	  number: function number(val) {
-	    return Number(val);
+	    return val === undefined ? 0 : Number(val);
 	  },
 	  array: function array(val) {
 	    return Array.apply(null, val);
@@ -6358,10 +6371,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // some more semantic types that apply transformations
 	  html: function html(val) {
-	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_4__lib_markdown__["a"].bind()(Model.Types.String(val));
+	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_3__lib_markdown__["a"].bind()(Model.Types.string(val));
 	  },
 	  link: function link(val) {
-	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_unredditifyLink__["a"].bind()(Model.types.String(val));
+	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_4__lib_unredditifyLink__["a"].bind()(Model.Types.string(val));
 	  }
 	};
 	Model.MockTypes = {
@@ -6385,8 +6398,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  // semantic mocks
-	  html: /* harmony import */__WEBPACK_IMPORTED_MODULE_6__mockgenerators_mockHTML__["a"],
-	  link: /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mockgenerators_mockLink__["a"]
+	  html: /* harmony import */__WEBPACK_IMPORTED_MODULE_5__mockgenerators_mockHTML__["a"],
+	  link: /* harmony import */__WEBPACK_IMPORTED_MODULE_6__mockgenerators_mockLink__["a"]
 	};
 	Model.API_ALIASES = {};
 	Model.PROPERTIES = {};
