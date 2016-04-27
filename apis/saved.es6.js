@@ -1,10 +1,10 @@
-import BaseAPI from './base.es6.js';
-import Save from '../models/save.es6.js';
+import BaseAPI from './base';
+import Save from '../models/save';
 
 import { has } from 'lodash/object';
 
-import Comment from '../models/comment.es6.js';
-import Link from '../models/link.es6.js';
+import Comment from '../models/comment';
+import Link from '../models2/Link';
 
 const CONSTRUCTORS = {
   t1: Comment,

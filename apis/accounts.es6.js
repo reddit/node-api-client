@@ -1,5 +1,5 @@
-import BaseAPI from './base.es6.js';
-import Account from '../models/account.es6.js';
+import BaseAPI from './base';
+import Account from '../models/account';
 
 export default class Accounts extends BaseAPI {
   move = this.notImplemented('move');

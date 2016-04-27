@@ -1,7 +1,7 @@
 import BaseAPI from './base';
 import Save from '../models/save';
 
-import Link from '../models/link';
+import Link from '../models2/Link';
 import Subreddit from '../models/subreddit';
 import { LINK_TYPE } from '../models2/thingTypes';
 
@@ -49,7 +49,7 @@ export default class Search extends BaseAPI {
       if (listing.data.children.length) {
         if (listing.data.children[0].kind === LINK_TYPE) {
           listing.data.children.forEach((link) => {
-            apiResponse.addResult(new Link(link.data).toJSON());
+            apiResponse.addResult(Link.fromJSON(link.data));
           });
 
           apiResponse.meta.after = listing.data.after;

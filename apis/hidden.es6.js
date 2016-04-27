@@ -1,4 +1,4 @@
-import Saved from './saved.es6.js';
+import Saved from './saved';
 
 export default class Hidden extends Saved {
   path (method, query={}) {

@@ -1,4 +1,4 @@
-import BaseAPI from './base.es6.js';
+import BaseAPI from './base';
 import Stylesheet from '../models/stylesheet';
 
 class Stylesheets extends BaseAPI {

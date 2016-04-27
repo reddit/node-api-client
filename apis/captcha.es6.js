@@ -1,4 +1,4 @@
-import BaseAPI from './base.es6.js';
+import BaseAPI from './base';
 import { has } from 'lodash/object';
 
 class Captcha extends BaseAPI {

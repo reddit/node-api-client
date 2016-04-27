@@ -1,4 +1,4 @@
-import BaseAPI from './baseContent.es6.js';
+import BaseAPI from './baseContent';
 import Link from '../models2/Link';
 
 export default class Links extends BaseAPI {

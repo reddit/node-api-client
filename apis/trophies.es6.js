@@ -1,6 +1,6 @@
-import BaseAPI from './base.es6.js';
+import BaseAPI from './base';
 
-import Trophy from '../models/trophy.es6.js';
+import Trophy from '../models/trophy';
 
 class Trophies extends BaseAPI {
   static dataCacheConfig = null;

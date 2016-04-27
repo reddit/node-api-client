@@ -1,5 +1,5 @@
-import BaseAPI from './base.es6.js';
-import Vote from '../models/vote.es6.js';
+import BaseAPI from './base';
+import Vote from '../models/vote';
 
 import ValidationError from '../errors/validationError';
 

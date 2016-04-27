@@ -2,7 +2,7 @@ import { has } from 'lodash/object';
 
 import BaseAPI from './baseContent';
 import Comment from '../models/comment';
-import Link from '../models/link';
+import Link from '../models2/Link';
 
 import {
   treeifyComments,
@@ -67,7 +67,7 @@ export default class Comments extends BaseAPI {
 
         if (linkData && linkData.children && linkData.children.length) {
           linkData.children.forEach(link => {
-            apiResponse.addModel(new Link(link.data).toJSON());
+            apiResponse.addModel(Link.fromJSON(link.data));
           });
         }
 

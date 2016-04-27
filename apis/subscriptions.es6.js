@@ -1,5 +1,5 @@
-import BaseAPI from './base.es6.js';
-import Subscription from '../models/subscription.es6.js';
+import BaseAPI from './base';
+import Subscription from '../models/subscription';
 
 class Subscriptions extends BaseAPI {
   model = Subscription;

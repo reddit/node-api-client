@@ -1,5 +1,5 @@
-import BaseAPI from './base.es6.js';
-import MultiSubscription from '../models/multi.es6.js';
+import BaseAPI from './base';
+import MultiSubscription from '../models/multi';
 
 import Multis from './multis';
 

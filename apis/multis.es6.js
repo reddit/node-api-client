@@ -1,5 +1,5 @@
-import BaseAPI from './base.es6.js';
-import Multi from '../models/multi.es6.js';
+import BaseAPI from './base';
+import Multi from '../models/multi';
 
 const ID_REGEX = /^user\/[^\/]+\/m\/[^\/]+$/;
 

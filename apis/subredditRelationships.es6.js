@@ -1,4 +1,4 @@
-import BaseAPI from './baseContent.es6.js';
+import BaseAPI from './baseContent';
 
 const MODACTIONS = {
   contributor: 'friend',

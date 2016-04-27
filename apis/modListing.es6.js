@@ -1,8 +1,8 @@
-import BaseAPI from './baseContent.es6.js';
+import BaseAPI from './baseContent';
 import { has } from 'lodash/object';
 
-import Link from '../models/link.es6.js';
-import Comment from '../models/comment.es6.js';
+import Link from '../models2/Link';
+import Comment from '../models/comment';
 
 class ModListing extends BaseAPI {
   static dataCacheConfig = undefined;
@@ -35,7 +35,7 @@ class ModListing extends BaseAPI {
     if (has(body, 'data.children.0')) {
       body.data.children.forEach(c => {
         if (c.kind == 't3') {
-          apiResponse.addResult(new Link(c.data).toJSON());
+          apiResponse.addResult(Link.fromJSON(c.data));
         } else if (c.kind === 't1') {
           apiResponse.addResult(new Comment(c.data).toJSON());
         }

@@ -1,5 +1,5 @@
-import BaseAPI from './base.es6.js';
-import Report from '../models/report.es6.js';
+import BaseAPI from './base';
+import Report from '../models/report';
 
 export default class Reports extends BaseAPI {
   model = Report;

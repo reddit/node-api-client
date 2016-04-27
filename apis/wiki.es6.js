@@ -1,6 +1,6 @@
-import BaseAPI from './base.es6.js';
+import BaseAPI from './base';
 
-import Link from '../models/link';
+import Link from '../models2/Link';
 import WikiPage from '../models/wikiPage';
 import WikiRevision from '../models/wikiRevision';
 import WikiPageListing from '../models/wikiPageListing';
@@ -51,7 +51,7 @@ export default class Votes extends BaseAPI {
             // is made.
             if (req.url.includes('/wiki/discussions')) {
               return {
-                conversations: children.map(c => new Link(c.data).toJSON()),
+                conversations: children.map(c => Link.fromJSON(c.data)),
                 _type: 't3',
               };
             } else if (req.url.includes('/wiki/revisions')) {

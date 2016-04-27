@@ -1,5 +1,5 @@
 import { pick } from 'lodash/object';
-import BaseAPI from './base.es6.js';
+import BaseAPI from './base';
 import NoModelError from '../errors/noModelError';
 
 const MOD_ACTION_MAP = {
