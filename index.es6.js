@@ -110,6 +110,11 @@ const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
                'modcontributors,modflair,modlog,modothers,modposts,modself,' +
                'modwiki,privatemessages,report,wikiedit,wikiread';
 
+// Webpack 2 has an export bug where a library's export object does not state
+// that it is an es6 module. Without this tag defined on the exports object,
+// Webpack does not import the library correctly.
+export const __esModule = true;
+
 export default class Snoode {
   static APIs = Object.keys(APIs);
 

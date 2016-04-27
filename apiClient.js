@@ -5591,6 +5591,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' + 'save,edit,account,creddits,flair,livemanage,modconfig,' + 'modcontributors,modflair,modlog,modothers,modposts,modself,' + 'modwiki,privatemessages,report,wikiedit,wikiread';
 
+	// Webpack 2 has an export bug where a library's export object does not state
+	// that it is an es6 module. Without this tag defined on the exports object,
+	// Webpack does not import the library correctly.
+	var __esModule = true;
+	/* harmony export */ Object.defineProperty(exports, "__esModule", {configurable: false, enumerable: true, get: function() { return __esModule; }});
+
 	var Snoode = function () {
 	  function Snoode() {
 	    var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
