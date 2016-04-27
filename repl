@@ -9,10 +9,11 @@ const packageInfo = require('./package.json');
 console.log(`Starting snoode v${packageInfo.version} repl`);
 console.log('Enter `help()` for information.');
 
-const API = require('./run');
+require('babel-polyfill');
+const API = require('./apiClient').default;
 const api = new API({
   token: process.env.TOKEN,
-  origin: 'https://oauth.reddit.com',
+  origin: process.env.TOKEN ? 'https://oauth.reddit.com' : 'https://www.reddit.com',
 });
 
 const local = repl.start('$> ');
