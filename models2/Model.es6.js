@@ -60,6 +60,12 @@ export default class Model {
     link: val => unredditifyLink(Model.Types.string(val)),
   };
 
+  // TYPES I'd like to
+  // mod: (type) => type
+  // useage: bannedBy: T.mod(T.string),
+  // purpose: Just to document that a field is only going to be there as a moderator
+  //
+
   static MockTypes = {
     string: () => Math.random().toString(36).substring(Math.floor(Math.random() * 10) + 5),
     number: () => Math.floor(Math.random() * 100),
