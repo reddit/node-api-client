@@ -110,7 +110,7 @@ const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
                'modcontributors,modflair,modlog,modothers,modposts,modself,' +
                'modwiki,privatemessages,report,wikiedit,wikiread';
 
-class Snoode {
+export default class Snoode {
   static APIs = Object.keys(APIs);
 
   constructor(config={}) {
@@ -143,5 +143,3 @@ class Snoode {
     return new Snoode({...this.config, ...config});
   }
 }
-
-export default Snoode;

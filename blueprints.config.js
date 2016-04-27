@@ -1,10 +1,12 @@
 module.exports = [{
   name: 'apiClient',
   webpack: {
-    entry: './index.es6.js',
+    entry: {
+      apiClient: './index.es6.js',
+    },
     output: {
-      generator: 'simple',
-      dest: './',
+      library: "[name].js",
+      libraryTarget: "umd",
     },
     resolve: {
       generator: 'npm-and-modules',
@@ -17,7 +19,7 @@ module.exports = [{
     plugins: [
       'production-loaders',
       'set-node-env',
-      'minify-and-treeshake',
+      // 'minify-and-treeshake',
       'abort-if-errors',
     ],
     externals: {
