@@ -1,4 +1,3 @@
-import { omit } from 'lodash/object';
 import { TYPES, thingType } from './thingTypes';
 
 import Record from './Record';
@@ -9,14 +8,6 @@ import unredditifyLink from '../lib/unredditifyLink';
 
 import mockHTML from './mockgenerators/mockHTML';
 import mockLink from './mockgenerators/mockLink';
-
-const addGetter = (instance, key, value) => {
-  Object.defineProperty(instance, key, {
-    value,
-    writable: false,
-    enumerable: true,
-  });
-};
 
 const fakeUUID = () => Math.toFixed(Math.random() * 16);
 
@@ -35,7 +26,7 @@ const fakeUUID = () => Math.toFixed(Math.random() * 16);
 //    score_hidden: 'scoreHidden',
 //   }
 //
-//  static PROPERITES = {
+//  static PROPERTIES = {
 //    id: T.string,
 //    author: T.string,
 //    bodyHTML: T.html,
@@ -48,17 +39,13 @@ const fakeUUID = () => Math.toFixed(Math.random() * 16);
 export default class Model {
   static fromJSON(obj) {
     return new this(obj);
-    // todo, this is were we could do somee validation
-    // we might also want to explicity omit stuff, but
-    // we check the Properties map anyway so it should be fine
-    // return new this(omit(obj, '__type'));
   }
 
   // put value transformers here. They'll take input and pseudo-validate it and
   // transform it. You'll put thme in your subclasses PROPERITES dictionary.
   static Types = {
     string: val => val ? String(val) : '',
-    number: val => Number(val),
+    number: val => val === undefined ? 0 : Number(val),
     array: val => Array.apply(null, val),
     arrayOf: (type=Model.Types.nop) => val => Model.Types.array(val).map(type),
     bool: val => Boolean(val),
@@ -69,8 +56,8 @@ export default class Model {
     nop: val => val,
 
     // some more semantic types that apply transformations
-    html: val => process(Model.Types.String(val)),
-    link: val => unredditifyLink(Model.types.String(val)),
+    html: val => process(Model.Types.string(val)),
+    link: val => unredditifyLink(Model.Types.string(val)),
   };
 
   static MockTypes = {
@@ -100,65 +87,94 @@ export default class Model {
   static MOCKS = {};
   static DERIVED_PROPERTIES = {};
 
-  constructor(data) {
+  constructor(data, SUPER_SECRET_SHOULD_FREEZE_FLAG_THAT_ONLY_STUBS_CAN_USE) {
     const { API_ALIASES, PROPERTIES, DERIVED_PROPERTIES } = this.constructor;
+    // Please note: the use of for loops and adding properties directly
+    // and then freezing (versus using defineProperty with writeable false)
+    // is very intentional. Because performance. Please consult schwers or frontend-platform
+    // before modifying
 
-    Object.keys(data).forEach(key => {
-      const keyName = API_ALIASES[key]
-        ? API_ALIASES[key]
-        : key;
-
-      if (PROPERTIES[keyName]) {
-        addGetter(this, keyName, PROPERTIES[keyName](data[key]));
+    const dataKeys = Object.keys(data);
+    for (let i = 0; i < dataKeys.length; i++) {
+      const key = dataKeys[i];
+      if (DERIVED_PROPERTIES[key]) { // skip if there's a dervied key of the same name
+        continue;
       }
-    });
 
-    Object.keys(DERIVED_PROPERTIES).forEach(derivedKey => {
-      if (PROPERTIES[derivedKey]) {
-        addGetter(this, derivedKey, DERIVED_PROPERTIES[derivedKey](data));
+      let keyName = API_ALIASES[key];
+      if (!keyName) { keyName = key; }
+
+      const typeFn = PROPERTIES[keyName];
+      if (typeFn) {
+        this[keyName] = typeFn(data[key]);
       }
-    });
+    }
 
-    addGetter(this, 'uuid', this.makeUUID(data));
-    addGetter(this, 'type', this.getType(data, this.uuid));
-    this.set = this._set.bind(this, data);
+    const derivedKeys = Object.keys(DERIVED_PROPERTIES);
+    for (let i = 0; i < derivedKeys.length; i++) {
+      const derivedKey = derivedKeys[i];
+      const derviceFn = DERIVED_PROPERTIES[derivedKey];
+      const typeFn = PROPERTIES[derivedKey];
+
+      if (derviceFn && typeFn) {
+        this[derivedKey] = typeFn(derviceFn(data));
+      }
+    }
+
+    this.uuid = this.makeUUID(data);
+    this.type = this.getType(data, this.uuid);
+
+    if (!SUPER_SECRET_SHOULD_FREEZE_FLAG_THAT_ONLY_STUBS_CAN_USE) {
+      Object.freeze(this);
+    }
   }
 
-  _set(data, keyOrObject, value) {
-    const diff = typeof keyOrObject === 'object'
+  _diff(keyOrObject, value) {
+    return typeof keyOrObject === 'object'
       ? keyOrObject
       : { [keyOrObject]: value };
-
-    return new this.constructor({...data, ...diff});
   }
 
-  // .stub() is for encoding optimistic and transient states during async actions
+  set(keyOrObject, value) {
+    return new this.constructor({...this.toJSON(), ...this._diff(keyOrObject, value)});
+  }
+
+  // .stub() is for encoding optimistic updates and other transient states
+  //    while waiting for async actions.
   //
   // A reddit-example is voting. `link.upvote()` needs to handle
   // a few edgecases like: 'you already upvoted, let's toggle your vote',
   // 'you downvoted, so the score increase is really +2 for ui (instead of +1)',
   // and 'we need to add +1 to the score'.
   // It also needs to handle failure cases like 'that upvote failed, undo everything'.
-    // Stubs provide a way of providing an optimistic ui update that includes
+  //
+  // Stubs provide a way of encoding an optimistic ui update that includes
   // all of these cases, that use javascript promises to encode the completion
-  // and final state of this
+  // and final state of this.
   //
   // With stubs, `.upvote()` can return a stub object so that you can:
   // ```javascript
-  // const stub = link.upvote();
-  // dispatch(newLinkData(stub));
-  // stub.then(finalLink => dispatch(newLinkData(finalLink));
-  // stub.reject(error => {
-  //  dispatch(failedToUpvote(link));
-  //  // Undo the optimistic ui update. Note: .upvote can choose to
-  //  // catch the reject and pass the old version back in Promise.resolve()
-  //  disaptch(newLinkData(link))
-  // });
+  // /* upvoteLink is a dispatch thunk */
+  // const upvoteLink = link => (dispatch, getState) => () => {
+  //    const stub = link.upvote();
+  //    dispatch(newLinkData(stub));
+  //
+  //    stub.reject(error => {
+  //      dispatch(failedToUpvote(link));
+  //      // Undo the optimistic ui update. Note: .upvote can choose to
+  //      // catch the reject and pass the old version back in Promise.resolve()
+  //      disaptch(newLinkData(link))
+  //   });
+  //
+  //   return stub.then(finalLink => dispatch(newLinkData(finalLink));
+  // };
   // ```
   stub({ keyOrObject, value}, promise) {
-    const stub = this.set(keyOrObject, value);
-    addGetter(stub, 'then', promise.then);
-    addGetter(stub, 'reject', promise.reject);
+    const next = {...this.toJSON(), ...this._diff(keyOrObject, value) };
+    const stub = new this.constructor(next, true);
+    stub.then = promise.then;
+    stub.reject = promise.reject;
+    Object.freeze(stub); // super important, don't break the super secret flag
     return stub;
   }
 

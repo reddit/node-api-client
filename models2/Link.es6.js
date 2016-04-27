@@ -93,7 +93,7 @@ export default class Link extends Model {
       if (!(data.promoted && !data.preview)) { return data.preview; }
       // we build fake preview data for ads and normal thumbnails
 
-      let resolutions = [];
+      const resolutions = [];
 
       if (data.mobile_ad_url) {
         resolutions.push({
@@ -101,7 +101,6 @@ export default class Link extends Model {
           height: 628,
           width: 1200,
         });
-        delete data.mobile_ad_url;
       }
 
       if (data.thumbnail) {
@@ -110,7 +109,6 @@ export default class Link extends Model {
           height: 140,
           width: 140,
         });
-        delete data.thumbnail;
       }
 
       return {

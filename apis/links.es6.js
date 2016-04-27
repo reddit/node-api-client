@@ -1,8 +1,7 @@
 import BaseAPI from './baseContent.es6.js';
-import OldLink from '../models/link';
 import Link from '../models2/Link';
 
-class Links extends BaseAPI {
+export default class Links extends BaseAPI {
   model = Link;
 
   getPath (query) {
@@ -67,6 +66,8 @@ class Links extends BaseAPI {
     const max = times.reduce((x, y) => Math.max(x, y), -Infinity);
     console.log(`\t${times.length} took ${average} averaged`);
     console.log(`\tMax: ${max} -- Min: ${min}`);
+    times.sort((a, b) => a - b);
+    console.log(`\ttimes ${times}`);
     return;
   }
 
@@ -81,12 +82,10 @@ class Links extends BaseAPI {
     }
 
     await this.time(times, parseTimes);
-    return this.timeAverages(numTimes - 1, times, parseTimes);
-  }
-
-  parse(data) {
-    // return new OldLink(data).toJSON();
-    return Link.fromJSON(data);
+    setTimeout(() => {
+      console.log('next');
+      this.timeAverages(numTimes - 1, times, parseTimes);
+    }, 10);
   }
 
   parseBody(res, apiResponse, req, method) {
@@ -97,10 +96,10 @@ class Links extends BaseAPI {
 
       if (data && data.children && data.children[0]) {
         if (data.children.length === 1) {
-          apiResponse.addResult(this.parse((data.children[0].data)));
+          apiResponse.addResult(Link.fromJSON(data.children[0].data));
           return;
         } else {
-          data.children.forEach(c => apiResponse.addResult(this.parse((c.data))));
+          data.children.forEach(c => apiResponse.addResult(Link.fromJSON(c.data)));
           return;
         }
       } else if (data) {
@@ -116,5 +115,3 @@ class Links extends BaseAPI {
     }
   }
 }
-
-export default Links;
