@@ -2,6 +2,8 @@
 
 'use strict';
 
+const EventEmitter = require('events').EventEmitter;
+
 const repl = require('repl');
 const q = require('querystring');
 
@@ -12,6 +14,7 @@ console.log('Enter `help()` for information.');
 require('babel-polyfill');
 const API = require('./apiClient').default;
 const api = new API({
+  eventEmitter: new EventEmitter(),
   token: process.env.TOKEN,
   origin: process.env.TOKEN ? 'https://oauth.reddit.com' : 'https://www.reddit.com',
 });

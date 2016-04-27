@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import superagent from 'superagent';
 import url from 'url';
 
@@ -115,13 +114,21 @@ const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
 // Webpack does not import the library correctly.
 export const __esModule = true;
 
+// shim event emitter. You can pass an instance in to the config
+// but we don't include it be default to keep the payload smaller
+const EventEmitterShim = {
+  emit: () => {},
+  on: () => {},
+  off: () => {},
+};
+
 export default class Snoode {
   static APIs = Object.keys(APIs);
 
   constructor(config={}) {
     this.config = {
       origin: DEFAULT_API_ORIGIN,
-      event: new EventEmitter(),
+      event: config.eventEmitter || EventEmitterShim,
       userAgent: 'snoodev2',
       appName: 'snoodev2',
       env: 'dev',
