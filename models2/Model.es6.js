@@ -9,7 +9,7 @@ import unredditifyLink from '../lib/unredditifyLink';
 import mockHTML from './mockgenerators/mockHTML';
 import mockLink from './mockgenerators/mockLink';
 
-const fakeUUID = () => Math.toFixed(Math.random() * 16);
+const fakeUUID = () => (Math.random() * 16).toFixed();
 
 // Model class that handles parsing, serializing, and pseudo-validation.
 // Provides a mechanism for creating stubs (which will represent incremental UI updates)
@@ -78,7 +78,7 @@ export default class Model {
     number: () => Math.floor(Math.random() * 100),
     array: () => Array.apply(null, Array(Math.floor(Math.random() * 10))),
     bool: () => Math.floor(Math.random() * 10) < 5,
-    cubit: () => Math.toFixed(Math.random() * 5 + -2.5),
+    cubit: () => Math.round((Math.random() * (1 - -1) + -1)),
     nop: () => null,
 
     // semantic mocks
@@ -195,7 +195,7 @@ export default class Model {
     if (isThingID(data.name)) { return data.name; }
     if (isThingID(data.id)) { return data.id; }
     // todo: make build smarter about injecting build info
-    console.warn(`generating fake id for data: ${data}`);
+    console.log(`generating fake id for data`, data);
     return fakeUUID();
   }
 
