@@ -29,3 +29,8 @@ node_modules
 
 # Ignore custom Mancy script
 mancyStart.js
+
+# editor swap files
+*~
+*.swp
+*.swo
