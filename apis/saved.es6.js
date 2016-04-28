@@ -3,7 +3,7 @@ import Save from '../models/save';
 
 import { has } from 'lodash/object';
 
-import Comment from '../models/comment';
+import Comment from '../models2/Comment';
 import Link from '../models2/Link';
 
 const CONSTRUCTORS = {
@@ -64,7 +64,13 @@ export default class Saved extends BaseAPI {
 
     things.forEach(function(t) {
       const constructor = CONSTRUCTORS[t.kind];
-      apiResponse.addResult(new constructor(t.data).toJSON());
+      try {
+        apiResponse.addResult(CONSTRUCTORS[t.kind].fromJSON(t.data));
+      } catch (e) {
+        console.log(constructor);
+        console.log(t);
+        console.trace(e);
+      }
     });
   }
 }

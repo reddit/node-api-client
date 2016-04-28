@@ -68,11 +68,11 @@ export default class Comment extends Model {
   }
 
   toRecord() {
-    if (this.uuid !== this.parentId) {
+    if (this.uuid === this.name) {
       return super.toRecord();
     }
 
-    // otherwise its a load more stub
+    // otherwise its a load more stub for super nested comments
     return new Record(COMMENT_LOAD_MORE, this.parentId);
   }
 }

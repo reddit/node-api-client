@@ -66,7 +66,7 @@ import Award from './models/award';
 import Base from './models/base';
 import Block from './models/block';
 import BlockedUser from './models/BlockedUser';
-import Comment from './models/comment';
+import Comment from './models2/Comment';
 import Link from './models2/Link';
 import Message from './models/message';
 import PromoCampaign from './models/promocampaign';

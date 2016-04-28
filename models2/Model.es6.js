@@ -46,7 +46,7 @@ export default class Model {
   static Types = {
     string: val => val ? String(val) : '',
     number: val => val === undefined ? 0 : Number(val),
-    array: val => Array.apply(null, val),
+    array: val => Array.isArray(val) ? val : [],
     arrayOf: (type=Model.Types.nop) => val => Model.Types.array(val).map(type),
     bool: val => Boolean(val),
     cubit: val => {

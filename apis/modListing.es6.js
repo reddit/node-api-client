@@ -2,7 +2,7 @@ import BaseAPI from './baseContent';
 import { has } from 'lodash/object';
 
 import Link from '../models2/Link';
-import Comment from '../models/comment';
+import Comment from '../models2/Comment';
 
 class ModListing extends BaseAPI {
   static dataCacheConfig = undefined;
@@ -37,7 +37,7 @@ class ModListing extends BaseAPI {
         if (c.kind == 't3') {
           apiResponse.addResult(Link.fromJSON(c.data));
         } else if (c.kind === 't1') {
-          apiResponse.addResult(new Comment(c.data).toJSON());
+          apiResponse.addResult(Comment.fromJSON(c.data));
         }
       });
     }

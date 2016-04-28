@@ -1,6 +1,6 @@
 import { omit } from 'lodash/object';
 import BaseAPI from './base';
-import Comment from '../models/comment';
+import Comment from '../models2/Comment';
 import Link from '../models2/Link';
 import Message from '../models/message';
 
@@ -43,7 +43,8 @@ export default class Messages extends BaseAPI {
       if (!body) { return; }
 
       body.data.children.forEach(datum => {
-        const thing = new CONSTRUCTORS[datum.kind](datum.data).toJSON();
+        const thing = datum.data;
+        // const thing = new CONSTRUCTORS[datum.kind](datum.data).toJSON();
 
         if (datum.kind === 't4' && thing.replies && thing.replies.data
             && thing.replies.data.children) {
@@ -55,7 +56,7 @@ export default class Messages extends BaseAPI {
           });
         }
 
-        apiResponse.addResult(thing);
+        apiResponse.addResult(CONSTRUCTORS[datum.kind].fromJSON(thing));
       });
     } else if (method === 'post') {
       if (body && body.json) {

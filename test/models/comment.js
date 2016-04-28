@@ -3,7 +3,7 @@ import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 const expect = chai.expect;
 
-import Comment from '../../models/comment';
+import Comment from '../../models2/Comment';
 
 describe('Comment model', function() {
 

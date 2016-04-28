@@ -1,6 +1,6 @@
 import BaseAPI from './base.es6.js';
 
-import Comment from '../models/comment';
+import Comment from '../models2/Comment';
 import Link from '../models2/Link';
 
 const CONSTRUCTORS = {
@@ -41,7 +41,7 @@ class Activities extends BaseAPI {
 
       activities.forEach(function(a) {
         const constructor = CONSTRUCTORS[a.kind];
-        apiResponse.addResult(new constructor(a.data).toJSON());
+        apiResponse.addResult(constructor.fromJSON(a.data));
       });
     }
   }
