@@ -2,7 +2,7 @@ import { pick } from 'lodash/object';
 import { isEmpty } from 'lodash/lang';
 
 import BaseAPI from './base';
-import Subreddit from '../models/subreddit';
+import Subreddit from '../models2/Subreddit';
 
 const DEFAULT_SUBREDDIT_OPTIONS = {
   allow_top: true,
@@ -99,11 +99,11 @@ class Subreddits extends BaseAPI {
     const { body } = res;
 
     if (body.data && Array.isArray(body.data.children)) {
-      body.data.children.forEach(c => apiResponse.addResult(new Subreddit(c.data).toJSON()));
+      body.data.children.forEach(c => apiResponse.addResult(Subreddit.fromJSON(c.data)));
       // sometimes, we get back empty object and 200 for invalid sorts like
       // `mine` when logged out
     } else if (!isEmpty(body)) {
-      apiResponse.addResult(new Subreddit(body.data || body).toJSON());
+      apiResponse.addResult(Subreddit.fromJSON(body.data || body));
     }
   }
 

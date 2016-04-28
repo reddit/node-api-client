@@ -12,7 +12,8 @@ console.log(`Starting snoode v${packageInfo.version} repl`);
 console.log('Enter `help()` for information.');
 
 require('babel-polyfill');
-const API = require('./apiClient').default;
+const ApiClientModule = require('./apiClient');
+const API = ApiClientModule.default;
 const api = new API({
   eventEmitter: new EventEmitter(),
   token: process.env.TOKEN,
@@ -24,10 +25,18 @@ const local = repl.start('$> ');
 function help () {
   const help = [
     'To try out the API, use the available instance of `api` to make requests.',
-    'For example, try writing: `api.subreddits.get({ id: "coffee" });',
+    '  For example, try writing: `api.subreddits.get({ id: "coffee" });',
+    '\n',
     'The latest API error can be accessed at `error`. Requests and responses',
-    'can be accessed at `request` and `response`.'
-  ].join(' ');
+    'can be accessed at `request` and `response`.',
+    'The latest API result can be accessed at `apiResponse`',
+    '\n',
+    'Also try out using Models directly, they"re all in scope',
+    '  e.g. try typing `Subreddits.subscribed(api)` (assuming you have your token)',
+    '  property configured',
+    '  then type `apiResponse.results` and',
+    '  `apiResponse.getModelFromRecord(apiResponse.results[0])`',
+  ].join('\n');
 
   console.log(help);
 }
@@ -36,6 +45,10 @@ api.event.on('response', function printResponse (req, res) {
   console.log(`${req.method} ${req.url} returned ${res.statusCode}`);
   local.context.request = res;
   local.context.response = res;
+});
+
+api.event.on('result', function (apiResponse) {
+  local.context.apiResponse = apiResponse;
 });
 
 api.event.on('error', function printResponse (e, req) {
@@ -71,4 +84,12 @@ local.context.checkRecordForLoadMore = function checkRecordForLoadMore(r, record
 
 
 local.context.api = api;
+
+const models = ApiClientModule.models;
+local.context.models = models;
+
+Object.keys(models).forEach(function(modelName) {
+  local.context[modelName] = models[modelName];
+});
+
 local.context.help = help;

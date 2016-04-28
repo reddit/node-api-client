@@ -9,9 +9,10 @@ const EVENTS = {
   request: 'request',
   response: 'response',
   error: 'error',
+  result: 'result',
 };
 
-class BaseAPI {
+export default class BaseAPI {
   constructor(base) {
     this.config = base.config;
     this.event = base.event;
@@ -317,6 +318,8 @@ class BaseAPI {
         return reject(e);
       }
 
+      this.event.emit(EVENTS.result, body || apiResponse);
+
       resolve(body || apiResponse);
     };
   }
@@ -342,5 +345,3 @@ class BaseAPI {
 
   static EVENTS = EVENTS;
 }
-
-export default BaseAPI;

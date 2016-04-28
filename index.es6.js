@@ -71,7 +71,8 @@ import Link from './models2/Link';
 import Message from './models/message';
 import PromoCampaign from './models/promocampaign';
 import Preferences from './models/preferences';
-import Subreddit from './models/subreddit';
+import Subreddit from './models2/Subreddit';
+import Subreddits from './smartmodels/Subreddits';
 import Subscription from './models/subscription';
 import Vote from './models/vote';
 import Report from './models/report';
@@ -92,6 +93,7 @@ export const models = {
   PromoCampaign,
   Preferences,
   Subreddit,
+  Subreddits,
   Subscription,
   Vote,
   Report,
