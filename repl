@@ -48,5 +48,27 @@ api.event.on('request', function printRequest (req) {
   console.log(`Initiating ${req.method} to ${req.url}`);
 });
 
+
+ local.context.findLoadMoreStub = function findLoadMoreStub(r) {
+  // r is a result
+  r.results.forEach(topLevelRecord => {
+    local.context.checkRecordForLoadMore(r, topLevelRecord);
+  });
+}
+
+local.context.checkRecordForLoadMore = function checkRecordForLoadMore(r, record) {
+  const comment = r.getModelFromRecord(record);
+  if (!comment) { return; }
+  comment.replies.forEach(replyRecord => {
+    if (replyRecord.type === 'comment') {
+      local.context.checkRecordForLoadMore(r, replyRecord);
+      return;
+    }
+
+    console.log('load more?', replyRecord);
+  });
+}
+
+
 local.context.api = api;
 local.context.help = help;

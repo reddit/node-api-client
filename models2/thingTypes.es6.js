@@ -1,5 +1,6 @@
 export const COMMENT = 'comment';
 export const COMMENT_TYPE = 't1';
+export const COMMENT_LOAD_MORE = 'comment_load_more';
 
 export const USER = 'user';
 export const USER_TYPE = 't2';

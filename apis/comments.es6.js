@@ -1,7 +1,7 @@
 import { has } from 'lodash/object';
 
 import BaseAPI from './baseContent';
-import Comment from '../models/comment';
+import Comment from '../models2/Comment';
 import Link from '../models2/Link';
 
 import {
@@ -80,20 +80,28 @@ export default class Comments extends BaseAPI {
         }
       }
 
-      normalizeCommentReplies(comments, (comment, isTopLevel) => {
-        if (isTopLevel) {
-          apiResponse.addResult(comment);
-        } else {
-          apiResponse.addModel(comment);
-        }
+      normalizeCommentReplies(comments, (commentJSON, isTopLevel) => {
+        try {
+          // parsing is done bottom up, comment models are immutable
+          // but they'll rely on the records
+          const comment = Comment.fromJSON(commentJSON);
+          if (isTopLevel) {
+            apiResponse.addResult(comment);
+          } else {
+            apiResponse.addModel(comment);
+          }
 
-        // this sets replies to be records for consistency
-        return apiResponse.makeRecord(comment);
+          // this sets replies to be records for consistency
+          return comment.toRecord();
+        } catch (e) {
+          console.log('asdfasdfasdf');
+          console.trace(e);
+        }
       });
     } else {
       if (has(body, 'json.data.things.0.data')) {
         const comment = body.json.data.things[0].data;
-        apiResponse.addResult(new Comment(comment).toJSON());
+        apiResponse.addResult(Comment.fromJSON(comment));
       }
     }
   }

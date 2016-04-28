@@ -298,8 +298,13 @@ class BaseAPI {
         meta = this.formatMeta(res, req, method);
         const start = Date.now();
         apiResponse = new APIResponse(meta);
-        this.parseBody(res, apiResponse, req, method);
-        this.parseTime = Date.now() - start;
+        try {
+          this.parseBody(res, apiResponse, req, method);
+          this.parseTime = Date.now() - start;
+        } catch (e) {
+          this.event.emit(EVENTS.error, e, req);
+          console.trace(e);
+        }
 
         if (this.formatBody) { // shim for older apis or ones were we haven't figured out normalization yet
           body = this.formatBody(res, req, method);

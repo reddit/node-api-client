@@ -299,8 +299,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          meta = _this.formatMeta(res, req, method);
 	          var start = Date.now();
 	          apiResponse = new /* harmony import */__WEBPACK_IMPORTED_MODULE_5__APIResponse__["a"](meta);
-	          _this.parseBody(res, apiResponse, req, method);
-	          _this.parseTime = Date.now() - start;
+	          try {
+	            _this.parseBody(res, apiResponse, req, method);
+	            _this.parseTime = Date.now() - start;
+	          } catch (e) {
+	            _this.event.emit(EVENTS.error, e, req);
+	            console.trace(e);
+	          }
 
 	          if (_this.formatBody) {
 	            // shim for older apis or ones were we haven't figured out normalization yet
@@ -708,6 +713,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ exports["g"] = thingType;var COMMENT = 'comment';
 	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return COMMENT; }});
 	var COMMENT_TYPE = 't1';/* unused harmony export COMMENT_TYPE */
+	var COMMENT_LOAD_MORE = 'comment_load_more';
+	/* harmony export */ Object.defineProperty(exports, "j", {configurable: false, enumerable: true, get: function() { return COMMENT_LOAD_MORE; }});
 
 	var USER = 'user';
 	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return USER; }});
@@ -2295,7 +2302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_object___default = __WEBPACK_IMPORTED_MODULE_0_lodash_object__ && __WEBPACK_IMPORTED_MODULE_0_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_object__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_object___default });
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__baseContent__ = __webpack_require__(6);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_comment__ = __webpack_require__(2);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_Comment__ = __webpack_require__(74);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_Link__ = __webpack_require__(61);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_commentTreeUtils__ = __webpack_require__(55);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -2330,7 +2337,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Comments)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.model = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models_comment__["a"], _this.move = _this.notImplemented('move'), _this.copy = _this.notImplemented('copy'), _temp), _possibleConstructorReturn(_this, _ret);
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Comments)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.model = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Comment__["a"], _this.move = _this.notImplemented('move'), _this.copy = _this.notImplemented('copy'), _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Comments, [{
@@ -2405,20 +2412,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	        }
 
-	        /* harmony import */__WEBPACK_IMPORTED_MODULE_4__lib_commentTreeUtils__["c"].bind()(comments, function (comment, isTopLevel) {
-	          if (isTopLevel) {
-	            apiResponse.addResult(comment);
-	          } else {
-	            apiResponse.addModel(comment);
-	          }
+	        /* harmony import */__WEBPACK_IMPORTED_MODULE_4__lib_commentTreeUtils__["c"].bind()(comments, function (commentJSON, isTopLevel) {
+	          try {
+	            // parsing is done bottom up, comment models are immutable
+	            // but they'll rely on the records
+	            var comment = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Comment__["a"].fromJSON(commentJSON);
+	            if (isTopLevel) {
+	              apiResponse.addResult(comment);
+	            } else {
+	              apiResponse.addModel(comment);
+	            }
 
-	          // this sets replies to be records for consistency
-	          return apiResponse.makeRecord(comment);
+	            // this sets replies to be records for consistency
+	            return comment.toRecord();
+	          } catch (e) {
+	            console.log('asdfasdfasdf');
+	            console.trace(e);
+	          }
 	        });
 	      } else {
 	        if (/* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_object__["has"].bind()(body, 'json.data.things.0.data')) {
 	          var comment = body.json.data.things[0].data;
-	          apiResponse.addResult(new /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models_comment__["a"](comment).toJSON());
+	          apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Comment__["a"].fromJSON(comment));
 	        }
 	      }
 	    }
@@ -5288,10 +5303,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_comment__ = __webpack_require__(2);
-	/* harmony export */ exports["a"] = treeifyComments;/* harmony export */ exports["b"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;
-
-	// All of these function rely on mutation, either for building the tree,
+	/* harmony export */ exports["a"] = treeifyComments;/* harmony export */ exports["b"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;// All of these function rely on mutation, either for building the tree,
 	// or for performance reasons (things like building dictionaryies), use/edit carefully
 
 	function treeifyComments() {
@@ -5333,7 +5345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    comment.replies = [];
 	  }
 
-	  return new /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models_comment__["a"](comment).toJSON();
+	  return comment;
 	}
 
 	function normalizeCommentReplies(comments, visitComment) {
@@ -5687,7 +5699,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var fakeUUID = function fakeUUID() {
-	  return Math.toFixed(Math.random() * 16);
+	  return (Math.random() * 16).toFixed();
 	};
 
 	// Model class that handles parsing, serializing, and pseudo-validation.
@@ -5868,7 +5880,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return data.id;
 	      }
 	      // todo: make build smarter about injecting build info
-	      console.warn('generating fake id for data: ' + data);
+	      console.log('generating fake id for data', data);
 	      return fakeUUID();
 	    }
 	  }, {
@@ -5950,7 +5962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return Math.floor(Math.random() * 10) < 5;
 	  },
 	  cubit: function cubit() {
-	    return Math.toFixed(Math.random() * 5 + -2.5);
+	    return Math.round(Math.random() * (1 - -1) + -1);
 	  },
 	  nop: function nop() {
 	    return null;
@@ -6789,6 +6801,116 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = require("lodash/lang");
+
+/***/ },
+/* 73 */,
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Model__ = __webpack_require__(62);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Record__ = __webpack_require__(63);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__thingTypes__ = __webpack_require__(5);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__Model__["a"].Types;
+
+	var Comment = function (_Model) {
+	  _inherits(Comment, _Model);
+
+	  function Comment() {
+	    _classCallCheck(this, Comment);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Comment).apply(this, arguments));
+	  }
+
+	  _createClass(Comment, [{
+	    key: 'makeUUID',
+	    value: function makeUUID(data) {
+	      if (data.name === 't1__' && data.parent_id) {
+	        // This is a stub for load more, parentId is needed to fetch more
+	        return data.parent_id;
+	      }
+
+	      return data.name;
+	    }
+	  }, {
+	    key: 'toRecord',
+	    value: function toRecord() {
+	      if (this.uuid !== this.parentId) {
+	        return _get(Object.getPrototypeOf(Comment.prototype), 'toRecord', this).call(this);
+	      }
+
+	      // otherwise its a load more stub
+	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_1__Record__["a"](/* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["j"], this.parentId);
+	    }
+	  }]);
+
+	  return Comment;
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__Model__["a"]);
+
+	Comment.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["a"];
+	Comment.PROPERTIES = {
+	  archived: T.bool,
+	  author: T.string,
+	  authorFlairCSSClass: T.string,
+	  authorFlairText: T.string,
+	  children: T.nop,
+	  controversiality: T.number,
+	  distinguished: T.string,
+	  downs: T.number,
+	  edited: T.bool,
+	  gilded: T.number,
+	  id: T.string,
+	  likes: T.cubit,
+	  name: T.string,
+	  replies: T.array,
+	  saved: T.bool,
+	  score: T.number,
+	  stickied: T.bool,
+	  subreddit: T.string,
+	  ups: T.number,
+
+	  // aliases
+	  approvedBy: T.string,
+	  bannedBy: T.string,
+	  bodyHTML: T.html,
+	  createdUTC: T.number,
+	  linkId: T.string,
+	  modReports: T.array,
+	  numReports: T.number,
+	  parentId: T.string,
+	  reportReasons: T.array,
+	  scoreHidden: T.bool,
+	  subredditId: T.string,
+	  userReports: T.array
+	};
+	Comment.API_ALIASES = {
+	  approved_by: 'approvedBy',
+	  banned_by: 'bannedBy',
+	  body_html: 'bodyHTML',
+	  created_utc: 'createdUTC',
+	  link_id: 'linkId',
+	  mod_reports: 'modReports',
+	  num_reports: 'numReports',
+	  parent_id: 'parentId',
+	  report_reasons: 'reportReasons',
+	  score_hidden: 'scoreHidden',
+	  subreddit_id: 'subredditId',
+	  user_reports: 'userReports'
+	};
+	/* harmony default export */ exports["a"] = Comment;
 
 /***/ }
 /******/ ])
