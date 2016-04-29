@@ -99,12 +99,6 @@ import {
   ContributingSubreddits,
 } from './smartmodels/SubredditLists';
 
-import {
-  PostsFromSubreddit,
-  SavedPostsAndComments,
-  HiddenPostsAndComments,
-} from './smartmodels/PostsAndCommentsListing';
-
 import Subscription from './models/subscription';
 import Vote from './models/vote';
 import Report from './models/report';
@@ -112,6 +106,12 @@ import WikiPage from './models/wikiPage';
 import WikiRevision from './models/wikiRevision';
 import WikiPageListing from './models/wikiPageListing';
 import WikiPageSettings from './models/wikiPageSettings';
+
+import CommentsPage from './smartmodels/CommentsPage';
+import HiddenPostsAndComments from './smartmodels/HiddenPostsAndComments';
+import PostsFromSubreddit from './smartmodels/PostsFromSubreddit';
+import SavedPostsAndComments from './smartmodels/SavedPostsAndComments';
+import SearchQuery from './smartmodels/SearchQuery';
 
 export const models = {
   Account,
@@ -134,14 +134,14 @@ export const models = {
   WikiPageSettings,
 
   // collections
-
-  SubscribedSubreddits,
-  ModeratingSubreddits,
+  CommentsPage,
   ContributingSubreddits,
-
+  HiddenPostsAndComments,
+  ModeratingSubreddits,
   PostsFromSubreddit,
   SavedPostsAndComments,
-  HiddenPostsAndComments,
+  SearchQuery,
+  SubscribedSubreddits,
 };
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';

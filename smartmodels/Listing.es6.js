@@ -31,23 +31,31 @@ export default class Listing {
     this.prevResponse = this.prevResponse.bind(this);
   }
 
+  get afterId() {
+    return afterResponse(this.apiResponse);
+  }
+
   hasNextPage() {
-    return !!afterResponse(this.apiResponse);
+    return !!this.afterId;
+  }
+
+  get prevId() {
+    return beforeResponse(this.apiResponse);
   }
 
   hasPreviousPage() {
-    return !!beforeResponse(this.apiResponse);
+    return !!this.prevId;
   }
 
   async nextResponse(api) {
-    const after = afterResponse(this.apiResponse);
+    const after = this.afterId;
     if (!after) { return ; }
     const options = omit({ ...this.apiResponse.query, after}, 'before');
     return await this.constructor.getResponse(api, options);
   }
 
   async prevResponse(api) {
-    const before = beforeResponse(this.apiResponse);
+    const before = this.prevId;
     if (!before) { return; }
     const options = omit({ ...this.apiResponse.query, before}, 'after');
     return await this.constructor.getResponse(api, options);
