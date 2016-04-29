@@ -62,12 +62,12 @@ api.event.on('request', function printRequest (req) {
 });
 
 
- local.context.findLoadMoreStub = function findLoadMoreStub(r) {
+local.context.findLoadMoreStub = function findLoadMoreStub(r) {
   // r is a result
   r.results.forEach(topLevelRecord => {
     local.context.checkRecordForLoadMore(r, topLevelRecord);
   });
-}
+};
 
 local.context.checkRecordForLoadMore = function checkRecordForLoadMore(r, record) {
   const comment = r.getModelFromRecord(record);
@@ -80,16 +80,21 @@ local.context.checkRecordForLoadMore = function checkRecordForLoadMore(r, record
 
     console.log('load more?', replyRecord);
   });
-}
+};
 
+function exportToContext(submoduleName) {
+  const submodule = ApiClientModule[submoduleName];
+  local.context[submoduleName] = submodule;
+
+  Object.keys(submodule).forEach(function(subSubmoduleName) {
+    local.context[subSubmoduleName] = submodule[subSubmoduleName];
+  });
+}
 
 local.context.api = api;
 
-const models = ApiClientModule.models;
-local.context.models = models;
-
-Object.keys(models).forEach(function(modelName) {
-  local.context[modelName] = models[modelName];
-});
+exportToContext('models');
+exportToContext('APIResponses');
+exportToContext('APIResponsePaging');
 
 local.context.help = help;

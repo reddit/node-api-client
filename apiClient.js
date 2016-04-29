@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("lodash/object"), require("superagent"), require("lodash/lang"));
+		module.exports = factory(require("lodash/object"), require("superagent"), require("lodash/lang"), require("lodash/array"), require("lodash/collection"));
 	else if(typeof define === 'function' && define.amd)
-		define(["lodash/object", "superagent", "lodash/lang"], factory);
+		define(["lodash/object", "superagent", "lodash/lang", "lodash/array", "lodash/collection"], factory);
 	else if(typeof exports === 'object')
-		exports["apiClient.js"] = factory(require("lodash/object"), require("superagent"), require("lodash/lang"));
+		exports["apiClient.js"] = factory(require("lodash/object"), require("superagent"), require("lodash/lang"), require("lodash/array"), require("lodash/collection"));
 	else
-		root["apiClient.js"] = factory(root["lodash/object"], root["superagent"], root["lodash/lang"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_72__) {
+		root["apiClient.js"] = factory(root["lodash/object"], root["superagent"], root["lodash/lang"], root["lodash/array"], root["lodash/collection"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_72__, __WEBPACK_EXTERNAL_MODULE_78__, __WEBPACK_EXTERNAL_MODULE_180__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -268,13 +268,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          var fakeReq = { origin: origin, path: path, method: method, query: query };
 	          var req = res ? res.request : fakeReq;
 
-	          handle(resolve, reject)(err, res, req, originalMethod);
+	          handle(resolve, reject)(err, res, req, rawQuery, originalMethod);
 	        });
 	      });
 	    };
 
 	    this.handle = function (resolve, reject) {
-	      return function (err, res, req, method) {
+	      return function (err, res, req, query, method) {
 	        // lol handle the twelve ways superagent sends request back
 	        if (res && !req) {
 	          req = res.request || res.req;
@@ -299,7 +299,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        try {
 	          meta = _this.formatMeta(res, req, method);
 	          var start = Date.now();
-	          apiResponse = new /* harmony import */__WEBPACK_IMPORTED_MODULE_5__APIResponse__["a"](meta);
+	          apiResponse = new /* harmony import */__WEBPACK_IMPORTED_MODULE_5__APIResponse__["a"](meta, query);
 	          try {
 	            _this.parseBody(res, apiResponse, req, method);
 	            _this.parseTime = Date.now() - start;
@@ -338,6 +338,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.origin = base.config.origins[name] || this.config.origin;
 	      }
 	    }
+
+	    ['path', 'head', 'get', 'post', 'patch', 'put', 'del', 'move', 'copy'].forEach(function (method) {
+	      _this[method] = _this[method].bind(_this);
+	    });
 	  }
 
 	  // Used to format/unformat for caching; `links` or `comments`, for example.
@@ -474,7 +478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        data = _this2.formatData(data, _method);
 
 	        _this2.rawSend(method, path, data, function (err, res, req) {
-	          _this2.handle(resolve, reject)(err, res, req, method);
+	          _this2.handle(resolve, reject)(err, res, req, data, method);
 	        });
 	      });
 	    }
@@ -4865,8 +4869,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__ = __webpack_require__(5);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_collection__ = __webpack_require__(180);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_collection___default = __WEBPACK_IMPORTED_MODULE_0_lodash_collection__ && __WEBPACK_IMPORTED_MODULE_0_lodash_collection__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_collection__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_collection__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_collection___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_collection___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_array__ = __webpack_require__(78);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_array___default = __WEBPACK_IMPORTED_MODULE_1_lodash_array__ && __WEBPACK_IMPORTED_MODULE_1_lodash_array__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_array__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_array__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_array___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_array___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__ = __webpack_require__(5);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -4874,15 +4888,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-	var APIResponse = function () {
-	  function APIResponse() {
+
+
+
+	var APIResponseBase = function () {
+	  function APIResponseBase() {
 	    var _typeToTable;
 
-	    var meta = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    _classCallCheck(this, APIResponseBase);
 
-	    _classCallCheck(this, APIResponse);
-
-	    this.meta = meta;
 	    this.results = [];
 
 	    this.links = {};
@@ -4891,10 +4905,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.messages = {};
 	    this.subreddits = {};
 
-	    this.typeToTable = (_typeToTable = {}, _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["a"], this.comments), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["b"], this.links), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["c"], this.users), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["d"], this.messages), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["e"], this.subreddits), _typeToTable);
+	    this.typeToTable = (_typeToTable = {}, _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["a"], this.comments), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["b"], this.links), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["c"], this.users), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["d"], this.messages), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["e"], this.subreddits), _typeToTable);
+
+	    this.addResult = this.addResult.bind(this);
+	    this.addModel = this.addModel.bind(this);
+	    this.makeRecord = this.makeRecord.bind(this);
+	    this.addToTable = this.addToTable.bind(this);
+	    this.getModelFromRecord = this.getModelFromRecord.bind(this);
+	    this.appendResponse = this.appendResponse.bind(this);
 	  }
 
-	  _createClass(APIResponse, [{
+	  _createClass(APIResponseBase, [{
 	    key: 'addResult',
 	    value: function addResult(model) {
 	      if (!model) {
@@ -4933,7 +4954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      var type = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["f"][model.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["g"].bind()(uuid);
+	      var type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["f"][model.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["g"].bind()(uuid);
 	      if (!type) {
 	        return;
 	      }
@@ -4956,12 +4977,105 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return table[record.uuid];
 	      }
 	    }
+	  }, {
+	    key: 'appendResponse',
+	    value: function appendResponse() {
+	      throw new Error('Not implemented in base class');
+	    }
+	  }]);
+
+	  return APIResponseBase;
+	}();/* unused harmony export APIResponseBase */
+
+	var APIResponse = function (_APIResponseBase) {
+	  _inherits(APIResponse, _APIResponseBase);
+
+	  function APIResponse() {
+	    var meta = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var query = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    _classCallCheck(this, APIResponse);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(APIResponse).call(this));
+
+	    _this.meta = meta;
+	    _this.query = query;
+	    return _this;
+	  }
+
+	  _createClass(APIResponse, [{
+	    key: 'appendResponse',
+	    value: function appendResponse(nextResponse) {
+	      return new MergedApiReponse([this, nextResponse]);
+	    }
 	  }]);
 
 	  return APIResponse;
-	}();
+	}(APIResponseBase);
 
 	/* harmony default export */ exports["a"] = APIResponse;
+
+
+	var MergedApiReponse = function (_APIResponseBase2) {
+	  _inherits(MergedApiReponse, _APIResponseBase2);
+
+	  function MergedApiReponse(apiResponses) {
+	    _classCallCheck(this, MergedApiReponse);
+
+	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(MergedApiReponse).call(this));
+
+	    _this2.metas = apiResponses.map(function (response) {
+	      return response.meta;
+	    });
+	    _this2.querys = apiResponses.map(function (response) {
+	      return response.query;
+	    });
+
+	    _this2.apiResponses = apiResponses;
+
+	    var seenResults = new Set();
+
+	    var tableKeys = [/* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["a"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["c"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["b"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["d"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["e"]];
+
+	    /* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_collection__["forEach"].bind()(apiResponses, function (apiResponse) {
+	      /* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_collection__["forEach"].bind()(apiResponse.results, function (record) {
+	        if (!seenResults.has(record.uuid)) {
+	          seenResults.add(record.uuid);
+	          _this2.results.push(record);
+	        }
+	      });
+
+	      /* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_collection__["forEach"].bind()(tableKeys, function (tableKey) {
+	        var table = _this2.typeToTable[tableKey];
+	        Object.assign(table, apiResponse.typeToTable[tableKey]);
+	      });
+	    });
+	    return _this2;
+	  }
+
+	  _createClass(MergedApiReponse, [{
+	    key: 'appendResponse',
+	    value: function appendResponse(response) {
+	      var newReponses = this.apiResponses.slice();
+	      newReponses.push(response);
+
+	      return new MergedApiReponse(newReponses);
+	    }
+	  }, {
+	    key: 'lastResponse',
+	    get: function get() {
+	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_array__["last"].bind()(this.apiResponses);
+	    }
+	  }, {
+	    key: 'lastQuery',
+	    get: function get() {
+	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_array__["last"].bind()(this.querys);
+	    }
+	  }]);
+
+	  return MergedApiReponse;
+	}(APIResponseBase);
+	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return MergedApiReponse; }});
 
 /***/ },
 /* 54 */
@@ -4994,29 +5108,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__apis_wiki__ = __webpack_require__(46);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__apis_multis__ = __webpack_require__(13);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__apis_multiSubscriptions__ = __webpack_require__(36);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__errors_noModelError__ = __webpack_require__(7);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__errors_responseError__ = __webpack_require__(10);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__errors_validationError__ = __webpack_require__(8);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__errors_notImplementedError__ = __webpack_require__(15);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__models_account__ = __webpack_require__(16);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__models_award__ = __webpack_require__(48);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__models_base__ = __webpack_require__(0);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__models_block__ = __webpack_require__(49);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__models_BlockedUser__ = __webpack_require__(47);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__models2_Comment__ = __webpack_require__(74);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__models2_Link__ = __webpack_require__(61);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__models_message__ = __webpack_require__(17);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__models_promocampaign__ = __webpack_require__(51);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__models_preferences__ = __webpack_require__(50);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__models2_Subreddit__ = __webpack_require__(76);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__smartmodels_Subreddits__ = __webpack_require__(77);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__models_subscription__ = __webpack_require__(19);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__models_vote__ = __webpack_require__(20);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__models_report__ = __webpack_require__(18);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__models_wikiPage__ = __webpack_require__(21);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__models_wikiRevision__ = __webpack_require__(24);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__models_wikiPageListing__ = __webpack_require__(22);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__models_wikiPageSettings__ = __webpack_require__(23);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__apis_APIResponse__ = __webpack_require__(53);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__apis_APIResponsePaging__ = __webpack_require__(79);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__errors_noModelError__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__errors_responseError__ = __webpack_require__(10);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__errors_validationError__ = __webpack_require__(8);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__errors_notImplementedError__ = __webpack_require__(15);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__models_account__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__models_award__ = __webpack_require__(48);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__models_base__ = __webpack_require__(0);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__models_block__ = __webpack_require__(49);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__models_BlockedUser__ = __webpack_require__(47);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__models2_Comment__ = __webpack_require__(74);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__models2_Link__ = __webpack_require__(61);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__models_message__ = __webpack_require__(17);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__models_promocampaign__ = __webpack_require__(51);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__models_preferences__ = __webpack_require__(50);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__models2_Subreddit__ = __webpack_require__(76);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__ = __webpack_require__(181);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__models_subscription__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__models_vote__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__models_report__ = __webpack_require__(18);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__models_wikiPage__ = __webpack_require__(21);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__models_wikiRevision__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__models_wikiPageListing__ = __webpack_require__(22);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__models_wikiPageSettings__ = __webpack_require__(23);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -5047,6 +5163,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
+
+
+
+
+	var APIResponses = {
+	  APIResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_23__apis_APIResponse__["APIResponse"],
+	  MergedApiReponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_23__apis_APIResponse__["b"]
+	};
+	/* harmony export */ Object.defineProperty(exports, "APIResponses", {configurable: false, enumerable: true, get: function() { return APIResponses; }});
+
+	var APIResponsePaging = {
+	  withQueryAndResult: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__apis_APIResponsePaging__["a"],
+	  afterResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__apis_APIResponsePaging__["b"],
+	  beforeResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__apis_APIResponsePaging__["c"],
+	  fetchAll: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__apis_APIResponsePaging__["d"]
+	};
+	/* harmony export */ Object.defineProperty(exports, "APIResponsePaging", {configurable: false, enumerable: true, get: function() { return APIResponsePaging; }});
 
 	var APIs = {
 	  activities: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__apis_activities__["a"],
@@ -5080,11 +5213,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var errors = {
-	  NoModelError: /* harmony import */__WEBPACK_IMPORTED_MODULE_23__errors_noModelError__["a"],
-	  ValidationError: /* harmony import */__WEBPACK_IMPORTED_MODULE_25__errors_validationError__["a"],
-	  ResponseError: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__errors_responseError__["a"],
-	  DisconnectedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__errors_responseError__["b"],
-	  NotImplementedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_26__errors_notImplementedError__["a"]
+	  NoModelError: /* harmony import */__WEBPACK_IMPORTED_MODULE_25__errors_noModelError__["a"],
+	  ValidationError: /* harmony import */__WEBPACK_IMPORTED_MODULE_27__errors_validationError__["a"],
+	  ResponseError: /* harmony import */__WEBPACK_IMPORTED_MODULE_26__errors_responseError__["a"],
+	  DisconnectedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_26__errors_responseError__["b"],
+	  NotImplementedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_28__errors_notImplementedError__["a"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "errors", {configurable: false, enumerable: true, get: function() { return errors; }});
 
@@ -5108,26 +5241,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
+
+
 	var models = {
-	  Account: /* harmony import */__WEBPACK_IMPORTED_MODULE_27__models_account__["a"],
-	  Award: /* harmony import */__WEBPACK_IMPORTED_MODULE_28__models_award__["a"],
-	  Base: /* harmony import */__WEBPACK_IMPORTED_MODULE_29__models_base__["a"],
-	  Block: /* harmony import */__WEBPACK_IMPORTED_MODULE_30__models_block__["a"],
-	  BlockedUser: /* harmony import */__WEBPACK_IMPORTED_MODULE_31__models_BlockedUser__["a"],
-	  Comment: /* harmony import */__WEBPACK_IMPORTED_MODULE_32__models2_Comment__["a"],
-	  Link: /* harmony import */__WEBPACK_IMPORTED_MODULE_33__models2_Link__["a"],
-	  Message: /* harmony import */__WEBPACK_IMPORTED_MODULE_34__models_message__["a"],
-	  PromoCampaign: /* harmony import */__WEBPACK_IMPORTED_MODULE_35__models_promocampaign__["a"],
-	  Preferences: /* harmony import */__WEBPACK_IMPORTED_MODULE_36__models_preferences__["a"],
-	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_37__models2_Subreddit__["a"],
-	  Subreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_38__smartmodels_Subreddits__["a"],
-	  Subscription: /* harmony import */__WEBPACK_IMPORTED_MODULE_39__models_subscription__["a"],
-	  Vote: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__models_vote__["a"],
-	  Report: /* harmony import */__WEBPACK_IMPORTED_MODULE_41__models_report__["a"],
-	  WikiPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_42__models_wikiPage__["a"],
-	  WikiRevision: /* harmony import */__WEBPACK_IMPORTED_MODULE_43__models_wikiRevision__["a"],
-	  WikiPageListing: /* harmony import */__WEBPACK_IMPORTED_MODULE_44__models_wikiPageListing__["a"],
-	  WikiPageSettings: /* harmony import */__WEBPACK_IMPORTED_MODULE_45__models_wikiPageSettings__["a"]
+	  Account: /* harmony import */__WEBPACK_IMPORTED_MODULE_29__models_account__["a"],
+	  Award: /* harmony import */__WEBPACK_IMPORTED_MODULE_30__models_award__["a"],
+	  Base: /* harmony import */__WEBPACK_IMPORTED_MODULE_31__models_base__["a"],
+	  Block: /* harmony import */__WEBPACK_IMPORTED_MODULE_32__models_block__["a"],
+	  BlockedUser: /* harmony import */__WEBPACK_IMPORTED_MODULE_33__models_BlockedUser__["a"],
+	  Comment: /* harmony import */__WEBPACK_IMPORTED_MODULE_34__models2_Comment__["a"],
+	  Link: /* harmony import */__WEBPACK_IMPORTED_MODULE_35__models2_Link__["a"],
+	  Message: /* harmony import */__WEBPACK_IMPORTED_MODULE_36__models_message__["a"],
+	  PromoCampaign: /* harmony import */__WEBPACK_IMPORTED_MODULE_37__models_promocampaign__["a"],
+	  Preferences: /* harmony import */__WEBPACK_IMPORTED_MODULE_38__models_preferences__["a"],
+	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_39__models2_Subreddit__["a"],
+	  SubscribedSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__["a"],
+	  ModeratingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__["b"],
+	  ContributingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__["c"],
+	  Subscription: /* harmony import */__WEBPACK_IMPORTED_MODULE_41__models_subscription__["a"],
+	  Vote: /* harmony import */__WEBPACK_IMPORTED_MODULE_42__models_vote__["a"],
+	  Report: /* harmony import */__WEBPACK_IMPORTED_MODULE_43__models_report__["a"],
+	  WikiPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_44__models_wikiPage__["a"],
+	  WikiRevision: /* harmony import */__WEBPACK_IMPORTED_MODULE_45__models_wikiRevision__["a"],
+	  WikiPageListing: /* harmony import */__WEBPACK_IMPORTED_MODULE_46__models_wikiPageListing__["a"],
+	  WikiPageSettings: /* harmony import */__WEBPACK_IMPORTED_MODULE_47__models_wikiPageSettings__["a"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "models", {configurable: false, enumerable: true, get: function() { return models; }});
 
@@ -6918,34 +7055,482 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = Subreddit;
 
 /***/ },
-/* 77 */
+/* 77 */,
+/* 78 */
+/***/ function(module, exports) {
+
+	module.exports = require("lodash/array");
+
+/***/ },
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_array__ = __webpack_require__(78);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_array___default = __WEBPACK_IMPORTED_MODULE_0_lodash_array__ && __WEBPACK_IMPORTED_MODULE_0_lodash_array__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_array__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_array__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_array___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_array___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__APIResponse__ = __webpack_require__(53);
+	var _this = this;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+	var withQueryAndResult = function withQueryAndResult(response, fn) {
+	  var query = void 0;
+	  var results = void 0;
+
+	  if (response instanceof /* harmony import */__WEBPACK_IMPORTED_MODULE_1__APIResponse__["b"]) {
+	    query = response.lastQuery;
+	    results = response.lastResponse.results;
+	  } else {
+	    query = response.query;
+	    results = response.results;
+	  }
+
+	  return fn(query, results);
+	};
+	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return withQueryAndResult; }});
+
+	var afterResponse = function afterResponse(response, special) {
+	  return withQueryAndResult(response, function (query, results) {
+	    var limit = special || query.limit || 25;
+	    return results.length >= limit ? /* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_array__["last"].bind()(results).uuid : null;
+	  });
+	};
+	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return afterResponse; }});
+
+	var beforeResponse = function beforeResponse(response) {
+	  return withQueryAndResult(response, function (query, results) {
+	    return query.after ? results[0].uuid : null;
+	  });
+	};
+	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return beforeResponse; }});
+
+	var fetchAll = function () {
+	  var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(fetchFunction, initialParams) {
+	    var params, response, after;
+	    return regeneratorRuntime.wrap(function _callee$(_context) {
+	      while (1) {
+	        switch (_context.prev = _context.next) {
+	          case 0:
+	            params = _extends({}, initialParams);
+	            _context.next = 3;
+	            return fetchFunction(params);
+
+	          case 3:
+	            response = _context.sent;
+	            after = afterResponse(response);
+
+	          case 5:
+	            if (!after) {
+	              _context.next = 15;
+	              break;
+	            }
+
+	            params = _extends({}, params, { after: after });
+	            _context.t0 = response;
+	            _context.next = 10;
+	            return fetchFunction(params);
+
+	          case 10:
+	            _context.t1 = _context.sent;
+	            response = _context.t0.appendResponse.call(_context.t0, _context.t1);
+
+	            after = afterResponse(response);
+	            _context.next = 5;
+	            break;
+
+	          case 15:
+	            return _context.abrupt('return', response);
+
+	          case 16:
+	          case 'end':
+	            return _context.stop();
+	        }
+	      }
+	    }, _callee, _this);
+	  }));
+
+	  return function fetchAll(_x, _x2) {
+	    return ref.apply(this, arguments);
+	  };
+	}();
+	/* harmony export */ Object.defineProperty(exports, "d", {configurable: false, enumerable: true, get: function() { return fetchAll; }});
+
+/***/ },
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */
+/***/ function(module, exports) {
+
+	module.exports = require("lodash/collection");
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__ = __webpack_require__(79);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Subreddits = function () {
-	  function Subreddits() {
-	    _classCallCheck(this, Subreddits);
-	  }
 
-	  _createClass(Subreddits, null, [{
-	    key: 'subscribed',
-	    value: function subscribed(api) {
-	      return api.subreddits.get({ sort: 'mine/subscriber' });
+
+	var SubredditList = function () {
+	  _createClass(SubredditList, null, [{
+	    key: 'baseOptions',
+	    value: function baseOptions() {
+	      return { sort: this.view, limit: this.limit };
 	    }
 	  }, {
-	    key: 'moderating',
-	    value: function moderating(api) {
-	      return api.subreddits.get({ sort: 'mine/moderating' });
+	    key: 'getResponse',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(api) {
+	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                _context.next = 2;
+	                return api.subreddits.get(_extends({}, this.baseOptions(), options));
+
+	              case 2:
+	                return _context.abrupt('return', _context.sent);
+
+	              case 3:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this);
+	      }));
+
+	      function getResponse(_x, _x2) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return getResponse;
+	    }()
+	  }, {
+	    key: 'fetchWithOptions',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(api, options) {
+	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	          while (1) {
+	            switch (_context2.prev = _context2.next) {
+	              case 0:
+	                _context2.t0 = this;
+	                _context2.next = 3;
+	                return this.getResponse(api, options);
+
+	              case 3:
+	                _context2.t1 = _context2.sent;
+	                return _context2.abrupt('return', new _context2.t0(_context2.t1));
+
+	              case 5:
+	              case 'end':
+	                return _context2.stop();
+	            }
+	          }
+	        }, _callee2, this);
+	      }));
+
+	      function fetchWithOptions(_x4, _x5) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return fetchWithOptions;
+	    }()
+	  }, {
+	    key: 'fetch',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(api) {
+	        var allMergedSubreddits;
+	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	          while (1) {
+	            switch (_context3.prev = _context3.next) {
+	              case 0:
+	                _context3.next = 2;
+	                return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["d"].bind()(api.subreddits.get, this.baseOptions());
+
+	              case 2:
+	                allMergedSubreddits = _context3.sent;
+	                return _context3.abrupt('return', new this(allMergedSubreddits));
+
+	              case 4:
+	              case 'end':
+	                return _context3.stop();
+	            }
+	          }
+	        }, _callee3, this);
+	      }));
+
+	      function fetch(_x6) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return fetch;
+	    }()
+	  }]);
+
+	  function SubredditList(apiResponse) {
+	    _classCallCheck(this, SubredditList);
+
+	    this.apiResponse = apiResponse;
+	  }
+
+	  _createClass(SubredditList, [{
+	    key: 'hasNextPage',
+	    value: function hasNextPage() {
+	      return !!/* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["b"].bind()(this.apiResponse);
+	    }
+	  }, {
+	    key: 'hasPreviousPage',
+	    value: function hasPreviousPage() {
+	      return !!/* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
+	    }
+	  }, {
+	    key: 'withNextPage',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(api) {
+	        var after, nextPage;
+	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	          while (1) {
+	            switch (_context4.prev = _context4.next) {
+	              case 0:
+	                after = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["b"].bind()(this.apiResponse);
+
+	                if (after) {
+	                  _context4.next = 3;
+	                  break;
+	                }
+
+	                return _context4.abrupt('return', this);
+
+	              case 3:
+	                _context4.next = 5;
+	                return this.constructor.getResponse(api, { after: after });
+
+	              case 5:
+	                nextPage = _context4.sent;
+	                return _context4.abrupt('return', new this.constructor(this.apiResponse.appendResponse(nextPage)));
+
+	              case 7:
+	              case 'end':
+	                return _context4.stop();
+	            }
+	          }
+	        }, _callee4, this);
+	      }));
+
+	      function withNextPage(_x7) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return withNextPage;
+	    }()
+	  }, {
+	    key: 'withPreviousPage',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(api) {
+	        var before, previousPage;
+	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+	          while (1) {
+	            switch (_context5.prev = _context5.next) {
+	              case 0:
+	                before = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
+
+	                if (before) {
+	                  _context5.next = 3;
+	                  break;
+	                }
+
+	                return _context5.abrupt('return', this);
+
+	              case 3:
+	                _context5.next = 5;
+	                return this.constructor.getResponse(api, { before: before });
+
+	              case 5:
+	                previousPage = _context5.sent;
+	                return _context5.abrupt('return', new this.constructor(previousPage.appendResponse(this.apiResponse)));
+
+	              case 7:
+	              case 'end':
+	                return _context5.stop();
+	            }
+	          }
+	        }, _callee5, this);
+	      }));
+
+	      function withPreviousPage(_x8) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return withPreviousPage;
+	    }()
+	  }, {
+	    key: 'subreddits',
+	    get: function get() {
+	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
 	    }
 	  }]);
 
-	  return Subreddits;
-	}();
+	  return SubredditList;
+	}();/* unused harmony export SubredditList */
 
-	/* harmony default export */ exports["a"] = Subreddits;
+	SubredditList.view = '';
+	SubredditList.limit = 100;
+	var SubscribedSubreddits = function (_SubredditList) {
+	  _inherits(SubscribedSubreddits, _SubredditList);
+
+	  function SubscribedSubreddits() {
+	    _classCallCheck(this, SubscribedSubreddits);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SubscribedSubreddits).apply(this, arguments));
+	  }
+
+	  return SubscribedSubreddits;
+	}(SubredditList);
+	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return SubscribedSubreddits; }});
+
+	SubscribedSubreddits.view = 'mine/subscriber';
+	var ModeratingSubreddits = function (_SubredditList2) {
+	  _inherits(ModeratingSubreddits, _SubredditList2);
+
+	  function ModeratingSubreddits() {
+	    _classCallCheck(this, ModeratingSubreddits);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ModeratingSubreddits).apply(this, arguments));
+	  }
+
+	  return ModeratingSubreddits;
+	}(SubredditList);
+	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return ModeratingSubreddits; }});
+
+	ModeratingSubreddits.view = 'mine/moderator';
+	var ContributingSubreddits = function (_SubredditList3) {
+	  _inherits(ContributingSubreddits, _SubredditList3);
+
+	  function ContributingSubreddits() {
+	    _classCallCheck(this, ContributingSubreddits);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ContributingSubreddits).apply(this, arguments));
+	  }
+
+	  return ContributingSubreddits;
+	}(SubredditList);
+	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return ContributingSubreddits; }});
+	ContributingSubreddits.view = 'mine/contributor';
 
 /***/ }
 /******/ ])

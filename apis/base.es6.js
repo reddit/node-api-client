@@ -27,6 +27,10 @@ export default class BaseAPI {
                       this.config.origin;
       }
     }
+
+    ['path', 'head', 'get', 'post', 'patch', 'put', 'del', 'move', 'copy'].forEach(method => {
+      this[method] = this[method].bind(this);
+    });
   }
 
   // Used to format/unformat for caching; `links` or `comments`, for example.
@@ -133,7 +137,7 @@ export default class BaseAPI {
         const fakeReq = { origin, path, method, query };
         const req = res ? res.request : fakeReq;
 
-        handle(resolve, reject)(err, res, req, originalMethod);
+        handle(resolve, reject)(err, res, req, rawQuery, originalMethod);
       });
     });
   }
@@ -203,7 +207,7 @@ export default class BaseAPI {
       data = this.formatData(data, _method);
 
       this.rawSend(method, path, data, (err, res, req) => {
-        this.handle(resolve, reject)(err, res, req, method);
+        this.handle(resolve, reject)(err, res, req, data, method);
       });
     });
   }
@@ -273,7 +277,7 @@ export default class BaseAPI {
   }
 
   handle = (resolve, reject) => {
-    return (err, res, req, method) => {
+    return (err, res, req, query, method) => {
       // lol handle the twelve ways superagent sends request back
       if (res && !req) {
         req = res.request || res.req;
@@ -298,7 +302,7 @@ export default class BaseAPI {
       try {
         meta = this.formatMeta(res, req, method);
         const start = Date.now();
-        apiResponse = new APIResponse(meta);
+        apiResponse = new APIResponse(meta, query);
         try {
           this.parseBody(res, apiResponse, req, method);
           this.parseTime = Date.now() - start;

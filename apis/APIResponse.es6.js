@@ -1,3 +1,6 @@
+import { forEach } from 'lodash/collection';
+import { last } from 'lodash/array';
+
 import {
   TYPES,
   thingType,
@@ -8,9 +11,8 @@ import {
   SUBREDDIT,
 } from '../models2/thingTypes';
 
-export default class APIResponse {
-  constructor(meta={}) {
-    this.meta = meta;
+export class APIResponseBase {
+  constructor() {
     this.results = [];
 
     this.links = {};
@@ -26,6 +28,13 @@ export default class APIResponse {
       [MESSAGE]: this.messages,
       [SUBREDDIT]: this.subreddits,
     };
+
+    this.addResult = this.addResult.bind(this);
+    this.addModel = this.addModel.bind(this);
+    this.makeRecord = this.makeRecord.bind(this);
+    this.addToTable = this.addToTable.bind(this);
+    this.getModelFromRecord = this.getModelFromRecord.bind(this);
+    this.appendResponse = this.appendResponse.bind(this);
   }
 
   addResult(model) {
@@ -68,5 +77,68 @@ export default class APIResponse {
   getModelFromRecord(record) {
     const table = this.typeToTable[record.type];
     if (table) { return table[record.uuid]; }
+  }
+
+  appendResponse() { throw new Error('Not implemented in base class'); }
+}
+
+export default class APIResponse extends APIResponseBase {
+  constructor(meta={}, query={}) {
+    super();
+    this.meta = meta;
+    this.query = query;
+  }
+
+  appendResponse(nextResponse) {
+    return new MergedApiReponse([this, nextResponse]);
+  }
+}
+
+export class MergedApiReponse extends APIResponseBase {
+  constructor(apiResponses) {
+    super();
+    this.metas = apiResponses.map(response => response.meta);
+    this.querys = apiResponses.map(response => response.query);
+
+    this.apiResponses = apiResponses;
+
+    const seenResults = new Set();
+
+    const tableKeys = [
+      COMMENT,
+      USER,
+      LINK,
+      MESSAGE,
+      SUBREDDIT,
+    ];
+
+    forEach(apiResponses, (apiResponse) => {
+      forEach(apiResponse.results, (record) => {
+        if (!seenResults.has(record.uuid)) {
+          seenResults.add(record.uuid);
+          this.results.push(record);
+        }
+      });
+
+      forEach(tableKeys, (tableKey) => {
+        const table = this.typeToTable[tableKey];
+        Object.assign(table, apiResponse.typeToTable[tableKey]);
+      });
+    });
+  }
+
+  get lastResponse() {
+    return last(this.apiResponses);
+  }
+
+  get lastQuery() {
+    return last(this.querys);
+  }
+
+  appendResponse(response) {
+    const newReponses = this.apiResponses.slice();
+    newReponses.push(response);
+
+    return new MergedApiReponse(newReponses);
   }
 }

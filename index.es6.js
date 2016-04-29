@@ -23,6 +23,26 @@ import wiki from './apis/wiki';
 import multis from './apis/multis';
 import multiSubscriptions from './apis/multiSubscriptions';
 
+import { APIResponse, MergedApiReponse } from './apis/APIResponse';
+import {
+  withQueryAndResult,
+  afterResponse,
+  beforeResponse,
+  fetchAll,
+ } from './apis/APIResponsePaging';
+
+export const APIResponses = {
+  APIResponse,
+  MergedApiReponse,
+};
+
+export const APIResponsePaging = {
+  withQueryAndResult,
+  afterResponse,
+  beforeResponse,
+  fetchAll,
+};
+
 export const APIs = {
   activities,
   captcha,
@@ -72,7 +92,13 @@ import Message from './models/message';
 import PromoCampaign from './models/promocampaign';
 import Preferences from './models/preferences';
 import Subreddit from './models2/Subreddit';
-import Subreddits from './smartmodels/Subreddits';
+
+import {
+  SubscribedSubreddits,
+  ModeratingSubreddits,
+  ContributingSubreddits,
+} from './smartmodels/SubredditLists';
+
 import Subscription from './models/subscription';
 import Vote from './models/vote';
 import Report from './models/report';
@@ -93,7 +119,9 @@ export const models = {
   PromoCampaign,
   Preferences,
   Subreddit,
-  Subreddits,
+  SubscribedSubreddits,
+  ModeratingSubreddits,
+  ContributingSubreddits,
   Subscription,
   Vote,
   Report,
