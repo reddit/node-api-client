@@ -15,6 +15,7 @@ export default class Link extends Model {
     downs: T.number,
     id: T.string,
     likes: T.cubit,
+    malink: T.link,
     name: T.string,
     promoted: T.bool,
     quarantine: T.bool,
@@ -58,9 +59,11 @@ export default class Link extends Model {
     media_oembed: 'mediaOembed',
     mod_reports: 'modReports',
     num_comments: 'numComments',
+    permalink: 'cleanPermalink',
     secure_media: 'secureMedia',
     selftext: 'selfText',
     sendreplies: 'sendReplies',
+    url: 'cleanURL',
     user_reports: 'userReports',
   };
 

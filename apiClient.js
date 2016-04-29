@@ -5623,6 +5623,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  downs: T.number,
 	  id: T.string,
 	  likes: T.cubit,
+	  malink: T.link,
 	  name: T.string,
 	  promoted: T.bool,
 	  quarantine: T.bool,
@@ -5664,9 +5665,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  media_oembed: 'mediaOembed',
 	  mod_reports: 'modReports',
 	  num_comments: 'numComments',
+	  permalink: 'cleanPermalink',
 	  secure_media: 'secureMedia',
 	  selftext: 'selfText',
 	  sendreplies: 'sendReplies',
+	  url: 'cleanURL',
 	  user_reports: 'userReports'
 	};
 	Link.DERIVED_PROPERTIES = {
@@ -6921,6 +6924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  authorFlairCSSClass: T.string,
 	  authorFlairText: T.string,
 	  children: T.nop,
+	  cleanPermalink: T.link,
 	  controversiality: T.number,
 	  distinguished: T.string,
 	  downs: T.number,
@@ -6959,6 +6963,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  mod_reports: 'modReports',
 	  num_reports: 'numReports',
 	  parent_id: 'parentId',
+	  permalink: 'cleanPermalink',
 	  report_reasons: 'reportReasons',
 	  score_hidden: 'scoreHidden',
 	  subreddit_id: 'subredditId',
@@ -7468,12 +7473,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	              case 2:
 	                res = _context.sent;
-
-
-	                console.log('response?', !!res);
 	                return _context.abrupt('return', res);
 
-	              case 5:
+	              case 4:
 	              case 'end':
 	                return _context.stop();
 	            }
@@ -7523,13 +7525,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function Listing(apiResponse) {
 	    _classCallCheck(this, Listing);
 
-	    console.log('constructor called?');
 	    this.apiResponse = apiResponse;
-	    console.log('set');
 	    this.nextResponse = this.nextResponse.bind(this);
-	    console.log('bound next');
 	    this.prevResponse = this.prevResponse.bind(this);
-	    console.log('request finished');
 	  }
 
 	  _createClass(Listing, [{
@@ -7839,10 +7837,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }], [{
 	    key: 'fetch',
-	    value: function fetch(subredditName, api) {
-	      var options = void 0;
+	    value: function fetch(api, subredditName) {
+	      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
 	      if (subredditName) {
-	        options = { subredditName: subredditName };
+	        options.subredditName = subredditName;
 	      }
 
 	      return _get(Object.getPrototypeOf(PostsFromSubreddit), 'fetch', this).call(this, api, options);
@@ -7853,7 +7852,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(PostsAndCommentsListing);
 	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return PostsFromSubreddit; }});
 
-	// TODO: need to add user here
 	PostsFromSubreddit.endpoint = 'links';
 	var SavedPostsAndComments = function (_PostsAndCommentsList2) {
 	  _inherits(SavedPostsAndComments, _PostsAndCommentsList2);
@@ -7869,6 +7867,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function get() {
 	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
 	    }
+	  }], [{
+	    key: 'fetch',
+	    value: function fetch(api, user) {
+	      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	      options.user = user;
+
+	      return _get(Object.getPrototypeOf(SavedPostsAndComments), 'fetch', this).call(this, api, options);
+	    }
 	  }]);
 
 	  return SavedPostsAndComments;
@@ -7876,8 +7883,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return SavedPostsAndComments; }});
 
 	SavedPostsAndComments.endpoint = 'saved';
-	var HiddenPostsAndComments = function (_PostsAndCommentsList3) {
-	  _inherits(HiddenPostsAndComments, _PostsAndCommentsList3);
+	var HiddenPostsAndComments = function (_SavedPostsAndComment) {
+	  _inherits(HiddenPostsAndComments, _SavedPostsAndComment);
 
 	  function HiddenPostsAndComments() {
 	    _classCallCheck(this, HiddenPostsAndComments);
@@ -7885,15 +7892,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HiddenPostsAndComments).apply(this, arguments));
 	  }
 
-	  _createClass(HiddenPostsAndComments, [{
-	    key: 'postsAndComments',
-	    get: function get() {
-	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
-	    }
-	  }]);
-
 	  return HiddenPostsAndComments;
-	}(PostsAndCommentsListing);
+	}(SavedPostsAndComments);
 	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return HiddenPostsAndComments; }});
 	HiddenPostsAndComments.endpoint = 'hidden';
 

@@ -18,7 +18,6 @@ export default class Listing {
       ...options,
     });
 
-    console.log('response?', !!res);
     return res;
   }
 
@@ -27,13 +26,9 @@ export default class Listing {
   }
 
   constructor(apiResponse) {
-    console.log('constructor called?');
     this.apiResponse = apiResponse;
-    console.log('set');
     this.nextResponse = this.nextResponse.bind(this);
-    console.log('bound next');
     this.prevResponse = this.prevResponse.bind(this);
-    console.log('request finished');
   }
 
   hasNextPage() {
