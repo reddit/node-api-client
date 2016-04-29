@@ -1,7 +1,4 @@
 import superagent from 'superagent';
-import retry from 'superagent-retry';
-
-retry(superagent);
 
 import Cache from '@r/rest-cache';
 import has from 'lodash/object/has';
@@ -72,7 +69,7 @@ function processMeta(headers, body) {
   return meta;
 }
 
-const TIMEOUT = 5000;
+const TIMEOUT = 15000;
 
 function bindAll(obj, context) {
   for (let p in obj) {
@@ -153,8 +150,6 @@ class APIv1Endpoint {
 
       if (options.env === 'SERVER') {
         sa.redirects(0);
-      } else {
-        sa.retry(3);
       }
 
       sa.end((err, res) => {
