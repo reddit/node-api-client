@@ -7271,42 +7271,56 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__ = __webpack_require__(79);
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Listing__ = __webpack_require__(182);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
-	var SubredditList = function () {
-	  _createClass(SubredditList, null, [{
+
+
+	var SubredditList = function (_Listing) {
+	  _inherits(SubredditList, _Listing);
+
+	  function SubredditList() {
+	    _classCallCheck(this, SubredditList);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SubredditList).apply(this, arguments));
+	  }
+
+	  _createClass(SubredditList, [{
+	    key: 'subreddits',
+	    get: function get() {
+	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
+	    }
+	  }], [{
 	    key: 'baseOptions',
 	    value: function baseOptions() {
 	      return { sort: this.view, limit: this.limit };
 	    }
 	  }, {
-	    key: 'getResponse',
+	    key: 'fetch',
 	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(api) {
-	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        var allMergedSubreddits;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
 	                _context.next = 2;
-	                return api.subreddits.get(_extends({}, this.baseOptions(), options));
+	                return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["d"].bind()(api.subreddits.get, this.baseOptions());
 
 	              case 2:
-	                return _context.abrupt('return', _context.sent);
+	                allMergedSubreddits = _context.sent;
+	                return _context.abrupt('return', new this(allMergedSubreddits));
 
-	              case 3:
+	              case 4:
 	              case 'end':
 	                return _context.stop();
 	            }
@@ -7314,67 +7328,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _callee, this);
 	      }));
 
-	      function getResponse(_x, _x2) {
-	        return ref.apply(this, arguments);
-	      }
-
-	      return getResponse;
-	    }()
-	  }, {
-	    key: 'fetchWithOptions',
-	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(api, options) {
-	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-	          while (1) {
-	            switch (_context2.prev = _context2.next) {
-	              case 0:
-	                _context2.t0 = this;
-	                _context2.next = 3;
-	                return this.getResponse(api, options);
-
-	              case 3:
-	                _context2.t1 = _context2.sent;
-	                return _context2.abrupt('return', new _context2.t0(_context2.t1));
-
-	              case 5:
-	              case 'end':
-	                return _context2.stop();
-	            }
-	          }
-	        }, _callee2, this);
-	      }));
-
-	      function fetchWithOptions(_x4, _x5) {
-	        return ref.apply(this, arguments);
-	      }
-
-	      return fetchWithOptions;
-	    }()
-	  }, {
-	    key: 'fetch',
-	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(api) {
-	        var allMergedSubreddits;
-	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-	          while (1) {
-	            switch (_context3.prev = _context3.next) {
-	              case 0:
-	                _context3.next = 2;
-	                return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["d"].bind()(api.subreddits.get, this.baseOptions());
-
-	              case 2:
-	                allMergedSubreddits = _context3.sent;
-	                return _context3.abrupt('return', new this(allMergedSubreddits));
-
-	              case 4:
-	              case 'end':
-	                return _context3.stop();
-	            }
-	          }
-	        }, _callee3, this);
-	      }));
-
-	      function fetch(_x6) {
+	      function fetch(_x) {
 	        return ref.apply(this, arguments);
 	      }
 
@@ -7382,114 +7336,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }()
 	  }]);
 
-	  function SubredditList(apiResponse) {
-	    _classCallCheck(this, SubredditList);
-
-	    this.apiResponse = apiResponse;
-	  }
-
-	  _createClass(SubredditList, [{
-	    key: 'hasNextPage',
-	    value: function hasNextPage() {
-	      return !!/* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["b"].bind()(this.apiResponse);
-	    }
-	  }, {
-	    key: 'hasPreviousPage',
-	    value: function hasPreviousPage() {
-	      return !!/* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
-	    }
-	  }, {
-	    key: 'withNextPage',
-	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(api) {
-	        var after, nextPage;
-	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
-	          while (1) {
-	            switch (_context4.prev = _context4.next) {
-	              case 0:
-	                after = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["b"].bind()(this.apiResponse);
-
-	                if (after) {
-	                  _context4.next = 3;
-	                  break;
-	                }
-
-	                return _context4.abrupt('return', this);
-
-	              case 3:
-	                _context4.next = 5;
-	                return this.constructor.getResponse(api, { after: after });
-
-	              case 5:
-	                nextPage = _context4.sent;
-	                return _context4.abrupt('return', new this.constructor(this.apiResponse.appendResponse(nextPage)));
-
-	              case 7:
-	              case 'end':
-	                return _context4.stop();
-	            }
-	          }
-	        }, _callee4, this);
-	      }));
-
-	      function withNextPage(_x7) {
-	        return ref.apply(this, arguments);
-	      }
-
-	      return withNextPage;
-	    }()
-	  }, {
-	    key: 'withPreviousPage',
-	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(api) {
-	        var before, previousPage;
-	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
-	          while (1) {
-	            switch (_context5.prev = _context5.next) {
-	              case 0:
-	                before = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
-
-	                if (before) {
-	                  _context5.next = 3;
-	                  break;
-	                }
-
-	                return _context5.abrupt('return', this);
-
-	              case 3:
-	                _context5.next = 5;
-	                return this.constructor.getResponse(api, { before: before });
-
-	              case 5:
-	                previousPage = _context5.sent;
-	                return _context5.abrupt('return', new this.constructor(previousPage.appendResponse(this.apiResponse)));
-
-	              case 7:
-	              case 'end':
-	                return _context5.stop();
-	            }
-	          }
-	        }, _callee5, this);
-	      }));
-
-	      function withPreviousPage(_x8) {
-	        return ref.apply(this, arguments);
-	      }
-
-	      return withPreviousPage;
-	    }()
-	  }, {
-	    key: 'subreddits',
-	    get: function get() {
-	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
-	    }
-	  }]);
-
 	  return SubredditList;
-	}();/* unused harmony export SubredditList */
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__Listing__["a"]);/* unused harmony export SubredditList */
 
 	SubredditList.view = '';
 	SubredditList.limit = 100;
+	SubredditList.endpoint = 'subreddits';
 	var SubscribedSubreddits = function (_SubredditList) {
 	  _inherits(SubscribedSubreddits, _SubredditList);
 
@@ -7531,6 +7383,195 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(SubredditList);
 	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return ContributingSubreddits; }});
 	ContributingSubreddits.view = 'mine/contributor';
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__ = __webpack_require__(79);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+	// Base class for paged collections
+
+	var Listing = function () {
+	  _createClass(Listing, null, [{
+	    key: 'baseOptiosn',
+	    value: function baseOptiosn() {
+	      return {};
+	    }
+	  }, {
+	    key: 'getResponse',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(api) {
+	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                _context.next = 2;
+	                return api[this.endpoint].get(_extends({}, this.baseOptions(), options));
+
+	              case 2:
+	                return _context.abrupt('return', _context.sent);
+
+	              case 3:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this);
+	      }));
+
+	      function getResponse(_x, _x2) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return getResponse;
+	    }()
+	  }, {
+	    key: 'fetch',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(api) {
+	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	          while (1) {
+	            switch (_context2.prev = _context2.next) {
+	              case 0:
+	                _context2.t0 = this;
+	                _context2.next = 3;
+	                return this.getResponse(api, options);
+
+	              case 3:
+	                _context2.t1 = _context2.sent;
+	                return _context2.abrupt('return', new _context2.t0(_context2.t1));
+
+	              case 5:
+	              case 'end':
+	                return _context2.stop();
+	            }
+	          }
+	        }, _callee2, this);
+	      }));
+
+	      function fetch(_x4, _x5) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return fetch;
+	    }()
+	  }]);
+
+	  function Listing(apiResponse) {
+	    _classCallCheck(this, Listing);
+
+	    this.apiResponse = apiResponse;
+	  }
+
+	  _createClass(Listing, [{
+	    key: 'hasNextPage',
+	    value: function hasNextPage() {
+	      return !!/* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["b"].bind()(this.apiResponse);
+	    }
+	  }, {
+	    key: 'hasPreviousPage',
+	    value: function hasPreviousPage() {
+	      return !!/* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
+	    }
+	  }, {
+	    key: 'withNextPage',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(api) {
+	        var after, nextPage;
+	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	          while (1) {
+	            switch (_context3.prev = _context3.next) {
+	              case 0:
+	                after = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["b"].bind()(this.apiResponse);
+
+	                if (after) {
+	                  _context3.next = 3;
+	                  break;
+	                }
+
+	                return _context3.abrupt('return', this);
+
+	              case 3:
+	                _context3.next = 5;
+	                return this.constructor.getResponse(api, { after: after });
+
+	              case 5:
+	                nextPage = _context3.sent;
+	                return _context3.abrupt('return', new this.constructor(this.apiResponse.appendResponse(nextPage)));
+
+	              case 7:
+	              case 'end':
+	                return _context3.stop();
+	            }
+	          }
+	        }, _callee3, this);
+	      }));
+
+	      function withNextPage(_x7) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return withNextPage;
+	    }()
+	  }, {
+	    key: 'withPreviousPage',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(api) {
+	        var before, previousPage;
+	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	          while (1) {
+	            switch (_context4.prev = _context4.next) {
+	              case 0:
+	                before = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
+
+	                if (before) {
+	                  _context4.next = 3;
+	                  break;
+	                }
+
+	                return _context4.abrupt('return', this);
+
+	              case 3:
+	                _context4.next = 5;
+	                return this.constructor.getResponse(api, { before: before });
+
+	              case 5:
+	                previousPage = _context4.sent;
+	                return _context4.abrupt('return', new this.constructor(previousPage.appendResponse(this.apiResponse)));
+
+	              case 7:
+	              case 'end':
+	                return _context4.stop();
+	            }
+	          }
+	        }, _callee4, this);
+	      }));
+
+	      function withPreviousPage(_x8) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return withPreviousPage;
+	    }()
+	  }]);
+
+	  return Listing;
+	}();
+
+	Listing.endpoint = '';
+	/* harmony default export */ exports["a"] = Listing;
 
 /***/ }
 /******/ ])

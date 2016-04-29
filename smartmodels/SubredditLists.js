@@ -1,22 +1,13 @@
-import { fetchAll, afterResponse, beforeResponse } from '../apis/APIResponsePaging';
+import { fetchAll } from '../apis/APIResponsePaging';
+import Listing from './Listing';
 
-export class SubredditList {
+export class SubredditList extends Listing {
   static view = '';
   static limit = 100;
+  static endpoint = 'subreddits';
 
   static baseOptions() {
     return { sort: this.view, limit: this.limit };
-  }
-
-  static async getResponse(api, options={}) {
-    return await api.subreddits.get({
-      ...this.baseOptions(),
-      ...options,
-    });
-  }
-
-  static async fetchWithOptions(api, options) {
-    return new this(await this.getResponse(api, options));
   }
 
   static async fetch(api) {
@@ -24,35 +15,8 @@ export class SubredditList {
     return new this(allMergedSubreddits);
   }
 
-  constructor(apiResponse) {
-    this.apiResponse = apiResponse;
-  }
-
   get subreddits() {
     return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
-  }
-
-  hasNextPage() {
-    return !!afterResponse(this.apiResponse);
-  }
-
-  hasPreviousPage() {
-    return !!beforeResponse(this.apiResponse);
-  }
-
-  async withNextPage(api) {
-    const after = afterResponse(this.apiResponse);
-    if (!after) { return this; }
-
-    const nextPage = await this.constructor.getResponse(api, { after });
-    return new this.constructor(this.apiResponse.appendResponse(nextPage));
-  }
-
-  async withPreviousPage(api) {
-    const before = beforeResponse(this.apiResponse);
-    if (!before) { return this; }
-    const previousPage = await this.constructor.getResponse(api, { before });
-    return new this.constructor(previousPage.appendResponse(this.apiResponse));
   }
 }
 
