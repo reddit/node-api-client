@@ -7972,8 +7972,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }], [{
 	    key: 'fetch',
-	    value: function fetch(api, subredditName) {
+	    value: function fetch(api, subredditNameOrOptions) {
 	      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	      if (typeof subredditNameOrOptions === 'string') {
+	        options.subredditName = subredditNameOrOptions;
+	      } else {
+	        options = subredditNameOrOptions || {};
+	      }
 
 	      return _get(Object.getPrototypeOf(PostsFromSubreddit), 'fetch', this).call(this, api, options);
 	    }
