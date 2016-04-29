@@ -1,20 +1,25 @@
 import { afterResponse, beforeResponse } from '../apis/APIResponsePaging';
+import { omit } from 'lodash/object';
 
-const applyIfDifferent = (result, self, fn) => {
-  return result === self ? result : fn(result);
-};
+const identity = (id) => id;
 
 // Base class for paged collections
+// TODO: rethink base options a bit, whould base options just really make everytyhing?
+// think more about next page and etc, it should be easy to do paged requests
+// in the very first fetch call
 export default class Listing {
-  static baseOptiosn() { return {}; }
+  static baseOptions() { return {}; }
 
   static endpoint = '';
 
   static async getResponse(api, options={}) {
-    return await api[this.endpoint].get({
+    const res =  await api[this.endpoint].get({
       ...this.baseOptions(),
       ...options,
     });
+
+    console.log('response?', !!res);
+    return res;
   }
 
   static async fetch(api, options={}) {
@@ -22,7 +27,13 @@ export default class Listing {
   }
 
   constructor(apiResponse) {
+    console.log('constructor called?');
     this.apiResponse = apiResponse;
+    console.log('set');
+    this.nextResponse = this.nextResponse.bind(this);
+    console.log('bound next');
+    this.prevResponse = this.prevResponse.bind(this);
+    console.log('request finished');
   }
 
   hasNextPage() {
@@ -35,37 +46,40 @@ export default class Listing {
 
   async nextResponse(api) {
     const after = afterResponse(this.apiResponse);
-    if (!after) { return this.apiResponse; }
-    return await this.constructor.getResponse(api, { after });
-  }
-
-  async nextPage(api) {
-    return applyIfDifferent(await this.nextResponse(api), this, (nextReponse) => {
-      return new this.constructor(nextReponse);
-    });
-  }
-
-  async withNextPage(api) {
-    return applyIfDifferent(await this.nextPageResponse(api), this, (nextReponse) => {
-      return new this.constructor(this.apiResponse.appendResponse(nextReponse));
-    });
+    if (!after) { return ; }
+    const options = omit({ ...this.apiResponse.query, after}, 'before');
+    return await this.constructor.getResponse(api, options);
   }
 
   async prevResponse(api) {
     const before = beforeResponse(this.apiResponse);
-    if (!before) { return this;}
-    return await this.constructor.getResponse(api, { before });
+    if (!before) { return; }
+    const options = omit({ ...this.apiResponse.query, before}, 'after');
+    return await this.constructor.getResponse(api, options);
+  }
+
+  async fetchAndMakeInstance(fetchMethod, api, reduceResponse) {
+    const response = await fetchMethod(api);
+    if (response) {
+      return new this.constructor(reduceResponse(response));
+    }
+  }
+
+  async nextPage(api) {
+    return this.fetchAndMakeInstance(this.nextResponse, api, identity);
+  }
+
+  async withNextPage(api) {
+    return this.fetchAndMakeInstance(this.nextResponse, api, this.apiResponse.appendResponse);
   }
 
   async prevPage(api) {
-    return applyIfDifferent(await this.prevResponse(api), this, (prevResponse) => {
-      return new this.constructor(prevResponse);
-    });
+    return this.fetchAndMakeInstance(this.prevResponse, api, identity);
   }
 
-  async withPreviousPage(api) {
-    return applyIfDifferent(await this.prevResponse(api), this, (prevResponse) => {
-      return new this.constructor(prevResponse.appendResponse(this.apiResponse));
+  async withPrevPage(api) {
+    return this.fetchAndMakeInstance(this.prevResponse, api, (prevResponse) => {
+      return prevResponse.appendResponse(this.apiResponse);
     });
   }
 }

@@ -32,10 +32,12 @@ function help () {
     'The latest API result can be accessed at `apiResponse`',
     '\n',
     'Also try out using Models directly, they"re all in scope',
-    '  e.g. try typing `Subreddits.subscribed(api)` (assuming you have your token)',
+    '  e.g. try typing `SubscribedSubreddits.fetch(api)` (assuming you have your token)',
     '  property configured',
     '  then type `apiResponse.results` and',
     '  `apiResponse.getModelFromRecord(apiResponse.results[0])`',
+    '  if you want access to the SubredditList model that"s created in this example,',
+    '  you"ll need to append a .then(function(res) { someGlobalVariableYouDeclared = res; })',
   ].join('\n');
 
   console.log(help);

@@ -99,6 +99,12 @@ import {
   ContributingSubreddits,
 } from './smartmodels/SubredditLists';
 
+import {
+  PostsFromSubreddit,
+  SavedPostsAndComments,
+  HiddenPostsAndComments,
+} from './smartmodels/PostsAndCommentsListing';
+
 import Subscription from './models/subscription';
 import Vote from './models/vote';
 import Report from './models/report';
@@ -119,9 +125,6 @@ export const models = {
   PromoCampaign,
   Preferences,
   Subreddit,
-  SubscribedSubreddits,
-  ModeratingSubreddits,
-  ContributingSubreddits,
   Subscription,
   Vote,
   Report,
@@ -129,6 +132,16 @@ export const models = {
   WikiRevision,
   WikiPageListing,
   WikiPageSettings,
+
+  // collections
+
+  SubscribedSubreddits,
+  ModeratingSubreddits,
+  ContributingSubreddits,
+
+  PostsFromSubreddit,
+  SavedPostsAndComments,
+  HiddenPostsAndComments,
 };
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';

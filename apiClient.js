@@ -5071,6 +5071,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function get() {
 	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_array__["last"].bind()(this.querys);
 	    }
+	  }, {
+	    key: 'lastMeta',
+	    get: function get() {
+	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_array__["last"].bind()(this.meta);
+	    }
+	  }, {
+	    key: 'query',
+	    get: function get() {
+	      // shorthand convenience
+	      return this.latQuery;
+	    }
 	  }]);
 
 	  return MergedApiReponse;
@@ -5126,13 +5137,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__models_preferences__ = __webpack_require__(50);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__models2_Subreddit__ = __webpack_require__(76);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__ = __webpack_require__(181);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__models_subscription__ = __webpack_require__(19);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__models_vote__ = __webpack_require__(20);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__models_report__ = __webpack_require__(18);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__models_wikiPage__ = __webpack_require__(21);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__models_wikiRevision__ = __webpack_require__(24);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__models_wikiPageListing__ = __webpack_require__(22);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__models_wikiPageSettings__ = __webpack_require__(23);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__smartmodels_PostsAndCommentsListing__ = __webpack_require__(211);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__models_subscription__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__models_vote__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__models_report__ = __webpack_require__(18);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__models_wikiPage__ = __webpack_require__(21);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__models_wikiRevision__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__models_wikiPageListing__ = __webpack_require__(22);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__models_wikiPageSettings__ = __webpack_require__(23);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -5243,6 +5255,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
+
+
 	var models = {
 	  Account: /* harmony import */__WEBPACK_IMPORTED_MODULE_29__models_account__["a"],
 	  Award: /* harmony import */__WEBPACK_IMPORTED_MODULE_30__models_award__["a"],
@@ -5255,16 +5269,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  PromoCampaign: /* harmony import */__WEBPACK_IMPORTED_MODULE_37__models_promocampaign__["a"],
 	  Preferences: /* harmony import */__WEBPACK_IMPORTED_MODULE_38__models_preferences__["a"],
 	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_39__models2_Subreddit__["a"],
+	  Subscription: /* harmony import */__WEBPACK_IMPORTED_MODULE_42__models_subscription__["a"],
+	  Vote: /* harmony import */__WEBPACK_IMPORTED_MODULE_43__models_vote__["a"],
+	  Report: /* harmony import */__WEBPACK_IMPORTED_MODULE_44__models_report__["a"],
+	  WikiPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_45__models_wikiPage__["a"],
+	  WikiRevision: /* harmony import */__WEBPACK_IMPORTED_MODULE_46__models_wikiRevision__["a"],
+	  WikiPageListing: /* harmony import */__WEBPACK_IMPORTED_MODULE_47__models_wikiPageListing__["a"],
+	  WikiPageSettings: /* harmony import */__WEBPACK_IMPORTED_MODULE_48__models_wikiPageSettings__["a"],
+
+	  // collections
+
 	  SubscribedSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__["a"],
 	  ModeratingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__["b"],
 	  ContributingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_40__smartmodels_SubredditLists__["c"],
-	  Subscription: /* harmony import */__WEBPACK_IMPORTED_MODULE_41__models_subscription__["a"],
-	  Vote: /* harmony import */__WEBPACK_IMPORTED_MODULE_42__models_vote__["a"],
-	  Report: /* harmony import */__WEBPACK_IMPORTED_MODULE_43__models_report__["a"],
-	  WikiPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_44__models_wikiPage__["a"],
-	  WikiRevision: /* harmony import */__WEBPACK_IMPORTED_MODULE_45__models_wikiRevision__["a"],
-	  WikiPageListing: /* harmony import */__WEBPACK_IMPORTED_MODULE_46__models_wikiPageListing__["a"],
-	  WikiPageSettings: /* harmony import */__WEBPACK_IMPORTED_MODULE_47__models_wikiPageSettings__["a"]
+
+	  PostsFromSubreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_41__smartmodels_PostsAndCommentsListing__["a"],
+	  SavedPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_41__smartmodels_PostsAndCommentsListing__["b"],
+	  HiddenPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_41__smartmodels_PostsAndCommentsListing__["c"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "models", {configurable: false, enumerable: true, get: function() { return models; }});
 
@@ -7403,6 +7424,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__ = __webpack_require__(79);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object___default = __WEBPACK_IMPORTED_MODULE_1_lodash_object__ && __WEBPACK_IMPORTED_MODULE_1_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_object___default });
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -7413,16 +7437,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-	var applyIfDifferent = function applyIfDifferent(result, self, fn) {
-	  return result === self ? result : fn(result);
+
+	var identity = function identity(id) {
+	  return id;
 	};
 
 	// Base class for paged collections
+	// TODO: rethink base options a bit, whould base options just really make everytyhing?
+	// think more about next page and etc, it should be easy to do paged requests
+	// in the very first fetch call
 
 	var Listing = function () {
 	  _createClass(Listing, null, [{
-	    key: 'baseOptiosn',
-	    value: function baseOptiosn() {
+	    key: 'baseOptions',
+	    value: function baseOptions() {
 	      return {};
 	    }
 	  }, {
@@ -7430,6 +7458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(api) {
 	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        var res;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
 	          while (1) {
 	            switch (_context.prev = _context.next) {
@@ -7438,9 +7467,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return api[this.endpoint].get(_extends({}, this.baseOptions(), options));
 
 	              case 2:
-	                return _context.abrupt('return', _context.sent);
+	                res = _context.sent;
 
-	              case 3:
+
+	                console.log('response?', !!res);
+	                return _context.abrupt('return', res);
+
+	              case 5:
 	              case 'end':
 	                return _context.stop();
 	            }
@@ -7490,7 +7523,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function Listing(apiResponse) {
 	    _classCallCheck(this, Listing);
 
+	    console.log('constructor called?');
 	    this.apiResponse = apiResponse;
+	    console.log('set');
+	    this.nextResponse = this.nextResponse.bind(this);
+	    console.log('bound next');
+	    this.prevResponse = this.prevResponse.bind(this);
+	    console.log('request finished');
 	  }
 
 	  _createClass(Listing, [{
@@ -7507,7 +7546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'nextResponse',
 	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(api) {
-	        var after;
+	        var after, options;
 	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
 	          while (1) {
 	            switch (_context3.prev = _context3.next) {
@@ -7519,16 +7558,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  break;
 	                }
 
-	                return _context3.abrupt('return', this.apiResponse);
+	                return _context3.abrupt('return');
 
 	              case 3:
-	                _context3.next = 5;
-	                return this.constructor.getResponse(api, { after: after });
-
-	              case 5:
-	                return _context3.abrupt('return', _context3.sent);
+	                options = /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_object__["omit"].bind()(_extends({}, this.apiResponse.query, { after: after }), 'before');
+	                _context3.next = 6;
+	                return this.constructor.getResponse(api, options);
 
 	              case 6:
+	                return _context3.abrupt('return', _context3.sent);
+
+	              case 7:
 	              case 'end':
 	                return _context3.stop();
 	            }
@@ -7543,29 +7583,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return nextResponse;
 	    }()
 	  }, {
-	    key: 'nextPage',
+	    key: 'prevResponse',
 	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(api) {
-	        var _this = this;
-
+	        var before, options;
 	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
 	          while (1) {
 	            switch (_context4.prev = _context4.next) {
 	              case 0:
-	                _context4.next = 2;
-	                return this.nextResponse(api);
+	                before = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
 
-	              case 2:
-	                _context4.t0 = _context4.sent;
-	                _context4.t1 = this;
+	                if (before) {
+	                  _context4.next = 3;
+	                  break;
+	                }
 
-	                _context4.t2 = function (nextReponse) {
-	                  return new _this.constructor(nextReponse);
-	                };
+	                return _context4.abrupt('return');
 
-	                return _context4.abrupt('return', applyIfDifferent(_context4.t0, _context4.t1, _context4.t2));
+	              case 3:
+	                options = /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_object__["omit"].bind()(_extends({}, this.apiResponse.query, { before: before }), 'after');
+	                _context4.next = 6;
+	                return this.constructor.getResponse(api, options);
 
 	              case 6:
+	                return _context4.abrupt('return', _context4.sent);
+
+	              case 7:
 	              case 'end':
 	                return _context4.stop();
 	            }
@@ -7573,7 +7616,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _callee4, this);
 	      }));
 
-	      function nextPage(_x8) {
+	      function prevResponse(_x8) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return prevResponse;
+	    }()
+	  }, {
+	    key: 'fetchAndMakeInstance',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(fetchMethod, api, reduceResponse) {
+	        var response;
+	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+	          while (1) {
+	            switch (_context5.prev = _context5.next) {
+	              case 0:
+	                _context5.next = 2;
+	                return fetchMethod(api);
+
+	              case 2:
+	                response = _context5.sent;
+
+	                if (!response) {
+	                  _context5.next = 5;
+	                  break;
+	                }
+
+	                return _context5.abrupt('return', new this.constructor(reduceResponse(response)));
+
+	              case 5:
+	              case 'end':
+	                return _context5.stop();
+	            }
+	          }
+	        }, _callee5, this);
+	      }));
+
+	      function fetchAndMakeInstance(_x9, _x10, _x11) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return fetchAndMakeInstance;
+	    }()
+	  }, {
+	    key: 'nextPage',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(api) {
+	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+	          while (1) {
+	            switch (_context6.prev = _context6.next) {
+	              case 0:
+	                return _context6.abrupt('return', this.fetchAndMakeInstance(this.nextResponse, api, identity));
+
+	              case 1:
+	              case 'end':
+	                return _context6.stop();
+	            }
+	          }
+	        }, _callee6, this);
+	      }));
+
+	      function nextPage(_x12) {
 	        return ref.apply(this, arguments);
 	      }
 
@@ -7582,103 +7685,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'withNextPage',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(api) {
-	        var _this2 = this;
-
-	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
-	          while (1) {
-	            switch (_context5.prev = _context5.next) {
-	              case 0:
-	                _context5.next = 2;
-	                return this.nextPageResponse(api);
-
-	              case 2:
-	                _context5.t0 = _context5.sent;
-	                _context5.t1 = this;
-
-	                _context5.t2 = function (nextReponse) {
-	                  return new _this2.constructor(_this2.apiResponse.appendResponse(nextReponse));
-	                };
-
-	                return _context5.abrupt('return', applyIfDifferent(_context5.t0, _context5.t1, _context5.t2));
-
-	              case 6:
-	              case 'end':
-	                return _context5.stop();
-	            }
-	          }
-	        }, _callee5, this);
-	      }));
-
-	      function withNextPage(_x9) {
-	        return ref.apply(this, arguments);
-	      }
-
-	      return withNextPage;
-	    }()
-	  }, {
-	    key: 'prevResponse',
-	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(api) {
-	        var before;
-	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
-	          while (1) {
-	            switch (_context6.prev = _context6.next) {
-	              case 0:
-	                before = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apis_APIResponsePaging__["c"].bind()(this.apiResponse);
-
-	                if (before) {
-	                  _context6.next = 3;
-	                  break;
-	                }
-
-	                return _context6.abrupt('return', this);
-
-	              case 3:
-	                _context6.next = 5;
-	                return this.constructor.getResponse(api, { before: before });
-
-	              case 5:
-	                return _context6.abrupt('return', _context6.sent);
-
-	              case 6:
-	              case 'end':
-	                return _context6.stop();
-	            }
-	          }
-	        }, _callee6, this);
-	      }));
-
-	      function prevResponse(_x10) {
-	        return ref.apply(this, arguments);
-	      }
-
-	      return prevResponse;
-	    }()
-	  }, {
-	    key: 'prevPage',
-	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(api) {
-	        var _this3 = this;
-
 	        return regeneratorRuntime.wrap(function _callee7$(_context7) {
 	          while (1) {
 	            switch (_context7.prev = _context7.next) {
 	              case 0:
-	                _context7.next = 2;
-	                return this.prevResponse(api);
+	                return _context7.abrupt('return', this.fetchAndMakeInstance(this.nextResponse, api, this.apiResponse.appendResponse));
 
-	              case 2:
-	                _context7.t0 = _context7.sent;
-	                _context7.t1 = this;
-
-	                _context7.t2 = function (prevResponse) {
-	                  return new _this3.constructor(prevResponse);
-	                };
-
-	                return _context7.abrupt('return', applyIfDifferent(_context7.t0, _context7.t1, _context7.t2));
-
-	              case 6:
+	              case 1:
 	              case 'end':
 	                return _context7.stop();
 	            }
@@ -7686,36 +7700,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _callee7, this);
 	      }));
 
-	      function prevPage(_x11) {
+	      function withNextPage(_x13) {
 	        return ref.apply(this, arguments);
 	      }
 
-	      return prevPage;
+	      return withNextPage;
 	    }()
 	  }, {
-	    key: 'withPreviousPage',
+	    key: 'prevPage',
 	    value: function () {
 	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(api) {
-	        var _this4 = this;
-
 	        return regeneratorRuntime.wrap(function _callee8$(_context8) {
 	          while (1) {
 	            switch (_context8.prev = _context8.next) {
 	              case 0:
-	                _context8.next = 2;
-	                return this.prevResponse(api);
+	                return _context8.abrupt('return', this.fetchAndMakeInstance(this.prevResponse, api, identity));
 
-	              case 2:
-	                _context8.t0 = _context8.sent;
-	                _context8.t1 = this;
-
-	                _context8.t2 = function (prevResponse) {
-	                  return new _this4.constructor(prevResponse.appendResponse(_this4.apiResponse));
-	                };
-
-	                return _context8.abrupt('return', applyIfDifferent(_context8.t0, _context8.t1, _context8.t2));
-
-	              case 6:
+	              case 1:
 	              case 'end':
 	                return _context8.stop();
 	            }
@@ -7723,11 +7724,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _callee8, this);
 	      }));
 
-	      function withPreviousPage(_x12) {
+	      function prevPage(_x14) {
 	        return ref.apply(this, arguments);
 	      }
 
-	      return withPreviousPage;
+	      return prevPage;
+	    }()
+	  }, {
+	    key: 'withPrevPage',
+	    value: function () {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(api) {
+	        var _this = this;
+
+	        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+	          while (1) {
+	            switch (_context9.prev = _context9.next) {
+	              case 0:
+	                return _context9.abrupt('return', this.fetchAndMakeInstance(this.prevResponse, api, function (prevResponse) {
+	                  return prevResponse.appendResponse(_this.apiResponse);
+	                }));
+
+	              case 1:
+	              case 'end':
+	                return _context9.stop();
+	            }
+	          }
+	        }, _callee9, this);
+	      }));
+
+	      function withPrevPage(_x15) {
+	        return ref.apply(this, arguments);
+	      }
+
+	      return withPrevPage;
 	    }()
 	  }]);
 
@@ -7736,6 +7765,137 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Listing.endpoint = '';
 	/* harmony default export */ exports["a"] = Listing;
+
+/***/ },
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(182);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+	var PostsAndCommentsListing = function (_Listing) {
+	  _inherits(PostsAndCommentsListing, _Listing);
+
+	  function PostsAndCommentsListing() {
+	    _classCallCheck(this, PostsAndCommentsListing);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PostsAndCommentsListing).apply(this, arguments));
+	  }
+
+	  return PostsAndCommentsListing;
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__Listing__["a"]);/* unused harmony export PostsAndCommentsListing */
+
+	var PostsFromSubreddit = function (_PostsAndCommentsList) {
+	  _inherits(PostsFromSubreddit, _PostsAndCommentsList);
+
+	  function PostsFromSubreddit() {
+	    _classCallCheck(this, PostsFromSubreddit);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PostsFromSubreddit).apply(this, arguments));
+	  }
+
+	  _createClass(PostsFromSubreddit, [{
+	    key: 'posts',
+	    get: function get() {
+	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
+	    }
+	  }], [{
+	    key: 'fetch',
+	    value: function fetch(subredditName, api) {
+	      var options = void 0;
+	      if (subredditName) {
+	        options = { subredditName: subredditName };
+	      }
+
+	      return _get(Object.getPrototypeOf(PostsFromSubreddit), 'fetch', this).call(this, api, options);
+	    }
+	  }]);
+
+	  return PostsFromSubreddit;
+	}(PostsAndCommentsListing);
+	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return PostsFromSubreddit; }});
+
+	// TODO: need to add user here
+	PostsFromSubreddit.endpoint = 'links';
+	var SavedPostsAndComments = function (_PostsAndCommentsList2) {
+	  _inherits(SavedPostsAndComments, _PostsAndCommentsList2);
+
+	  function SavedPostsAndComments() {
+	    _classCallCheck(this, SavedPostsAndComments);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SavedPostsAndComments).apply(this, arguments));
+	  }
+
+	  _createClass(SavedPostsAndComments, [{
+	    key: 'postsAndComments',
+	    get: function get() {
+	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
+	    }
+	  }]);
+
+	  return SavedPostsAndComments;
+	}(PostsAndCommentsListing);
+	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return SavedPostsAndComments; }});
+
+	SavedPostsAndComments.endpoint = 'saved';
+	var HiddenPostsAndComments = function (_PostsAndCommentsList3) {
+	  _inherits(HiddenPostsAndComments, _PostsAndCommentsList3);
+
+	  function HiddenPostsAndComments() {
+	    _classCallCheck(this, HiddenPostsAndComments);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HiddenPostsAndComments).apply(this, arguments));
+	  }
+
+	  _createClass(HiddenPostsAndComments, [{
+	    key: 'postsAndComments',
+	    get: function get() {
+	      return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
+	    }
+	  }]);
+
+	  return HiddenPostsAndComments;
+	}(PostsAndCommentsListing);
+	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return HiddenPostsAndComments; }});
+	HiddenPostsAndComments.endpoint = 'hidden';
 
 /***/ }
 /******/ ])

@@ -135,6 +135,14 @@ export class MergedApiReponse extends APIResponseBase {
     return last(this.querys);
   }
 
+  get lastMeta() {
+    return last(this.meta);
+  }
+
+  get query() { // shorthand convenience
+    return this.latQuery;
+  }
+
   appendResponse(response) {
     const newReponses = this.apiResponses.slice();
     newReponses.push(response);
