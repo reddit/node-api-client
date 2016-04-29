@@ -1,13 +1,7 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import { has } from 'lodash/object';
 
-class Captcha extends BaseAPI {
-  static dataCacheConfig = null;
-
-  get requestCacheRules() {
-    return null;
-  }
-
+export default class CaptchaEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -30,5 +24,3 @@ class Captcha extends BaseAPI {
     return body;
   }
 }
-
-export default Captcha;

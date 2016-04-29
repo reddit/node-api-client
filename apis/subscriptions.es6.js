@@ -1,7 +1,7 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Subscription from '../models/subscription';
 
-class Subscriptions extends BaseAPI {
+export default class SubscriptionsEndpoint extends BaseEndpoint {
   model = Subscription;
 
   move = this.notImplemented('move');
@@ -34,5 +34,3 @@ class Subscriptions extends BaseAPI {
     return super.del(postData);
   }
 }
-
-export default Subscriptions;

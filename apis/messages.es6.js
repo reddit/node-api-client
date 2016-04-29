@@ -1,5 +1,5 @@
 import { omit } from 'lodash/object';
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Comment from '../models2/Comment';
 import Link from '../models2/Link';
 import Message from '../models/message';
@@ -10,7 +10,7 @@ const CONSTRUCTORS = {
   t4: Message,
 };
 
-export default class Messages extends BaseAPI {
+export default class MessagesEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');

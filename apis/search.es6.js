@@ -1,11 +1,11 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Save from '../models/save';
 
 import Link from '../models2/Link';
 import Subreddit from '../models2/Subreddit';
 import { LINK_TYPE } from '../models2/thingTypes';
 
-export default class Search extends BaseAPI {
+export default class SearchEndpoint extends BaseEndpoint {
   model = Save;
 
   move = this.notImplemented('move');

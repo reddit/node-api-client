@@ -1,4 +1,4 @@
-import { afterResponse, beforeResponse } from '../apis/APIResponsePaging';
+import { afterResponse, beforeResponse } from '../apiBase/APIResponsePaging';
 import { omit } from 'lodash/object';
 
 const identity = (id) => id;

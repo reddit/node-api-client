@@ -1,9 +1,9 @@
-import Model from './Model';
+import RedditModel from './RedditModel';
 import { LINK } from './thingTypes';
 
-const T = Model.Types;
+const T = RedditModel.Types;
 
-export default class Link extends Model {
+export default class Link extends RedditModel {
   static type = LINK;
 
   static PROPERTIES = {
@@ -68,7 +68,7 @@ export default class Link extends Model {
   };
 
   static DERIVED_PROPERTIES = {
-    expandable: data => {
+    expandable(data) {
       // If it has secure_media, or media, or selftext, it has expandable.
       return !!(
         (data.secure_media && data.secure_media.content) ||
@@ -77,7 +77,7 @@ export default class Link extends Model {
       );
     },
 
-    expandedContent: data =>  {
+    expandedContent(data) {
       let content;
 
       content = (
@@ -92,7 +92,7 @@ export default class Link extends Model {
       return content;
     },
 
-    preview: data => {
+    preview(data) {
       if (!(data.promoted && !data.preview)) { return data.preview; }
       // we build fake preview data for ads and normal thumbnails
 

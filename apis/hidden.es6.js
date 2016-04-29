@@ -1,6 +1,6 @@
-import Saved from './saved';
+import SavedEndpoint from './saved';
 
-export default class Hidden extends Saved {
+export default class HiddenEndpoint extends SavedEndpoint {
   path (method, query={}) {
     switch (method) {
       case 'get':

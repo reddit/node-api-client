@@ -1,11 +1,7 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Stylesheet from '../models/stylesheet';
 
-class Stylesheets extends BaseAPI {
-  static dataCacheConfig = null;
-
-  get requestCacheRules () { return null; }
-
+export default class StylesheetsEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -32,5 +28,3 @@ class Stylesheets extends BaseAPI {
     }
   }
 }
-
-export default Stylesheets;

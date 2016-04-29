@@ -1,13 +1,9 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import MultiSubscription from '../models/multi';
 
 import Multis from './multis';
 
-class MultiSubscriptions extends BaseAPI {
-  static dataCacheConfig = undefined;
-
-  get requestCacheRules () { return undefined; }
-
+export default class MultiSubscriptionsEndpoint extends BaseEndpoint {
   model = MultiSubscription;
 
   move = this.notImplemented('move');
@@ -29,5 +25,3 @@ class MultiSubscriptions extends BaseAPI {
     }
   }
 }
-
-export default MultiSubscriptions;

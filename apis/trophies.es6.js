@@ -1,14 +1,8 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 
 import Trophy from '../models/trophy';
 
-class Trophies extends BaseAPI {
-  static dataCacheConfig = null;
-
-  get requestCacheRules () {
-    return null;
-  }
-
+export default class TrophiesEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -28,5 +22,3 @@ class Trophies extends BaseAPI {
     }
   }
 }
-
-export default Trophies;

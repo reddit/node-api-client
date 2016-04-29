@@ -1,8 +1,7 @@
 import superagent from 'superagent';
-import { thingType } from '../models2/thingTypes';
-import ValidationError from '../errors/validationError';
-import NoModelError from '../errors/noModelError';
-import NotImplementedError from '../errors/notImplementedError';
+import ValidationError from './errors/validationError';
+import NoModelError from './errors/noModelError';
+import NotImplementedError from './errors/notImplementedError';
 import APIResponse from './APIResponse';
 
 const EVENTS = {
@@ -328,24 +327,6 @@ export default class BaseAPI {
     };
   }
 
-  buildResponse(body, meta) {
-    const { results, errors, users, links, comments, messages, subreddits } = body;
-    if (errors) {
-      return { errors, meta };
-    }
-
-    let response = { results, meta };
-    if (users) { response.users = users; }
-    if (links) { response.links = links; }
-    if (comments) { response.comments = comments; }
-    if (messages) { response.messages = messages; }
-    if (subreddits) { response.subreddits = subreddits; }
-    return response;
-  }
-
-  static thingType (id) {
-    return thingType(id);
-  }
 
   static EVENTS = EVENTS;
 }

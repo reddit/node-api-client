@@ -1,11 +1,9 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Multi from '../models/multi';
 
 const ID_REGEX = /^user\/[^\/]+\/m\/[^\/]+$/;
 
-class Multis extends BaseAPI {
-  static dataCacheConfig = undefined;
-
+export default class MultisEndpoint extends BaseEndpoint {
   static mapSubreddits (subs) {
     return subs.map(s => s.name);
   }
@@ -36,12 +34,10 @@ class Multis extends BaseAPI {
     if (id) { return id; }
   }
 
-  get requestCacheRules () { return undefined; }
-
   model = Multi;
 
   path (method, query={}) {
-    let id = Multis.buildId(query);
+    let id = MultisEndpoint.buildId(query);
 
     switch (method) {
       case 'get':
@@ -86,18 +82,18 @@ class Multis extends BaseAPI {
       return body.map(m => {
         const multi = m.data;
 
-        multi.subreddits = Multis.mapSubreddits(multi.subreddits);
+        multi.subreddits = MultisEndpoint.mapSubreddits(multi.subreddits);
         return new Multi(multi).toJSON();
       });
     } else if (body) {
       const multi = body.data;
-      multi.subreddits = Multis.mapSubreddits(multi.subreddits);
+      multi.subreddits = MultisEndpoint.mapSubreddits(multi.subreddits);
       return new Multi(multi);
     }
   }
 
   formatData (data) {
-    return Multis.formatData(data);
+    return MultisEndpoint.formatData(data);
   }
 
   copy (fromId, data) {
@@ -143,5 +139,3 @@ class Multis extends BaseAPI {
     }
   }
 }
-
-export default Multis;

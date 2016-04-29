@@ -1,6 +1,3 @@
-import superagent from 'superagent';
-import url from 'url';
-
 import activities from './apis/activities';
 import hidden from './apis/hidden';
 import saved from './apis/saved';
@@ -23,13 +20,13 @@ import wiki from './apis/wiki';
 import multis from './apis/multis';
 import multiSubscriptions from './apis/multiSubscriptions';
 
-import { APIResponse, MergedApiReponse } from './apis/APIResponse';
+import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
 import {
   withQueryAndResult,
   afterResponse,
   beforeResponse,
   fetchAll,
- } from './apis/APIResponsePaging';
+} from './apiBase/APIResponsePaging';
 
 export const APIResponses = {
   APIResponse,
@@ -134,7 +131,7 @@ export const models = {
   WikiRevision,
   WikiPageListing,
   WikiPageSettings,
-}
+};
 
 export const collections = {
   CommentsPage,

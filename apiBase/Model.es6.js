@@ -1,13 +1,4 @@
-import { TYPES, thingType } from './thingTypes';
-
 import Record from './Record';
-
-import isThingID from '../lib/isThingID';
-import process from '../lib/markdown';
-import unredditifyLink from '../lib/unredditifyLink';
-
-import mockHTML from './mockgenerators/mockHTML';
-import mockLink from './mockgenerators/mockLink';
 
 const fakeUUID = () => (Math.random() * 16).toFixed();
 
@@ -53,25 +44,15 @@ export default class Model {
       const num = Number(val);
       return num > 0 ? 1 : num < 0 ? -1 : 0;
     },
+
     nop: val => val,
 
-    // some more semantic types that apply transformations
-    html: val => process(Model.Types.string(val)),
-    link: val => unredditifyLink(Model.Types.string(val)),
+    /* examples of more semantic types you can build
+      // some more semantic types that apply transformations
+      html: val => process(Model.Types.string(val)),
+      link: val => unredditifyLink(Model.Types.string(val)),
+    */
   };
-
-  // TYPES I'd like to add
-  // mod: (type) => type
-  // useage: bannedBy: T.mod(T.string),
-  // purpose: Just to document that a field is only going to be there as a moderator
-  //
-  // record: val => val instanceOf Record ? val : new Record()
-  // usage: replies: T.arrayOf(T.record)
-  // purpose: Enforce that model relations are defined as records
-  //
-  // model: ModelClass => val => ModelClass.fromJSON(val)
-  // usage: srDetail: T.model(SubredditDetailModel)
-  // purpose: express nested model parsing for one off nested parts of your model
 
   static MockTypes = {
     string: () => Math.random().toString(36).substring(Math.floor(Math.random() * 10) + 5),
@@ -80,11 +61,7 @@ export default class Model {
     bool: () => Math.floor(Math.random() * 10) < 5,
     cubit: () => Math.round((Math.random() * (1 - -1) + -1)),
     nop: () => null,
-
-    // semantic mocks
-    html: mockHTML,
-    link: mockLink,
-  };
+  }
 
   static Mock() {
     const data = Object.keys(this.PROPERTIES).reduce((prev, cur) => ({
@@ -102,6 +79,7 @@ export default class Model {
 
   constructor(data, SUPER_SECRET_SHOULD_FREEZE_FLAG_THAT_ONLY_STUBS_CAN_USE) {
     const { API_ALIASES, PROPERTIES, DERIVED_PROPERTIES } = this.constructor;
+
     // Please note: the use of for loops and adding properties directly
     // and then freezing (versus using defineProperty with writeable false)
     // is very intentional. Because performance. Please consult schwers or frontend-platform
@@ -192,15 +170,14 @@ export default class Model {
   }
 
   makeUUID(data) {
-    if (isThingID(data.name)) { return data.name; }
-    if (isThingID(data.id)) { return data.id; }
-    // todo: make build smarter about injecting build info
-    console.log(`generating fake id for data`, data);
+    if (data.uuid) { return data.uuid; }
+    if (data.id) { return data.id; }
+    console.warn('generating fake uuid');
     return fakeUUID();
   }
 
-  getType(data, uuid) {
-    return this.constructor.type || TYPES[data.kind] || thingType(uuid) || 'Unknown';
+  getType(/* data, uuid */) {
+    return this.constructor.type;
   }
 
   toRecord() {

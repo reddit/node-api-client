@@ -1,7 +1,7 @@
 import { pick } from 'lodash/object';
 import { isEmpty } from 'lodash/lang';
 
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Subreddit from '../models2/Subreddit';
 
 const DEFAULT_SUBREDDIT_OPTIONS = {
@@ -34,7 +34,7 @@ const DEFAULT_SUBREDDIT_OPTIONS = {
   wikimode: 'disabled',
 };
 
-class Subreddits extends BaseAPI {
+export default class SubredditsEndpoint extends BaseEndpoint {
   model = Subreddit;
 
   move = this.notImplemented('move');
@@ -123,5 +123,3 @@ class Subreddits extends BaseAPI {
     return 'api/site_admin';
   }
 }
-
-export default Subreddits;

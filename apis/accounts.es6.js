@@ -1,7 +1,7 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Account from '../models/account';
 
-export default class Accounts extends BaseAPI {
+export default class AccountsEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');

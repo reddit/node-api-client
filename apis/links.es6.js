@@ -1,7 +1,7 @@
-import BaseAPI from './baseContent';
+import BaseContentEndpoint from './BaseContentEndpoint';
 import Link from '../models2/Link';
 
-export default class Links extends BaseAPI {
+export default class LinksEndpoint extends BaseContentEndpoint {
   model = Link;
 
   getPath (query) {

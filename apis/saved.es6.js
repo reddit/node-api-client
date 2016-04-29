@@ -1,4 +1,4 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Save from '../models/save';
 
 import { has } from 'lodash/object';
@@ -11,7 +11,7 @@ const CONSTRUCTORS = {
   t3: Link,
 };
 
-export default class Saved extends BaseAPI {
+export default class SavedEndpoint extends BaseEndpoint {
   model = Save;
 
   move = this.notImplemented('move');

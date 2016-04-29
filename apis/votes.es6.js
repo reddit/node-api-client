@@ -1,9 +1,9 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Vote from '../models/vote';
 
 import ValidationError from '../errors/validationError';
 
-export default class Votes extends BaseAPI {
+export default class VotesEndpoint extends BaseEndpoint {
   static defaultCacheConfig = null;
 
   get requestCacheRules() { return null; }

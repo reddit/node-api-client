@@ -1,4 +1,4 @@
-import BaseAPI from './baseContent';
+import BaseContentEndpoint from './BaseContentEndpoint';
 
 const MODACTIONS = {
   contributor: 'friend',
@@ -12,13 +12,7 @@ const MODACTIONS = {
   wikicontributor: 'friend',
 };
 
-class SubredditRelationships extends BaseAPI {
-  static dataCacheConfig = undefined;
-
-  get requestCacheRules () {
-    return undefined;
-  }
-
+export default class SubredditRelationshipsEndpoint extends BaseContentEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -55,5 +49,3 @@ class SubredditRelationships extends BaseAPI {
     return super.del(data);
   }
 }
-
-export default SubredditRelationships;

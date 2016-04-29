@@ -1,7 +1,7 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Report from '../models/report';
 
-export default class Reports extends BaseAPI {
+export default class ReportsEndpoint extends BaseEndpoint {
   model = Report;
 
   move = this.notImplemented('move');

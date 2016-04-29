@@ -1,6 +1,6 @@
 import { pick } from 'lodash/object';
-import BaseAPI from './base';
-import NoModelError from '../errors/noModelError';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
+import NoModelError from '../apiBase/errors/noModelError';
 
 const MOD_ACTION_MAP = {
   approved: (t, data) => {
@@ -35,7 +35,7 @@ const MOD_ACTION_MAP = {
   },
 };
 
-class BaseContent extends BaseAPI {
+export default class BaseContentEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -112,5 +112,3 @@ class BaseContent extends BaseAPI {
     return Promise.all(promises);
   }
 }
-
-export default BaseContent;

@@ -1,7 +1,7 @@
-import Model from './Model';
+import RedditModel from './RedditModel';
 import { SUBREDDIT } from './thingTypes';
 
-const T = Model.Types;
+const T = RedditModel.Types;
 
 // If the data doesn't have all of the keys, get the full subreddit data
 // and then merge in the changes and submit _that_. The API requires the
@@ -41,7 +41,7 @@ const EDIT_FIELDS = [
   'content_options',
 ].sort();
 
-export default class Subreddit extends Model {
+export default class Subreddit extends RedditModel {
   static type = SUBREDDIT;
 
   static fields = EDIT_FIELDS;

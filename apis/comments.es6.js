@@ -1,6 +1,6 @@
 import { has } from 'lodash/object';
 
-import BaseAPI from './baseContent';
+import BaseContentEndpoint from './BaseContentEndpoint';
 import Comment from '../models2/Comment';
 import Link from '../models2/Link';
 
@@ -10,7 +10,7 @@ import {
   normalizeCommentReplies,
 } from '../lib/commentTreeUtils';
 
-export default class Comments extends BaseAPI {
+export default class CommentsEndpoint extends BaseContentEndpoint {
   model = Comment;
 
   move = this.notImplemented('move');

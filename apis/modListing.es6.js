@@ -1,16 +1,10 @@
-import BaseAPI from './baseContent';
+import BaseContentEndpoint from './BaseContentEndpoint';
 import { has } from 'lodash/object';
 
 import Link from '../models2/Link';
 import Comment from '../models2/Comment';
 
-class ModListing extends BaseAPI {
-  static dataCacheConfig = undefined;
-
-  get requestCacheRules () {
-    return undefined;
-  }
-
+export default class ModListingEndpoint extends BaseContentEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -43,5 +37,3 @@ class ModListing extends BaseAPI {
     }
   }
 }
-
-export default ModListing;

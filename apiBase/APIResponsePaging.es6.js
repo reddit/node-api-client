@@ -17,8 +17,8 @@ export const withQueryAndResult = (response, fn) => {
 };
 
 export const afterResponse = (response) => withQueryAndResult(response, (query, results) => {
-    const limit = query.limit || 25;
-    return results.length >= limit ? last(results).uuid : null;
+  const limit = query.limit || 25;
+  return results.length >= limit ? last(results).uuid : null;
 });
 
 export const beforeResponse = response => withQueryAndResult(response, (query, results) => {

@@ -1,4 +1,4 @@
-import BaseAPI from './base';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 
 import Link from '../models2/Link';
 import WikiPage from '../models/wikiPage';
@@ -6,7 +6,7 @@ import WikiRevision from '../models/wikiRevision';
 import WikiPageListing from '../models/wikiPageListing';
 import WikiPageSettings from '../models/wikiPageSettings';
 
-export default class Votes extends BaseAPI {
+export default class VotesEndpoint extends BaseEndpoint {
   static defaultCacheConfig = null;
 
   get requestCacheRules() { return null; }

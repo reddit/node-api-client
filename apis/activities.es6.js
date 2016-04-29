@@ -1,4 +1,4 @@
-import BaseAPI from './base.es6.js';
+import BaseEndpoint from '../apiBase/BaseEndpoint';
 
 import Comment from '../models2/Comment';
 import Link from '../models2/Link';
@@ -8,13 +8,7 @@ const CONSTRUCTORS = {
   t3: Link,
 };
 
-class Activities extends BaseAPI {
-  static dataCacheConfig = null;
-
-  get requestCacheRules () {
-    return null;
-  }
-
+export default class ActivitiesEndpoint extends BaseEndpoint {
   move = this.notImplemented('move');
   copy = this.notImplemented('copy');
   put = this.notImplemented('put');
@@ -46,5 +40,3 @@ class Activities extends BaseAPI {
     }
   }
 }
-
-export default Activities;

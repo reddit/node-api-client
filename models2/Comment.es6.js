@@ -1,10 +1,10 @@
-import Model from './Model';
-import Record from './Record';
+import RedditModel from './RedditModel';
+import Record from '../apiBase/Record';
 import { COMMENT, COMMENT_LOAD_MORE } from './thingTypes';
 
-const T = Model.Types;
+const T = RedditModel.Types;
 
-export default class Comment extends Model {
+export default class Comment extends RedditModel {
   static type = COMMENT;
 
   static PROPERTIES = {

@@ -1,4 +1,4 @@
-import { fetchAll } from '../apis/APIResponsePaging';
+import { fetchAll } from '../apiBase/APIResponsePaging';
 import Listing from './Listing';
 
 export class SubredditList extends Listing {

@@ -1,4 +1,4 @@
-import BaseAPI from './baseContent';
+import BaseContentEndpoint from './BaseContentEndpoint';
 import Rule from '../models/rule';
 import { has } from 'lodash/object';
 
@@ -7,11 +7,7 @@ const ADD_RULE_PATH = 'api/add_subreddit_rule';
 const REMOVE_RULE_PATH = 'api/remove_subreddit_rule';
 const UPDATE_RULE_PATH = 'api/update_subreddit_rule';
 
-export default class Rules extends BaseAPI {
-  static dataCacheConfig = null;
-
-  get requestCacheRules() { return null; }
-
+export default class RulesEndpoint extends BaseContentEndpoint {
   model = Rule;
 
   move = this.notImplemented('move');
