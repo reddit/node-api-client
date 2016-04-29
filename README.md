@@ -140,7 +140,7 @@ const { afterResponse } = APIResponsePaging;
 afterResponse(api.links.get({ subredditName: 'reactjs' }))
 ```
 
-Once you've fetched the next page, you can merge it with the first page to have one response represent your entire list of data.
+[MergedResponses](/apis/APIResponse.es6.js) handle casses where you have paginated data. Once you've fetched the next page, you can merge it with the first page to have one response represent your entire list of data.
 
 ```javascript
 const options = { subredditName: 'reactjs' };
@@ -151,6 +151,8 @@ const after = afterResponse(firstPage);
 
 const withNextPage = firstPage.appendResponse(await api.links.get({ ...options, after });
 ```
+
+Note: instances of `MergedResponses` Dont' have `.query` and `.meta` instance variables, instead they have `.querys` and `.metas` that are lists of those from their merged responses. Merging is simple loop that when given a list of responses, takes all of the top level results (with duplicates removed) and updates the tables (e.g. `apiResponse.links`) to use the latest version of the response object. This is useful for cases like paging through subreddits and the posts near page boundaries get listed twice, but you want the most up to date score, number of comments, etc`
 
 ### Collections
 We're still working on some collections, but an example of how they'll look is [SubredditLists](/smartmodels/SubredditLists);
@@ -166,7 +168,7 @@ const moderatedSubreddits = await ModeratingSubreddits.fetch(api);
 console.log(moderatedSubreddits.subreddits.map(subreddit => subreddit.url));
 ```
 
-In these examples `.fetch(api)` handles fetching all the pages by default. This is pening feedback. Its baseclass, [Listings](/smartmodels/Listings.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`).
+In these examples `.fetch(api)` handles fetching all the pages by default. This is pening feedback. Its baseclass, [Listings](/smartmodels/Listing.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`).
 
 
 
