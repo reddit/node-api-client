@@ -184,7 +184,7 @@ This directory contains models that are built to easy interacting with the api. 
 ### Collections
 Collections are used to simplyify fetching groups of things. For now all collections subclass [Listing](/collections/Listing.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`). Here's some documentation on the various subclasses
 
-####[SubredditLists](/collections/SubredditLists);
+#### [SubredditLists](/collections/SubredditLists)
 
 ```javascript
 import API from '@r/api-client';
@@ -245,7 +245,7 @@ const post = askRedditPosts.apiResponse.uuid;
 const commentsPage = await CommentsPage.fetch(api, post);
 ```
 
-##### [SearchQuery](/collections/SearchQuery.es6.js)
+#### [SearchQuery](/collections/SearchQuery.es6.js)
 ```javascript
 const searchResults = await SearchQuery.fetch(api, 'high quality gifs');
 searchResults.posts;
