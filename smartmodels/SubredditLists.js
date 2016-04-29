@@ -10,9 +10,14 @@ export class SubredditList extends Listing {
     return { sort: this.view, limit: this.limit };
   }
 
-  static async fetch(api) {
-    const allMergedSubreddits = await fetchAll(api.subreddits.get, this.baseOptions());
-    return new this(allMergedSubreddits);
+  static async fetch(api, all=true) {
+    if (all) {
+      const allMergedSubreddits = await fetchAll(api.subreddits.get, this.baseOptions());
+      return new this(allMergedSubreddits);
+    }
+
+    const firstPage = await this.getResponse(api);
+    return new this(firstPage);
   }
 
   get subreddits() {

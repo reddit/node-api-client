@@ -1,4 +1,8 @@
-import { fetchAll, afterResponse, beforeResponse } from '../apis/APIResponsePaging';
+import { afterResponse, beforeResponse } from '../apis/APIResponsePaging';
+
+const applyIfDifferent = (result, self, fn) => {
+  return result === self ? result : fn(result);
+};
 
 // Base class for paged collections
 export default class Listing {
@@ -29,18 +33,39 @@ export default class Listing {
     return !!beforeResponse(this.apiResponse);
   }
 
-  async withNextPage(api) {
+  async nextResponse(api) {
     const after = afterResponse(this.apiResponse);
-    if (!after) { return this; }
+    if (!after) { return this.apiResponse; }
+    return await this.constructor.getResponse(api, { after });
+  }
 
-    const nextPage = await this.constructor.getResponse(api, { after });
-    return new this.constructor(this.apiResponse.appendResponse(nextPage));
+  async nextPage(api) {
+    return applyIfDifferent(await this.nextResponse(api), this, (nextReponse) => {
+      return new this.constructor(nextReponse);
+    });
+  }
+
+  async withNextPage(api) {
+    return applyIfDifferent(await this.nextPageResponse(api), this, (nextReponse) => {
+      return new this.constructor(this.apiResponse.appendResponse(nextReponse));
+    });
+  }
+
+  async prevResponse(api) {
+    const before = beforeResponse(this.apiResponse);
+    if (!before) { return this;}
+    return await this.constructor.getResponse(api, { before });
+  }
+
+  async prevPage(api) {
+    return applyIfDifferent(await this.prevResponse(api), this, (prevResponse) => {
+      return new this.constructor(prevResponse);
+    });
   }
 
   async withPreviousPage(api) {
-    const before = beforeResponse(this.apiResponse);
-    if (!before) { return this; }
-    const previousPage = await this.constructor.getResponse(api, { before });
-    return new this.constructor(previousPage.appendResponse(this.apiResponse));
+    return applyIfDifferent(await this.prevResponse(api), this, (prevResponse) => {
+      return new this.constructor(prevResponse.appendResponse(this.apiResponse));
+    });
   }
 }
