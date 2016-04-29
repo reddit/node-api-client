@@ -7,6 +7,10 @@ export default class CommentsPage extends Listing {
     return super.fetch(api, { id });
   }
 
+  static fetchMoreChildre(api, comment) {
+    return super.fetch(api, { ids: comment.children });
+  }
+
   get topLevelComments() {
     return this.apiResponse.results.map(this.apiResponse.getModelFromRecord);
   }

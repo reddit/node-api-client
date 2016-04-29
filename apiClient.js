@@ -7900,6 +7900,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function fetch(api, id) {
 	      return _get(Object.getPrototypeOf(CommentsPage), 'fetch', this).call(this, api, { id: id });
 	    }
+	  }, {
+	    key: 'fetchMoreChildre',
+	    value: function fetchMoreChildre(api, comment) {
+	      return _get(Object.getPrototypeOf(CommentsPage), 'fetch', this).call(this, api, { ids: comment.children });
+	    }
 	  }]);
 
 	  return CommentsPage;
