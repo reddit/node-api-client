@@ -1,11 +1,42 @@
 @r/api-client
 ======
 
-[![Build Status](https://travis-ci.org/reddit/snoode.svg?branch=rframework)](https://travis-ci.org/reddit/snoode)
+[![Build Status](https://travis-ci.org/reddit/node-api-client.svg?branch=3X)](https://travis-ci.org/reddit/node-api-client)
 
 A reddit API library for node and browsers.
 
-### Example
+```javascript
+// Require snoode.
+import Snoode from '@r/api-client';
+const api = new Snoode({});
+
+import { collections } from '@r/api-client';
+const { PostsFromSubreddit } = collections;
+
+import { each } from 'lodash/collection';
+
+let frontpage = await PostsFromSubreddit.fetch(api, 'highqualitygifs')
+each(Array(10), async () => {
+  frontpage = await frontpage.withNextPage(api);
+});
+
+frontpage.posts; // ~275 glorious gifs
+
+// Example with auth.
+// Pass in an oauth token and new origin to `withConfig`, which returns
+// a new instance that inherits the config from the existing api instance
+// merged with the new config.
+
+const myOauthToken = 'abcdef1234567890';
+const authedAPI = api.withAuth(myOauthToken);
+
+const { SavedPostsAndComments } = models;
+const dankestMemes = await SavedPostsAndComments.fetch(authedApi, 'my-user-name');
+console.log(dankestMems.postsAndComments);
+```
+
+### API endpoints
+At its core, the api is made up of ApiEndpoints, APIResponses, Models, and Records. ApiEndpoints all subclass [BaseApi](/apis/base.es6.js). It provides an easy way to build out a idealized restful wrapper for the api. Currently instances of the api endpoints are bound to API class (exported default when you import from the api client module). Using it looks like
 
 ```javascript
 // Require snoode.
@@ -29,21 +60,14 @@ api.comments.get({
   console.log(res.comments);
   console.log(res.links);
 });
-
-// Example with auth.
-// Pass in an oauth token and new origin to `withConfig`, which returns
-// a new instance that inherits the config from the existing api instance
-// merged with the new config.
-
-const myOauthToken = 'abcdef1234567890';
-const authedAPI = api.withAuth(myOauthToken);
-
-authedAPI.subscriptions.post({ subreddit: 'homebrewing' }).then(console.log);
 ```
+
+##### Please note creating an api instance and then accessing enpoints is going to be depcreated in an upcoming minor version. Instead of passing the api options like origin and token to the `API()` constructor, you'll pass them directly to the endpoint. Endpoints current `.get` and `.post`, etc, methods will move to static methods, and will accept the options directly. This will make the storeage of api options fit better in a world with a redux store. Even more importantly, it will allow us experiment with compiling the api endpoints, models, and collections into individual files. This could lead to a benefical decrease in payload size as we add endpoints and models that aren't used by all products using `@r/api-client`
+
 
 ### Models and Records
 A [Record](/models2/Record.es6.js) is essentially a tuple of `(<ModelType>, <ModelId)`.
-```javasript
+```javascript
 const LinkRecord = new Record(LINK_TYPE, 't3_4gonrl');
 ```
 
@@ -99,7 +123,6 @@ class Post extends Model {
 }
 ```
 
-
 You can also make properties that are derived from the raw json object from the api
 ```javascript
 const T = MODEL.TYPES;
@@ -122,7 +145,7 @@ class Post extends Model {
 ```
 
 ### APIResponses
-[APIResponse.es6.js](/apis/APIResponse.es6.js) defines the primary classes used to interact with responses from the api. (NOTE: we're still transitioning all the endpoints, but lots of them work). APIResponse embodies our opinionated viewpoint on managing your API data. Responses are normalized, and accessed in terms of records.
+[APIResponse.es6.js](/apis/APIResponse.es6.js) defines the primary classes used to interact with responses from the api. (NOTE: we're still transitioning all the endpoints, but lots of them work). APIResponse embodies our opinionated view on managing your API data. Responses are normalized, and accessed in terms of records.
 
 ```javascript
 const postsResponse = await api.links.get({ subredditName: 'reactjs'});
@@ -130,7 +153,8 @@ postsResponse.results; // an array of <Record>
 postsResponse.links; // a dictionary of <LinkId> : <LinkModel>
 ```
 
-For cases where you want pagination, there are helpers provided by [APIResponsePaging.es6.js](/apis/APIResponsePaging.es6.js);
+For cases where you want pagination, there are helpers provided by
+#### [APIResponsePaging.es6.js](/apis/APIResponsePaging.es6.js);
 ```javascript
 import { APIResponsePaging } from '@r/api-client';
 const { afterResponse } = APIResponsePaging;
@@ -140,7 +164,7 @@ const { afterResponse } = APIResponsePaging;
 afterResponse(api.links.get({ subredditName: 'reactjs' }))
 ```
 
-[MergedResponses](/apis/APIResponse.es6.js) handle casses where you have paginated data. Once you've fetched the next page, you can merge it with the first page to have one response represent your entire list of data.
+#### [MergedResponses](/apis/APIResponse.es6.js) handle casses where you have paginated data. Once you've fetched the next page, you can merge it with the first page to have one response represent your entire list of data.
 
 ```javascript
 const options = { subredditName: 'reactjs' };
@@ -154,12 +178,18 @@ const withNextPage = firstPage.appendResponse(await api.links.get({ ...options, 
 
 Note: instances of `MergedResponses` Dont' have `.query` and `.meta` instance variables, instead they have `.querys` and `.metas` that are lists of those from their merged responses. Merging is simple loop that when given a list of responses, takes all of the top level results (with duplicates removed) and updates the tables (e.g. `apiResponse.links`) to use the latest version of the response object. This is useful for cases like paging through subreddits and the posts near page boundaries get listed twice, but you want the most up to date score, number of comments, etc`
 
+### Smart Models
+This directory contains models that are built to easy interacting with the api. Models will have methods like `subreddit.subscribe()` or `comment.upvote()`. Implementation wise they'll extend models and add various static and instance methods.
+
 ### Collections
-We're still working on some collections, but an example of how they'll look is [SubredditLists](/smartmodels/SubredditLists);
+Collections are used to simplyify fetching groups of things. For now all collections subclass [Listing](/collections/Listing.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`). Here's some documentation on the various subclasses
+
+####[SubredditLists](/collections/SubredditLists);
 
 ```javascript
 import API from '@r/api-client';
-import { SubscribedSubreddits, ModeratingSubreddits  } from '@r/api-client';
+import { collections } from '@r/api-client';
+const { SubscribedSubreddits, ModeratingSubreddits } = collections;
 const api = new API({});
 const subscribedSubreddits = await SubscribedSubreddits.fetch(api);
 console.log(subscribedSubreddits.subreddits.map(subreddit => subreddit.url));
@@ -168,9 +198,59 @@ const moderatedSubreddits = await ModeratingSubreddits.fetch(api);
 console.log(moderatedSubreddits.subreddits.map(subreddit => subreddit.url));
 ```
 
-In these examples `.fetch(api)` handles fetching all the pages by default. This is pening feedback. Its baseclass, [Listings](/smartmodels/Listing.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`).
+In these examples `.fetch(api)` handles fetching all the pages by default. This is pending feedback.
 
+#### [PostsFromSubreddit](/collections/PostsFromSubreddit.es6.js)
 
+For example, you can fetch all the posts in a subreddit like so:
+```javascript
+const frontpagePopular = await PostsFromSubreddit.fetch(api, 'all')
+console.log(frontpagePopular.posts.map(post => post.title);
+const nextPage = await frontpagePopular.nextPage(api)
+```
+
+These endpoints are designed to take options like paging. This makes it easy to do things like continue a infinite scroll after page reloads.
+```javascript
+import { last } from 'lodash/array';
+import { each } from 'lodash/collection';
+
+let frontpage = await PostsFromSubreddit.fetch(api, 'all') // blank fetches frontpage;
+each(Array(10), async () => {
+  frontpage = await frontpage.withNextPage(api);
+});
+
+const after = last(frontpage.apiResponse.results).uuid;
+const pageAfter = await PostsFromSubreddit.fetch(api, 'all', { after })
+```
+
+There are lots of other endpoints you can use too. Just note in the future you'll most likely pass an object with your api options instead of an api instance. This makes more sense in a redux world, and will allow us to build the api into modules which can be imported piecemeal, which could drastically reduce payload size.
+
+#### [SavedPostsAndComments](/collections/SavedPostsAndComments.es6.js)
+```javascript
+const savedThings = await SavedPostsAndComments.fetch(api, 'my-user-name');
+savedThings.postsAndComments;
+const savedWithNextPage = await savedThings.withNextPage(api);
+```
+
+#### [HiddenPostsAndComments](/collections/HiddenPostsAndComments.es6.js)
+```javascript
+const lessThanDankMemes = await HiddenPostsAndComments.fetch(api, 'my-user-name');
+lessThanDankMemes.postsAndComments;
+```
+
+#### [CommentsPage](/collections/CommentsPage.es6.js)
+```javascript
+const askRedditPosts = await PostsFromSubreddit.fetch(api, 'askreddit');
+const post = askRedditPosts.apiResponse.uuid;
+const commentsPage = await CommentsPage.fetch(api, post);
+```
+
+##### [SearchQuery](/collections/SearchQuery.es6.js)
+```javascript
+const searchResults = await SearchQuery.fetch(api, 'high quality gifs');
+searchResults.posts;
+searchResults.subreddits;
+```
 
 ### Development / Testing
 
@@ -207,4 +287,4 @@ var authed = api.withConfig({
 Caveats
 ------
 
-* Uses ES7. At reddit, we use [babel](https://babeljs.io) to run and build ES6+.
+We write ES6/7 and compile via Reddit's build system [@r/build](https://www.github.com/reddit/node-build). We output a built file that expects a polyfilled es6/7 environment, with a lodash and superagent as peer depedencies. In your project you'll have to include those as depedencies and `import 'babel-polyfill'` or `require('babel-polyfill')` before using the api.
