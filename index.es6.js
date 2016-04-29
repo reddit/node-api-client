@@ -93,11 +93,7 @@ import PromoCampaign from './models/promocampaign';
 import Preferences from './models/preferences';
 import Subreddit from './models2/Subreddit';
 
-import {
-  SubscribedSubreddits,
-  ModeratingSubreddits,
-  ContributingSubreddits,
-} from './smartmodels/SubredditLists';
+
 
 import Subscription from './models/subscription';
 import Vote from './models/vote';
@@ -107,11 +103,17 @@ import WikiRevision from './models/wikiRevision';
 import WikiPageListing from './models/wikiPageListing';
 import WikiPageSettings from './models/wikiPageSettings';
 
-import CommentsPage from './smartmodels/CommentsPage';
-import HiddenPostsAndComments from './smartmodels/HiddenPostsAndComments';
-import PostsFromSubreddit from './smartmodels/PostsFromSubreddit';
-import SavedPostsAndComments from './smartmodels/SavedPostsAndComments';
-import SearchQuery from './smartmodels/SearchQuery';
+import {
+  SubscribedSubreddits,
+  ModeratingSubreddits,
+  ContributingSubreddits,
+} from './collections/SubredditLists';
+
+import CommentsPage from './collections/CommentsPage';
+import HiddenPostsAndComments from './collections/HiddenPostsAndComments';
+import PostsFromSubreddit from './collections/PostsFromSubreddit';
+import SavedPostsAndComments from './collections/SavedPostsAndComments';
+import SearchQuery from './collections/SearchQuery';
 
 export const models = {
   Account,
@@ -132,8 +134,9 @@ export const models = {
   WikiRevision,
   WikiPageListing,
   WikiPageSettings,
+}
 
-  // collections
+export const collections = {
   CommentsPage,
   ContributingSubreddits,
   HiddenPostsAndComments,

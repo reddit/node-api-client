@@ -96,6 +96,7 @@ function exportToContext(submoduleName) {
 local.context.api = api;
 
 exportToContext('models');
+exportToContext('collections');
 exportToContext('APIResponses');
 exportToContext('APIResponsePaging');
 
