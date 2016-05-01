@@ -1,12 +1,17 @@
 import Listing from './Listing';
+import SavedEndpoint from '../apis/saved';
 
 export default class SavedPostsAndComments extends Listing {
-  static endpoint = 'saved';
+  static endpoint = SavedEndpoint;
 
-  static fetch(api, user, options={}) {
-    options.user = user;
+  static fetch(apiOptions, userOrOptions, options={}) {
+    if (typeof userOrOptions === 'string') {
+      options.user = userOrOptions;
+    } else {
+      options = userOrOptions || {};
+    }
 
-    return super.fetch(api, options);
+    return super.fetch(apiOptions, options);
   }
 
   get postsAndComments() {

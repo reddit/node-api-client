@@ -21,7 +21,7 @@ const getPath = (query) => {
   return `${query.sort}.json`;
 };
 
-export const formatQuery = (query, method) => {
+const formatQuery = (query, method) => {
   if (method !== 'patch') {
     query.feature = 'link_preview';
     query.sr_detail = 'true';
@@ -32,11 +32,10 @@ export const formatQuery = (query, method) => {
   }
 
   return query;
-}
+};
 
 const parseBody = (res, apiResponse, req, method) => {
-  console.log('in parse');
-  const { body } = res;
+    const { body } = res;
 
   if (method === 'get') {
     const { data } = body;

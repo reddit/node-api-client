@@ -14,11 +14,13 @@ console.log('Enter `help()` for information.');
 require('babel-polyfill');
 const ApiClientModule = require('./apiClient');
 const API = ApiClientModule.default;
-const api = new API({
+const apiOptions = {
   eventEmitter: new EventEmitter(),
   token: process.env.TOKEN,
   origin: process.env.TOKEN ? 'https://oauth.reddit.com' : 'https://www.reddit.com',
-});
+};
+
+const api = new API(apiOptions);
 
 const local = repl.start('$> ');
 
@@ -94,6 +96,7 @@ function exportToContext(submoduleName) {
 }
 
 local.context.api = api;
+local.context.apiOptions = apiOptions;
 
 exportToContext('models');
 exportToContext('collections');

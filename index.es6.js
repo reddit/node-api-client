@@ -1,6 +1,6 @@
 // import activities from './apis/activities';
 // import hidden from './apis/hidden';
-// import saved from './apis/saved';
+import saved from './apis/saved';
 // import search from './apis/search';
 // import stylesheets from './apis/stylesheets';
 // import subreddits from './apis/subreddits';
@@ -44,7 +44,7 @@ export const APIs = {
   // activities,
   // captcha,
   // hidden,
-  // saved,
+  saved,
   // search,
   // stylesheets,
   // subreddits,
@@ -147,11 +147,6 @@ export const collections = {
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';
 const AUTHED_API_ORIGIN = 'https://oauth.reddit.com';
 
-const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
-               'save,edit,account,creddits,flair,livemanage,modconfig,' +
-               'modcontributors,modflair,modlog,modothers,modposts,modself,' +
-               'modwiki,privatemessages,report,wikiedit,wikiread';
-
 // Webpack 2 has an export bug where a library's export object does not state
 // that it is an es6 module. Without this tag defined on the exports object,
 // Webpack does not import the library correctly.
@@ -181,11 +176,7 @@ export default class Snoode {
     this.event = this.config.event;
 
     for (let a in APIs) {
-      if (a === 'links') {
-        this[a] = APIs[a];
-      } else {
-        this[a] = new APIs[a](this);
-      }
+      this[a] = APIs[a];
     }
   }
 

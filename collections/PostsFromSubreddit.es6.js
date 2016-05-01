@@ -4,14 +4,14 @@ import LinksEndpoint from '../apis/links';
 export default class PostsFromSubreddit extends Listing {
   static endpoint = LinksEndpoint;
 
-  static fetch(api, subredditNameOrOptions, options={}) {
+  static fetch(apiOptions, subredditNameOrOptions, options={}) {
     if (typeof subredditNameOrOptions === 'string') {
       options.subredditName = subredditNameOrOptions;
     } else {
       options = subredditNameOrOptions || {};
     }
 
-    return super.fetch(api, options);
+    return super.fetch(apiOptions, options);
   }
 
   get posts() {
