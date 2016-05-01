@@ -1,4 +1,4 @@
-export default class ErrorClass {
+export default class FakeError {
   constructor (message) {
     if (Error.hasOwnProperty('captureStackTrace')) {
       Error.captureStackTrace(this, this.constructor);

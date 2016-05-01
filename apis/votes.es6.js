@@ -1,7 +1,7 @@
 import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Vote from '../models/vote';
 
-import ValidationError from '../errors/validationError';
+import ValidationError from '../apiBase/errors/ValidationError';
 
 export default class VotesEndpoint extends BaseEndpoint {
   static defaultCacheConfig = null;

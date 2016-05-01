@@ -1,6 +1,6 @@
-import FakeError from './error';
+import FakeError from './FakeError';
 
-class ValidationError extends FakeError {
+export default class ValidationError extends FakeError {
   constructor (name, model, errors) {
     super(name);
 
@@ -12,5 +12,3 @@ class ValidationError extends FakeError {
     this.status = 422;
   }
 }
-
-export default ValidationError;

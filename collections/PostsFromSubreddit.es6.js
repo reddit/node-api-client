@@ -1,4 +1,4 @@
-import Listing from './Listing';
+import Listing from './Listing
 
 export default class PostsFromSubreddit extends Listing {
   static endpoint = 'links';
@@ -9,7 +9,7 @@ export default class PostsFromSubreddit extends Listing {
     } else {
       options = subredditNameOrOptions || {};
     }
-    
+
     return super.fetch(api, options);
   }
 

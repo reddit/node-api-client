@@ -99,5 +99,6 @@ exportToContext('models');
 exportToContext('collections');
 exportToContext('APIResponses');
 exportToContext('APIResponsePaging');
+exportToContext('APIs');
 
 local.context.help = help;

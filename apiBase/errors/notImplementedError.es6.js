@@ -1,4 +1,6 @@
-class NotImplementedError extends Error {
+import FakeError from './FakeError';
+
+export default class NotImplementedError extends Error {
   constructor (method, endpoint) {
     super(method, endpoint);
 
@@ -7,5 +9,3 @@ class NotImplementedError extends Error {
     this.status = 405;
   }
 }
-
-export default NotImplementedError;

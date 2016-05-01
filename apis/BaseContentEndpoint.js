@@ -1,6 +1,6 @@
 import { pick } from 'lodash/object';
 import BaseEndpoint from '../apiBase/BaseEndpoint';
-import NoModelError from '../apiBase/errors/noModelError';
+import NoModelError from '../apiBase/errors/NoModelError';
 
 const MOD_ACTION_MAP = {
   approved: (t, data) => {
@@ -36,11 +36,11 @@ const MOD_ACTION_MAP = {
 };
 
 export default class BaseContentEndpoint extends BaseEndpoint {
-  move = this.notImplemented('move');
-  copy = this.notImplemented('copy');
-  put = this.notImplemented('put');
+  static move = BaseEndpoint.notImplemented('move');
+  static copy = BaseEndpoint.notImplemented('copy');
+  static put = BaseEndpoint.notImplemented('put');
 
-  formatQuery (query, method) {
+  static formatQuery(query, method) {
     if (method !== 'patch') {
       query.feature = 'link_preview';
       query.sr_detail = 'true';
@@ -53,7 +53,7 @@ export default class BaseContentEndpoint extends BaseEndpoint {
     return query;
   }
 
-  path (method, query={}) {
+  static path(method, query={}) {
     if (method === 'get') {
       return this.getPath(query);
     } else if (method === 'post') {
@@ -65,15 +65,15 @@ export default class BaseContentEndpoint extends BaseEndpoint {
     }
   }
 
-  patchPath () {
+  static patchPath () {
     return 'api/editusertext';
   }
 
-  deletePath () {
+  static deletePath () {
     return 'api/del';
   }
 
-  patch (data) {
+  static patch = (apiOptions, data) => {
     if (!data) {
       throw new NoModelError('/api/editusertext');
     }

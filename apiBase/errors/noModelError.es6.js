@@ -1,6 +1,6 @@
-import FakeError from './error';
+import FakeError from './FakeError';
 
-class NoModelError extends FakeError {
+export default class NoModelError extends FakeError {
   constructor (endpoint) {
     super(endpoint);
 
@@ -9,5 +9,3 @@ class NoModelError extends FakeError {
     this.status = 400;
   }
 }
-
-export default NoModelError;

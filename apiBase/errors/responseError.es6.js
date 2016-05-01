@@ -1,4 +1,4 @@
-import FakeError from './error';
+import FakeError from './FakeError';
 
 export class DisconnectedError extends FakeError {
   constructor(error, url) {
