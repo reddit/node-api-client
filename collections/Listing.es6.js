@@ -10,10 +10,10 @@ const identity = (id) => id;
 export default class Listing {
   static baseOptions() { return {}; }
 
-  static endpoint = '';
+  static endpoint = { get() {} };
 
-  static async getResponse(api, options={}) {
-    const res =  await api[this.endpoint].get({
+  static async getResponse(apiOptions, options={}) {
+    const res = await this.endpoint.get(apiOptions, {
       ...this.baseOptions(),
       ...options,
     });
@@ -21,8 +21,8 @@ export default class Listing {
     return res;
   }
 
-  static async fetch(api, options={}) {
-    return new this(await this.getResponse(api, options));
+  static async fetch(apiOptions, options={}) {
+    return new this(await this.getResponse(apiOptions, options));
   }
 
   constructor(apiResponse) {
@@ -47,41 +47,42 @@ export default class Listing {
     return !!this.prevId;
   }
 
-  async nextResponse(api) {
+  async nextResponse(apiOptions) {
     const after = this.afterId;
     if (!after) { return ; }
     const options = omit({ ...this.apiResponse.query, after}, 'before');
-    return await this.constructor.getResponse(api, options);
+    return await this.constructor.getResponse(apiOptions, options);
   }
 
-  async prevResponse(api) {
+  async prevResponse(apiOptions) {
     const before = this.prevId;
     if (!before) { return; }
     const options = omit({ ...this.apiResponse.query, before}, 'after');
-    return await this.constructor.getResponse(api, options);
+    return await this.constructor.getResponse(apiOptions, options);
   }
 
-  async fetchAndMakeInstance(fetchMethod, api, reduceResponse) {
-    const response = await fetchMethod(api);
+  async fetchAndMakeInstance(fetchMethod, apiOptions, reduceResponse) {
+    const response = await fetchMethod(apiOptions);
     if (response) {
       return new this.constructor(reduceResponse(response));
     }
   }
 
-  async nextPage(api) {
-    return this.fetchAndMakeInstance(this.nextResponse, api, identity);
+  async nextPage(apiOptions) {
+    return this.fetchAndMakeInstance(this.nextResponse, apiOptions, identity);
   }
 
-  async withNextPage(api) {
-    return this.fetchAndMakeInstance(this.nextResponse, api, this.apiResponse.appendResponse);
+  async withNextPage(apiOptions) {
+    const { nextResponse, apiResponse } = this;
+    return this.fetchAndMakeInstance(nextResponse, apiOptions, apiResponse.appendResponse);
   }
 
-  async prevPage(api) {
-    return this.fetchAndMakeInstance(this.prevResponse, api, identity);
+  async prevPage(apiOptions) {
+    return this.fetchAndMakeInstance(this.prevResponse, apiOptions, identity);
   }
 
-  async withPrevPage(api) {
-    return this.fetchAndMakeInstance(this.prevResponse, api, (prevResponse) => {
+  async withPrevPage(apiOptions) {
+    return this.fetchAndMakeInstance(this.prevResponse, apiOptions, (prevResponse) => {
       return prevResponse.appendResponse(this.apiResponse);
     });
   }

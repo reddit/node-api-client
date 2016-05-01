@@ -530,7 +530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getResponse',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(apiOptions) {
 	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	        var res;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -538,7 +538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            switch (_context.prev = _context.next) {
 	              case 0:
 	                _context.next = 2;
-	                return api[this.endpoint].get(_extends({}, this.baseOptions(), options));
+	                return this.endpoint.get(apiOptions, _extends({}, this.baseOptions(), options));
 
 	              case 2:
 	                res = _context.sent;
@@ -561,7 +561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'fetch',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(apiOptions) {
 	        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	          while (1) {
@@ -569,7 +569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              case 0:
 	                _context2.t0 = this;
 	                _context2.next = 3;
-	                return this.getResponse(api, options);
+	                return this.getResponse(apiOptions, options);
 
 	              case 3:
 	                _context2.t1 = _context2.sent;
@@ -612,7 +612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'nextResponse',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(apiOptions) {
 	        var after, options;
 	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
 	          while (1) {
@@ -630,7 +630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              case 3:
 	                options = /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_object__["omit"].bind()(_extends({}, this.apiResponse.query, { after: after }), 'before');
 	                _context3.next = 6;
-	                return this.constructor.getResponse(api, options);
+	                return this.constructor.getResponse(apiOptions, options);
 
 	              case 6:
 	                return _context3.abrupt('return', _context3.sent);
@@ -652,7 +652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'prevResponse',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(apiOptions) {
 	        var before, options;
 	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
 	          while (1) {
@@ -670,7 +670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              case 3:
 	                options = /* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_object__["omit"].bind()(_extends({}, this.apiResponse.query, { before: before }), 'after');
 	                _context4.next = 6;
-	                return this.constructor.getResponse(api, options);
+	                return this.constructor.getResponse(apiOptions, options);
 
 	              case 6:
 	                return _context4.abrupt('return', _context4.sent);
@@ -692,14 +692,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'fetchAndMakeInstance',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(fetchMethod, api, reduceResponse) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(fetchMethod, apiOptions, reduceResponse) {
 	        var response;
 	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
 	          while (1) {
 	            switch (_context5.prev = _context5.next) {
 	              case 0:
 	                _context5.next = 2;
-	                return fetchMethod(api);
+	                return fetchMethod(apiOptions);
 
 	              case 2:
 	                response = _context5.sent;
@@ -728,12 +728,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'nextPage',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(apiOptions) {
 	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
 	          while (1) {
 	            switch (_context6.prev = _context6.next) {
 	              case 0:
-	                return _context6.abrupt('return', this.fetchAndMakeInstance(this.nextResponse, api, identity));
+	                return _context6.abrupt('return', this.fetchAndMakeInstance(this.nextResponse, apiOptions, identity));
 
 	              case 1:
 	              case 'end':
@@ -752,14 +752,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'withNextPage',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee7(apiOptions) {
+	        var nextResponse, apiResponse;
 	        return regeneratorRuntime.wrap(function _callee7$(_context7) {
 	          while (1) {
 	            switch (_context7.prev = _context7.next) {
 	              case 0:
-	                return _context7.abrupt('return', this.fetchAndMakeInstance(this.nextResponse, api, this.apiResponse.appendResponse));
+	                nextResponse = this.nextResponse;
+	                apiResponse = this.apiResponse;
+	                return _context7.abrupt('return', this.fetchAndMakeInstance(nextResponse, apiOptions, apiResponse.appendResponse));
 
-	              case 1:
+	              case 3:
 	              case 'end':
 	                return _context7.stop();
 	            }
@@ -776,12 +779,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'prevPage',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(apiOptions) {
 	        return regeneratorRuntime.wrap(function _callee8$(_context8) {
 	          while (1) {
 	            switch (_context8.prev = _context8.next) {
 	              case 0:
-	                return _context8.abrupt('return', this.fetchAndMakeInstance(this.prevResponse, api, identity));
+	                return _context8.abrupt('return', this.fetchAndMakeInstance(this.prevResponse, apiOptions, identity));
 
 	              case 1:
 	              case 'end':
@@ -800,14 +803,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'withPrevPage',
 	    value: function () {
-	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(api) {
+	      var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee9(apiOptions) {
 	        var _this = this;
 
 	        return regeneratorRuntime.wrap(function _callee9$(_context9) {
 	          while (1) {
 	            switch (_context9.prev = _context9.next) {
 	              case 0:
-	                return _context9.abrupt('return', this.fetchAndMakeInstance(this.prevResponse, api, function (prevResponse) {
+	                return _context9.abrupt('return', this.fetchAndMakeInstance(this.prevResponse, apiOptions, function (prevResponse) {
 	                  return prevResponse.appendResponse(_this.apiResponse);
 	                }));
 
@@ -840,7 +843,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Listing;
 	}();
 
-	Listing.endpoint = '';
+	Listing.endpoint = {
+	  get: function get() {}
+	};
 	/* harmony default export */ exports["a"] = Listing;
 
 /***/ },
@@ -2352,6 +2357,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_links__ = __webpack_require__(38);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -2361,6 +2367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -2396,7 +2403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return PostsFromSubreddit;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__Listing__["a"]);
 
-	PostsFromSubreddit.endpoint = 'links';
+	PostsFromSubreddit.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_links__["a"];
 	/* harmony default export */ exports["a"] = PostsFromSubreddit;
 
 /***/ },
