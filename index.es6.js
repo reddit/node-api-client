@@ -1,7 +1,7 @@
 import { makeOptions } from './apiBase/APIRequestUtils';
 
 // import activities from './apis/activities';
-import hidden from './apis/hidden';
+import HiddenEndpoint from './apis/HiddenEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 // import search from './apis/search';
 // import stylesheets from './apis/stylesheets';
@@ -46,7 +46,7 @@ export const APIResponsePaging = {
 export const APIs = {
   // activities,
   // captcha,
-  hidden,
+  HiddenEndpoint,
   SavedEndpoint,
   // search,
   // stylesheets,

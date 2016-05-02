@@ -1,5 +1,6 @@
 import SavedPostsAndComments from './SavedPostsAndComments';
+import HiddenEndpoint from '../apis/HiddenEndpoint';
 
 export class HiddenPostsAndComments extends SavedPostsAndComments {
-  static endpoint = 'hidden';
+  static endpoint = HiddenEndpoint;
 }

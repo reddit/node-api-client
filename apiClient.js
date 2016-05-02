@@ -1831,19 +1831,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = require("lodash/object");
 
 /***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(19);
-
-
-	var getPath = function getPath(query) {
-	  return 'user/' + query.user + '/hidden.json';
-	};
-
-	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unhide', 'api/hide');
-
-/***/ },
+/* 21 */,
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1902,11 +1890,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedPostsAndComments__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__ = __webpack_require__(54);
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -1921,7 +1911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return HiddenPostsAndComments;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedPostsAndComments__["a"]);/* unused harmony export HiddenPostsAndComments */
-	HiddenPostsAndComments.endpoint = 'hidden';
+	HiddenPostsAndComments.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__["a"];
 
 /***/ },
 /* 24 */
@@ -3291,7 +3281,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(5);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_hidden__ = __webpack_require__(21);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__ = __webpack_require__(54);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_SavedEndpoint__ = __webpack_require__(53);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__apis_PostEndpoint__ = __webpack_require__(52);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__apiBase_APIResponse__ = __webpack_require__(6);
@@ -3371,7 +3361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var APIs = {
 	  // activities,
 	  // captcha,
-	  hidden: /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_hidden__["a"],
+	  HiddenEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__["a"],
 	  SavedEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__apis_SavedEndpoint__["a"],
 	  // search,
 	  // stylesheets,
@@ -3702,6 +3692,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unsave', 'api/save');
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(19);
+
+
+	var getPath = function getPath(query) {
+	  return 'user/' + query.user + '/hidden.json';
+	};
+
+	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unhide', 'api/hide');
 
 /***/ }
 /******/ ])
