@@ -59,6 +59,7 @@ apiOptions.eventEmitter.on('error', function printResponse (e, req) {
 
 apiOptions.eventEmitter.on('request', function printRequest (req) {
   console.log(`Initiating ${req.method} to ${req.url}`);
+  console.log(`query/data: ${JSON.stringify(req.query, null, 2)}`)
 });
 
 

@@ -6,7 +6,7 @@ import {
   thingType,
   COMMENT,
   USER,
-  LINK,
+  POST,
   MESSAGE,
   SUBREDDIT,
 } from '../models2/thingTypes';
@@ -15,7 +15,7 @@ export class APIResponseBase {
   constructor() {
     this.results = [];
 
-    this.links = {};
+    this.posts = {};
     this.comments = {};
     this.users = {};
     this.messages = {};
@@ -23,7 +23,7 @@ export class APIResponseBase {
 
     this.typeToTable = {
       [COMMENT]: this.comments,
-      [LINK]: this.links,
+      [POST]: this.posts,
       [USER]: this.users,
       [MESSAGE]: this.messages,
       [SUBREDDIT]: this.subreddits,
@@ -107,7 +107,7 @@ export class MergedApiReponse extends APIResponseBase {
     const tableKeys = [
       COMMENT,
       USER,
-      LINK,
+      POST,
       MESSAGE,
       SUBREDDIT,
     ];

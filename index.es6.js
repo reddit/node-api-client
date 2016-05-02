@@ -9,7 +9,6 @@ import { makeOptions } from './apiBase/APIRequestUtils';
 // import multiSubscriptions from './apis/multiSubscriptions';
 // import reports from './apis/reports';
 // import rules from './apis/rules';
-// import search from './apis/search';
 // import stylesheets from './apis/stylesheets';
 // import subredditRelationships from './apis/subredditRelationships';
 // import subscriptions from './apis/subscriptions';
@@ -20,6 +19,7 @@ import CommentsEndpoint from './apis/CommentsEndpoint';
 import HiddenEndpoint from './apis/HiddenEndpoint';
 import PostEndpoint from './apis/PostEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
+import SearchEndpoint from './apis/SearchEndpoint';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
@@ -53,7 +53,6 @@ export const APIs = {
   // multiSubscriptions,
   // reports,
   // rules,
-  // search,
   // stylesheets,
   // subredditRelationships,
   // subscriptions,
@@ -64,6 +63,7 @@ export const APIs = {
   HiddenEndpoint,
   PostEndpoint,
   SavedEndpoint,
+  SearchEndpoint,
   SubredditEndpoint,
 };
 
