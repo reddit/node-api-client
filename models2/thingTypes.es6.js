@@ -5,8 +5,8 @@ export const COMMENT_LOAD_MORE = 'comment_load_more';
 export const USER = 'user';
 export const USER_TYPE = 't2';
 
-export const LINK = 'link';
-export const LINK_TYPE = 't3';
+export const POST = 'post';
+export const POST_TYPE = 't3';
 
 export const MESSAGE = 'message';
 export const MESSAGE_TYPE = 't4';
@@ -23,7 +23,7 @@ export const PROMOCAMPAIGN_TYPE = 't8';
 const type_pairs = [
   [COMMENT, COMMENT_TYPE],
   [USER, USER_TYPE],
-  [LINK, LINK_TYPE],
+  [POST, POST_TYPE],
   [MESSAGE, MESSAGE_TYPE],
   [SUBREDDIT, SUBREDDIT_TYPE],
   [TROPHIE, TROPHIE_TYPE],

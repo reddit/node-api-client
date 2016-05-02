@@ -3,11 +3,11 @@ import { runQuery, validateData } from '../apiBase/APIRequestUtils';
 import { has, omit } from 'lodash/object';
 
 import Comment from '../models2/Comment';
-import Link from '../models2/Link';
+import PostModel from '../models2/PostModel';
 
 const CONSTRUCTORS = {
   t1: Comment,
-  t3: Link,
+  t3: PostModel,
 };
 
 const parseBody = (res, apiResponse) => {
@@ -59,7 +59,7 @@ const post = (apiOptions, query, path) => {
   return runQuery(apiOptions, 'post', path, postData, query, parseBody);
 };
 
-export default SavedOrHiddenEndpoint = (getPathFn, delPath, postPath) => {
+export default (getPathFn, delPath, postPath) => {
   return {
     get(apiOptions, query) {
       const path = getPathFn(query);

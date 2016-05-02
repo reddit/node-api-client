@@ -1,10 +1,10 @@
 import RedditModel from './RedditModel';
-import { LINK } from './thingTypes';
+import { POST } from './thingTypes';
 
 const T = RedditModel.Types;
 
-export default class Link extends RedditModel {
-  static type = LINK;
+export default class PostModel extends RedditModel {
+  static type = POST;
 
   static PROPERTIES = {
     author: T.string,

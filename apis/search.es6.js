@@ -1,9 +1,9 @@
 import BaseEndpoint from '../apiBase/BaseEndpoint';
 import Save from '../models/save';
 
-import Link from '../models2/Link';
+import PostModel from '../models2/PostModel';
 import Subreddit from '../models2/Subreddit';
-import { LINK_TYPE } from '../models2/thingTypes';
+import { POST_TYPE } from '../models2/thingTypes';
 
 export default class SearchEndpoint extends BaseEndpoint {
   model = Save;
@@ -47,9 +47,9 @@ export default class SearchEndpoint extends BaseEndpoint {
 
     lists.forEach((listing) => {
       if (listing.data.children.length) {
-        if (listing.data.children[0].kind === LINK_TYPE) {
+        if (listing.data.children[0].kind === POST_TYPE) {
           listing.data.children.forEach((link) => {
-            apiResponse.addResult(Link.fromJSON(link.data));
+            apiResponse.addResult(PostModel.fromJSON(link.data));
           });
 
           apiResponse.meta.after = listing.data.after;

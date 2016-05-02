@@ -1,7 +1,6 @@
-import Link from '../models2/Link';
+import PostModel from '../models2/PostModel';
 
 import { runQuery } from '../apiBase/APIRequestUtils';
-
 
 const getPath = (query) => {
   if (query.user) {
@@ -35,17 +34,17 @@ const formatQuery = (query, method) => {
 };
 
 const parseBody = (res, apiResponse, req, method) => {
-    const { body } = res;
+  const { body } = res;
 
   if (method === 'get') {
     const { data } = body;
 
     if (data && data.children && data.children[0]) {
       if (data.children.length === 1) {
-        apiResponse.addResult(Link.fromJSON(data.children[0].data));
+        apiResponse.addResult(PostModel.fromJSON(data.children[0].data));
         return;
       } else {
-        data.children.forEach(c => apiResponse.addResult(Link.fromJSON(c.data)));
+        data.children.forEach(c => apiResponse.addResult(PostModel.fromJSON(c.data)));
         return;
       }
     } else if (data) {
@@ -70,7 +69,7 @@ export default {
   },
 };
 
-export class LinksEndpoint {
+export class PostEndpoint {
 
   static postPath() {
     return 'api/submit';

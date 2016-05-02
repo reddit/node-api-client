@@ -10,7 +10,7 @@ import saved from './apis/saved';
 // import trophies from './apis/trophies';
 // import accounts from './apis/accounts';
 // import votes from './apis/votes';
-import links from './apis/links';
+import PostEndpoint from './apis/PostEndpoint';
 // import comments from './apis/comments';
 // import captcha from './apis/captcha';
 // import reports from './apis/reports';
@@ -55,7 +55,7 @@ export const APIs = {
   // trophies,
   // accounts,
   // votes,
-  links,
+  PostEndpoint,
   // comments,
   // reports,
   // messages,
@@ -87,7 +87,7 @@ import Base from './models/base';
 import Block from './models/block';
 import BlockedUser from './models/BlockedUser';
 import Comment from './models2/Comment';
-import Link from './models2/Link';
+import PostModel from './models2/PostModel';
 import Message from './models/message';
 import PromoCampaign from './models/promocampaign';
 import Preferences from './models/preferences';
@@ -119,7 +119,7 @@ export const models = {
   Block,
   BlockedUser,
   Comment,
-  Link,
+  PostModel,
   Message,
   PromoCampaign,
   Preferences,

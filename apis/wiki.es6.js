@@ -1,6 +1,6 @@
 import BaseEndpoint from '../apiBase/BaseEndpoint';
 
-import Link from '../models2/Link';
+import PostModel from '../models2/PostModel';
 import WikiPage from '../models/wikiPage';
 import WikiRevision from '../models/wikiRevision';
 import WikiPageListing from '../models/wikiPageListing';
@@ -51,7 +51,7 @@ export default class VotesEndpoint extends BaseEndpoint {
             // is made.
             if (req.url.includes('/wiki/discussions')) {
               return {
-                conversations: children.map(c => Link.fromJSON(c.data)),
+                conversations: children.map(c => PostModel.fromJSON(c.data)),
                 _type: 't3',
               };
             } else if (req.url.includes('/wiki/revisions')) {

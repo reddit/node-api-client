@@ -1,11 +1,11 @@
 import BaseEndpoint from '../apiBase/BaseEndpoint';
 
 import Comment from '../models2/Comment';
-import Link from '../models2/Link';
+import PostModel from '../models2/PostModel';
 
 const CONSTRUCTORS = {
   t1: Comment,
-  t3: Link,
+  t3: PostModel,
 };
 
 export default class ActivitiesEndpoint extends BaseEndpoint {
