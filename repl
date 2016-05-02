@@ -12,15 +12,11 @@ console.log(`Starting snoode v${packageInfo.version} repl`);
 console.log('Enter `help()` for information.');
 
 require('babel-polyfill');
-const ApiClientModule = require('./apiClient');
-const API = ApiClientModule.default;
-const apiOptions = {
-  eventEmitter: new EventEmitter(),
-  token: process.env.TOKEN,
-  origin: process.env.TOKEN ? 'https://oauth.reddit.com' : 'https://www.reddit.com',
-};
-
-const api = new API(apiOptions);
+const optionsWithAuth = require('./apiClient').optionsWithAuth;
+const apiOptions = Object.assign({},
+  optionsWithAuth({ token: process.env.TOKEN }),
+  { eventEmitter: new EventEmitter() }
+);
 
 const local = repl.start('$> ');
 
@@ -45,23 +41,23 @@ function help () {
   console.log(help);
 }
 
-api.event.on('response', function printResponse (req, res) {
+apiOptions.eventEmitter.on('response', function printResponse (req, res) {
   console.log(`${req.method} ${req.url} returned ${res.statusCode}`);
   local.context.request = res;
   local.context.response = res;
 });
 
-api.event.on('result', function (apiResponse) {
+apiOptions.eventEmitter.on('result', function (apiResponse) {
   local.context.apiResponse = apiResponse;
 });
 
-api.event.on('error', function printResponse (e, req) {
+apiOptions.eventEmitter.on('error', function printResponse (e, req) {
   console.log(`${req.method} ${req.url} returned error:`);
   console.log(e.toString());
   local.context.error = e;
 });
 
-api.event.on('request', function printRequest (req) {
+apiOptions.eventEmitter.on('request', function printRequest (req) {
   console.log(`Initiating ${req.method} to ${req.url}`);
 });
 
@@ -87,7 +83,7 @@ local.context.checkRecordForLoadMore = function checkRecordForLoadMore(r, record
 };
 
 function exportToContext(submoduleName) {
-  const submodule = ApiClientModule[submoduleName];
+  const submodule = require('./apiClient')[submoduleName];
   local.context[submoduleName] = submodule;
 
   Object.keys(submodule).forEach(function(subSubmoduleName) {
@@ -95,7 +91,6 @@ function exportToContext(submoduleName) {
   });
 }
 
-local.context.api = api;
 local.context.apiOptions = apiOptions;
 
 exportToContext('models');

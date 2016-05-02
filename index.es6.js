@@ -1,3 +1,5 @@
+import { makeOptions } from './apiBase/APIRequestUtils';
+
 // import activities from './apis/activities';
 import hidden from './apis/hidden';
 import saved from './apis/saved';
@@ -21,6 +23,7 @@ import links from './apis/links';
 // import multiSubscriptions from './apis/multiSubscriptions';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
+
 import {
   withQueryAndResult,
   afterResponse,
@@ -89,9 +92,6 @@ import Message from './models/message';
 import PromoCampaign from './models/promocampaign';
 import Preferences from './models/preferences';
 import Subreddit from './models2/Subreddit';
-
-
-
 import Subscription from './models/subscription';
 import Vote from './models/vote';
 import Report from './models/report';
@@ -152,44 +152,19 @@ const AUTHED_API_ORIGIN = 'https://oauth.reddit.com';
 // Webpack does not import the library correctly.
 export const __esModule = true;
 
-// shim event emitter. You can pass an instance in to the config
-// but we don't include it be default to keep the payload smaller
-const EventEmitterShim = {
-  emit: () => {},
-  on: () => {},
-  off: () => {},
+const DefaultOptions = {
+  origin: DEFAULT_API_ORIGIN,
+  userAgent: 'snoodev3',
+  appName: 'snoodev3',
+  env: process.env.NODE_ENV || 'dev',
 };
 
-export default class Snoode {
-  static APIs = Object.keys(APIs);
+export default makeOptions(DefaultOptions);
 
-  constructor(config={}) {
-    this.config = {
-      origin: DEFAULT_API_ORIGIN,
-      event: config.eventEmitter || EventEmitterShim,
-      userAgent: 'snoodev2',
-      appName: 'snoodev2',
-      env: 'dev',
-      ...config,
-    };
-
-    this.event = this.config.event;
-
-    for (let a in APIs) {
-      this[a] = APIs[a];
-    }
-  }
-
-  withAuth (token, changeOrigin=true) {
-    return new Snoode({
-      ...this.config,
-      token,
-      origin: changeOrigin ? AUTHED_API_ORIGIN : this.config.origin,
-    });
-  }
-
-  withConfig (config) {
-    // Merge the new config onto the old and return a new instance
-    return new Snoode({...this.config, ...config});
-  }
-}
+export const optionsWithAuth = token => {
+  return {
+    ...DefaultOptions,
+    token,
+    origin: token ? DEFAULT_API_ORIGIN : AUTHED_API_ORIGIN,
+  };
+};
