@@ -7,7 +7,7 @@
 		exports["apiClient.js"] = factory(require("lodash/object"), require("lodash/array"), require("superagent"), require("lodash/collection"), require("lodash/lang"));
 	else
 		root["apiClient.js"] = factory(root["lodash/object"], root["lodash/array"], root["superagent"], root["lodash/collection"], root["lodash/lang"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_41__, __WEBPACK_EXTERNAL_MODULE_42__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_42__, __WEBPACK_EXTERNAL_MODULE_43__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -47,7 +47,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 34);
+/******/ 	return __webpack_require__(__webpack_require__.s = 35);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -104,13 +104,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_superagent__ = __webpack_require__(25);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_superagent__ = __webpack_require__(27);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_superagent___default = __WEBPACK_IMPORTED_MODULE_0_superagent__ && __WEBPACK_IMPORTED_MODULE_0_superagent__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_superagent__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_superagent__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_superagent___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_superagent___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__errors_ValidationError__ = __webpack_require__(9);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__errors_NoModelError__ = __webpack_require__(6);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__APIResponse__ = __webpack_require__(4);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Events__ = __webpack_require__(21);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__errors_ValidationError__ = __webpack_require__(10);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__errors_NoModelError__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__APIResponse__ = __webpack_require__(5);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Events__ = __webpack_require__(23);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -304,8 +304,145 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIResponsePaging__ = __webpack_require__(5);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RedditModel__ = __webpack_require__(14);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__thingTypes__ = __webpack_require__(0);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"].Types;
+
+	var PostModel = function (_RedditModel) {
+	  _inherits(PostModel, _RedditModel);
+
+	  function PostModel() {
+	    _classCallCheck(this, PostModel);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PostModel).apply(this, arguments));
+	  }
+
+	  return PostModel;
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
+
+	PostModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["b"];
+	PostModel.PROPERTIES = {
+	  author: T.string,
+	  cleanPermalink: T.link,
+	  cleanURL: T.link,
+	  distinguished: T.string,
+	  domain: T.string,
+	  downs: T.number,
+	  id: T.string,
+	  likes: T.cubit,
+	  malink: T.link,
+	  name: T.string,
+	  promoted: T.bool,
+	  quarantine: T.bool,
+	  saved: T.bool,
+	  score: T.number,
+	  sticked: T.bool,
+	  thumbnail: T.string,
+	  title: T.string,
+	  ups: T.number,
+
+	  // aliases
+	  authorFlairCSSClass: T.string,
+	  authorFlairText: T.string,
+	  createdUTC: T.number,
+	  hideScore: T.bool,
+	  isSelf: T.bool,
+	  linkFlairCSSClass: T.string,
+	  linkFlairText: T.string,
+	  mediaOembed: T.nop,
+	  modReports: T.array,
+	  numComments: T.number,
+	  secureMedia: T.nop,
+	  selfText: T.string,
+	  sendReplies: T.bool,
+	  userReports: T.array,
+
+	  // derived
+	  expandable: T.bool,
+	  expandedContent: T.html,
+	  preview: T.nop };
+	PostModel.API_ALIASES = {
+	  author_flair_css_class: 'authorFlairCSSClass',
+	  author_flair_text: 'authorFlairText',
+	  created_utc: 'createdUTC',
+	  hide_score: 'hideScore',
+	  is_self: 'isSelf',
+	  link_flair_css_class: 'linkFlairCSSClass',
+	  link_flair_text: 'linkFlairText',
+	  media_oembed: 'mediaOembed',
+	  mod_reports: 'modReports',
+	  num_comments: 'numComments',
+	  permalink: 'cleanPermalink',
+	  secure_media: 'secureMedia',
+	  selftext: 'selfText',
+	  sendreplies: 'sendReplies',
+	  url: 'cleanURL',
+	  user_reports: 'userReports'
+	};
+	PostModel.DERIVED_PROPERTIES = {
+	  expandable: function expandable(data) {
+	    // If it has secure_media, or media, or selftext, it has expandable.
+	    return !!(data.secure_media && data.secure_media.content || data.media_embed && data.media_embed.content || data.selftext);
+	  },
+	  expandedContent: function expandedContent(data) {
+	    var content = void 0;
+
+	    content = data.secure_media_embed && data.secure_media_embed.content || data.media_embed && data.media_embed.content;
+
+	    if (!content && data.selftext) {
+	      content = data.selftext;
+	    }
+
+	    return content;
+	  },
+	  preview: function preview(data) {
+	    if (!(data.promoted && !data.preview)) {
+	      return data.preview;
+	    }
+	    // we build fake preview data for ads and normal thumbnails
+
+	    var resolutions = [];
+
+	    if (data.mobile_ad_url) {
+	      resolutions.push({
+	        url: data.mobile_ad_url,
+	        height: 628,
+	        width: 1200
+	      });
+	    }
+
+	    if (data.thumbnail) {
+	      resolutions.push({
+	        url: data.thumbnail,
+	        height: 140,
+	        width: 140
+	      });
+	    }
+
+	    return {
+	      images: [{
+	        resolutions: resolutions
+	      }]
+	    };
+	  }
+	};
+	/* harmony default export */ exports["a"] = PostModel;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIResponsePaging__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(4);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object___default = __WEBPACK_IMPORTED_MODULE_1_lodash_object__ && __WEBPACK_IMPORTED_MODULE_1_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_object___default });
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -656,19 +793,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = Listing;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = require("lodash/object");
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_collection__ = __webpack_require__(41);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_collection__ = __webpack_require__(42);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_collection___default = __WEBPACK_IMPORTED_MODULE_0_lodash_collection__ && __WEBPACK_IMPORTED_MODULE_0_lodash_collection__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_collection__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_collection__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_collection___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_collection___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_array__ = __webpack_require__(13);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_array__ = __webpack_require__(15);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_array___default = __WEBPACK_IMPORTED_MODULE_1_lodash_array__ && __WEBPACK_IMPORTED_MODULE_1_lodash_array__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_array__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_array__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_array___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_array___default });
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__ = __webpack_require__(0);
@@ -885,13 +1022,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return MergedApiReponse; }});
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_array__ = __webpack_require__(13);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_array__ = __webpack_require__(15);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_array___default = __WEBPACK_IMPORTED_MODULE_0_lodash_array__ && __WEBPACK_IMPORTED_MODULE_0_lodash_array__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_array__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_array__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_array___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_array___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__APIResponse__ = __webpack_require__(4);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__APIResponse__ = __webpack_require__(5);
 	var _this = this;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -984,7 +1121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ Object.defineProperty(exports, "d", {configurable: false, enumerable: true, get: function() { return fetchAll; }});
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__FakeError__ = __webpack_require__(8);
@@ -1014,143 +1151,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__FakeError__["a"]);
 
 	/* harmony default export */ exports["a"] = NoModelError;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RedditModel__ = __webpack_require__(12);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__thingTypes__ = __webpack_require__(0);
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"].Types;
-
-	var PostModel = function (_RedditModel) {
-	  _inherits(PostModel, _RedditModel);
-
-	  function PostModel() {
-	    _classCallCheck(this, PostModel);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PostModel).apply(this, arguments));
-	  }
-
-	  return PostModel;
-	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
-
-	PostModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["b"];
-	PostModel.PROPERTIES = {
-	  author: T.string,
-	  cleanPermalink: T.link,
-	  cleanURL: T.link,
-	  distinguished: T.string,
-	  domain: T.string,
-	  downs: T.number,
-	  id: T.string,
-	  likes: T.cubit,
-	  malink: T.link,
-	  name: T.string,
-	  promoted: T.bool,
-	  quarantine: T.bool,
-	  saved: T.bool,
-	  score: T.number,
-	  sticked: T.bool,
-	  thumbnail: T.string,
-	  title: T.string,
-	  ups: T.number,
-
-	  // aliases
-	  authorFlairCSSClass: T.string,
-	  authorFlairText: T.string,
-	  createdUTC: T.number,
-	  hideScore: T.bool,
-	  isSelf: T.bool,
-	  linkFlairCSSClass: T.string,
-	  linkFlairText: T.string,
-	  mediaOembed: T.nop,
-	  modReports: T.array,
-	  numComments: T.number,
-	  secureMedia: T.nop,
-	  selfText: T.string,
-	  sendReplies: T.bool,
-	  userReports: T.array,
-
-	  // derived
-	  expandable: T.bool,
-	  expandedContent: T.html,
-	  preview: T.nop };
-	PostModel.API_ALIASES = {
-	  author_flair_css_class: 'authorFlairCSSClass',
-	  author_flair_text: 'authorFlairText',
-	  created_utc: 'createdUTC',
-	  hide_score: 'hideScore',
-	  is_self: 'isSelf',
-	  link_flair_css_class: 'linkFlairCSSClass',
-	  link_flair_text: 'linkFlairText',
-	  media_oembed: 'mediaOembed',
-	  mod_reports: 'modReports',
-	  num_comments: 'numComments',
-	  permalink: 'cleanPermalink',
-	  secure_media: 'secureMedia',
-	  selftext: 'selfText',
-	  sendreplies: 'sendReplies',
-	  url: 'cleanURL',
-	  user_reports: 'userReports'
-	};
-	PostModel.DERIVED_PROPERTIES = {
-	  expandable: function expandable(data) {
-	    // If it has secure_media, or media, or selftext, it has expandable.
-	    return !!(data.secure_media && data.secure_media.content || data.media_embed && data.media_embed.content || data.selftext);
-	  },
-	  expandedContent: function expandedContent(data) {
-	    var content = void 0;
-
-	    content = data.secure_media_embed && data.secure_media_embed.content || data.media_embed && data.media_embed.content;
-
-	    if (!content && data.selftext) {
-	      content = data.selftext;
-	    }
-
-	    return content;
-	  },
-	  preview: function preview(data) {
-	    if (!(data.promoted && !data.preview)) {
-	      return data.preview;
-	    }
-	    // we build fake preview data for ads and normal thumbnails
-
-	    var resolutions = [];
-
-	    if (data.mobile_ad_url) {
-	      resolutions.push({
-	        url: data.mobile_ad_url,
-	        height: 628,
-	        width: 1200
-	      });
-	    }
-
-	    if (data.thumbnail) {
-	      resolutions.push({
-	        url: data.thumbnail,
-	        height: 140,
-	        width: 140
-	      });
-	    }
-
-	    return {
-	      images: [{
-	        resolutions: resolutions
-	      }]
-	    };
-	  }
-	};
-	/* harmony default export */ exports["a"] = PostModel;
 
 /***/ },
 /* 8 */
@@ -1189,6 +1189,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
+	var NotImplementedError = function (_Error) {
+	  _inherits(NotImplementedError, _Error);
+
+	  function NotImplementedError(method, endpoint) {
+	    _classCallCheck(this, NotImplementedError);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NotImplementedError).call(this, method, endpoint));
+
+	    _this.name = 'NotImplementedError';
+	    _this.message = 'Method ' + method + ' not implemented for api endpoint ' + endpoint;
+	    _this.status = 405;
+	    return _this;
+	  }
+
+	  return NotImplementedError;
+	}(Error);
+
+	/* harmony default export */ exports["a"] = NotImplementedError;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__FakeError__ = __webpack_require__(8);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
 	var ValidationError = function (_FakeError) {
 	  _inherits(ValidationError, _FakeError);
 
@@ -1211,16 +1243,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = ValidationError;
 
 /***/ },
-/* 10 */
+/* 11 */,
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RedditModel__ = __webpack_require__(12);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apiBase_Record__ = __webpack_require__(22);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__thingTypes__ = __webpack_require__(0);
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RedditModel__ = __webpack_require__(14);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__thingTypes__ = __webpack_require__(0);
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -1230,99 +1258,101 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-
 	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"].Types;
 
-	var Comment = function (_RedditModel) {
-	  _inherits(Comment, _RedditModel);
+	// If the data doesn't have all of the keys, get the full subreddit data
+	// and then merge in the changes and submit _that_. The API requires the
+	// full object be sent.
+	// Whoever uses this new model for posting should confirm that
+	// this is the full list of edit fields, you may just be able to
+	// say something like
+	var EDIT_FIELDS = ['default_set', 'subreddit_id', 'domain', 'show_media', 'wiki_edit_age', 'submit_text', 'spam_links', 'title', 'collapse_deleted_comments', 'wikimode', 'over_18', 'related_subreddits', 'suggested_comment_sort', 'description', 'submit_link_label', 'spam_comments', 'spam_selfposts', 'submit_text_label', 'key_color', 'language', 'wiki_edit_karma', 'hide_ads', 'header_hover_text', 'public_traffic', 'public_description', 'comment_score_hide_mins', 'subreddit_type', 'exclude_banned_modqueue', 'content_options'].sort();
 
-	  function Comment() {
-	    _classCallCheck(this, Comment);
+	var Subreddit = function (_RedditModel) {
+	  _inherits(Subreddit, _RedditModel);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Comment).apply(this, arguments));
+	  function Subreddit() {
+	    _classCallCheck(this, Subreddit);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Subreddit).apply(this, arguments));
 	  }
 
-	  _createClass(Comment, [{
-	    key: 'makeUUID',
-	    value: function makeUUID(data) {
-	      if (data.name === 't1__' && data.parent_id) {
-	        // This is a stub for load more, parentId is needed to fetch more
-	        return data.parent_id;
-	      }
-
-	      return data.name;
-	    }
-	  }, {
-	    key: 'toRecord',
-	    value: function toRecord() {
-	      if (this.uuid === this.name) {
-	        return _get(Object.getPrototypeOf(Comment.prototype), 'toRecord', this).call(this);
-	      }
-
-	      // otherwise its a load more stub for super nested comments
-	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apiBase_Record__["a"](/* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["h"], this.parentId);
-	    }
-	  }]);
-
-	  return Comment;
+	  return Subreddit;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
 
-	Comment.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["a"];
-	Comment.PROPERTIES = {
-	  archived: T.bool,
-	  author: T.string,
-	  authorFlairCSSClass: T.string,
-	  authorFlairText: T.string,
-	  children: T.nop,
-	  cleanPermalink: T.link,
-	  controversiality: T.number,
-	  distinguished: T.string,
-	  downs: T.number,
-	  edited: T.bool,
-	  gilded: T.number,
-	  id: T.string,
-	  likes: T.cubit,
-	  name: T.string,
-	  replies: T.array,
-	  saved: T.bool,
-	  score: T.number,
-	  stickied: T.bool,
-	  subreddit: T.string,
-	  ups: T.number,
-
-	  // aliases
-	  approvedBy: T.string,
-	  bannedBy: T.string,
-	  bodyHTML: T.html,
+	Subreddit.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["e"];
+	Subreddit.fields = EDIT_FIELDS;
+	Subreddit.PROPERTIES = {
+	  accountsActive: T.number,
+	  bannerImage: T.string,
+	  bannerSize: T.arrayOf(T.number),
+	  collapseDeletedComments: T.bool,
+	  commentScoreHideMins: T.number,
 	  createdUTC: T.number,
-	  linkId: T.string,
-	  modReports: T.array,
-	  numReports: T.number,
-	  parentId: T.string,
-	  reportReasons: T.array,
-	  scoreHidden: T.bool,
-	  subredditId: T.string,
-	  userReports: T.array
+	  description: T.string,
+	  displayName: T.string,
+	  headerImage: T.string,
+	  headerSize: T.arrayOf(T.number),
+	  headerTitle: T.string,
+	  hideAds: T.bool,
+	  iconImage: T.string,
+	  iconSize: T.arrayOf(T.number),
+	  id: T.string,
+	  keyColor: T.string,
+	  lang: T.string,
+	  name: T.string,
+	  over18: T.bool,
+	  publicDescription: T.string,
+	  publicTraffic: T.nop,
+	  quarantine: T.bool,
+	  relatedSubreddits: T.array,
+	  submitLinkLabel: T.string,
+	  submitText: T.string,
+	  submitTextLabel: T.string,
+	  subredditType: T.string,
+	  subscribers: T.number,
+	  suggestedCommentSort: T.string,
+	  title: T.string,
+	  url: T.string,
+	  userIsBanned: T.bool,
+	  userIsContributor: T.bool,
+	  userIsModerator: T.bool,
+	  userIsMuted: T.bool,
+	  userSrThemeEnabled: T.bool,
+	  wikiEnabled: T.bool
 	};
-	Comment.API_ALIASES = {
-	  approved_by: 'approvedBy',
-	  banned_by: 'bannedBy',
-	  body_html: 'bodyHTML',
+	Subreddit.API_ALIASES = {
+	  accounts_active: 'accountsActive',
+	  banner_img: 'bannerImage',
+	  banner_size: 'bannerSize',
+	  collapse_deleted_comments: 'collapseDeletedComments',
+	  comment_score_hide_mins: 'commentScoreHideMins',
 	  created_utc: 'createdUTC',
-	  link_id: 'linkId',
-	  mod_reports: 'modReports',
-	  num_reports: 'numReports',
-	  parent_id: 'parentId',
-	  permalink: 'cleanPermalink',
-	  report_reasons: 'reportReasons',
-	  score_hidden: 'scoreHidden',
-	  subreddit_id: 'subredditId',
-	  user_reports: 'userReports'
+	  display_name: 'displayName',
+	  header_img: 'headerImage',
+	  header_size: 'headerSize',
+	  header_title: 'headerTitle',
+	  hide_ads: 'hideAds',
+	  icon_img: 'iconImage',
+	  icon_size: 'iconSize',
+	  public_description: 'publicDescription',
+	  public_traffic: 'publicTraffic',
+	  related_subreddits: 'relatedSubreddits',
+	  submit_link_label: 'submitLinkLabel',
+	  submit_text_label: 'submitTextLabel',
+	  submit_text: 'submitText',
+	  subreddit_type: 'subredditType',
+	  user_is_banned: 'userIsBanned',
+	  user_is_contributor: 'userIsContributor',
+	  user_is_moderator: 'userIsModerator',
+	  user_is_muted: 'userIsMuted',
+	  user_sr_theme_enabled: 'userSrThemeEnabled',
+	  wiki_enabled: 'wikiEnabled'
 	};
-	/* harmony default export */ exports["a"] = Comment;
+	/* harmony default export */ exports["a"] = Subreddit;
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__FakeError__ = __webpack_require__(8);
@@ -1402,16 +1432,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = ResponseError;
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_Model__ = __webpack_require__(33);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_Model__ = __webpack_require__(34);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__thingTypes__ = __webpack_require__(0);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_isThingID__ = __webpack_require__(36);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_markdown__ = __webpack_require__(37);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_unredditifyLink__ = __webpack_require__(38);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mockgenerators_mockHTML__ = __webpack_require__(39);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mockgenerators_mockLink__ = __webpack_require__(40);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_isThingID__ = __webpack_require__(37);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_markdown__ = __webpack_require__(38);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_unredditifyLink__ = __webpack_require__(39);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mockgenerators_mockHTML__ = __webpack_require__(40);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mockgenerators_mockLink__ = __webpack_require__(41);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1493,48 +1523,134 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = RedditModel;
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = require("lodash/array");
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__FakeError__ = __webpack_require__(8);
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseContentEndpoint__ = __webpack_require__(25);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_object__ = __webpack_require__(4);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_object___default = __WEBPACK_IMPORTED_MODULE_2_lodash_object__ && __WEBPACK_IMPORTED_MODULE_2_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_object__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_2_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_2_lodash_object___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_CommentModel__ = __webpack_require__(45);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models2_PostModel__ = __webpack_require__(2);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__ = __webpack_require__(36);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
 
-	var NotImplementedError = function (_Error) {
-	  _inherits(NotImplementedError, _Error);
 
-	  function NotImplementedError(method, endpoint) {
-	    _classCallCheck(this, NotImplementedError);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NotImplementedError).call(this, method, endpoint));
 
-	    _this.name = 'NotImplementedError';
-	    _this.message = 'Method ' + method + ' not implemented for api endpoint ' + endpoint;
-	    _this.status = 405;
-	    return _this;
+
+
+
+
+	var formatQuery = function formatQuery(query, method) {
+	  /* harmony import */__WEBPACK_IMPORTED_MODULE_1__BaseContentEndpoint__["a"].bind()(query, method);
+
+	  if (query.ids) {
+	    query.children = query.ids.join(',');
+	    query.api_type = 'json';
+	    query.link_id = query.linkId;
+
+	    delete query.ids;
+	    delete query.linkId;
 	  }
 
-	  return NotImplementedError;
-	}(Error);
+	  return query;
+	};
 
-	/* harmony default export */ exports["a"] = NotImplementedError;
+	var getPath = function getPath(query) {
+	  if (query.user) {
+	    return 'user/' + query.user + '/comments.json';
+	  } else if (query.ids) {
+	    return 'api/morechildren.json';
+	  } else {
+	    return 'comments/' + (query.id || query.linkId).replace(/^t3_/, '') + '.json';
+	  }
+	};
+
+	var parseGetBody = function parseGetBody(res, apiResponse, req) {
+	  var query = req.query;
+	  var body = res.body;
+
+	  var comments = [];
+
+	  if (Array.isArray(body)) {
+	    // The first part of the response is a link
+	    var linkData = body[0].data;
+	    if (linkData && linkData.children && linkData.children.length) {
+	      linkData.children.forEach(function (link) {
+	        apiResponse.addModel(/* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_PostModel__["a"].fromJSON(link.data));
+	      });
+	    }
+
+	    comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body[1].data.children));
+	  } else if (body.json && body.json.data) {
+	    if (query.children) {
+	      // treeify 'load more comments' replies
+	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body.json.data.things));
+	    } else {
+	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body.json.data.things);
+	    }
+	  }
+
+	  /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["c"].bind()(comments, function (commentJSON, isTopLevel) {
+	    // parsing is done bottom up, comment models are immutable
+	    // but they'll rely on the records
+	    var comment = /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_CommentModel__["a"].fromJSON(commentJSON);
+	    if (isTopLevel) {
+	      apiResponse.addResult(comment);
+	    } else {
+	      apiResponse.addModel(comment);
+	    }
+
+	    // this sets replies to be records for consistency
+	    return comment.toRecord();
+	  });
+	};
+
+	var parsePostBody = function parsePostBody(res, apiResponse) {
+	  var body = res.body;
+
+
+	  if (/* harmony import */__WEBPACK_IMPORTED_MODULE_2_lodash_object__["has"].bind()(body, 'json.data.things.0.data')) {
+	    var comment = body.json.data.things[0].data;
+	    apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_CommentModel__["a"].fromJSON(comment));
+	  }
+	};
+
+	/* harmony default export */ exports["a"] = {
+	  get: function get(apiOptions, query) {
+	    var path = getPath(query);
+	    var apiQuery = formatQuery(_extends({}, query));
+
+	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'get', path, apiQuery, query, parseGetBody);
+	  },
+	  post: function post(apiOptions, data) {
+	    var path = 'api/comment';
+	    var postData = {
+	      api_type: 'json',
+	      thing_id: data.thingId,
+	      text: data.text
+	    };
+
+	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'post', path, postData, data, parsePostBody);
+	  }
+	};
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(26);
 
 
 	var getPath = function getPath(query) {
@@ -1544,125 +1660,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unhide', 'api/hide');
 
 /***/ },
-/* 16 */
+/* 18 */,
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models2_PostModel__ = __webpack_require__(7);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BaseContentEndpoint__ = __webpack_require__(23);
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-
-	var getPath = function getPath(query) {
-	  if (query.user) {
-	    return 'user/' + query.user + '/submitted.json';
-	  } else if (query.id) {
-	    return 'by_id/' + query.id + '.json';
-	  } else if (query.ids) {
-	    return 'by_id/' + query.query.ids.join(',') + '.json';
-	  } else if (query.subredditName) {
-	    return 'r/' + query.subredditName + '.json';
-	  } else if (query.multi) {
-	    return 'user/' + query.multiUser + '/m/' + query.multi + '.json';
-	  }
-
-	  query.sort = query.sort || 'hot';
-
-	  return query.sort + '.json';
-	};
-
-	var formatQuery = function formatQuery(query, method) {
-	  /* harmony import */__WEBPACK_IMPORTED_MODULE_2__BaseContentEndpoint__["a"].bind()(query, method);
-
-	  if (method !== 'patch') {
-	    query.feature = 'link_preview';
-	    query.sr_detail = 'true';
-	  }
-
-	  if (method === 'del') {
-	    query._method = 'post';
-	  }
-
-	  return query;
-	};
-
-	var formatPostData = function formatPostData(data) {
-	  var postData = {
-	    api_type: 'json',
-	    thing_id: data.thingId,
-	    title: data.title,
-	    kind: data.kind,
-	    sendreplies: data.sendreplies,
-	    sr: data.sr,
-	    iden: data.iden,
-	    captcha: data.captcha,
-	    resubmit: data.resubmit
-	  };
-
-	  if (data.text) {
-	    postData.text = data.text;
-	  } else if (data.url) {
-	    postData.url = data.url;
-	  }
-
-	  return postData;
-	};
-
-	var parseBody = function parseBody(res, apiResponse, req, method) {
-	  var body = res.body;
-
-
-	  if (method === 'get') {
-	    var data = body.data;
-
-
-	    if (data && data.children && data.children[0]) {
-	      if (data.children.length === 1) {
-	        apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(data.children[0].data));
-	        return;
-	      } else {
-	        data.children.forEach(function (c) {
-	          return apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(c.data));
-	        });
-	        return;
-	      }
-	    } else if (data) {
-	      return;
-	    }
-	  } else if (method !== 'del') {
-	    if (body.json && body.json.errors.length === 0) {
-	      apiResponse.addResult(body.json.data);
-	      return;
-	    } else {
-	      throw body.json;
-	    }
-	  }
-	};
-
-	/* harmony default export */ exports["a"] = {
-	  get: function get(apiOptions, query) {
-	    var path = getPath(query);
-	    var apiQuery = formatQuery(_extends({}, query), 'get');
-
-	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'get', path, apiQuery, query, parseBody);
-	  },
-	  post: function post(apiOptions, data) {
-	    var path = 'api/submit';
-	    var apiData = formatPostData(data);
-
-	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'post', path, apiData, data, parseBody);
-	  }
-	};
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(26);
 
 
 	var getPath = function getPath(query) {
@@ -1672,17 +1674,95 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unsave', 'api/save');
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models2_PostModel__ = __webpack_require__(2);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_Subreddit__ = __webpack_require__(12);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_thingTypes__ = __webpack_require__(0);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+
+
+
+	var getPath = function getPath(query) {
+	  var path = '';
+
+	  if (query.subreddit) {
+	    path = 'r/' + query.subreddit + '/';
+	  }
+
+	  return path + 'search.json';
+	};
+
+	var formatQuery = function formatQuery(query) {
+	  if (query.subreddit) {
+	    query.restrict_sr = 'on';
+	    delete query.subreddit;
+	  }
+
+	  return query;
+	};
+
+	var listsFromResponse = function listsFromResponse(res) {
+	  var body = res.body;
+
+	  if (!body) {
+	    return [];
+	  }
+
+	  // If only one type is returned body will be an object;
+	  return Array.isArray(body) ? body : [body];
+	};
+
+	var parseBody = function parseBody(res, apiResponse) {
+	  var lists = listsFromResponse(res);
+	  console.log('lists.length?', lists.length);
+	  console.log(res.body);
+
+	  lists.forEach(function (listing) {
+	    if (listing.data.children.length) {
+	      if (listing.data.children[0].kind === /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_thingTypes__["i"]) {
+	        listing.data.children.forEach(function (link) {
+	          apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(link.data));
+	        });
+
+	        apiResponse.meta.after = listing.data.after;
+	        apiResponse.meta.before = listing.data.before;
+	      } else {
+	        listing.data.children.forEach(function (subreddit) {
+	          apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Subreddit__["a"].fromJSON(subreddit.data));
+	        });
+	      }
+	    }
+	  });
+	};
+
+	/* harmony default export */ exports["a"] = {
+	  get: function get(apiOptions, query) {
+	    var path = getPath(query);
+	    var apiQuery = formatQuery(_extends({}, query));
+
+	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'get', path, apiQuery, query, parseBody);
+	  }
+	};
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(4);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object___default = __WEBPACK_IMPORTED_MODULE_1_lodash_object__ && __WEBPACK_IMPORTED_MODULE_1_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_object___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_lang__ = __webpack_require__(42);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_lang__ = __webpack_require__(43);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_lang___default = __WEBPACK_IMPORTED_MODULE_2_lodash_lang__ && __WEBPACK_IMPORTED_MODULE_2_lodash_lang__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_lang__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_lang__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_2_lodash_lang___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_2_lodash_lang___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_Subreddit__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_Subreddit__ = __webpack_require__(12);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -1812,11 +1892,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 19 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_SavedEndpoint__ = __webpack_require__(17);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_SavedEndpoint__ = __webpack_require__(19);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -1866,115 +1946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = SavedPostsAndComments;
 
 /***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RedditModel__ = __webpack_require__(12);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__thingTypes__ = __webpack_require__(0);
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"].Types;
-
-	// If the data doesn't have all of the keys, get the full subreddit data
-	// and then merge in the changes and submit _that_. The API requires the
-	// full object be sent.
-	// Whoever uses this new model for posting should confirm that
-	// this is the full list of edit fields, you may just be able to
-	// say something like
-	var EDIT_FIELDS = ['default_set', 'subreddit_id', 'domain', 'show_media', 'wiki_edit_age', 'submit_text', 'spam_links', 'title', 'collapse_deleted_comments', 'wikimode', 'over_18', 'related_subreddits', 'suggested_comment_sort', 'description', 'submit_link_label', 'spam_comments', 'spam_selfposts', 'submit_text_label', 'key_color', 'language', 'wiki_edit_karma', 'hide_ads', 'header_hover_text', 'public_traffic', 'public_description', 'comment_score_hide_mins', 'subreddit_type', 'exclude_banned_modqueue', 'content_options'].sort();
-
-	var Subreddit = function (_RedditModel) {
-	  _inherits(Subreddit, _RedditModel);
-
-	  function Subreddit() {
-	    _classCallCheck(this, Subreddit);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Subreddit).apply(this, arguments));
-	  }
-
-	  return Subreddit;
-	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
-
-	Subreddit.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["e"];
-	Subreddit.fields = EDIT_FIELDS;
-	Subreddit.PROPERTIES = {
-	  accountsActive: T.number,
-	  bannerImage: T.string,
-	  bannerSize: T.arrayOf(T.number),
-	  collapseDeletedComments: T.bool,
-	  commentScoreHideMins: T.number,
-	  createdUTC: T.number,
-	  description: T.string,
-	  displayName: T.string,
-	  headerImage: T.string,
-	  headerSize: T.arrayOf(T.number),
-	  headerTitle: T.string,
-	  hideAds: T.bool,
-	  iconImage: T.string,
-	  iconSize: T.arrayOf(T.number),
-	  id: T.string,
-	  keyColor: T.string,
-	  lang: T.string,
-	  name: T.string,
-	  over18: T.bool,
-	  publicDescription: T.string,
-	  publicTraffic: T.nop,
-	  quarantine: T.bool,
-	  relatedSubreddits: T.array,
-	  submitLinkLabel: T.string,
-	  submitText: T.string,
-	  submitTextLabel: T.string,
-	  subredditType: T.string,
-	  subscribers: T.number,
-	  suggestedCommentSort: T.string,
-	  title: T.string,
-	  url: T.string,
-	  userIsBanned: T.bool,
-	  userIsContributor: T.bool,
-	  userIsModerator: T.bool,
-	  userIsMuted: T.bool,
-	  userSrThemeEnabled: T.bool,
-	  wikiEnabled: T.bool
-	};
-	Subreddit.API_ALIASES = {
-	  accounts_active: 'accountsActive',
-	  banner_img: 'bannerImage',
-	  banner_size: 'bannerSize',
-	  collapse_deleted_comments: 'collapseDeletedComments',
-	  comment_score_hide_mins: 'commentScoreHideMins',
-	  created_utc: 'createdUTC',
-	  display_name: 'displayName',
-	  header_img: 'headerImage',
-	  header_size: 'headerSize',
-	  header_title: 'headerTitle',
-	  hide_ads: 'hideAds',
-	  icon_img: 'iconImage',
-	  icon_size: 'iconSize',
-	  public_description: 'publicDescription',
-	  public_traffic: 'publicTraffic',
-	  related_subreddits: 'relatedSubreddits',
-	  submit_link_label: 'submitLinkLabel',
-	  submit_text_label: 'submitTextLabel',
-	  submit_text: 'submitText',
-	  subreddit_type: 'subredditType',
-	  user_is_banned: 'userIsBanned',
-	  user_is_contributor: 'userIsContributor',
-	  user_is_moderator: 'userIsModerator',
-	  user_is_muted: 'userIsMuted',
-	  user_sr_theme_enabled: 'userSrThemeEnabled',
-	  wiki_enabled: 'wikiEnabled'
-	};
-	/* harmony default export */ exports["a"] = Subreddit;
-
-/***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony default export */ exports["a"] = {
@@ -1985,7 +1957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2000,14 +1972,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = Record;
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_object__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_object__ = __webpack_require__(4);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_object___default = __WEBPACK_IMPORTED_MODULE_0_lodash_object__ && __WEBPACK_IMPORTED_MODULE_0_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_lodash_object__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_lodash_object___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apiBase_BaseEndpoint__ = __webpack_require__(32);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apiBase_errors_NoModelError__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apiBase_BaseEndpoint__ = __webpack_require__(33);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apiBase_errors_NoModelError__ = __webpack_require__(7);
 	var _this2 = this;
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -2166,15 +2138,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* unused harmony default export */ var _unused_webpack_default_export = BaseContentEndpoint;
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(4);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object___default = __WEBPACK_IMPORTED_MODULE_1_lodash_object__ && __WEBPACK_IMPORTED_MODULE_1_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_object___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_Comment__ = __webpack_require__(10);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_PostModel__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_CommentModel__ = __webpack_require__(45);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_PostModel__ = __webpack_require__(2);
 
 
 
@@ -2183,7 +2155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var CONSTRUCTORS = {
-	  t1: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Comment__["a"],
+	  t1: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_CommentModel__["a"],
 	  t3: /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_PostModel__["a"]
 	};
 
@@ -2252,136 +2224,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports) {
 
 	module.exports = require("superagent");
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BaseContentEndpoint__ = __webpack_require__(23);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_object__ = __webpack_require__(3);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_object___default = __WEBPACK_IMPORTED_MODULE_2_lodash_object__ && __WEBPACK_IMPORTED_MODULE_2_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_object__; }
-	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_2_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_2_lodash_object___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_Comment__ = __webpack_require__(10);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models2_PostModel__ = __webpack_require__(7);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__ = __webpack_require__(35);
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-
-
-
-
-
-
-	var formatQuery = function formatQuery(query, method) {
-	  /* harmony import */__WEBPACK_IMPORTED_MODULE_1__BaseContentEndpoint__["a"].bind()(query, method);
-
-	  if (query.ids) {
-	    query.children = query.ids.join(',');
-	    query.api_type = 'json';
-	    query.link_id = query.linkId;
-
-	    delete query.ids;
-	    delete query.linkId;
-	  }
-
-	  return query;
-	};
-
-	var getPath = function getPath(query) {
-	  if (query.user) {
-	    return 'user/' + query.user + '/comments.json';
-	  } else if (query.ids) {
-	    return 'api/morechildren.json';
-	  } else {
-	    return 'comments/' + (query.id || query.linkId).replace(/^t3_/, '') + '.json';
-	  }
-	};
-
-	var parseGetBody = function parseGetBody(res, apiResponse, req) {
-	  var query = req.query;
-	  var body = res.body;
-
-	  var comments = [];
-
-	  if (Array.isArray(body)) {
-	    // The first part of the response is a link
-	    var linkData = body[0].data;
-	    if (linkData && linkData.children && linkData.children.length) {
-	      linkData.children.forEach(function (link) {
-	        apiResponse.addModel(/* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_PostModel__["a"].fromJSON(link.data));
-	      });
-	    }
-
-	    comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body[1].data.children));
-	  } else if (body.json && body.json.data) {
-	    if (query.children) {
-	      // treeify 'load more comments' replies
-	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body.json.data.things));
-	    } else {
-	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body.json.data.things);
-	    }
-	  }
-
-	  /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["c"].bind()(comments, function (commentJSON, isTopLevel) {
-	    // parsing is done bottom up, comment models are immutable
-	    // but they'll rely on the records
-	    var comment = /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_Comment__["a"].fromJSON(commentJSON);
-	    if (isTopLevel) {
-	      apiResponse.addResult(comment);
-	    } else {
-	      apiResponse.addModel(comment);
-	    }
-
-	    // this sets replies to be records for consistency
-	    return comment.toRecord();
-	  });
-	};
-
-	var parsePostBody = function parsePostBody(res, apiResponse) {
-	  var body = res.body;
-
-
-	  if (/* harmony import */__WEBPACK_IMPORTED_MODULE_2_lodash_object__["has"].bind()(body, 'json.data.things.0.data')) {
-	    var comment = body.json.data.things[0].data;
-	    apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_Comment__["a"].fromJSON(comment));
-	  }
-	};
-
-	/* harmony default export */ exports["a"] = {
-	  get: function get(apiOptions, query) {
-	    var path = getPath(query);
-	    var apiQuery = formatQuery(_extends({}, query));
-
-	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'get', path, apiQuery, query, parseGetBody);
-	  },
-	  post: function post(apiOptions, data) {
-	    var path = 'api/comment';
-	    var postData = {
-	      api_type: 'json',
-	      thing_id: data.thingId,
-	      text: data.text
-	    };
-
-	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'post', path, postData, data, parsePostBody);
-	  }
-	};
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_CommentsEndpoint__ = __webpack_require__(26);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apiBase_errors_NotImplementedError__ = __webpack_require__(14);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_CommentsEndpoint__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apiBase_errors_NotImplementedError__ = __webpack_require__(9);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -2488,11 +2342,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = CommentsPage;
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedPostsAndComments__ = __webpack_require__(19);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__ = __webpack_require__(15);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedPostsAndComments__ = __webpack_require__(22);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__ = __webpack_require__(17);
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -2516,11 +2370,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	HiddenPostsAndComments.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_HiddenEndpoint__["a"];
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_PostEndpoint__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_PostsEndpoint__ = __webpack_require__(44);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -2566,19 +2420,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return PostsFromSubreddit;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__Listing__["a"]);
 
-	PostsFromSubreddit.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_PostEndpoint__["a"];
+	PostsFromSubreddit.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_PostsEndpoint__["a"];
 	/* harmony default export */ exports["a"] = PostsFromSubreddit;
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_SearchEndpoint__ = __webpack_require__(43);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_array__ = __webpack_require__(13);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_SearchEndpoint__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_array__ = __webpack_require__(15);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_array___default = __WEBPACK_IMPORTED_MODULE_2_lodash_array__ && __WEBPACK_IMPORTED_MODULE_2_lodash_array__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_array__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2_lodash_array__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_2_lodash_array___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_2_lodash_array___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__apiBase_APIResponsePaging__ = __webpack_require__(5);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__apiBase_APIResponsePaging__ = __webpack_require__(6);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__ = __webpack_require__(0);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -2706,12 +2560,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = SearchQuery;
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIResponsePaging__ = __webpack_require__(5);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Listing__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_SubredditEndpoint__ = __webpack_require__(18);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIResponsePaging__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Listing__ = __webpack_require__(3);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_SubredditEndpoint__ = __webpack_require__(21);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
@@ -2841,17 +2695,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	ContributingSubreddits.view = 'mine/contributor';
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_superagent__ = __webpack_require__(25);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_superagent__ = __webpack_require__(27);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_superagent___default = __WEBPACK_IMPORTED_MODULE_0_superagent__ && __WEBPACK_IMPORTED_MODULE_0_superagent__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_superagent__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_superagent__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0_superagent___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0_superagent___default });
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__errors_ValidationError__ = __webpack_require__(9);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__errors_NoModelError__ = __webpack_require__(6);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__errors_NotImplementedError__ = __webpack_require__(14);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__APIResponse__ = __webpack_require__(4);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Events__ = __webpack_require__(21);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__errors_ValidationError__ = __webpack_require__(10);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__errors_NoModelError__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__errors_NotImplementedError__ = __webpack_require__(9);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__APIResponse__ = __webpack_require__(5);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Events__ = __webpack_require__(23);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _this = this;
@@ -3200,10 +3054,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = StaticAPIBase;
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Record__ = __webpack_require__(22);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Record__ = __webpack_require__(24);
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3478,31 +3332,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony default export */ exports["a"] = Model;
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_CommentsEndpoint__ = __webpack_require__(26);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_HiddenEndpoint__ = __webpack_require__(15);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__apis_PostEndpoint__ = __webpack_require__(16);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__apis_SavedEndpoint__ = __webpack_require__(17);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__apis_SearchEndpoint__ = __webpack_require__(43);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__apis_SubredditEndpoint__ = __webpack_require__(18);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__ = __webpack_require__(4);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__apiBase_APIResponsePaging__ = __webpack_require__(5);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__apiBase_errors_NoModelError__ = __webpack_require__(6);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apiBase_errors_ResponseError__ = __webpack_require__(11);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apiBase_errors_ValidationError__ = __webpack_require__(9);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__apiBase_errors_NotImplementedError__ = __webpack_require__(14);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models2_Comment__ = __webpack_require__(10);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models2_PostModel__ = __webpack_require__(7);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models2_Subreddit__ = __webpack_require__(20);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__collections_SubredditLists__ = __webpack_require__(31);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__collections_CommentsPage__ = __webpack_require__(27);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__collections_HiddenPostsAndComments__ = __webpack_require__(28);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__collections_PostsFromSubreddit__ = __webpack_require__(29);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__collections_SavedPostsAndComments__ = __webpack_require__(19);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__collections_SearchQuery__ = __webpack_require__(30);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_CommentsEndpoint__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_HiddenEndpoint__ = __webpack_require__(17);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__apis_PostsEndpoint__ = __webpack_require__(44);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__apis_SavedEndpoint__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__apis_SearchEndpoint__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__apis_SubredditEndpoint__ = __webpack_require__(21);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__ = __webpack_require__(5);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__apiBase_Model__ = __webpack_require__(34);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__apiBase_Record__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apiBase_errors_NoModelError__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__apiBase_errors_ResponseError__ = __webpack_require__(13);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ValidationError__ = __webpack_require__(10);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__apiBase_errors_NotImplementedError__ = __webpack_require__(9);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models2_CommentModel__ = __webpack_require__(45);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models2_PostModel__ = __webpack_require__(2);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__models2_Subreddit__ = __webpack_require__(12);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__ = __webpack_require__(32);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__collections_CommentsPage__ = __webpack_require__(28);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__collections_HiddenPostsAndComments__ = __webpack_require__(29);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__collections_PostsFromSubreddit__ = __webpack_require__(30);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__collections_SavedPostsAndComments__ = __webpack_require__(22);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__collections_SearchQuery__ = __webpack_require__(31);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -3533,6 +3389,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
+
+
 	var APIResponses = {
 	  APIResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__["APIResponse"],
 	  MergedApiReponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__["b"]
@@ -3540,14 +3398,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ Object.defineProperty(exports, "APIResponses", {configurable: false, enumerable: true, get: function() { return APIResponses; }});
 
 	var APIResponsePaging = {
-	  withQueryAndResult: /* harmony import */__WEBPACK_IMPORTED_MODULE_8__apiBase_APIResponsePaging__["a"],
-	  afterResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_8__apiBase_APIResponsePaging__["b"],
-	  beforeResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_8__apiBase_APIResponsePaging__["c"],
-	  fetchAll: /* harmony import */__WEBPACK_IMPORTED_MODULE_8__apiBase_APIResponsePaging__["d"]
+	  withQueryAndResult: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["a"],
+	  afterResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["b"],
+	  beforeResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["c"],
+	  fetchAll: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["d"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "APIResponsePaging", {configurable: false, enumerable: true, get: function() { return APIResponsePaging; }});
 
-	var APIs = {
+	var endpoints = {
 	  // accounts,
 	  // activities,
 	  // captcha,
@@ -3565,12 +3423,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // wiki,
 	  CommentsEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_CommentsEndpoint__["a"],
 	  HiddenEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__apis_HiddenEndpoint__["a"],
-	  PostEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_3__apis_PostEndpoint__["a"],
+	  PostsEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_3__apis_PostsEndpoint__["a"],
 	  SavedEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_4__apis_SavedEndpoint__["a"],
 	  SearchEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_5__apis_SearchEndpoint__["a"],
 	  SubredditEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_6__apis_SubredditEndpoint__["a"]
 	};
-	/* harmony export */ Object.defineProperty(exports, "APIs", {configurable: false, enumerable: true, get: function() { return APIs; }});
+	/* harmony export */ Object.defineProperty(exports, "endpoints", {configurable: false, enumerable: true, get: function() { return endpoints; }});
 
 
 
@@ -3579,11 +3437,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var errors = {
-	  NoModelError: /* harmony import */__WEBPACK_IMPORTED_MODULE_9__apiBase_errors_NoModelError__["a"],
-	  ValidationError: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_errors_ValidationError__["a"],
-	  ResponseError: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_errors_ResponseError__["a"],
-	  DisconnectedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_errors_ResponseError__["b"],
-	  NotImplementedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_12__apiBase_errors_NotImplementedError__["a"]
+	  NoModelError: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_errors_NoModelError__["a"],
+	  ValidationError: /* harmony import */__WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ValidationError__["a"],
+	  ResponseError: /* harmony import */__WEBPACK_IMPORTED_MODULE_12__apiBase_errors_ResponseError__["a"],
+	  DisconnectedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_12__apiBase_errors_ResponseError__["b"],
+	  NotImplementedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_14__apiBase_errors_NotImplementedError__["a"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "errors", {configurable: false, enumerable: true, get: function() { return errors; }});
 
@@ -3633,23 +3491,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // WikiRevision,
 	  // WikiPageListing,
 	  // WikiPageSettings,
+	  Model: /* harmony import */__WEBPACK_IMPORTED_MODULE_8__apiBase_Model__["a"],
+	  Record: /* harmony import */__WEBPACK_IMPORTED_MODULE_9__apiBase_Record__["a"],
 
-	  Comment: /* harmony import */__WEBPACK_IMPORTED_MODULE_13__models2_Comment__["a"],
-	  PostModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_14__models2_PostModel__["a"],
-	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_15__models2_Subreddit__["a"]
-
+	  CommentModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_15__models2_CommentModel__["a"],
+	  PostModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_16__models2_PostModel__["a"],
+	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_17__models2_Subreddit__["a"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "models", {configurable: false, enumerable: true, get: function() { return models; }});
 
 	var collections = {
-	  CommentsPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_17__collections_CommentsPage__["a"],
-	  ContributingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_16__collections_SubredditLists__["a"],
-	  HiddenPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_HiddenPostsAndComments__["default"],
-	  ModeratingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_16__collections_SubredditLists__["b"],
-	  PostsFromSubreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_19__collections_PostsFromSubreddit__["a"],
-	  SavedPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_20__collections_SavedPostsAndComments__["a"],
-	  SearchQuery: /* harmony import */__WEBPACK_IMPORTED_MODULE_21__collections_SearchQuery__["a"],
-	  SubscribedSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_16__collections_SubredditLists__["c"]
+	  CommentsPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_19__collections_CommentsPage__["a"],
+	  ContributingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__["a"],
+	  HiddenPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_20__collections_HiddenPostsAndComments__["default"],
+	  ModeratingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__["b"],
+	  PostsFromSubreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_21__collections_PostsFromSubreddit__["a"],
+	  SavedPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_22__collections_SavedPostsAndComments__["a"],
+	  SearchQuery: /* harmony import */__WEBPACK_IMPORTED_MODULE_23__collections_SearchQuery__["a"],
+	  SubscribedSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__["c"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "collections", {configurable: false, enumerable: true, get: function() { return collections; }});
 
@@ -3680,7 +3539,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ Object.defineProperty(exports, "optionsWithAuth", {configurable: false, enumerable: true, get: function() { return optionsWithAuth; }});
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony export */ exports["a"] = treeifyComments;/* harmony export */ exports["b"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;// All of these function rely on mutation, either for building the tree,
@@ -3744,7 +3603,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony export */ exports["a"] = isThingID;var THING_ID_REGEX = new RegExp('^t\\d_[0-9a-z]+', 'i');
@@ -3754,7 +3613,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony export */ exports["a"] = process;function process(text) {
@@ -3766,7 +3625,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony export */ exports["a"] = unredditifyLink;function unredditifyLink(url) {
@@ -3777,7 +3636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony export */ exports["a"] = mockHTML;function mockHTML() {
@@ -3788,7 +3647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony export */ exports["a"] = mockLink;function mockLink() {
@@ -3803,25 +3662,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = require("lodash/collection");
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports) {
 
 	module.exports = require("lodash/lang");
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(1);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models2_PostModel__ = __webpack_require__(7);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models2_Subreddit__ = __webpack_require__(20);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models2_thingTypes__ = __webpack_require__(0);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models2_PostModel__ = __webpack_require__(2);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BaseContentEndpoint__ = __webpack_require__(25);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -3829,68 +3687,217 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-
 	var getPath = function getPath(query) {
-	  var path = '';
-
-	  if (query.subreddit) {
-	    path = 'r/' + query.subreddit + '/';
+	  if (query.user) {
+	    return 'user/' + query.user + '/submitted.json';
+	  } else if (query.id) {
+	    return 'by_id/' + query.id + '.json';
+	  } else if (query.ids) {
+	    return 'by_id/' + query.query.ids.join(',') + '.json';
+	  } else if (query.subredditName) {
+	    return 'r/' + query.subredditName + '.json';
+	  } else if (query.multi) {
+	    return 'user/' + query.multiUser + '/m/' + query.multi + '.json';
 	  }
 
-	  return path + 'search.json';
+	  query.sort = query.sort || 'hot';
+
+	  return query.sort + '.json';
 	};
 
-	var formatQuery = function formatQuery(query) {
-	  if (query.subreddit) {
-	    query.restrict_sr = 'on';
-	    delete query.subreddit;
+	var formatQuery = function formatQuery(query, method) {
+	  /* harmony import */__WEBPACK_IMPORTED_MODULE_2__BaseContentEndpoint__["a"].bind()(query, method);
+
+	  if (method !== 'patch') {
+	    query.feature = 'link_preview';
+	    query.sr_detail = 'true';
+	  }
+
+	  if (method === 'del') {
+	    query._method = 'post';
 	  }
 
 	  return query;
 	};
 
-	var listsFromResponse = function listsFromResponse(res) {
-	  var body = res.body;
+	var formatPostData = function formatPostData(data) {
+	  var postData = {
+	    api_type: 'json',
+	    thing_id: data.thingId,
+	    title: data.title,
+	    kind: data.kind,
+	    sendreplies: data.sendreplies,
+	    sr: data.sr,
+	    iden: data.iden,
+	    captcha: data.captcha,
+	    resubmit: data.resubmit
+	  };
 
-	  if (!body) {
-	    return [];
+	  if (data.text) {
+	    postData.text = data.text;
+	  } else if (data.url) {
+	    postData.url = data.url;
 	  }
 
-	  // If only one type is returned body will be an object;
-	  return Array.isArray(body) ? body : [body];
+	  return postData;
 	};
 
-	var parseBody = function parseBody(res, apiResponse) {
-	  var lists = listsFromResponse(res);
-	  console.log('lists.length?', lists.length);
-	  console.log(res.body);
+	var parseBody = function parseBody(res, apiResponse, req, method) {
+	  var body = res.body;
 
-	  lists.forEach(function (listing) {
-	    if (listing.data.children.length) {
-	      if (listing.data.children[0].kind === /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_thingTypes__["i"]) {
-	        listing.data.children.forEach(function (link) {
-	          apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(link.data));
-	        });
 
-	        apiResponse.meta.after = listing.data.after;
-	        apiResponse.meta.before = listing.data.before;
+	  if (method === 'get') {
+	    var data = body.data;
+
+
+	    if (data && data.children && data.children[0]) {
+	      if (data.children.length === 1) {
+	        apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(data.children[0].data));
+	        return;
 	      } else {
-	        listing.data.children.forEach(function (subreddit) {
-	          apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_Subreddit__["a"].fromJSON(subreddit.data));
+	        data.children.forEach(function (c) {
+	          return apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(c.data));
 	        });
+	        return;
 	      }
+	    } else if (data) {
+	      return;
 	    }
-	  });
+	  } else if (method !== 'del') {
+	    if (body.json && body.json.errors.length === 0) {
+	      apiResponse.addResult(body.json.data);
+	      return;
+	    } else {
+	      throw body.json;
+	    }
+	  }
 	};
 
 	/* harmony default export */ exports["a"] = {
 	  get: function get(apiOptions, query) {
 	    var path = getPath(query);
-	    var apiQuery = formatQuery(_extends({}, query));
+	    var apiQuery = formatQuery(_extends({}, query), 'get');
 
 	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'get', path, apiQuery, query, parseBody);
+	  },
+	  post: function post(apiOptions, data) {
+	    var path = 'api/submit';
+	    var apiData = formatPostData(data);
+
+	    return /* harmony import */__WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__["a"].bind()(apiOptions, 'post', path, apiData, data, parseBody);
 	  }
 	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RedditModel__ = __webpack_require__(14);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apiBase_Record__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__thingTypes__ = __webpack_require__(0);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"].Types;
+
+	var CommentModel = function (_RedditModel) {
+	  _inherits(CommentModel, _RedditModel);
+
+	  function CommentModel() {
+	    _classCallCheck(this, CommentModel);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CommentModel).apply(this, arguments));
+	  }
+
+	  _createClass(CommentModel, [{
+	    key: 'makeUUID',
+	    value: function makeUUID(data) {
+	      if (data.name === 't1__' && data.parent_id) {
+	        // This is a stub for load more, parentId is needed to fetch more
+	        return data.parent_id;
+	      }
+
+	      return data.name;
+	    }
+	  }, {
+	    key: 'toRecord',
+	    value: function toRecord() {
+	      if (this.uuid === this.name) {
+	        return _get(Object.getPrototypeOf(CommentModel.prototype), 'toRecord', this).call(this);
+	      }
+
+	      // otherwise its a load more stub for super nested comments
+	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apiBase_Record__["a"](/* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["h"], this.parentId);
+	    }
+	  }]);
+
+	  return CommentModel;
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
+
+	CommentModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["a"];
+	CommentModel.PROPERTIES = {
+	  archived: T.bool,
+	  author: T.string,
+	  authorFlairCSSClass: T.string,
+	  authorFlairText: T.string,
+	  children: T.nop,
+	  cleanPermalink: T.link,
+	  controversiality: T.number,
+	  distinguished: T.string,
+	  downs: T.number,
+	  edited: T.bool,
+	  gilded: T.number,
+	  id: T.string,
+	  likes: T.cubit,
+	  name: T.string,
+	  replies: T.array,
+	  saved: T.bool,
+	  score: T.number,
+	  stickied: T.bool,
+	  subreddit: T.string,
+	  ups: T.number,
+
+	  // aliases
+	  approvedBy: T.string,
+	  bannedBy: T.string,
+	  bodyHTML: T.html,
+	  createdUTC: T.number,
+	  linkId: T.string,
+	  modReports: T.array,
+	  numReports: T.number,
+	  parentId: T.string,
+	  reportReasons: T.array,
+	  scoreHidden: T.bool,
+	  subredditId: T.string,
+	  userReports: T.array
+	};
+	CommentModel.API_ALIASES = {
+	  approved_by: 'approvedBy',
+	  banned_by: 'bannedBy',
+	  body_html: 'bodyHTML',
+	  created_utc: 'createdUTC',
+	  link_id: 'linkId',
+	  mod_reports: 'modReports',
+	  num_reports: 'numReports',
+	  parent_id: 'parentId',
+	  permalink: 'cleanPermalink',
+	  report_reasons: 'reportReasons',
+	  score_hidden: 'scoreHidden',
+	  subreddit_id: 'subredditId',
+	  user_reports: 'userReports'
+	};
+	/* harmony default export */ exports["a"] = CommentModel;
 
 /***/ }
 /******/ ])

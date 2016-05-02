@@ -2,11 +2,11 @@ import { runQuery, validateData } from '../apiBase/APIRequestUtils';
 
 import { has, omit } from 'lodash/object';
 
-import Comment from '../models2/Comment';
+import CommentModel from '../models2/CommentModel';
 import PostModel from '../models2/PostModel';
 
 const CONSTRUCTORS = {
-  t1: Comment,
+  t1: CommentModel,
   t3: PostModel,
 };
 

@@ -3,7 +3,7 @@ import { formatBaseContentQuery } from './BaseContentEndpoint';
 
 import { has } from 'lodash/object';
 
-import Comment from '../models2/Comment';
+import CommentModel from '../models2/CommentModel';
 import PostModel from '../models2/PostModel';
 
 import {
@@ -63,7 +63,7 @@ const parseGetBody = (res, apiResponse, req) => {
   normalizeCommentReplies(comments, (commentJSON, isTopLevel) => {
     // parsing is done bottom up, comment models are immutable
     // but they'll rely on the records
-    const comment = Comment.fromJSON(commentJSON);
+    const comment = CommentModel.fromJSON(commentJSON);
     if (isTopLevel) {
       apiResponse.addResult(comment);
     } else {
@@ -80,7 +80,7 @@ const parsePostBody = (res, apiResponse) => {
 
   if (has(body, 'json.data.things.0.data')) {
     const comment = body.json.data.things[0].data;
-    apiResponse.addResult(Comment.fromJSON(comment));
+    apiResponse.addResult(CommentModel.fromJSON(comment));
   }
 };
 

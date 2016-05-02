@@ -1,8 +1,8 @@
 import Listing from './Listing';
-import PostEndpoint from '../apis/PostEndpoint';
+import PostsEndpoint from '../apis/PostsEndpoint';
 
 export default class PostsFromSubreddit extends Listing {
-  static endpoint = PostEndpoint;
+  static endpoint = PostsEndpoint;
 
   static fetch(apiOptions, subredditNameOrOptions, options={}) {
     if (typeof subredditNameOrOptions === 'string') {

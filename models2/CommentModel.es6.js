@@ -4,7 +4,7 @@ import { COMMENT, COMMENT_LOAD_MORE } from './thingTypes';
 
 const T = RedditModel.Types;
 
-export default class Comment extends RedditModel {
+export default class CommentModel extends RedditModel {
   static type = COMMENT;
 
   static PROPERTIES = {

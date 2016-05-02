@@ -94,10 +94,10 @@ function exportToContext(submoduleName) {
 
 local.context.apiOptions = apiOptions;
 
+exportToContext('endpoints');
 exportToContext('models');
 exportToContext('collections');
 exportToContext('APIResponses');
 exportToContext('APIResponsePaging');
-exportToContext('APIs');
 
 local.context.help = help;

@@ -17,12 +17,14 @@ import { makeOptions } from './apiBase/APIRequestUtils';
 // import wiki from './apis/wiki';
 import CommentsEndpoint from './apis/CommentsEndpoint';
 import HiddenEndpoint from './apis/HiddenEndpoint';
-import PostEndpoint from './apis/PostEndpoint';
+import PostsEndpoint from './apis/PostsEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
+import Model from './apiBase/Model';
+import Record from './apiBase/Record';
 
 import {
   withQueryAndResult,
@@ -43,7 +45,7 @@ export const APIResponsePaging = {
   fetchAll,
 };
 
-export const APIs = {
+export const endpoints = {
   // accounts,
   // activities,
   // captcha,
@@ -61,7 +63,7 @@ export const APIs = {
   // wiki,
   CommentsEndpoint,
   HiddenEndpoint,
-  PostEndpoint,
+  PostsEndpoint,
   SavedEndpoint,
   SearchEndpoint,
   SubredditEndpoint,
@@ -98,7 +100,7 @@ export const errors = {
 // import WikiPageSettings from './models/wikiPageSettings';
 
 // new models
-import Comment from './models2/Comment';
+import CommentModel from './models2/CommentModel';
 import PostModel from './models2/PostModel';
 import Subreddit from './models2/Subreddit';
 
@@ -131,11 +133,12 @@ export const models = {
   // WikiRevision,
   // WikiPageListing,
   // WikiPageSettings,
+  Model,
+  Record,
 
-  Comment,
+  CommentModel,
   PostModel,
   Subreddit
-
 };
 
 export const collections = {
