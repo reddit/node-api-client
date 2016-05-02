@@ -1,14 +1,11 @@
-import SavedEndpoint from './saved';
+import SavedOrHiddenEndpoint from './SavedAndHiddenCommon';
 
-export default class HiddenEndpoint extends SavedEndpoint {
-  path (method, query={}) {
-    switch (method) {
-      case 'get':
-        return `user/${query.user}/hidden.json`;
-      case 'post' :
-        return 'api/hide';
-      case 'del':
-        return 'api/unhide';
-    }
-  }
-}
+const getPath = (query) => {
+  return `user/${query.user}/hidden.json`;
+};
+
+export default SavedOrHiddenEndpoint(
+  getPath,
+  'api/unhide',
+  'api/hide',
+);

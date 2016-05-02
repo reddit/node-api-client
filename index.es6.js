@@ -1,5 +1,5 @@
 // import activities from './apis/activities';
-// import hidden from './apis/hidden';
+import hidden from './apis/hidden';
 import saved from './apis/saved';
 // import search from './apis/search';
 // import stylesheets from './apis/stylesheets';
@@ -43,7 +43,7 @@ export const APIResponsePaging = {
 export const APIs = {
   // activities,
   // captcha,
-  // hidden,
+  hidden,
   saved,
   // search,
   // stylesheets,
