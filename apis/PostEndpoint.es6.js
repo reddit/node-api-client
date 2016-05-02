@@ -1,6 +1,7 @@
-import PostModel from '../models2/PostModel';
-
 import { runQuery } from '../apiBase/APIRequestUtils';
+
+import PostModel from '../models2/PostModel';
+import { formatBaseContentQuery } from './BaseContentEndpoint';
 
 const getPath = (query) => {
   if (query.user) {
@@ -21,6 +22,8 @@ const getPath = (query) => {
 };
 
 const formatQuery = (query, method) => {
+  formatBaseContentQuery(query, method);
+
   if (method !== 'patch') {
     query.feature = 'link_preview';
     query.sr_detail = 'true';
@@ -31,6 +34,28 @@ const formatQuery = (query, method) => {
   }
 
   return query;
+};
+
+const formatPostData = (data)=> {
+  const postData = {
+    api_type: 'json',
+    thing_id: data.thingId,
+    title: data.title,
+    kind: data.kind,
+    sendreplies: data.sendreplies,
+    sr: data.sr,
+    iden: data.iden,
+    captcha: data.captcha,
+    resubmit: data.resubmit,
+  };
+
+  if (data.text) {
+    postData.text = data.text;
+  } else if (data.url) {
+    postData.url = data.url;
+  }
+
+  return postData;
 };
 
 const parseBody = (res, apiResponse, req, method) => {
@@ -63,37 +88,15 @@ const parseBody = (res, apiResponse, req, method) => {
 export default {
   get(apiOptions, query) {
     const path = getPath(query);
-    const apiQuery = formatQuery({...query});
+    const apiQuery = formatQuery({...query}, 'get');
 
     return runQuery(apiOptions, 'get', path, apiQuery, query, parseBody);
   },
+
+  post(apiOptions, data) {
+    const path = 'api/submit';
+    const apiData = formatPostData(data);
+
+    return runQuery(apiOptions, 'post', path, apiData, data, parseBody);
+  },
 };
-
-export class PostEndpoint {
-
-  static postPath() {
-    return 'api/submit';
-  }
-
-  static post = (apiOptions, data) => {
-    const postData = {
-      api_type: 'json',
-      thing_id: data.thingId,
-      title: data.title,
-      kind: data.kind,
-      sendreplies: data.sendreplies,
-      sr: data.sr,
-      iden: data.iden,
-      captcha: data.captcha,
-      resubmit: data.resubmit,
-    };
-
-    if (data.text) {
-      postData.text = data.text;
-    } else if (data.url) {
-      postData.url = data.url;
-    }
-
-    return BaseContentEndpoint.post(apiOptions, postData);
-  }
-}

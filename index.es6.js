@@ -1,26 +1,26 @@
 import { makeOptions } from './apiBase/APIRequestUtils';
 
-// import activities from './apis/activities';
-import HiddenEndpoint from './apis/HiddenEndpoint';
-import SavedEndpoint from './apis/SavedEndpoint';
-// import search from './apis/search';
-// import stylesheets from './apis/stylesheets';
-import SubredditEndpoint from './apis/SubredditEndpoint';
-// import subscriptions from './apis/subscriptions';
-// import trophies from './apis/trophies';
 // import accounts from './apis/accounts';
-// import votes from './apis/votes';
-import PostEndpoint from './apis/PostEndpoint';
-// import comments from './apis/comments';
+// import activities from './apis/activities';
 // import captcha from './apis/captcha';
-// import reports from './apis/reports';
 // import messages from './apis/messages';
 // import modListing from './apis/modListing';
-// import subredditRelationships from './apis/subredditRelationships';
-// import rules from './apis/rules';
-// import wiki from './apis/wiki';
 // import multis from './apis/multis';
 // import multiSubscriptions from './apis/multiSubscriptions';
+// import reports from './apis/reports';
+// import rules from './apis/rules';
+// import search from './apis/search';
+// import stylesheets from './apis/stylesheets';
+// import subredditRelationships from './apis/subredditRelationships';
+// import subscriptions from './apis/subscriptions';
+// import trophies from './apis/trophies';
+// import votes from './apis/votes';
+// import wiki from './apis/wiki';
+import CommentsEndpoint from './apis/CommentsEndpoint';
+import HiddenEndpoint from './apis/HiddenEndpoint';
+import PostEndpoint from './apis/PostEndpoint';
+import SavedEndpoint from './apis/SavedEndpoint';
+import SubredditEndpoint from './apis/SubredditEndpoint';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
 
@@ -44,27 +44,27 @@ export const APIResponsePaging = {
 };
 
 export const APIs = {
+  // accounts,
   // activities,
   // captcha,
-  HiddenEndpoint,
-  SavedEndpoint,
-  // search,
-  // stylesheets,
-  SubredditEndpoint,
-  // subscriptions,
-  // trophies,
-  // accounts,
-  // votes,
-  PostEndpoint,
-  // comments,
-  // reports,
   // messages,
   // modListing,
-  // subredditRelationships,
-  // rules,
-  // wiki,
   // multis,
   // multiSubscriptions,
+  // reports,
+  // rules,
+  // search,
+  // stylesheets,
+  // subredditRelationships,
+  // subscriptions,
+  // trophies,
+  // votes,
+  // wiki,
+  CommentsEndpoint,
+  HiddenEndpoint,
+  PostEndpoint,
+  SavedEndpoint,
+  SubredditEndpoint,
 };
 
 import NoModelError from './apiBase/errors/NoModelError';
@@ -81,24 +81,26 @@ export const errors = {
   NotImplementedError,
 };
 
-import Account from './models/account';
-import Award from './models/award';
-import Base from './models/base';
-import Block from './models/block';
-import BlockedUser from './models/BlockedUser';
+// import Account from './models/account';
+// import Award from './models/award';
+// import Base from './models/base';
+// import Block from './models/block';
+// import BlockedUser from './models/BlockedUser';
+// import Message from './models/message';
+// import PromoCampaign from './models/promocampaign';
+// import Preferences from './models/preferences';
+// import Subscription from './models/subscription';
+// import Vote from './models/vote';
+// import Report from './models/report';
+// import WikiPage from './models/wikiPage';
+// import WikiRevision from './models/wikiRevision';
+// import WikiPageListing from './models/wikiPageListing';
+// import WikiPageSettings from './models/wikiPageSettings';
+
+// new models
 import Comment from './models2/Comment';
 import PostModel from './models2/PostModel';
-import Message from './models/message';
-import PromoCampaign from './models/promocampaign';
-import Preferences from './models/preferences';
 import Subreddit from './models2/Subreddit';
-import Subscription from './models/subscription';
-import Vote from './models/vote';
-import Report from './models/report';
-import WikiPage from './models/wikiPage';
-import WikiRevision from './models/wikiRevision';
-import WikiPageListing from './models/wikiPageListing';
-import WikiPageSettings from './models/wikiPageSettings';
 
 import {
   SubscribedSubreddits,
@@ -113,24 +115,27 @@ import SavedPostsAndComments from './collections/SavedPostsAndComments';
 import SearchQuery from './collections/SearchQuery';
 
 export const models = {
-  Account,
-  Award,
-  Base,
-  Block,
-  BlockedUser,
+  // Account,
+  // Award,
+  // Base,
+  // Block,
+  // BlockedUser,
+  // Message,
+  // PromoCampaign,
+  // Preferences,
+  // Subreddit,
+  // Subscription,
+  // Vote,
+  // Report,
+  // WikiPage,
+  // WikiRevision,
+  // WikiPageListing,
+  // WikiPageSettings,
+
   Comment,
   PostModel,
-  Message,
-  PromoCampaign,
-  Preferences,
-  Subreddit,
-  Subscription,
-  Vote,
-  Report,
-  WikiPage,
-  WikiRevision,
-  WikiPageListing,
-  WikiPageSettings,
+  Subreddit
+
 };
 
 export const collections = {

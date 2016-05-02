@@ -35,6 +35,19 @@ const MOD_ACTION_MAP = {
   },
 };
 
+export const formatBaseContentQuery = (query, method) => {
+  if (method !== 'patch') {
+    query.feature = 'link_preview';
+    query.sr_detail = 'true';
+  }
+
+  if (method === 'del') {
+    query._method = 'post';
+  }
+
+  return query;
+};
+
 export default class BaseContentEndpoint extends BaseEndpoint {
   static move = BaseEndpoint.notImplemented('move');
   static copy = BaseEndpoint.notImplemented('copy');

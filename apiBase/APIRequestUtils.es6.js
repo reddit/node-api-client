@@ -18,7 +18,7 @@ const DefaultOptions = {
   env: 'develop',
   token: '',
   timeout: 5000,
-  eventEmiiter: EventEmitterShim,
+  eventEmitter: EventEmitterShim,
 };
 
 export const makeOptions = (overrides={}) => {
@@ -29,7 +29,7 @@ export const makeOptions = (overrides={}) => {
 };
 
 const getEmitter = (apiOptions) => {
-  return (apiOptions.eventEmiiter || EventEmitterShim);
+  return (apiOptions.eventEmitter || EventEmitterShim);
 };
 
 const requestAuthHeader = (apiOptions) => {
@@ -56,17 +56,18 @@ const appParameter = (apiOptions) => {
 
 export const rawSend = (apiOptions, method, path, data, kind, cb) => {
   const origin = apiOptions.origin;
+  const url = requestPath(apiOptions, path);
 
   const fakeReq = {
     origin,
     path,
+    url,
     method,
     query: { ...data},
   };
 
   getEmitter(apiOptions).emit(Events.request, fakeReq);
-
-  let s = superagent[method](requestPath(apiOptions, path));
+  let s = superagent[method](url);
   s.set(requestHeaders(apiOptions));
 
   data.app = appParameter(apiOptions);

@@ -1,14 +1,20 @@
 import Listing from './Listing';
+import CommentsEndpoint from '../apis/CommentsEndpoint';
+import NotImplementedError from '../apiBase/errors/NotImplementedError';
 
 export default class CommentsPage extends Listing {
-  static endpoint = 'comments';
+  static endpoint = CommentsEndpoint
 
-  static fetch(api, id) {
-    return super.fetch(api, { id });
+  static fetch(apiOptions, id) {
+    if (typeof id === 'string') {
+      id = { id };
+    }
+
+    return super.fetch(apiOptions, id);
   }
 
-  static fetchMoreChildre(api, comment) {
-    return super.fetch(api, { ids: comment.children });
+  static fetchMoreChildren(apiOptions, comment) {
+    return super.fetch(apiOptions, { ids: comment.children });
   }
 
   get topLevelComments() {
@@ -17,5 +23,13 @@ export default class CommentsPage extends Listing {
 
   replies(comment) {
     return comment.replies.map(this.apiResponse.getModelFromRecord);
+  }
+
+  async nextResponse() {
+    throw new NotImplementedError('comments collection pageing not supported yet');
+  }
+
+  async prevResponse() {
+    throw new NotImplementedError('comments collection pageing not supported yet');
   }
 }
