@@ -14,7 +14,7 @@ console.log('Enter `help()` for information.');
 require('babel-polyfill');
 const optionsWithAuth = require('./apiClient').optionsWithAuth;
 const apiOptions = Object.assign({},
-  optionsWithAuth({ token: process.env.TOKEN }),
+  optionsWithAuth(process.env.TOKEN),
   { eventEmitter: new EventEmitter() }
 );
 

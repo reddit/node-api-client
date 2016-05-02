@@ -2,7 +2,6 @@ import superagent from 'superagent';
 
 import ValidationError from './errors/ValidationError';
 import NoModelError from './errors/NoModelError';
-import NotImplementedError from './errors/NotImplementedError';
 import APIResponse from './APIResponse';
 
 import Events from './Events';
@@ -65,8 +64,6 @@ export const rawSend = (apiOptions, method, path, data, kind, cb) => {
     query: { ...data},
   };
 
-  console.log(`raw send ${origin} ${path} ${data}`);
-
   getEmitter(apiOptions).emit(Events.request, fakeReq);
 
   let s = superagent[method](requestPath(apiOptions, path));
@@ -75,11 +72,9 @@ export const rawSend = (apiOptions, method, path, data, kind, cb) => {
   data.app = appParameter(apiOptions);
 
   if (kind === 'form') {
-    console.log('is form');
     s.type('form');
     s.send(data);
   } else {
-    console.log('is query');
     s.query(data);
 
     if (s.redirects) {
@@ -89,7 +84,6 @@ export const rawSend = (apiOptions, method, path, data, kind, cb) => {
 
   s.end((err, res) => {
     // handle super agent inconsistencies
-    console.log('request returned');
     const req = res ? res.request : fakeReq;
     cb(err, res, req);
   });
@@ -174,6 +168,6 @@ const makeApiResponse = (res, req, method, query, parseBody, parseMeta) => {
   const start = Date.now();
   parseBody(res, apiResponse, req, method);
   const end = Date.now();
-  console.log(`response time took ${end - start}`);
+  console.log(`response parsing took ${end - start}`);
   return apiResponse;
 };

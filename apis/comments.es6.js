@@ -94,7 +94,6 @@ export default class CommentsEndpoint extends BaseContentEndpoint {
           // this sets replies to be records for consistency
           return comment.toRecord();
         } catch (e) {
-          console.log('asdfasdfasdf');
           console.trace(e);
         }
       });

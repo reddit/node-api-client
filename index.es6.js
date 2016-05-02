@@ -5,7 +5,7 @@ import HiddenEndpoint from './apis/HiddenEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 // import search from './apis/search';
 // import stylesheets from './apis/stylesheets';
-// import subreddits from './apis/subreddits';
+import SubredditEndpoint from './apis/SubredditEndpoint';
 // import subscriptions from './apis/subscriptions';
 // import trophies from './apis/trophies';
 // import accounts from './apis/accounts';
@@ -50,7 +50,7 @@ export const APIs = {
   SavedEndpoint,
   // search,
   // stylesheets,
-  // subreddits,
+  SubredditEndpoint,
   // subscriptions,
   // trophies,
   // accounts,
@@ -165,6 +165,6 @@ export const optionsWithAuth = token => {
   return {
     ...DefaultOptions,
     token,
-    origin: token ? DEFAULT_API_ORIGIN : AUTHED_API_ORIGIN,
+    origin: token ? AUTHED_API_ORIGIN : DEFAULT_API_ORIGIN,
   };
 };
