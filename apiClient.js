@@ -1558,24 +1558,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 14 */,
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(19);
-
-
-	var getPath = function getPath(query) {
-	  return 'user/' + query.user + '/saved.json';
-	};
-
-	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unsave', 'api/save');
-
-/***/ },
+/* 15 */,
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Listing__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_saved__ = __webpack_require__(15);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_SavedEndpoint__ = __webpack_require__(53);
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -1621,7 +1609,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return SavedPostsAndComments;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__Listing__["a"]);
 
-	SavedPostsAndComments.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_saved__["a"];
+	SavedPostsAndComments.endpoint = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_SavedEndpoint__["a"];
 	/* harmony default export */ exports["a"] = SavedPostsAndComments;
 
 /***/ },
@@ -3304,7 +3292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__apiBase_APIRequestUtils__ = __webpack_require__(5);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__apis_hidden__ = __webpack_require__(21);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_saved__ = __webpack_require__(15);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__apis_SavedEndpoint__ = __webpack_require__(53);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__apis_PostEndpoint__ = __webpack_require__(52);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__apiBase_APIResponse__ = __webpack_require__(6);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__apiBase_APIResponsePaging__ = __webpack_require__(3);
@@ -3384,7 +3372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // activities,
 	  // captcha,
 	  hidden: /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apis_hidden__["a"],
-	  saved: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__apis_saved__["a"],
+	  SavedEndpoint: /* harmony import */__WEBPACK_IMPORTED_MODULE_2__apis_SavedEndpoint__["a"],
 	  // search,
 	  // stylesheets,
 	  // subreddits,
@@ -3701,6 +3689,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return BaseContentEndpoint.post(apiOptions, postData);
 	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__ = __webpack_require__(19);
+
+
+	var getPath = function getPath(query) {
+	  return 'user/' + query.user + '/saved.json';
+	};
+
+	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__SavedAndHiddenCommon__["a"].bind()(getPath, 'api/unsave', 'api/save');
 
 /***/ }
 /******/ ])

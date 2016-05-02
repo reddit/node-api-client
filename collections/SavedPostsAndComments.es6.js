@@ -1,5 +1,5 @@
 import Listing from './Listing';
-import SavedEndpoint from '../apis/saved';
+import SavedEndpoint from '../apis/SavedEndpoint';
 
 export default class SavedPostsAndComments extends Listing {
   static endpoint = SavedEndpoint;

@@ -2,7 +2,7 @@ import { makeOptions } from './apiBase/APIRequestUtils';
 
 // import activities from './apis/activities';
 import hidden from './apis/hidden';
-import saved from './apis/saved';
+import SavedEndpoint from './apis/SavedEndpoint';
 // import search from './apis/search';
 // import stylesheets from './apis/stylesheets';
 // import subreddits from './apis/subreddits';
@@ -47,7 +47,7 @@ export const APIs = {
   // activities,
   // captcha,
   hidden,
-  saved,
+  SavedEndpoint,
   // search,
   // stylesheets,
   // subreddits,
