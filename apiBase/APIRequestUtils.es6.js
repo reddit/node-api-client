@@ -13,6 +13,7 @@ const EventEmitterShim = {
 };
 
 const DefaultOptions = {
+  userAgent: 'snoodev3',
   origin: 'https://www.reddit.com',
   appName: 'node-api-client-v3',
   env: 'develop',
