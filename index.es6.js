@@ -25,6 +25,7 @@ import SubredditEndpoint from './apis/SubredditEndpoint';
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
 import Model from './apiBase/Model';
 import Record from './apiBase/Record';
+import * as ModelTypes from './models2/thingTypes';
 
 import {
   withQueryAndResult,
@@ -134,11 +135,12 @@ export const models = {
   // WikiPageListing,
   // WikiPageSettings,
   Model,
+  ModelTypes,
   Record,
 
   CommentModel,
   PostModel,
-  Subreddit
+  Subreddit,
 };
 
 export const collections = {

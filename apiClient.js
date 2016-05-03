@@ -54,34 +54,42 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony export */ exports["g"] = thingType;var COMMENT = 'comment';
-	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return COMMENT; }});
-	var COMMENT_TYPE = 't1';/* unused harmony export COMMENT_TYPE */
+	/* harmony export */ exports["thingType"] = thingType;var COMMENT = 'comment';
+	/* harmony export */ Object.defineProperty(exports, "COMMENT", {configurable: false, enumerable: true, get: function() { return COMMENT; }});
+	var COMMENT_TYPE = 't1';
+	/* harmony export */ Object.defineProperty(exports, "COMMENT_TYPE", {configurable: false, enumerable: true, get: function() { return COMMENT_TYPE; }});
 	var COMMENT_LOAD_MORE = 'comment_load_more';
-	/* harmony export */ Object.defineProperty(exports, "h", {configurable: false, enumerable: true, get: function() { return COMMENT_LOAD_MORE; }});
+	/* harmony export */ Object.defineProperty(exports, "COMMENT_LOAD_MORE", {configurable: false, enumerable: true, get: function() { return COMMENT_LOAD_MORE; }});
 
 	var USER = 'user';
-	/* harmony export */ Object.defineProperty(exports, "c", {configurable: false, enumerable: true, get: function() { return USER; }});
-	var USER_TYPE = 't2';/* unused harmony export USER_TYPE */
+	/* harmony export */ Object.defineProperty(exports, "USER", {configurable: false, enumerable: true, get: function() { return USER; }});
+	var USER_TYPE = 't2';
+	/* harmony export */ Object.defineProperty(exports, "USER_TYPE", {configurable: false, enumerable: true, get: function() { return USER_TYPE; }});
 
 	var POST = 'post';
-	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return POST; }});
+	/* harmony export */ Object.defineProperty(exports, "POST", {configurable: false, enumerable: true, get: function() { return POST; }});
 	var POST_TYPE = 't3';
-	/* harmony export */ Object.defineProperty(exports, "i", {configurable: false, enumerable: true, get: function() { return POST_TYPE; }});
+	/* harmony export */ Object.defineProperty(exports, "POST_TYPE", {configurable: false, enumerable: true, get: function() { return POST_TYPE; }});
 
 	var MESSAGE = 'message';
-	/* harmony export */ Object.defineProperty(exports, "d", {configurable: false, enumerable: true, get: function() { return MESSAGE; }});
-	var MESSAGE_TYPE = 't4';/* unused harmony export MESSAGE_TYPE */
+	/* harmony export */ Object.defineProperty(exports, "MESSAGE", {configurable: false, enumerable: true, get: function() { return MESSAGE; }});
+	var MESSAGE_TYPE = 't4';
+	/* harmony export */ Object.defineProperty(exports, "MESSAGE_TYPE", {configurable: false, enumerable: true, get: function() { return MESSAGE_TYPE; }});
 
 	var SUBREDDIT = 'subreddit';
-	/* harmony export */ Object.defineProperty(exports, "e", {configurable: false, enumerable: true, get: function() { return SUBREDDIT; }});
-	var SUBREDDIT_TYPE = 't5';/* unused harmony export SUBREDDIT_TYPE */
+	/* harmony export */ Object.defineProperty(exports, "SUBREDDIT", {configurable: false, enumerable: true, get: function() { return SUBREDDIT; }});
+	var SUBREDDIT_TYPE = 't5';
+	/* harmony export */ Object.defineProperty(exports, "SUBREDDIT_TYPE", {configurable: false, enumerable: true, get: function() { return SUBREDDIT_TYPE; }});
 
-	var TROPHIE = 'trophie';/* unused harmony export TROPHIE */
-	var TROPHIE_TYPE = 't6';/* unused harmony export TROPHIE_TYPE */
+	var TROPHIE = 'trophie';
+	/* harmony export */ Object.defineProperty(exports, "TROPHIE", {configurable: false, enumerable: true, get: function() { return TROPHIE; }});
+	var TROPHIE_TYPE = 't6';
+	/* harmony export */ Object.defineProperty(exports, "TROPHIE_TYPE", {configurable: false, enumerable: true, get: function() { return TROPHIE_TYPE; }});
 
-	var PROMOCAMPAIGN = 'promocampaign';/* unused harmony export PROMOCAMPAIGN */
-	var PROMOCAMPAIGN_TYPE = 't8';/* unused harmony export PROMOCAMPAIGN_TYPE */
+	var PROMOCAMPAIGN = 'promocampaign';
+	/* harmony export */ Object.defineProperty(exports, "PROMOCAMPAIGN", {configurable: false, enumerable: true, get: function() { return PROMOCAMPAIGN; }});
+	var PROMOCAMPAIGN_TYPE = 't8';
+	/* harmony export */ Object.defineProperty(exports, "PROMOCAMPAIGN_TYPE", {configurable: false, enumerable: true, get: function() { return PROMOCAMPAIGN_TYPE; }});
 
 	var type_pairs = [[COMMENT, COMMENT_TYPE], [USER, USER_TYPE], [POST, POST_TYPE], [MESSAGE, MESSAGE_TYPE], [SUBREDDIT, SUBREDDIT_TYPE], [TROPHIE, TROPHIE_TYPE], [PROMOCAMPAIGN, PROMOCAMPAIGN_TYPE]];
 
@@ -89,12 +97,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  table[pair[1]] = pair[0];
 	  return table;
 	}, {});
-	/* harmony export */ Object.defineProperty(exports, "f", {configurable: false, enumerable: true, get: function() { return TYPES; }});
+	/* harmony export */ Object.defineProperty(exports, "TYPES", {configurable: false, enumerable: true, get: function() { return TYPES; }});
 
 	var TYPE_TO_THING_TYPE = type_pairs.reduce(function (table, pair) {
 	  table[pair[0]] = pair[1];
 	  return table;
-	}, {});/* unused harmony export TYPE_TO_THING_TYPE */
+	}, {});
+	/* harmony export */ Object.defineProperty(exports, "TYPE_TO_THING_TYPE", {configurable: false, enumerable: true, get: function() { return TYPE_TO_THING_TYPE; }});
 
 	function thingType(id) {
 	  return TYPES[id.substring(0, 2)];
@@ -330,7 +339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return PostModel;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
 
-	PostModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["b"];
+	PostModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["POST"];
 	PostModel.PROPERTIES = {
 	  author: T.string,
 	  cleanPermalink: T.link,
@@ -839,7 +848,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.messages = {};
 	    this.subreddits = {};
 
-	    this.typeToTable = (_typeToTable = {}, _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["a"], this.comments), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["b"], this.posts), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["c"], this.users), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["d"], this.messages), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["e"], this.subreddits), _typeToTable);
+	    this.typeToTable = (_typeToTable = {}, _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["COMMENT"], this.comments), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["POST"], this.posts), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["USER"], this.users), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["MESSAGE"], this.messages), _defineProperty(_typeToTable, /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["SUBREDDIT"], this.subreddits), _typeToTable);
 
 	    this.addResult = this.addResult.bind(this);
 	    this.addModel = this.addModel.bind(this);
@@ -888,7 +897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 
-	      var type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["f"][model.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["g"].bind()(uuid);
+	      var type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["TYPES"][model.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["thingType"].bind()(uuid);
 	      if (!type) {
 	        return;
 	      }
@@ -969,7 +978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var seenResults = new Set();
 
-	    var tableKeys = [/* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["a"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["c"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["b"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["d"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["e"]];
+	    var tableKeys = [/* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["COMMENT"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["USER"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["POST"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["MESSAGE"], /* harmony import */__WEBPACK_IMPORTED_MODULE_2__models2_thingTypes__["SUBREDDIT"]];
 
 	    /* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_collection__["forEach"].bind()(apiResponses, function (apiResponse) {
 	      /* harmony import */__WEBPACK_IMPORTED_MODULE_0_lodash_collection__["forEach"].bind()(apiResponse.results, function (record) {
@@ -1308,14 +1317,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      // otherwise its a load more stub for super nested comments
-	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apiBase_Record__["a"](/* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["h"], this.parentId);
+	      return new /* harmony import */__WEBPACK_IMPORTED_MODULE_1__apiBase_Record__["a"](/* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["COMMENT_LOAD_MORE"], this.parentId);
 	    }
 	  }]);
 
 	  return CommentModel;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
 
-	CommentModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["a"];
+	CommentModel.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_2__thingTypes__["COMMENT"];
 	CommentModel.PROPERTIES = {
 	  archived: T.bool,
 	  author: T.string,
@@ -1406,7 +1415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Subreddit;
 	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_0__RedditModel__["a"]);
 
-	Subreddit.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["e"];
+	Subreddit.type = /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["SUBREDDIT"];
 	Subreddit.fields = EDIT_FIELDS;
 	Subreddit.PROPERTIES = {
 	  accountsActive: T.number,
@@ -1627,7 +1636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getType',
 	    value: function getType(data, uuid) {
-	      return _get(Object.getPrototypeOf(RedditModel.prototype), 'getType', this).call(this, data, uuid) || /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["f"][data.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["g"].bind()(uuid) || 'Unknown';
+	      return _get(Object.getPrototypeOf(RedditModel.prototype), 'getType', this).call(this, data, uuid) || /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["TYPES"][data.kind] || /* harmony import */__WEBPACK_IMPORTED_MODULE_1__thingTypes__["thingType"].bind()(uuid) || 'Unknown';
 	    }
 	  }]);
 
@@ -2244,7 +2253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  lists.forEach(function (listing) {
 	    if (listing.data.children.length) {
-	      if (listing.data.children[0].kind === /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_thingTypes__["i"]) {
+	      if (listing.data.children[0].kind === /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_thingTypes__["POST_TYPE"]) {
 	        listing.data.children.forEach(function (link) {
 	          apiResponse.addResult(/* harmony import */__WEBPACK_IMPORTED_MODULE_1__models2_PostModel__["a"].fromJSON(link.data));
 	        });
@@ -2980,7 +2989,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_3__apiBase_APIResponsePaging__["a"].bind()(this.apiResponse, function (query, results) {
 	        var limit = _this2.expectedNumberOfPosts(query);
 	        var posts = results.filter(function (record) {
-	          return record.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__["b"];
+	          return record.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__["POST"];
 	        });
 	        return posts.length >= limit ? /* harmony import */__WEBPACK_IMPORTED_MODULE_2_lodash_array__["last"].bind()(posts).uuid : null;
 	      });
@@ -2989,14 +2998,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'posts',
 	    get: function get() {
 	      return this.apiResponse.results.filter(function (record) {
-	        return record.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__["b"];
+	        return record.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__["POST"];
 	      }).map(this.apiResponse.getModelFromRecord);
 	    }
 	  }, {
 	    key: 'subreddits',
 	    get: function get() {
 	      return this.apiResponse.results.filter(function (record) {
-	        return record.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__["e"];
+	        return record.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_4__models2_thingTypes__["SUBREDDIT"];
 	      }).map(this.apiResponse.getModelFromRecord);
 	    }
 	  }], [{
@@ -3570,20 +3579,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__ = __webpack_require__(5);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__apiBase_Model__ = __webpack_require__(17);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__apiBase_Record__ = __webpack_require__(9);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__ = __webpack_require__(6);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apiBase_errors_NoModelError__ = __webpack_require__(7);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__apiBase_errors_ResponseError__ = __webpack_require__(14);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ValidationError__ = __webpack_require__(11);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__apiBase_errors_NotImplementedError__ = __webpack_require__(10);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models2_CommentModel__ = __webpack_require__(12);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models2_PostModel__ = __webpack_require__(2);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__models2_Subreddit__ = __webpack_require__(13);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__ = __webpack_require__(33);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__collections_CommentsPage__ = __webpack_require__(29);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__collections_HiddenPostsAndComments__ = __webpack_require__(30);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__collections_PostsFromSubreddit__ = __webpack_require__(31);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__collections_SavedPostsAndComments__ = __webpack_require__(24);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__collections_SearchQuery__ = __webpack_require__(32);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__models2_thingTypes__ = __webpack_require__(0);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apiBase_APIResponsePaging__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__apiBase_errors_NoModelError__ = __webpack_require__(7);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ResponseError__ = __webpack_require__(14);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__apiBase_errors_ValidationError__ = __webpack_require__(11);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__apiBase_errors_NotImplementedError__ = __webpack_require__(10);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models2_CommentModel__ = __webpack_require__(12);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__models2_PostModel__ = __webpack_require__(2);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__models2_Subreddit__ = __webpack_require__(13);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__collections_SubredditLists__ = __webpack_require__(33);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__collections_CommentsPage__ = __webpack_require__(29);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__collections_HiddenPostsAndComments__ = __webpack_require__(30);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__collections_PostsFromSubreddit__ = __webpack_require__(31);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__collections_SavedPostsAndComments__ = __webpack_require__(24);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__collections_SearchQuery__ = __webpack_require__(32);
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -3616,6 +3626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
+
 	var APIResponses = {
 	  APIResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__["APIResponse"],
 	  MergedApiReponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_7__apiBase_APIResponse__["b"]
@@ -3623,10 +3634,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* harmony export */ Object.defineProperty(exports, "APIResponses", {configurable: false, enumerable: true, get: function() { return APIResponses; }});
 
 	var APIResponsePaging = {
-	  withQueryAndResult: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["a"],
-	  afterResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["b"],
-	  beforeResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["c"],
-	  fetchAll: /* harmony import */__WEBPACK_IMPORTED_MODULE_10__apiBase_APIResponsePaging__["d"]
+	  withQueryAndResult: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_APIResponsePaging__["a"],
+	  afterResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_APIResponsePaging__["b"],
+	  beforeResponse: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_APIResponsePaging__["c"],
+	  fetchAll: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_APIResponsePaging__["d"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "APIResponsePaging", {configurable: false, enumerable: true, get: function() { return APIResponsePaging; }});
 
@@ -3662,11 +3673,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	var errors = {
-	  NoModelError: /* harmony import */__WEBPACK_IMPORTED_MODULE_11__apiBase_errors_NoModelError__["a"],
-	  ValidationError: /* harmony import */__WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ValidationError__["a"],
-	  ResponseError: /* harmony import */__WEBPACK_IMPORTED_MODULE_12__apiBase_errors_ResponseError__["a"],
-	  DisconnectedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_12__apiBase_errors_ResponseError__["b"],
-	  NotImplementedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_14__apiBase_errors_NotImplementedError__["a"]
+	  NoModelError: /* harmony import */__WEBPACK_IMPORTED_MODULE_12__apiBase_errors_NoModelError__["a"],
+	  ValidationError: /* harmony import */__WEBPACK_IMPORTED_MODULE_14__apiBase_errors_ValidationError__["a"],
+	  ResponseError: /* harmony import */__WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ResponseError__["a"],
+	  DisconnectedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_13__apiBase_errors_ResponseError__["b"],
+	  NotImplementedError: /* harmony import */__WEBPACK_IMPORTED_MODULE_15__apiBase_errors_NotImplementedError__["a"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "errors", {configurable: false, enumerable: true, get: function() { return errors; }});
 
@@ -3717,23 +3728,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // WikiPageListing,
 	  // WikiPageSettings,
 	  Model: /* harmony import */__WEBPACK_IMPORTED_MODULE_8__apiBase_Model__["a"],
+	  ModelTypes: /* harmony namespace import */ __WEBPACK_IMPORTED_MODULE_10__models2_thingTypes__,
 	  Record: /* harmony import */__WEBPACK_IMPORTED_MODULE_9__apiBase_Record__["a"],
 
-	  CommentModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_15__models2_CommentModel__["a"],
-	  PostModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_16__models2_PostModel__["a"],
-	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_17__models2_Subreddit__["a"]
+	  CommentModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_16__models2_CommentModel__["a"],
+	  PostModel: /* harmony import */__WEBPACK_IMPORTED_MODULE_17__models2_PostModel__["a"],
+	  Subreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__models2_Subreddit__["a"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "models", {configurable: false, enumerable: true, get: function() { return models; }});
 
 	var collections = {
-	  CommentsPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_19__collections_CommentsPage__["a"],
-	  ContributingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__["a"],
-	  HiddenPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_20__collections_HiddenPostsAndComments__["default"],
-	  ModeratingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__["b"],
-	  PostsFromSubreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_21__collections_PostsFromSubreddit__["a"],
-	  SavedPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_22__collections_SavedPostsAndComments__["a"],
-	  SearchQuery: /* harmony import */__WEBPACK_IMPORTED_MODULE_23__collections_SearchQuery__["a"],
-	  SubscribedSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_18__collections_SubredditLists__["c"]
+	  CommentsPage: /* harmony import */__WEBPACK_IMPORTED_MODULE_20__collections_CommentsPage__["a"],
+	  ContributingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_19__collections_SubredditLists__["a"],
+	  HiddenPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_21__collections_HiddenPostsAndComments__["default"],
+	  ModeratingSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_19__collections_SubredditLists__["b"],
+	  PostsFromSubreddit: /* harmony import */__WEBPACK_IMPORTED_MODULE_22__collections_PostsFromSubreddit__["a"],
+	  SavedPostsAndComments: /* harmony import */__WEBPACK_IMPORTED_MODULE_23__collections_SavedPostsAndComments__["a"],
+	  SearchQuery: /* harmony import */__WEBPACK_IMPORTED_MODULE_24__collections_SearchQuery__["a"],
+	  SubscribedSubreddits: /* harmony import */__WEBPACK_IMPORTED_MODULE_19__collections_SubredditLists__["c"]
 	};
 	/* harmony export */ Object.defineProperty(exports, "collections", {configurable: false, enumerable: true, get: function() { return collections; }});
 
