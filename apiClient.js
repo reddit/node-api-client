@@ -356,6 +356,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  saved: T.bool,
 	  score: T.number,
 	  sticked: T.bool,
+	  subreddit: T.string,
+	  subredditDetail: T.nop,
+	  subredditId: T.string,
 	  thumbnail: T.string,
 	  title: T.string,
 	  ups: T.number,
@@ -394,6 +397,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  permalink: 'cleanPermalink',
 	  secure_media: 'secureMedia',
 	  selftext: 'selfText',
+	  sr_detail: 'subredditDetail',
+	  subreddit_id: 'subredditId',
 	  sendreplies: 'sendReplies',
 	  url: 'cleanURL',
 	  user_reports: 'userReports'
