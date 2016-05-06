@@ -1346,6 +1346,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  likes: T.cubit,
 	  name: T.string,
 	  replies: T.array,
+	  numReplies: T.number,
+	  loadMore: T.bool,
 	  saved: T.bool,
 	  score: T.number,
 	  stickied: T.bool,
@@ -3784,7 +3786,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* harmony export */ exports["a"] = treeifyComments;/* harmony export */ exports["b"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;// All of these function rely on mutation, either for building the tree,
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__ = __webpack_require__(0);
+	/* harmony export */ exports["a"] = treeifyComments;/* harmony export */ exports["b"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;
+
+	// All of these function rely on mutation, either for building the tree,
 	// or for performance reasons (things like building dictionaryies), use/edit carefully
 
 	function treeifyComments() {
@@ -3840,6 +3845,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return comments.map(function (comment) {
 	    comment.replies = _normalizeCommentReplies(comment.replies, visitComment, false);
+
+	    // Filter out if a comment is a "load more" type, set a property on the
+	    // parent comment, and then nuke the fake "reply"
+	    if (comment.replies) {
+	      var loadMore = comment.replies.findIndex(function (c) {
+	        return c.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["COMMENT_LOAD_MORE"];
+	      });
+
+	      if (loadMore > -1) {
+	        comment.numReplies = comment.replies[loadMore].count;
+	        comment.loadMore = true;
+	        comment.replies.splice(loadMore, 1);
+	      }
+	    }
+
 	    return visitComment(comment, isTopLevel);
 	  });
 	}
