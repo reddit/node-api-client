@@ -9,14 +9,16 @@ export default class PostModel extends RedditModel {
   static PROPERTIES = {
     author: T.string,
     cleanPermalink: T.link,
-    cleanURL: T.link,
+    cleanUrl: T.link,
     distinguished: T.string,
     domain: T.string,
     downs: T.number,
     id: T.string,
     likes: T.cubit,
     malink: T.link,
+    media: T.nop,
     name: T.string,
+    postHint: T.string,
     promoted: T.bool,
     quarantine: T.bool,
     saved: T.bool,
@@ -41,7 +43,7 @@ export default class PostModel extends RedditModel {
     modReports: T.array,
     numComments: T.number,
     secureMedia: T.nop,
-    selfText: T.string,
+    selfTextHTML: T.string,
     sendReplies: T.bool,
     userReports: T.array,
 
@@ -63,12 +65,13 @@ export default class PostModel extends RedditModel {
     mod_reports: 'modReports',
     num_comments: 'numComments',
     permalink: 'cleanPermalink',
+    post_hint: 'postHint',
     secure_media: 'secureMedia',
-    selftext: 'selfText',
+    selftext_html: 'selfTextHTML',
     sr_detail: 'subredditDetail',
     subreddit_id: 'subredditId',
     sendreplies: 'sendReplies',
-    url: 'cleanURL',
+    url: 'cleanUrl',
     user_reports: 'userReports',
   };
 
@@ -78,7 +81,7 @@ export default class PostModel extends RedditModel {
       return !!(
         (data.secure_media && data.secure_media.content) ||
         (data.media_embed && data.media_embed.content) ||
-        (data.selftext)
+        (data.selftext_html)
       );
     },
 
@@ -90,8 +93,8 @@ export default class PostModel extends RedditModel {
         (data.media_embed && data.media_embed.content)
       );
 
-      if (!content && data.selftext) {
-        content = data.selftext;
+      if (!content && data.selftext_html) {
+        content = data.selftext_html;
       }
 
       return content;

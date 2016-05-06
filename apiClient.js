@@ -343,14 +343,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	PostModel.PROPERTIES = {
 	  author: T.string,
 	  cleanPermalink: T.link,
-	  cleanURL: T.link,
+	  cleanUrl: T.link,
 	  distinguished: T.string,
 	  domain: T.string,
 	  downs: T.number,
 	  id: T.string,
 	  likes: T.cubit,
 	  malink: T.link,
+	  media: T.nop,
 	  name: T.string,
+	  postHint: T.string,
 	  promoted: T.bool,
 	  quarantine: T.bool,
 	  saved: T.bool,
@@ -375,7 +377,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  modReports: T.array,
 	  numComments: T.number,
 	  secureMedia: T.nop,
-	  selfText: T.string,
+	  selfTextHTML: T.string,
 	  sendReplies: T.bool,
 	  userReports: T.array,
 
@@ -395,26 +397,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  mod_reports: 'modReports',
 	  num_comments: 'numComments',
 	  permalink: 'cleanPermalink',
+	  post_hint: 'postHint',
 	  secure_media: 'secureMedia',
-	  selftext: 'selfText',
+	  selftext_html: 'selfTextHTML',
 	  sr_detail: 'subredditDetail',
 	  subreddit_id: 'subredditId',
 	  sendreplies: 'sendReplies',
-	  url: 'cleanURL',
+	  url: 'cleanUrl',
 	  user_reports: 'userReports'
 	};
 	PostModel.DERIVED_PROPERTIES = {
 	  expandable: function expandable(data) {
 	    // If it has secure_media, or media, or selftext, it has expandable.
-	    return !!(data.secure_media && data.secure_media.content || data.media_embed && data.media_embed.content || data.selftext);
+	    return !!(data.secure_media && data.secure_media.content || data.media_embed && data.media_embed.content || data.selftext_html);
 	  },
 	  expandedContent: function expandedContent(data) {
 	    var content = void 0;
 
 	    content = data.secure_media_embed && data.secure_media_embed.content || data.media_embed && data.media_embed.content;
 
-	    if (!content && data.selftext) {
-	      content = data.selftext;
+	    if (!content && data.selftext_html) {
+	      content = data.selftext_html;
 	    }
 
 	    return content;
