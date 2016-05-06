@@ -1408,7 +1408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Whoever uses this new model for posting should confirm that
 	// this is the full list of edit fields, you may just be able to
 	// say something like
-	var EDIT_FIELDS = ['default_set', 'subreddit_id', 'domain', 'show_media', 'wiki_edit_age', 'submit_text', 'spam_links', 'title', 'collapse_deleted_comments', 'wikimode', 'over_18', 'related_subreddits', 'suggested_comment_sort', 'description', 'submit_link_label', 'spam_comments', 'spam_selfposts', 'submit_text_label', 'key_color', 'language', 'wiki_edit_karma', 'hide_ads', 'header_hover_text', 'public_traffic', 'public_description', 'comment_score_hide_mins', 'subreddit_type', 'exclude_banned_modqueue', 'content_options'].sort();
+	var EDIT_FIELDS = ['default_set', 'subreddit_id', 'domain', 'show_media', 'wiki_edit_age', 'submit_text', 'spam_links', 'title', 'collapse_deleted_comments', 'wikimode', 'over_18', 'related_subreddits', 'suggested_comment_sort', 'description', 'submit_link_label', 'spam_comments', 'spam_selfposts', 'submit_text_label', 'key_color', 'language', 'wiki_edit_karma', 'hide_ads', 'header_hover_text', 'public_traffic', 'public_description', 'comment_score_hide_mins', 'subreddit_type', 'exclude_banned_modqueue', 'submission_type'].sort();
 
 	var Subreddit = function (_RedditModel) {
 	  _inherits(Subreddit, _RedditModel);
@@ -1448,6 +1448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  publicTraffic: T.nop,
 	  quarantine: T.bool,
 	  relatedSubreddits: T.array,
+	  submissionType: T.string,
 	  submitLinkLabel: T.string,
 	  submitText: T.string,
 	  submitTextLabel: T.string,
@@ -1480,6 +1481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  public_description: 'publicDescription',
 	  public_traffic: 'publicTraffic',
 	  related_subreddits: 'relatedSubreddits',
+	  submission_type: 'submissionType',
 	  submit_link_label: 'submitLinkLabel',
 	  submit_text_label: 'submitTextLabel',
 	  submit_text: 'submitText',
@@ -2325,6 +2327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  spam_links: 'high',
 	  spam_selfposts: 'high',
 	  sr: '',
+	  submission_type: '',
 	  submit_link_label: '',
 	  submit_text: '',
 	  submit_text_label: '',

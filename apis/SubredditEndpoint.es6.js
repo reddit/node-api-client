@@ -24,6 +24,7 @@ const DEFAULT_SUBREDDIT_OPTIONS = {
   spam_links: 'high',
   spam_selfposts: 'high',
   sr: '',
+  submission_type: '',
   submit_link_label: '',
   submit_text: '',
   submit_text_label: '',

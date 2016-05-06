@@ -38,7 +38,7 @@ const EDIT_FIELDS = [
   'comment_score_hide_mins',
   'subreddit_type',
   'exclude_banned_modqueue',
-  'content_options',
+  'submission_type',
 ].sort();
 
 export default class Subreddit extends RedditModel {
@@ -70,6 +70,7 @@ export default class Subreddit extends RedditModel {
     publicTraffic: T.nop,
     quarantine: T.bool,
     relatedSubreddits: T.array,
+    submissionType: T.string,
     submitLinkLabel: T.string,
     submitText: T.string,
     submitTextLabel: T.string,
@@ -103,6 +104,7 @@ export default class Subreddit extends RedditModel {
     public_description: 'publicDescription',
     public_traffic: 'publicTraffic',
     related_subreddits: 'relatedSubreddits',
+    submission_type: 'submissionType',
     submit_link_label: 'submitLinkLabel',
     submit_text_label: 'submitTextLabel',
     submit_text: 'submitText',
