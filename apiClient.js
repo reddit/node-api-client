@@ -3892,7 +3892,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var loadMore = comment.replies.findIndex(function (c) {
 	        return c.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["COMMENT_LOAD_MORE"];
 	      });
-	      console.log(loadMore);
 
 	      if (loadMore > -1) {
 	        comment.numReplies = comment.replies[loadMore].count;
