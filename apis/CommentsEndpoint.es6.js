@@ -51,7 +51,7 @@ const parseGetBody = (res, apiResponse, req) => {
       });
     }
 
-    comments = treeifyComments(parseCommentList(body[1].data.children));
+    comments = parseCommentList(body[1].data.children);
   } else if (body.json && body.json.data) {
     if (query.children) { // treeify 'load more comments' replies
       comments = treeifyComments(parseCommentList(body.json.data.things));
@@ -64,6 +64,7 @@ const parseGetBody = (res, apiResponse, req) => {
     // parsing is done bottom up, comment models are immutable
     // but they'll rely on the records
     const comment = CommentModel.fromJSON(commentJSON);
+
     if (isTopLevel) {
       apiResponse.addResult(comment);
     } else {

@@ -2034,13 +2034,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    }
 
-	    comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body[1].data.children));
+	    comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(body[1].data.children);
 	  } else if (body.json && body.json.data) {
 	    if (query.children) {
 	      // treeify 'load more comments' replies
-	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body.json.data.things));
+	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(body.json.data.things));
 	    } else {
-	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["b"].bind()(body.json.data.things);
+	      comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_commentTreeUtils__["a"].bind()(body.json.data.things);
 	    }
 	  }
 
@@ -2048,6 +2048,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // parsing is done bottom up, comment models are immutable
 	    // but they'll rely on the records
 	    var comment = /* harmony import */__WEBPACK_IMPORTED_MODULE_3__models2_CommentModel__["a"].fromJSON(commentJSON);
+
 	    if (isTopLevel) {
 	      apiResponse.addResult(comment);
 	    } else {
@@ -3827,7 +3828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__ = __webpack_require__(0);
-	/* harmony export */ exports["a"] = treeifyComments;/* harmony export */ exports["b"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;
+	/* harmony export */ exports["b"] = treeifyComments;/* harmony export */ exports["a"] = parseCommentList;/* harmony export */ exports["c"] = normalizeCommentReplies;
 
 	// All of these function rely on mutation, either for building the tree,
 	// or for performance reasons (things like building dictionaryies), use/edit carefully
@@ -3864,7 +3865,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function parseCommentData(data) {
+	  if (data.kind === 'more') {
+	    return {
+	      type: /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["COMMENT_LOAD_MORE"],
+	      children: data.data.children,
+	      count: data.data.count,
+	      parent_id: data.data.parent_id
+	    };
+	  }
+
 	  var comment = data.data;
+
 	  if (comment.replies) {
 	    comment.replies = comment.replies.data.children.map(parseCommentData);
 	  } else {
@@ -3884,7 +3895,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  return comments.map(function (comment) {
-	    comment.replies = _normalizeCommentReplies(comment.replies, visitComment, false);
+	    if (comment.type === /* harmony import */__WEBPACK_IMPORTED_MODULE_0__models2_thingTypes__["COMMENT_LOAD_MORE"]) {
+	      return;
+	    }
 
 	    // Filter out if a comment is a "load more" type, set a property on the
 	    // parent comment, and then nuke the fake "reply"
@@ -3898,9 +3911,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        comment.loadMore = true;
 	        comment.replies.splice(loadMore, 1);
 	      }
+
+	      comment.replies = _normalizeCommentReplies(comment.replies, visitComment, false);
 	    }
 
 	    return visitComment(comment, isTopLevel);
+	  }).filter(function (c) {
+	    return c;
 	  });
 	}
 
