@@ -5,22 +5,22 @@ module.exports = [{
       apiClient: './index.es6.js',
     },
     output: {
-      library: "[name].js",
-      libraryTarget: "umd",
+      library: '[name].js',
+      libraryTarget: 'umd',
     },
     resolve: {
       generator: 'npm-and-modules',
       extensions: ['', '.js', '.jsx', '.es6.js', '.json'],
     },
     loaders: [
-      'esnextreact',
+      'es5react',
       'json',
     ],
     plugins: [
       'production-loaders',
       'set-node-env',
-      // 'minify-and-treeshake',
       'abort-if-errors',
+      'minify-and-treeshake',
     ],
     externals: {
       lodash: 'commonjs lodash',
@@ -31,5 +31,5 @@ module.exports = [{
       superagent: 'commonjs superagent',
       'superagent-retry': 'commonjs superagent-retry',
     },
-  }
-}]
+  },
+}];
