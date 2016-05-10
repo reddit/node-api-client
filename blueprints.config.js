@@ -13,7 +13,7 @@ module.exports = [{
       extensions: ['', '.js', '.jsx', '.es6.js', '.json'],
     },
     loaders: [
-      'es5react',
+      'esnextreact',
       'json',
     ],
     plugins: [
