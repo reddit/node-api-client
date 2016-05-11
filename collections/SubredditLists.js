@@ -44,6 +44,19 @@ export class SubscribedSubreddits extends SubredditList {
 
 export class ModeratingSubreddits extends SubredditList {
   static sort = 'mine/moderator';
+
+  static async fetch(apiOptions, options={}, all=true) {
+    const { get } = SubredditEndpoint;
+    console.log({...this.baseOptions(apiOptions), ...options });
+    const allMergedSubreddits = await fetchAll(get, apiOptions, {
+      ...this.baseOptions({
+        ...apiOptions,
+        'view': 'mod'
+      }),
+      ...options
+    });
+    return new this(allMergedSubreddits);
+  }
 }
 
 export class ContributingSubreddits extends SubredditList {
