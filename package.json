@@ -1,6 +1,6 @@
 {
   "name": "@r/api-client",
-  "version": "3.7.4",
+  "version": "3.8.0",
   "description": "node and browser reddit api library",
   "main": "apiClient.js",
   "scripts": {
