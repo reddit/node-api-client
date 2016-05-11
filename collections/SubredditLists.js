@@ -3,18 +3,23 @@ import Listing from './Listing';
 import SubredditEndpoint from '../apis/SubredditEndpoint';
 
 export class SubredditList extends Listing {
-  static view = '';
+  static sortFromOptions = () => {}
+  static sort = '';
   static limit = 100;
   static endpoint = SubredditEndpoint;
 
-  static baseOptions() {
-    return { sort: this.view, limit: this.limit };
+  static baseOptions(apiOptions) {
+    return {
+      sort: this.sortFromOptions(apiOptions) || this.sort,
+      limit: this.limit,
+      sr_detail: true
+    };
   }
 
   static async fetch(apiOptions, all=true) {
     if (all) {
       const { get } = SubredditEndpoint;
-      const allMergedSubreddits = await fetchAll(get, apiOptions, this.baseOptions());
+      const allMergedSubreddits = await fetchAll(get, apiOptions, this.baseOptions(apiOptions));
       return new this(allMergedSubreddits);
     }
 
@@ -28,13 +33,19 @@ export class SubredditList extends Listing {
 }
 
 export class SubscribedSubreddits extends SubredditList {
-  static view = 'mine/subscriber';
+  static sortFromOptions = (apiOptions) => {
+    if (apiOptions.token) {
+      return 'mine/subscriber';
+    }
+
+    return 'default';
+  }
 }
 
 export class ModeratingSubreddits extends SubredditList {
-  static view = 'mine/moderator';
+  static sort = 'mine/moderator';
 }
 
 export class ContributingSubreddits extends SubredditList {
-  static view = 'mine/contributor';
+  static sort = 'mine/contributor';
 }
