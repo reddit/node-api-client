@@ -85,6 +85,9 @@ export default class Subreddit extends RedditModel {
     userIsMuted: T.bool,
     userSrThemeEnabled: T.bool,
     wikiEnabled: T.bool,
+    wikiEditAge: T.number,
+    wikiEditKarma: T.number,
+    wikiMode: T.string,
   };
 
   static API_ALIASES = {
@@ -115,5 +118,8 @@ export default class Subreddit extends RedditModel {
     user_is_muted: 'userIsMuted',
     user_sr_theme_enabled: 'userSrThemeEnabled',
     wiki_enabled: 'wikiEnabled',
+    wiki_edit_age: 'wikiEditAge',
+    wiki_edit_karma: 'wikiEditKarma',
+    wikimode: 'wikiMode',
   };
 }
