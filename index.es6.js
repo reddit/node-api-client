@@ -1,4 +1,4 @@
-import { makeOptions } from './apiBase/APIRequestUtils';
+import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 
 // import accounts from './apis/accounts';
 // import activities from './apis/activities';
@@ -170,6 +170,10 @@ const DefaultOptions = {
 };
 
 export default makeOptions(DefaultOptions);
+
+export const requestUtils = {
+  rawSend,
+};
 
 export const optionsWithAuth = token => {
   return {

@@ -48,7 +48,13 @@ const requestHeaders = (apiOptions) => {
 };
 
 const requestPath = (apiOptions, path) => {
-  return `${apiOptions.origin}/${path}`;
+  let slash = '/';
+
+  if (path.indexOf('/') === 0) {
+    slash = '';
+  }
+
+  return `${apiOptions.origin}${slash}${path}`;
 };
 
 const appParameter = (apiOptions) => {
