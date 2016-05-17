@@ -101,6 +101,7 @@ export default class Subreddit extends RedditModel {
     hide_ads: 'hideAds',
     icon_img: 'iconImage',
     icon_size: 'iconSize',
+    key_color: 'keyColor',
     public_description: 'publicDescription',
     public_traffic: 'publicTraffic',
     related_subreddits: 'relatedSubreddits',
@@ -116,4 +117,13 @@ export default class Subreddit extends RedditModel {
     user_sr_theme_enabled: 'userSrThemeEnabled',
     wiki_enabled: 'wikiEnabled',
   };
+
+  // we want to be able to lookup subreddits by name. This way when you have a
+  // a permalink url with the subredddit name or someone types in a subreddit name
+  // in the goto field we can look-up the subreddit in our cache without converting
+  // the name to a thing_id.
+  makeUUID(data) {
+    const { url } = data;
+    return url.replace(/^\/r?r\//, '').replace(/\/?$/, '').toLowerCase();
+  }
 }
