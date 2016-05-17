@@ -22,14 +22,6 @@ module.exports = [{
       'abort-if-errors',
       'minify-and-treeshake',
     ],
-    externals: {
-      lodash: 'commonjs lodash',
-      'lodash/object': 'commonjs lodash/object',
-      'lodash/lang': 'commonjs lodash/lang',
-      'lodash/array': 'commonjs lodash/array',
-      'lodash/collection': 'commonjs lodash/collection',
-      superagent: 'commonjs superagent',
-      'superagent-retry': 'commonjs superagent-retry',
-    },
+    externals: 'node-modules',
   },
 }];
