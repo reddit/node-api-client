@@ -118,12 +118,16 @@ export default class Subreddit extends RedditModel {
     wiki_enabled: 'wikiEnabled',
   };
 
+  static cleanName = (name) => {
+    return name.replace(/^\/r?r\//, '').replace(/\/?$/, '').toLowerCase();
+  };
+
   // we want to be able to lookup subreddits by name. This way when you have a
   // a permalink url with the subredddit name or someone types in a subreddit name
   // in the goto field we can look-up the subreddit in our cache without converting
   // the name to a thing_id.
   makeUUID(data) {
     const { url } = data;
-    return url.replace(/^\/r?r\//, '').replace(/\/?$/, '').toLowerCase();
+    return Subreddit.cleanName(url);
   }
 }
