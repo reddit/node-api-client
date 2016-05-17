@@ -25,11 +25,11 @@ export const beforeResponse = response => withQueryAndResult(response, (query, r
   return query.after ? results[0].uuid : null;
 });
 
-export const fetchAll = async (fetchFunction, apiOptions, initialParams) => {
+export const fetchAll = async (fetchFunction, apiOptions, initialParams, afterFn=afterResponse) => {
   let params = { ...initialParams };
   let response = await fetchFunction(apiOptions, params);
 
-  let after = afterResponse(response);
+  let after = afterFn(response);
   while (after) {
     params = { ...params, after };
     response = response.appendResponse(await fetchFunction(apiOptions, params));

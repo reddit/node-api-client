@@ -31,16 +31,16 @@ export default class Listing {
     this.prevResponse = this.prevResponse.bind(this);
   }
 
-  get afterId() {
-    return afterResponse(this.apiResponse);
+  afterId(apiResponse) {
+    return afterResponse(apiResponse);
   }
 
   hasNextPage() {
     return !!this.afterId;
   }
 
-  get prevId() {
-    return beforeResponse(this.apiResponse);
+  prevId(apiResponse) {
+    return beforeResponse(apiResponse);
   }
 
   hasPreviousPage() {
@@ -48,14 +48,14 @@ export default class Listing {
   }
 
   async nextResponse(apiOptions) {
-    const after = this.afterId;
+    const after = this.afterId(this.apiResponse);
     if (!after) { return ; }
     const options = omit({ ...this.apiResponse.query, after}, 'before');
     return await this.constructor.getResponse(apiOptions, options);
   }
 
   async prevResponse(apiOptions) {
-    const before = this.prevId;
+    const before = this.prevId(this.apiResponse);
     if (!before) { return; }
     const options = omit({ ...this.apiResponse.query, before}, 'after');
     return await this.constructor.getResponse(apiOptions, options);
