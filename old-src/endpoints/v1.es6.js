@@ -1036,6 +1036,8 @@ class APIv1Endpoint {
 
         if (options.user === 'me') { // current oauth doesn't return user id
           uri += 'api/v1/me';
+        } else if (options.loggedOut) {
+          uri += 'api/me.json';
         } else {
           uri += 'user/' + options.user + '/about.json';
         }
@@ -1064,8 +1066,14 @@ class APIv1Endpoint {
 
       formatBody: function(options) {
         return function(body) {
+          // Make sure we have a name to key off for the case of logged-out
+          // user information.
+          const data = {
+            name: '',
+            ...(body.data || body)
+          };
           if (body) {
-            return new Account(body.data || body).toJSON();
+            return new Account(data).toJSON();
           }
         };
       },
