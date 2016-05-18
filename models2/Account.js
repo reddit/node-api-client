@@ -1,12 +1,12 @@
 import RedditModel from './RedditModel';
 import Record from '../apiBase/Record';
 
-import { USER } from './thingTypes';
+import { ACCOUNT } from './thingTypes';
 
 const T = RedditModel.Types;
 
 export default class Subreddit extends RedditModel {
-  static type = USER;
+  static type = ACCOUNT;
 
   static PROPERTIES = {
     commentKarma: T.number,
