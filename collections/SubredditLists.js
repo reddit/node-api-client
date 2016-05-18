@@ -5,13 +5,15 @@ import SubredditEndpoint from '../apis/SubredditEndpoint';
 // subreddit's uuid is the clean name but for paging we need the thing id
 export const subredditAfter = (apiResponse) => {
   const after = afterResponse(apiResponse);
+  if (!after) { return after; }
   return apiResponse.subreddits[after].name;
-}
+};
 
 export const subredditPrev = (apiResponse) => {
   const before = beforeResponse(apiResponse);
+  if (!before) { return before; }
   return apiResponse.subreddits[before].name;
-}
+};
 
 export class SubredditList extends Listing {
   static sortFromOptions = () => {}
