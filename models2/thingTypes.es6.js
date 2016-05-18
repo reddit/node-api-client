@@ -2,8 +2,8 @@ export const COMMENT = 'comment';
 export const COMMENT_TYPE = 't1';
 export const COMMENT_LOAD_MORE = 'comment_load_more';
 
-export const USER = 'user';
-export const USER_TYPE = 't2';
+export const ACCOUNT = 'account';
+export const ACCOUNT_TYPE = 't2';
 
 export const POST = 'post';
 export const POST_TYPE = 't3';
@@ -22,7 +22,7 @@ export const PROMOCAMPAIGN_TYPE = 't8';
 
 const type_pairs = [
   [COMMENT, COMMENT_TYPE],
-  [USER, USER_TYPE],
+  [ACCOUNT, ACCOUNT_TYPE],
   [POST, POST_TYPE],
   [MESSAGE, MESSAGE_TYPE],
   [SUBREDDIT, SUBREDDIT_TYPE],
