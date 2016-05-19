@@ -83,6 +83,7 @@ export default class Subreddit extends RedditModel {
     userIsContributor: T.bool,
     userIsModerator: T.bool,
     userIsMuted: T.bool,
+    userIsSubscriber: T.bool,
     userSrThemeEnabled: T.bool,
     wikiEnabled: T.bool,
   };
@@ -114,6 +115,7 @@ export default class Subreddit extends RedditModel {
     user_is_contributor: 'userIsContributor',
     user_is_moderator: 'userIsModerator',
     user_is_muted: 'userIsMuted',
+    user_is_subscriber: 'userIsSubscriber',
     user_sr_theme_enabled: 'userSrThemeEnabled',
     wiki_enabled: 'wikiEnabled',
   };
