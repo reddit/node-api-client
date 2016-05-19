@@ -1,36 +1,34 @@
-import BaseEndpoint from '../apiBase/BaseEndpoint';
-import Subscription from '../models/subscription';
+import { runQuery, validateData } from '../apiBase/APIRequestUtils';
 
-export default class SubscriptionsEndpoint extends BaseEndpoint {
-  model = Subscription;
+const path = 'api/subscribe';
 
-  move = this.notImplemented('move');
-  copy = this.notImplemented('copy');
-  put = this.notImplemented('put');
-  patch = this.notImplemented('patch');
+const validator = (data) => !data.subreddit;
 
-  path () {
-    return 'api/subscribe';
-  }
+const post = (apiOptions, data) => {
+  validateData(data, 'post', 'subscriptions', validator);
 
-  post (data) {
-    const postData = {
-      sr: data.subreddit,
-      action: 'sub',
-      api_type: 'json',
-    };
+  const postData = {
+    sr: data.subreddit,
+    action: 'sub',
+    api_type: 'json',
+  };
 
-    return super.post(postData);
-  }
-
-  del (data) {
-    const postData = {
-      sr: data.subreddit,
-      action: 'unsub',
-      api_type: 'json',
-      _method: 'post',
-    };
-
-    return super.del(postData);
-  }
+  return runQuery(apiOptions, 'post', path, postData, data);
 }
+
+const del = (apiOptions, data) => {
+  validateData(data, 'del', 'subscriptions', validator);
+
+  const postData = {
+    sr: data.subreddit,
+    action: 'unsub',
+    api_type: 'json',
+  };
+
+  return runQuery(apiOptions, 'post', path, postData, data);
+}
+
+export default {
+  post,
+  del,
+};

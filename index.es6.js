@@ -11,7 +11,6 @@ import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 // import rules from './apis/rules';
 // import stylesheets from './apis/stylesheets';
 // import subredditRelationships from './apis/subredditRelationships';
-// import subscriptions from './apis/subscriptions';
 // import trophies from './apis/trophies';
 // import votes from './apis/votes';
 // import wiki from './apis/wiki';
@@ -21,6 +20,7 @@ import HiddenEndpoint from './apis/HiddenEndpoint';
 import PostsEndpoint from './apis/PostsEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
+import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
@@ -68,6 +68,7 @@ export const endpoints = {
   PostsEndpoint,
   SavedEndpoint,
   SearchEndpoint,
+  subscriptions,
   SubredditEndpoint,
 };
 
