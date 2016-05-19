@@ -3,13 +3,13 @@ import Listing from './Listing';
 import SubredditEndpoint from '../apis/SubredditEndpoint';
 
 // subreddit's uuid is the clean name but for paging we need the thing id
-export const subredditAfter = (apiResponse) => {
+export const subredditAfterId = (apiResponse) => {
   const after = afterResponse(apiResponse);
   if (!after) { return after; }
   return apiResponse.subreddits[after].name;
 };
 
-export const subredditPrev = (apiResponse) => {
+export const subredditPrevId = (apiResponse) => {
   const before = beforeResponse(apiResponse);
   if (!before) { return before; }
   return apiResponse.subreddits[before].name;
@@ -27,13 +27,13 @@ export class SubredditList extends Listing {
       limit: this.limit,
       sr_detail: true,
     };
-  }
+  } 
 
   static async fetch(apiOptions, all=true) {
     if (all) {
       const { get } = SubredditEndpoint;
       const allMergedSubreddits = await fetchAll(get, apiOptions,
-          this.baseOptions(apiOptions), subredditAfter);
+          this.baseOptions(apiOptions), subredditAfterId);
 
       return new this(allMergedSubreddits);
     }
@@ -47,11 +47,11 @@ export class SubredditList extends Listing {
   }
 
   afterId(apiResponse) {
-    return subredditAfter(apiResponse);
+    return subredditAfterId(apiResponse);
   }
 
   prevId(apiResponse) {
-    return subredditPrev(apiResponse);
+    return subredditPrevId(apiResponse);
   }
 }
 
