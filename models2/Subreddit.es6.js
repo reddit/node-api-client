@@ -119,7 +119,7 @@ export default class Subreddit extends RedditModel {
   };
 
   static cleanName = (name) => {
-    return name.replace(/^\/r?r\//, '').replace(/\/?$/, '').toLowerCase();
+    return name.replace(/^\/?r\//, '').replace(/\/?$/, '').toLowerCase();
   };
 
   // we want to be able to lookup subreddits by name. This way when you have a
