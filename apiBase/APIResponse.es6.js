@@ -5,7 +5,7 @@ import {
   TYPES,
   thingType,
   COMMENT,
-  USER,
+  ACCOUNT,
   POST,
   MESSAGE,
   SUBREDDIT,
@@ -17,14 +17,14 @@ export class APIResponseBase {
 
     this.posts = {};
     this.comments = {};
-    this.users = {};
+    this.accounts = {};
     this.messages = {};
     this.subreddits = {};
 
     this.typeToTable = {
       [COMMENT]: this.comments,
       [POST]: this.posts,
-      [USER]: this.users,
+      [ACCOUNT]: this.accounts,
       [MESSAGE]: this.messages,
       [SUBREDDIT]: this.subreddits,
     };
@@ -106,7 +106,7 @@ export class MergedApiReponse extends APIResponseBase {
 
     const tableKeys = [
       COMMENT,
-      USER,
+      ACCOUNT,
       POST,
       MESSAGE,
       SUBREDDIT,

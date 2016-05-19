@@ -1,6 +1,6 @@
 import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 
-// import accounts from './apis/accounts';
+
 // import activities from './apis/activities';
 // import captcha from './apis/captcha';
 // import messages from './apis/messages';
@@ -15,6 +15,7 @@ import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 // import trophies from './apis/trophies';
 // import votes from './apis/votes';
 // import wiki from './apis/wiki';
+import AccountsEndpoint from './apis/accounts';
 import CommentsEndpoint from './apis/CommentsEndpoint';
 import HiddenEndpoint from './apis/HiddenEndpoint';
 import PostsEndpoint from './apis/PostsEndpoint';
@@ -47,7 +48,6 @@ export const APIResponsePaging = {
 };
 
 export const endpoints = {
-  // accounts,
   // activities,
   // captcha,
   // messages,
@@ -62,6 +62,7 @@ export const endpoints = {
   // trophies,
   // votes,
   // wiki,
+  AccountsEndpoint,
   CommentsEndpoint,
   HiddenEndpoint,
   PostsEndpoint,

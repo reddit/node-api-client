@@ -1,27 +1,32 @@
-import BaseEndpoint from '../apiBase/BaseEndpoint';
-import Account from '../models/account';
+import { runQuery } from '../apiBase/APIRequestUtils';
+import Account from '../models2/account';
 
-export default class AccountsEndpoint extends BaseEndpoint {
-  move = this.notImplemented('move');
-  copy = this.notImplemented('copy');
-  put = this.notImplemented('put');
-  patch = this.notImplemented('patch');
-  post = this.notImplemented('post');
-  del = this.notImplemented('del');
-
-  path(method, query={}) {
-    if (query.user === 'me') {
-      return 'api/v1/me';
-    } else {
-      return `user/${query.user}/about.json`;
-    }
+const getPath = (query) => {
+  if (query.loggedOut) {
+    return 'api/me.json';
+  } else if (query.user === 'me') {
+    return 'api/v1/me';
   }
 
-  parseBody(res, apiResponse) {
-    const { body } = res;
+  return `user/${query.user}/about.json`;
+};
 
-    if (body) {
-      apiResponse.addResult(new Account(body.data || body).toJSON());
-    }
+const parseGetBody = (res, apiResponse) => {
+  const { body } = res;
+  if (body) {
+    const data = {
+      name: 'me', // me is reserved, this should only stay me in the logged out case
+      ...(body.data || body),
+    };
+
+    apiResponse.addResult(Account.fromJSON(data));
   }
-}
+};
+
+export default {
+  get(apiOptions, query) {
+    const path = getPath(query);
+
+    return runQuery(apiOptions, 'get', path, {}, query, parseGetBody);
+  },
+};
