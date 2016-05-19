@@ -6,9 +6,9 @@ const getPath = (query) => {
     return 'api/me.json';
   } else if (query.user === 'me') {
     return 'api/v1/me';
-  } else {
-    return `user/${query.user}/about.json`;
   }
+
+  return `user/${query.user}/about.json`;
 };
 
 const parseGetBody = (res, apiResponse) => {
