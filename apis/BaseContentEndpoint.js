@@ -47,15 +47,15 @@ export const formatBaseContentQuery = (query, method) => {
   return query;
 };
 
-export const  patchPath = () => {
+export const patchPath = () => {
   return 'api/editusertext';
 };
 
-export const  deletePath = () => {
+export const deletePath = () => {
   return 'api/del';
 };
 
-export const  patch = (apiOptions, data) => {
+export const patch = (apiOptions, data) => {
   if (!data) {
     throw new NoModelError('/api/editusertext');
   }
