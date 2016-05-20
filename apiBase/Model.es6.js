@@ -160,11 +160,14 @@ export default class Model {
   //   return stub.then(finalLink => dispatch(newLinkData(finalLink));
   // };
   // ```
-  stub({ keyOrObject, value}, promise) {
-    const next = {...this.toJSON(), ...this._diff(keyOrObject, value) };
+  stub(keyOrObject, valueOrPromise, promise) {
+    if (!promise) {
+      promise = valueOrPromise;
+    }
+
+    const next = { ...this.toJSON(), ...this._diff(keyOrObject, valueOrPromise) };
     const stub = new this.constructor(next, true);
-    stub.then = promise.then;
-    stub.reject = promise.reject;
+    stub.promise = promise;
     Object.freeze(stub); // super important, don't break the super secret flag
     return stub;
   }

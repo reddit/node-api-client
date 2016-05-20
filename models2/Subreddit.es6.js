@@ -1,5 +1,7 @@
 import RedditModel from './RedditModel';
 import { SUBREDDIT } from './thingTypes';
+import subscriptions from 'apis/subscriptions';
+
 
 const T = RedditModel.Types;
 
@@ -121,6 +123,7 @@ export default class Subreddit extends RedditModel {
   };
 
   static cleanName = (name) => {
+    if (!name) { return name; }
     return name.replace(/^\/?r\//, '').replace(/\/?$/, '').toLowerCase();
   };
 
@@ -131,5 +134,24 @@ export default class Subreddit extends RedditModel {
   makeUUID(data) {
     const { url } = data;
     return Subreddit.cleanName(url);
+  }
+
+  toggleSubscribed(apiOptions) {
+    const { userIsSubscriber } = this;
+    const toggled = !userIsSubscriber;
+    const oldModel = this;
+
+    const stub = this.stub('userIsSubscriber', toggled, async (resolve, reject) => {
+      try {
+        const data = { subreddit: oldModel.name };
+        const endpoint = toggled ? subscriptions.post : subscriptions.del;
+        await endpoint(apiOptions, data);
+        return stub;
+      } catch (e) {
+        throw oldModel;
+      }
+    });
+
+    return stub;
   }
 }

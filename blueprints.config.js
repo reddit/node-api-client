@@ -10,6 +10,7 @@ module.exports = [{
     },
     resolve: {
       generator: 'npm-and-modules',
+      paths: [''],
       extensions: ['', '.js', '.jsx', '.es6.js', '.json'],
     },
     loaders: [
