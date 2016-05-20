@@ -141,7 +141,7 @@ export default class Subreddit extends RedditModel {
     const toggled = !userIsSubscriber;
     const oldModel = this;
 
-    const stub = this.stub('userIsSubscriber', toggled, async (resolve, reject) => {
+    const stub = this.stub('userIsSubscriber', toggled, async () => {
       try {
         const data = { subreddit: oldModel.name };
         const endpoint = toggled ? subscriptions.post : subscriptions.del;
