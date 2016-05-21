@@ -2,6 +2,8 @@ import RedditModel from './RedditModel';
 import Record from '../apiBase/Record';
 import { COMMENT, COMMENT_LOAD_MORE } from './thingTypes';
 
+import votable from './mixins/votable';
+
 const T = RedditModel.Types;
 
 export default class CommentModel extends RedditModel {
@@ -80,3 +82,5 @@ export default class CommentModel extends RedditModel {
     return new Record(COMMENT_LOAD_MORE, this.parentId);
   }
 }
+
+votable(CommentModel);

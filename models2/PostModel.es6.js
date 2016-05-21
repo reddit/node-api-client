@@ -1,5 +1,6 @@
 import RedditModel from './RedditModel';
 import { POST } from './thingTypes';
+import votable from './mixins/votable';
 
 const T = RedditModel.Types;
 
@@ -130,3 +131,5 @@ export default class PostModel extends RedditModel {
     },
   };
 }
+
+votable(PostModel);
