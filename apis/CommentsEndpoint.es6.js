@@ -1,4 +1,4 @@
-import { runQuery } from '../apiBase/APIRequestUtils';
+import { runQuery, save } from '../apiBase/APIRequestUtils';
 import { formatBaseContentQuery } from './BaseContentEndpoint';
 
 import { has } from 'lodash/object';
@@ -99,8 +99,9 @@ export default {
       api_type: 'json',
       thing_id: data.thingId,
       text: data.text,
+      raw_json: 1,
     };
 
-    return runQuery(apiOptions, 'post', path, postData, data, parsePostBody);
+    return save(apiOptions, 'post', path, postData, parsePostBody);
   },
 };

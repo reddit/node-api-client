@@ -16,7 +16,6 @@ export function _vote (apiOptions, direction) {
 
   const stub = this.stub('likes', direction, async (resolve, reject) => {
     try {
-      const data = { comment: oldModel.name };
       const endpoint = direction === 0 ? votes.del : votes.post;
       await endpoint(apiOptions, { thingId: oldModel.name, direction });
       return stub;
@@ -30,4 +29,3 @@ export function _vote (apiOptions, direction) {
 };
 
 export default (cls) => mixin(cls, { upvote, downvote, _vote });
-
