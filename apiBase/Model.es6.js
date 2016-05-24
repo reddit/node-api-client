@@ -113,6 +113,7 @@ export default class Model {
     }
 
     this.uuid = this.makeUUID(data);
+    this.paginationId = this.makePaginationId(data);
     this.type = this.getType(data, this.uuid);
 
     if (!SUPER_SECRET_SHOULD_FREEZE_FLAG_THAT_ONLY_STUBS_CAN_USE) {
@@ -179,12 +180,16 @@ export default class Model {
     return fakeUUID();
   }
 
+  makePaginationId(data) {
+    return this.uuid || this.makeUUID(data);
+  }
+
   getType(/* data, uuid */) {
     return this.constructor.type;
   }
 
   toRecord() {
-    return new Record(this.type, this.uuid);
+    return new Record(this.type, this.uuid, this.paginationId);
   }
 
   toJSON() {

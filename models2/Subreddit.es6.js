@@ -136,6 +136,10 @@ export default class Subreddit extends RedditModel {
     return Subreddit.cleanName(url);
   }
 
+  makePaginationId(data) {
+    return data.name; // this is the thing fullname
+  }
+
   toggleSubscribed(apiOptions) {
     const { userIsSubscriber } = this;
     const toggled = !userIsSubscriber;

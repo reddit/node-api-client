@@ -18,11 +18,11 @@ export const withQueryAndResult = (response, fn) => {
 
 export const afterResponse = (response) => withQueryAndResult(response, (query, results) => {
   const limit = query.limit || 25;
-  return results.length >= limit ? last(results).uuid : null;
+  return results.length >= limit ? last(results).paginationId : null;
 });
 
 export const beforeResponse = response => withQueryAndResult(response, (query, results) => {
-  return query.after ? results[0].uuid : null;
+  return query.after ? results[0].paginationId : null;
 });
 
 export const fetchAll = async (fetchFunction, apiOptions, initialParams, afterFn=afterResponse) => {
