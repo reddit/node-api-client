@@ -72,6 +72,9 @@ const { Record } = models;
 const LinkRecord = new Record(LINK_TYPE, 't3_4gonrl');
 ```
 
+##### A note on pagination (3.12.0+):
+Records have a property called paginationId. By default, this will be the same as uuid. This is useful for when the uuid of your model is different than the id you'll be using for pagination. See [Subreddit's Model](/models2/Subreddit.es6.js) for an example of a Model with a different UUID than paginationId.
+
 They are produced by [Models](/apiBase/Model.es6.js).
 The Model class provides type checking and immutability for your api data.
 You define models in terms of Properties and types.
