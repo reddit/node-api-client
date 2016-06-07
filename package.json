@@ -47,9 +47,12 @@
     "eslint": "^2.9.0",
     "eslint-plugin-babel": "2.1.1",
     "eslint-plugin-react": "3.16.1",
+    "lodash": "4.x",
     "mocha": "2.4.5",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
+    "superagent": "1.x",
+    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
     "webpack": "2.1.0-beta.7"
   }
 }
