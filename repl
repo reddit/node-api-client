@@ -13,7 +13,7 @@ console.log('Enter `help()` for information.');
 
 require('babel-polyfill');
 const optionsWithAuth = require('./apiClient').optionsWithAuth;
-const apiOptions = Object.assign({},
+const APIOptions = Object.assign({},
   optionsWithAuth(process.env.TOKEN),
   { eventEmitter: new EventEmitter() }
 );
@@ -23,45 +23,45 @@ const local = repl.start('$> ');
 function help () {
   const help = [
     'To try out the API, use the available instance of `api` to make requests.',
-    '  For example, try writing: `api.subreddits.get({ id: "coffee" });',
+    '  For example, try writing: `SubredditEndpoint.get(APIOptions, { id: "coffee" })`',
     '\n',
     'The latest API error can be accessed at `error`. Requests and responses',
     'can be accessed at `request` and `response`.',
     'The latest API result can be accessed at `apiResponse`',
     '\n',
     'Also try out using Models directly, they"re all in scope',
-    '  e.g. try typing `SubscribedSubreddits.fetch(api)` (assuming you have your token)',
+    '  e.g. try typing `SubscribedSubreddits.fetch(APIOptions)` (assuming you have your token)',
     '  property configured',
     '  then type `apiResponse.results` and',
     '  `apiResponse.getModelFromRecord(apiResponse.results[0])`',
     '  if you want access to the SubredditList model that"s created in this example,',
-    '  you"ll need to append a .then(function(res) { someGlobalVariableYouDeclared = res; })',
+    '  you"ll need to append a .then(function(res) { this.res = res; })',
+    '  and then res will be available as a toplevel variable',
   ].join('\n');
 
   console.log(help);
 }
 
-apiOptions.eventEmitter.on('response', function printResponse (req, res) {
+APIOptions.eventEmitter.on('response', function printResponse (req, res) {
   console.log(`${req.method} ${req.url} returned ${res.statusCode}`);
   local.context.request = res;
   local.context.response = res;
 });
 
-apiOptions.eventEmitter.on('result', function (apiResponse) {
+APIOptions.eventEmitter.on('result', function (apiResponse) {
   local.context.apiResponse = apiResponse;
 });
 
-apiOptions.eventEmitter.on('error', function printResponse (e, req) {
+APIOptions.eventEmitter.on('error', function printResponse (e, req) {
   console.log(`${req.method} ${req.url} returned error:`);
   console.log(e.toString());
   local.context.error = e;
 });
 
-apiOptions.eventEmitter.on('request', function printRequest (req) {
+APIOptions.eventEmitter.on('request', function printRequest (req) {
   console.log(`Initiating ${req.method} to ${req.url}`);
-  console.log(`query/data: ${JSON.stringify(req.query, null, 2)}`)
+  console.log(`query/data: ${JSON.stringify(req.query, null, 2)}`);
 });
-
 
 local.context.findLoadMoreStub = function findLoadMoreStub(r) {
   // r is a result
@@ -92,7 +92,7 @@ function exportToContext(submoduleName) {
   });
 }
 
-local.context.apiOptions = apiOptions;
+local.context.APIOptions = APIOptions;
 
 exportToContext('endpoints');
 exportToContext('models');
