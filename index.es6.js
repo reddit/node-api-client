@@ -13,7 +13,6 @@ import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 // import subredditRelationships from './apis/subredditRelationships';
 // import trophies from './apis/trophies';
 // import votes from './apis/votes';
-// import wiki from './apis/wiki';
 import AccountsEndpoint from './apis/accounts';
 import CommentsEndpoint from './apis/CommentsEndpoint';
 import HiddenEndpoint from './apis/HiddenEndpoint';
@@ -22,6 +21,7 @@ import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
 import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
+import WikisEndpoint from './apis/wikis';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
 import Model from './apiBase/Model';
@@ -70,6 +70,7 @@ export const endpoints = {
   SearchEndpoint,
   subscriptions,
   SubredditEndpoint,
+  WikisEndpoint,
 };
 
 import NoModelError from './apiBase/errors/NoModelError';
@@ -103,9 +104,11 @@ export const errors = {
 // import WikiPageSettings from './models/wikiPageSettings';
 
 // new models
+import Account from './models2/account';
 import CommentModel from './models2/CommentModel';
 import PostModel from './models2/PostModel';
 import Subreddit from './models2/Subreddit';
+import Wiki from './models2/Wiki';
 
 import {
   SubscribedSubreddits,
@@ -120,7 +123,6 @@ import SavedPostsAndComments from './collections/SavedPostsAndComments';
 import SearchQuery from './collections/SearchQuery';
 
 export const models = {
-  // Account,
   // Award,
   // Base,
   // Block,
@@ -140,9 +142,12 @@ export const models = {
   ModelTypes,
   Record,
 
+  Account,
   CommentModel,
   PostModel,
   Subreddit,
+
+  Wiki,
 };
 
 export const collections = {

@@ -9,6 +9,7 @@ import {
   POST,
   MESSAGE,
   SUBREDDIT,
+  WIKI,
 } from '../models2/thingTypes';
 
 export class APIResponseBase {
@@ -20,6 +21,7 @@ export class APIResponseBase {
     this.accounts = {};
     this.messages = {};
     this.subreddits = {};
+    this.wikis = {};
 
     this.typeToTable = {
       [COMMENT]: this.comments,
@@ -27,6 +29,7 @@ export class APIResponseBase {
       [ACCOUNT]: this.accounts,
       [MESSAGE]: this.messages,
       [SUBREDDIT]: this.subreddits,
+      [WIKI]: this.wikis,
     };
 
     this.addResult = this.addResult.bind(this);

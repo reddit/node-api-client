@@ -20,6 +20,10 @@ export const TROPHIE_TYPE = 't6';
 export const PROMOCAMPAIGN = 'promocampaign';
 export const PROMOCAMPAIGN_TYPE = 't8';
 
+// Honorary things
+export const WIKI = 'wiki';
+export const WIKI_TYPE = 'wiki';
+
 const type_pairs = [
   [COMMENT, COMMENT_TYPE],
   [ACCOUNT, ACCOUNT_TYPE],
@@ -28,6 +32,7 @@ const type_pairs = [
   [SUBREDDIT, SUBREDDIT_TYPE],
   [TROPHIE, TROPHIE_TYPE],
   [PROMOCAMPAIGN, PROMOCAMPAIGN_TYPE],
+  [WIKI, WIKI_TYPE],
 ];
 
 export const TYPES = type_pairs.reduce((table, pair) => {
