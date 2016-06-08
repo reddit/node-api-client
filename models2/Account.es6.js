@@ -1,5 +1,4 @@
 import RedditModel from './RedditModel';
-import Record from '../apiBase/Record';
 
 import { ACCOUNT } from './thingTypes';
 

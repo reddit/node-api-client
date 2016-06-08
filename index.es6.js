@@ -1,7 +1,5 @@
 import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 
-
-// import activities from './apis/activities';
 // import captcha from './apis/captcha';
 // import messages from './apis/messages';
 // import modListing from './apis/modListing';
@@ -13,10 +11,18 @@ import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 // import subredditRelationships from './apis/subredditRelationships';
 // import trophies from './apis/trophies';
 // import votes from './apis/votes';
-import AccountsEndpoint from './apis/accounts';
+// import wiki from './apis/wiki';
+
+// CommentsEndpoint must be imported first followed by PostsEndpoint.
+// This is because the PostsEndpoint requires the PostModel which uses the replyable
+// mixin which requires the CommentsEndpoint. If they're imported out of order
+// endpoints that rely on both Comments and Posts will break in suspicous ways :(
 import CommentsEndpoint from './apis/CommentsEndpoint';
-import HiddenEndpoint from './apis/HiddenEndpoint';
 import PostsEndpoint from './apis/PostsEndpoint';
+
+import AccountsEndpoint from './apis/accounts';
+import ActivitiesEndpoint from './apis/activities';
+import HiddenEndpoint from './apis/HiddenEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
 import subscriptions from './apis/subscriptions';
@@ -48,7 +54,6 @@ export const APIResponsePaging = {
 };
 
 export const endpoints = {
-  // activities,
   // captcha,
   // messages,
   // modListing,
@@ -63,6 +68,7 @@ export const endpoints = {
   // votes,
   // wiki,
   AccountsEndpoint,
+  ActivitiesEndpoint,
   CommentsEndpoint,
   HiddenEndpoint,
   PostsEndpoint,
@@ -87,7 +93,6 @@ export const errors = {
   NotImplementedError,
 };
 
-// import Account from './models/account';
 // import Award from './models/award';
 // import Base from './models/base';
 // import Block from './models/block';

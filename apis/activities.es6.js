@@ -1,42 +1,39 @@
-import BaseEndpoint from '../apiBase/BaseEndpoint';
+import { runQuery } from '../apiBase/APIRequestUtils';
 
-import Comment from '../models2/Comment';
+import CommentModel from '../models2/CommentModel';
 import PostModel from '../models2/PostModel';
 
 const CONSTRUCTORS = {
-  t1: Comment,
+  t1: CommentModel,
   t3: PostModel,
 };
 
-export default class ActivitiesEndpoint extends BaseEndpoint {
-  move = this.notImplemented('move');
-  copy = this.notImplemented('copy');
-  put = this.notImplemented('put');
-  patch = this.notImplemented('patch');
-  post = this.notImplemented('post');
-  del = this.notImplemented('del');
+const getPath = query => (`user/${query.user}/${query.activity}.json`);
 
-  formatQuery (query) {
-    query.feature = 'link_preview';
-    query.sr_detail = 'true';
+const formatQuery = query => ({
+  ...query,
+  feature: 'link_preview',
+  sr_detail: 'true',
+});
 
-    return query;
+const parseBody = (res, apiResponse) => {
+  const { body } = res;
+
+  if (body) {
+    const activities = body.data.children;
+
+    activities.forEach(function(a) {
+      const constructor = CONSTRUCTORS[a.kind];
+      apiResponse.addResult(constructor.fromJSON(a.data));
+    });
   }
+};
 
-  path (method, query={}) {
-    return `user/${query.user}/${query.activity}.json`;
-  }
+export default {
+  get(apiOptions, query)  {
+    const path = getPath(query);
+    const formattedQuery = formatQuery(query);
 
-  parseBody(res, apiResponse) {
-    const { body } = res;
-
-    if (body) {
-      const activities = body.data.children;
-
-      activities.forEach(function(a) {
-        const constructor = CONSTRUCTORS[a.kind];
-        apiResponse.addResult(constructor.fromJSON(a.data));
-      });
-    }
-  }
-}
+    return runQuery(apiOptions, 'get', path, formattedQuery, query, parseBody);
+  },
+};

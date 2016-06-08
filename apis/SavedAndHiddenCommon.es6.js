@@ -23,7 +23,6 @@ const parseBody = (res, apiResponse) => {
   });
 };
 
-
 const formatQuery = (query) => {
   return omit(query, 'user');
 };
@@ -71,7 +70,7 @@ export default (getPathFn, delPath, postPath) => {
     },
 
     post(apiOptions, query) {
-      return post(apiOptions, query, postPath)
+      return post(apiOptions, query, postPath);
     },
   };
 };
