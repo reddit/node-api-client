@@ -1335,7 +1335,7 @@ class APIv1Endpoint {
     return bindAll({
       buildOptions: function(options) {
         const { filter, subredditName, origin, view = 'inbox' } = options;
-        const sub = subredditName ? `/r/${subredditName}` : '/';
+        const sub = subredditName ? `/r/${subredditName}` : '';
         const filterPath = filter ? `/${filter}` : '';
         const uri = `${origin}${sub}/message/${view}${filterPath}`;
 
