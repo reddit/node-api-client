@@ -16,7 +16,6 @@ export default class CommentModel extends RedditModel {
     authorFlairCSSClass: T.string,
     authorFlairText: T.string,
     children: T.nop,
-    cleanPermalink: T.link,
     controversiality: T.number,
     distinguished: T.string,
     downs: T.number,
@@ -48,6 +47,9 @@ export default class CommentModel extends RedditModel {
     scoreHidden: T.bool,
     subredditId: T.string,
     userReports: T.array,
+
+    // derived
+    cleanPermalink: T.link,
   };
 
   static API_ALIASES = {
@@ -60,11 +62,17 @@ export default class CommentModel extends RedditModel {
     mod_reports: 'modReports',
     num_reports: 'numReports',
     parent_id: 'parentId',
-    permalink: 'cleanPermalink',
     report_reasons: 'reportReasons',
     score_hidden: 'scoreHidden',
     subreddit_id: 'subredditId',
     user_reports: 'userReports',
+  };
+
+  static DERIVED_PROPERTIES = {
+    cleanPermalink(data) {
+      const { subreddit, link_id, id} = data;
+      return `/r/${subreddit}/comments/${link_id.substr(3)}/comment/${id}`;
+    },
   };
 
   makeUUID(data) {
