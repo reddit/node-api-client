@@ -70,6 +70,10 @@ export default class CommentModel extends RedditModel {
 
   static DERIVED_PROPERTIES = {
     cleanPermalink(data) {
+      // if we are re-instantiating for a stub (read when we vote or reply)
+      // re-use the cleanPermalink we parsed before.
+      if (data.cleanPermalink) { return data.cleanPermalink; }
+
       const { subreddit, link_id, id} = data;
       return `/r/${subreddit}/comments/${link_id.substr(3)}/comment/${id}`;
     },
