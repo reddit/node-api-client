@@ -1,4 +1,4 @@
-import { save, validateData } from '../apiBase/APIRequestUtils';
+import { runForm, validateData } from '../apiBase/APIRequestUtils';
 
 const path = 'api/vote';
 
@@ -15,7 +15,7 @@ const post = (apiOptions, data) => {
     api_type: 'json',
   };
 
-  return save(apiOptions, 'post', path, postData);
+  return runForm(apiOptions, 'post', path, postData);
 }
 
 const del = (apiOptions, data) => {
@@ -27,7 +27,7 @@ const del = (apiOptions, data) => {
     api_type: 'json',
   };
 
-  return save(apiOptions, 'post', path, postData);
+  return runForm(apiOptions, 'post', path, postData);
 }
 
 export default {

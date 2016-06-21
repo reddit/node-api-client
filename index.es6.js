@@ -24,6 +24,7 @@ import ActivitiesEndpoint from './apis/activities';
 import HiddenEndpoint from './apis/HiddenEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
+import SubredditAutocomplete from './apis/SubredditAutocomplete';
 import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 import WikisEndpoint from './apis/wikis';
@@ -74,6 +75,7 @@ export const endpoints = {
   SavedEndpoint,
   SearchEndpoint,
   subscriptions,
+  SubredditAutocomplete,
   SubredditEndpoint,
   WikisEndpoint,
   MessagesEndpoint,

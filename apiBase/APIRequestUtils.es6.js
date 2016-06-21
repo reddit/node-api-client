@@ -102,7 +102,7 @@ export const validateData = (data, method, apiName, validator) => {
   if (!validator(method)) { throw new ValidationError(apiName, data); }
 };
 
-export const save = (apiOptions, method, path, data, parseBody, parseMeta) => {
+export const runForm = (apiOptions, method, path, data, parseBody, parseMeta) => {
   if (!(apiOptions && method && path && data)) { throw new NoModelError(); }
 
   return new Promise((resolve, reject) => {

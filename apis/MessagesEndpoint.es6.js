@@ -1,7 +1,7 @@
 import Comment from '../models2/CommentModel';
 import Post from '../models2/PostModel';
 import Message from '../models2/MessageModel';
-import { runQuery, save } from '../apiBase/APIRequestUtils';
+import { runQuery, runForm } from '../apiBase/APIRequestUtils';
 
 const TYPE_MAP = {
   't1': Comment,
@@ -49,6 +49,6 @@ export default {
     return runQuery(apiOptions, 'get', getPath(query), {}, query, parseGetBody);
   },
   post(apiOptions, body) {
-    return save(apiOptions, 'post', postPath(body), translateData(body), parsePostBody);
+    return runForm(apiOptions, 'post', postPath(body), translateData(body), parsePostBody);
   },
 };
