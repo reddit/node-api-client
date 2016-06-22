@@ -74,7 +74,10 @@ export default class CommentModel extends RedditModel {
       // re-use the cleanPermalink we parsed before.
       if (data.cleanPermalink) { return data.cleanPermalink; }
 
-      const { subreddit, link_id, id} = data;
+      const { subreddit, link_id, id, context } = data;
+
+      if (context) { return context; }
+
       return `/r/${subreddit}/comments/${link_id.substr(3)}/comment/${id}`;
     },
   };

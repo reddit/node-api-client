@@ -1,7 +1,6 @@
 import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 
 // import captcha from './apis/captcha';
-// import messages from './apis/messages';
 // import modListing from './apis/modListing';
 // import multis from './apis/multis';
 // import multiSubscriptions from './apis/multiSubscriptions';
@@ -28,6 +27,7 @@ import SearchEndpoint from './apis/SearchEndpoint';
 import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 import WikisEndpoint from './apis/wikis';
+import MessagesEndpoint from './apis/MessagesEndpoint';
 
 import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
 import Model from './apiBase/Model';
@@ -55,7 +55,6 @@ export const APIResponsePaging = {
 
 export const endpoints = {
   // captcha,
-  // messages,
   // modListing,
   // multis,
   // multiSubscriptions,
@@ -77,6 +76,7 @@ export const endpoints = {
   subscriptions,
   SubredditEndpoint,
   WikisEndpoint,
+  MessagesEndpoint,
 };
 
 import NoModelError from './apiBase/errors/NoModelError';
