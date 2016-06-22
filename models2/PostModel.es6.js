@@ -5,6 +5,11 @@ import replyable from './mixins/replyable';
 
 const T = RedditModel.Types;
 
+const IGNORED_THUMBNAILS = new Set(['default', 'self', 'nsfw']);
+const cleanThumbnail = thumbnail => {
+  return IGNORED_THUMBNAILS.has(thumbnail) ? '' : thumbnail;
+};
+
 export default class PostModel extends RedditModel {
   static type = POST;
 
@@ -116,9 +121,10 @@ export default class PostModel extends RedditModel {
         });
       }
 
-      if (data.thumbnail) {
+      const thumbnail = cleanThumbnail(data.thumbnail);
+      if (thumbnail) {
         resolutions.push({
-          url: data.thumbnail,
+          url: thumbnail,
           height: 140,
           width: 140,
         });
@@ -129,6 +135,10 @@ export default class PostModel extends RedditModel {
           resolutions,
         }],
       };
+    },
+
+    thumbnail(data) {
+      return cleanThumbnail(data.thumbnail);
     },
   };
 }
