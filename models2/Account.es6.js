@@ -45,6 +45,7 @@ export default class Subreddit extends RedditModel {
     is_mod: 'isMod',
     is_suspended: 'isSuspended',
     link_karma: 'linkKarma',
+    over_18: 'over18',
     suspension_expiration_utc: 'suspensionExpirationUTC',
   }
 
