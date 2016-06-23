@@ -9,10 +9,9 @@ const getPath = (query) => {
   if (!path) {
     path = 'index';
   }
+
   // Strip trailing slash from the path
-  if (path[path.length-1] === '/') {
-    path = path.slice(0, -1);
-  }
+  path = path.endsWith('/') ? path.slice(0, -1) : path;
 
   if (subredditName) {
     return `r/${subredditName}/wiki/${path}`;
