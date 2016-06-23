@@ -22,6 +22,7 @@ import PostsEndpoint from './apis/PostsEndpoint';
 import AccountsEndpoint from './apis/accounts';
 import ActivitiesEndpoint from './apis/activities';
 import HiddenEndpoint from './apis/HiddenEndpoint';
+import PreferencesEndpoint from './apis/PreferencesEndpoint';
 import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
 import SubredditAutocomplete from './apis/SubredditAutocomplete';
@@ -72,6 +73,7 @@ export const endpoints = {
   CommentsEndpoint,
   HiddenEndpoint,
   PostsEndpoint,
+  PreferencesEndpoint,
   SavedEndpoint,
   SearchEndpoint,
   subscriptions,
