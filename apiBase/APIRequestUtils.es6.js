@@ -61,7 +61,7 @@ const appParameter = (apiOptions) => {
   return `${apiOptions.appName}-${apiOptions.env}`;
 };
 
-export const rawSend = (apiOptions, method, path, data, kind, cb) => {
+export const rawSend = (apiOptions, method, path, data, type, cb) => {
   const origin = apiOptions.origin;
   const url = requestPath(apiOptions, path);
 
@@ -77,17 +77,17 @@ export const rawSend = (apiOptions, method, path, data, kind, cb) => {
   let s = superagent[method](url);
   s.set(requestHeaders(apiOptions));
 
-  data.app = appParameter(apiOptions);
-
-  if (kind === 'form') {
-    s.type('form');
-    s.send(data);
-  } else {
+  if (type === 'query') {
+    data.app = appParameter(apiOptions);
     s.query(data);
 
     if (s.redirects) {
       s.redirects(0);
     }
+  } else {
+    s.query({ app: appParameter(apiOptions) });
+    s.type(type);
+    s.send(data);
   }
 
   s.end((err, res) => {
@@ -101,6 +101,17 @@ export const validateData = (data, method, apiName, validator) => {
   if (!(data && validator)) { throw new ValidationError(apiName, undefined); }
   if (!validator(data)) { throw new ValidationError(apiName, data); }
 };
+
+
+export const runJson = (apiOptions, method, path, data, parseBody, parseMeta) => {
+  if (!(apiOptions && method && path && data)) { throw new NoModelError(); }
+
+  return new Promise((resolve, reject) => {
+    rawSend(apiOptions, method, path, data, 'json', (err, res, req) => {
+      handle(apiOptions, resolve, reject, err, res, req, data, method, parseBody, parseMeta);
+    });
+  });
+}
 
 export const runForm = (apiOptions, method, path, data, parseBody, parseMeta) => {
   if (!(apiOptions && method && path && data)) { throw new NoModelError(); }
