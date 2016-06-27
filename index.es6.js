@@ -111,7 +111,7 @@ export const errors = {
 // import WikiPageSettings from './models/wikiPageSettings';
 
 // new models
-import Account from './models2/account';
+import Account from './models2/Account';
 import CommentModel from './models2/CommentModel';
 import PostModel from './models2/PostModel';
 import Subreddit from './models2/Subreddit';

@@ -1,5 +1,5 @@
 import { runQuery } from '../apiBase/APIRequestUtils';
-import Account from '../models2/account';
+import Account from '../models2/Account';
 
 const getPath = (query) => {
   if (query.loggedOut) {
