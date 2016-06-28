@@ -52,7 +52,7 @@ const del = (apiOptions, query, path) => {
 };
 
 const post = (apiOptions, query, path) => {
-  validator(query, 'post', 'saved', validator);
+  validateData(query, 'post', 'saved', validator);
   const postData = formatQuery(query);
 
   return runQuery(apiOptions, 'post', path, postData, query, parseBody);
