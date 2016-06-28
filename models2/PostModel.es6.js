@@ -20,6 +20,7 @@ export default class PostModel extends RedditModel {
     distinguished: T.string,
     domain: T.string,
     downs: T.number,
+    hidden: T.bool,
     id: T.string,
     likes: T.cubit,
     malink: T.link,

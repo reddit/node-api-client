@@ -99,7 +99,7 @@ export const rawSend = (apiOptions, method, path, data, kind, cb) => {
 
 export const validateData = (data, method, apiName, validator) => {
   if (!(data && validator)) { throw new ValidationError(apiName, undefined); }
-  if (!validator(method)) { throw new ValidationError(apiName, data); }
+  if (!validator(data)) { throw new ValidationError(apiName, data); }
 };
 
 export const runForm = (apiOptions, method, path, data, parseBody, parseMeta) => {
