@@ -103,7 +103,6 @@ export const errors = {
 // import BlockedUser from './models/BlockedUser';
 // import Message from './models/message';
 // import PromoCampaign from './models/promocampaign';
-// import Preferences from './models/preferences';
 // import Subscription from './models/subscription';
 // import Vote from './models/vote';
 // import Report from './models/report';
@@ -116,6 +115,7 @@ export const errors = {
 import Account from './models2/Account';
 import CommentModel from './models2/CommentModel';
 import PostModel from './models2/PostModel';
+import Preferences from './models2/Preferences';
 import Subreddit from './models2/Subreddit';
 import Wiki from './models2/Wiki';
 
@@ -138,7 +138,6 @@ export const models = {
   // BlockedUser,
   // Message,
   // PromoCampaign,
-  // Preferences,
   // Subreddit,
   // Subscription,
   // Vote,
@@ -154,6 +153,7 @@ export const models = {
   Account,
   CommentModel,
   PostModel,
+  Preferences,
   Subreddit,
 
   Wiki,
