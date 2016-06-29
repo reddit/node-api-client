@@ -14,6 +14,7 @@ export default class PostModel extends RedditModel {
   static type = POST;
 
   static PROPERTIES = {
+    adserverImpPixel: T.string,
     author: T.string,
     cleanPermalink: T.link,
     cleanUrl: T.link,
@@ -22,6 +23,7 @@ export default class PostModel extends RedditModel {
     downs: T.number,
     hidden: T.bool,
     id: T.string,
+    impPixel: T.string,
     likes: T.cubit,
     malink: T.link,
     media: T.nop,
@@ -63,10 +65,12 @@ export default class PostModel extends RedditModel {
   };
 
   static API_ALIASES = {
+    adserver_imp_pixel: 'adserverImpPixel',
     author_flair_css_class: 'authorFlairCSSClass',
     author_flair_text: 'authorFlairText',
     created_utc: 'createdUTC',
     hide_score: 'hideScore',
+    imp_pixel: 'impPixel',
     is_self: 'isSelf',
     link_flair_css_class: 'linkFlairCSSClass',
     link_flair_text: 'linkFlairText',
