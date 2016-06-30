@@ -16,9 +16,7 @@ const getPath = (query) => {
     return `user/${query.multiUser}/m/${query.multi}.json`;
   }
 
-  query.sort = query.sort || 'hot';
-
-  return `${query.sort}.json`;
+  return `${query.sort || 'hot'}.json`;
 };
 
 const formatQuery = (query, method) => {
