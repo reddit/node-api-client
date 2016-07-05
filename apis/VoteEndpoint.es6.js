@@ -2,8 +2,8 @@ import { runForm, validateData } from '../apiBase/APIRequestUtils';
 
 const path = 'api/vote';
 
-const validator = (data) => (
-  !data.thingId || typeof data.direction === 'undefined'
+const validator = data => (
+  !!data.thingId && typeof data.direction === 'number'
 );
 
 const post = (apiOptions, data) => {

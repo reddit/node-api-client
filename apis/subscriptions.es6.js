@@ -2,7 +2,7 @@ import { runQuery, validateData } from '../apiBase/APIRequestUtils';
 
 const path = 'api/subscribe';
 
-const validator = (data) => !data.subreddit;
+const validator = data => !!data.subreddit;
 
 const post = (apiOptions, data) => {
   validateData(data, 'post', 'subscriptions', validator);
