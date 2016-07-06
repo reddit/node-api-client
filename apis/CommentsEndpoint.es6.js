@@ -85,6 +85,10 @@ const parsePostBody = (res, apiResponse) => {
   }
 };
 
+// currently, the del response doesn't actually contain anything. this fn is a
+// placeholder for what might come in the future.
+const parseDelBody = (res, apiResponse) => {};
+
 export default {
   get(apiOptions, query) {
     const path = getPath(query);
@@ -103,5 +107,9 @@ export default {
     };
 
     return runForm(apiOptions, 'post', path, postData, parsePostBody);
+  },
+
+  del(apiOptions, id) {
+    return runForm(apiOptions, 'post', 'api/del', { id }, parseDelBody);
   },
 };
