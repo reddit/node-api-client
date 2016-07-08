@@ -26,7 +26,7 @@ export default class RedditModel extends Model {
 
   static Types = {
     ...Model.Types,
-    html: val => process(Model.Types.string(val)),
+    html: val => Model.Types.string(val),
     link: val => unredditifyLink(Model.Types.string(val)),
   };
 
