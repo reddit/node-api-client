@@ -2,9 +2,8 @@ import FakeError from './FakeError';
 
 export class DisconnectedError extends FakeError {
   constructor(error, url) {
-    super(error);
+    super(`URL ${url} not reachable. You are probably disconnected from the internet.`);
     Object.assign(this, error);
-    this.message = `URL ${url} not reachable. You are probably disconnected from the internet.`;
   }
 }
 
@@ -24,11 +23,10 @@ export default class ResponseError extends FakeError {
       return ResponseError.getSystemLevelError(error, url);
     }
 
-    super(error);
+    super(`Status ${error.status} returned from API request to ${url}`);
     Object.assign(this, error);
 
     this.name = 'ResponseError';
-    this.message = `Status ${error.status} returned from API request to ${url}`;
   }
 
   static getSystemLevelError (error, url) {

@@ -1,8 +1,9 @@
 import superagent from 'superagent';
 
-import ValidationError from './errors/ValidationError';
-import NoModelError from './errors/NoModelError';
 import APIResponse from './APIResponse';
+import NoModelError from './errors/NoModelError';
+import ResponseError from './errors/ResponseError';
+import ValidationError from './errors/ValidationError';
 
 import Events from './Events';
 
@@ -108,7 +109,8 @@ export const runJson = (apiOptions, method, path, data, parseBody, parseMeta) =>
 
   return new Promise((resolve, reject) => {
     rawSend(apiOptions, method, path, data, 'json', (err, res, req) => {
-      handle(apiOptions, resolve, reject, err, res, req, data, method, parseBody, parseMeta);
+      handle(apiOptions, resolve, reject, err, res, req, method, path, data,
+        parseBody, parseMeta);
     });
   });
 }
@@ -118,7 +120,8 @@ export const runForm = (apiOptions, method, path, data, parseBody, parseMeta) =>
 
   return new Promise((resolve, reject) => {
     rawSend(apiOptions, method, path, data, 'form', (err, res, req) => {
-      handle(apiOptions, resolve, reject, err, res, req, data, method, parseBody, parseMeta);
+      handle(apiOptions, resolve, reject, err, res, req,  method, path, data,
+        parseBody, parseMeta);
     });
   });
 };
@@ -132,7 +135,8 @@ export const runQuery = (apiOptions, method, path, query, rawQuery, parseBody, p
 
   return new Promise((resolve, reject) => {
     rawSend(apiOptions, method, path, query, 'query', (err, res, req) => {
-      handle(apiOptions, resolve, reject, err, res, req, rawQuery, method, parseBody, parseMeta);
+      handle(apiOptions, resolve, reject, err, res, req, method, path, rawQuery,
+        parseBody, parseMeta);
     });
   });
 };
@@ -145,38 +149,46 @@ const normalizeRequest = (res, req) => {
   return req;
 };
 
-const handleRequestIfFailed = (apiOptions, err, res, req, reject) => {
-  if (!(err || (res && !res.ok))) { return; }
-
-  getEmitter(apiOptions).emit(Events.error, err, req);
-  const errorHandler = apiOptions.defaultErrorHandler || reject;
-  errorHandler(err || 500);
-  return true;
-};
-
-const handle = (apiOptions, resolve, reject, err, res, req, query, method,
+const handle = (apiOptions, resolve, reject, err, res, req, method, path, query,
     parseBody, parseMeta) => {
 
   req = normalizeRequest(res, req);
 
-  if (handleRequestIfFailed(apiOptions, err, res, req, reject)) {
+  if (handleRequestIfFailed(apiOptions, err, res, req, method, path, reject)) {
     return;
   }
 
   getEmitter(apiOptions).emit(Events.response, req, res);
 
-  const apiResponse = tryParseResponse(reject, res, req, method, query, parseBody, parseMeta);
+  const apiResponse = tryParseResponse(reject, res, req, method, path, query, parseBody, parseMeta);
 
   getEmitter(apiOptions).emit(Events.result, apiResponse);
   resolve(apiResponse);
 };
 
-const tryParseResponse = (reject, res, req, method, query, parseBody, parseMeta) => {
+const handleRequestIfFailed = (apiOptions, err, res, req, method, path, reject) => {
+  if ((!err && !res) || (res && res.ok)) { return; }
+
+  if (err) {
+    getEmitter(apiOptions).emit(Events.error, err, req);
+
+    if (err && err.timeout) {
+      err.status = 504;
+    }
+
+    return reject(new ResponseError(err, path));
+  }
+
+  // otherwise there's res and res.ok === false
+  return reject(new ResponseError(res, path));
+};
+
+const tryParseResponse = (reject, res, req, method, path, query, parseBody, parseMeta) => {
   try {
     return makeApiResponse(res, req, method, query, parseBody, parseMeta);
   } catch (e) {
     console.trace(e);
-    reject(e);
+    reject(new ResponseError(e, path));
   }
 };
 
