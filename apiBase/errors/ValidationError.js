@@ -1,20 +1,14 @@
 import FakeError from './FakeError';
 
-const msgText = (apiName, errors, model) =>
-  `${ apiName } had errors in ${ errors.join(',') } with properties ${ JSON.stringify(model.toJSON()) }`;
+const msgText = (api, errors) => `${api} had errors in ${errors.join(',')}`;
 
 export default class ValidationError extends FakeError {
-  constructor (apiName, model, errors) {
-    super(apiName);
-
+  constructor (apiName, errors, status) {
+    const message = errors && errors.length ?
+      msgText(apiName, errors) : `Validation error in '${apiName}'`;
+    super(message);
     this.name = 'ValidationError';
-
-    if (errors && errors.length && model) {
-      this.message = msgText(apiName, errors, model);
-    } else {
-      this.message = `Validation error in '${ apiName }'`;
-    }
-
-    this.status = 422;
+    this.errors = errors;
+    this.status = status;
   }
 }

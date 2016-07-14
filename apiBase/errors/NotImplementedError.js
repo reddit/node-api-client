@@ -1,6 +1,6 @@
 import FakeError from './FakeError';
 
-export default class NotImplementedError extends Error {
+export default class NotImplementedError extends FakeError {
   constructor (method, endpoint) {
     super(method, endpoint);
 

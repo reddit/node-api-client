@@ -87,6 +87,7 @@ import NoModelError from './apiBase/errors/NoModelError';
 import ResponseError from './apiBase/errors/ResponseError';
 import { DisconnectedError } from './apiBase/errors/ResponseError';
 import ValidationError from './apiBase/errors/ValidationError';
+import BadCaptchaError from './apiBase/errors/BadCaptchaError';
 import NotImplementedError from './apiBase/errors/NotImplementedError';
 
 export const errors = {
@@ -95,6 +96,7 @@ export const errors = {
   ResponseError,
   DisconnectedError,
   NotImplementedError,
+  BadCaptchaError,
 };
 
 // import Award from './models/award';

@@ -1,7 +1,11 @@
-import { runQuery } from '../apiBase/APIRequestUtils';
+import some from 'lodash/some';
 
+import { runQuery } from '../apiBase/APIRequestUtils';
+import BadCaptchaError from '../apiBase/errors/BadCaptchaError';
 import PostModel from '../models2/PostModel';
 import { formatBaseContentQuery } from './BaseContentEndpoint';
+
+const BAD_CAPTCHA = 'BAD_CAPTCHA';
 
 const getPath = (query) => {
   if (query.user) {
@@ -56,29 +60,16 @@ const formatPostData = (data)=> {
   return postData;
 };
 
-const parseBody = (res, apiResponse, req, method) => {
-  const { body } = res;
+const handleGet = (res, apiResponse) => {
+  const { body: { data } } = res;
 
-  if (method === 'get') {
-    const { data } = body;
-
-    if (data && data.children && data.children[0]) {
-      if (data.children.length === 1) {
-        apiResponse.addResult(PostModel.fromJSON(data.children[0].data));
-        return;
-      } else {
-        data.children.forEach(c => apiResponse.addResult(PostModel.fromJSON(c.data)));
-        return;
-      }
-    } else if (data) {
-      return;
-    }
-  } else if (method !== 'del') {
-    if (body.json && body.json.errors.length === 0) {
-      apiResponse.addResult(body.json.data);
+  if (data && data.children && data.children[0]) {
+    if (data.children.length === 1) {
+      apiResponse.addResult(PostModel.fromJSON(data.children[0].data));
       return;
     } else {
-      throw body.json;
+      data.children.forEach(c => apiResponse.addResult(PostModel.fromJSON(c.data)));
+      return;
     }
   }
 };
@@ -88,13 +79,23 @@ export default {
     const path = getPath(query);
     const apiQuery = formatQuery({...query}, 'get');
 
-    return runQuery(apiOptions, 'get', path, apiQuery, query, parseBody);
+    return runQuery(apiOptions, 'get', path, apiQuery, query, handleGet);
   },
 
   post(apiOptions, data) {
     const path = 'api/submit';
     const apiData = formatPostData(data);
 
-    return runQuery(apiOptions, 'post', path, apiData, data, parseBody);
+    return runQuery(apiOptions, 'post', path, apiData, data)
+      .then(resp => {
+        const { json } = resp;
+        if (json.errors.length && some(json.errors, e => e[0] === BAD_CAPTCHA)) {
+          throw new BadCaptchaError(data.captcha, json.captcha, json.errors);
+        } else if (json.errors.length) {
+          throw new ValidationError(path, json.errors, 200);
+        } else {
+          return resp;
+        }
+      });
   },
 };
