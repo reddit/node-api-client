@@ -34,7 +34,7 @@ export default class PostModel extends RedditModel {
     quarantine: T.bool,
     saved: T.bool,
     score: T.number,
-    sticked: T.bool,
+    stickied: T.bool,
     subreddit: T.string,
     subredditDetail: T.nop,
     subredditId: T.string,
