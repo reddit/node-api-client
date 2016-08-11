@@ -1,11 +1,11 @@
 import superagent from 'superagent';
 
+import Events from './Events';
 import APIResponse from './APIResponse';
 import NoModelError from './errors/NoModelError';
 import ResponseError from './errors/ResponseError';
 import ValidationError from './errors/ValidationError';
 
-import Events from './Events';
 
 const EventEmitterShim = {
   emit: () => {},
@@ -62,6 +62,7 @@ const appParameter = (apiOptions) => {
   return `${apiOptions.appName}-${apiOptions.env}`;
 };
 
+// DEPRECATED: use apiRequest instead
 export const rawSend = (apiOptions, method, path, data, type, cb) => {
   const origin = apiOptions.origin;
   const url = requestPath(apiOptions, path);
@@ -104,6 +105,7 @@ export const validateData = (data, method, apiName, validator) => {
 };
 
 
+// DEPRECATED: use apiRequest instead
 export const runJson = (apiOptions, method, path, data, parseBody, parseMeta) => {
   if (!(apiOptions && method && path && data)) { throw new NoModelError(); }
 
@@ -115,6 +117,7 @@ export const runJson = (apiOptions, method, path, data, parseBody, parseMeta) =>
   });
 }
 
+// DEPRECATED: use apiRequest instead
 export const runForm = (apiOptions, method, path, data, parseBody, parseMeta) => {
   if (!(apiOptions && method && path && data)) { throw new NoModelError(); }
 
@@ -126,6 +129,7 @@ export const runForm = (apiOptions, method, path, data, parseBody, parseMeta) =>
   });
 };
 
+// DEPRECATED: use apiRequest instead
 export const runQuery = (apiOptions, method, path, query, rawQuery, parseBody, parseMeta) => {
   if (!(apiOptions && method && path && query && rawQuery)) { throw new NoModelError(); }
 
@@ -195,7 +199,7 @@ const tryParseResponse = (reject, res, req, method, path, query, parseBody, pars
 const makeApiResponse = (res, req, method, query, parseBody, parseMeta) => {
   if (!parseBody) { return res.body; }
   const meta = parseMeta ? parseMeta(res, req, method) : res.headers;
-  const apiResponse = new APIResponse(meta, query);
+  const apiResponse = new APIResponse(res, meta, query);
   const start = Date.now();
   parseBody(res, apiResponse, req, method);
   const end = Date.now();

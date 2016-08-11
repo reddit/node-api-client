@@ -1,9 +1,10 @@
 import some from 'lodash/some';
 
-import { runQuery } from '../apiBase/APIRequestUtils';
+import apiRequest from '../apiBase/apiRequest';
 import BadCaptchaError from '../apiBase/errors/BadCaptchaError';
 import PostModel from '../models2/PostModel';
 import { formatBaseContentQuery } from './BaseContentEndpoint';
+
 
 const BAD_CAPTCHA = 'BAD_CAPTCHA';
 
@@ -60,41 +61,41 @@ const formatPostData = (data)=> {
   return postData;
 };
 
-const handleGet = (res, apiResponse) => {
-  const { body: { data } } = res;
+const handleGet = apiResponse => {
+  const { body: { data } } = apiResponse.response;
 
   if (data && data.children && data.children[0]) {
     if (data.children.length === 1) {
       apiResponse.addResult(PostModel.fromJSON(data.children[0].data));
-      return;
     } else {
       data.children.forEach(c => apiResponse.addResult(PostModel.fromJSON(c.data)));
-      return;
     }
   }
+
+  return apiResponse;
 };
 
 export default {
-  get(apiOptions, query) {
-    const path = getPath(query);
-    const apiQuery = formatQuery({...query}, 'get');
+  get(apiOptions, _query) {
+    const path = getPath(_query);
+    const query = formatQuery({ ..._query }, 'get');
 
-    return runQuery(apiOptions, 'get', path, apiQuery, query, handleGet);
+    return apiRequest(apiOptions, 'GET', path, { query }).then(handleGet);
   },
 
   post(apiOptions, data) {
     const path = 'api/submit';
-    const apiData = formatPostData(data);
+    const body = formatPostData(data);
 
-    return runQuery(apiOptions, 'post', path, apiData, data)
-      .then(resp => {
-        const { json } = resp;
+    return apiRequest(apiOptions, 'POST', path, { body })
+      .then(apiResponse => {
+        const { body: { json } } = apiResponse.response;
         if (json.errors.length && some(json.errors, e => e[0] === BAD_CAPTCHA)) {
           throw new BadCaptchaError(data.captcha, json.captcha, json.errors);
         } else if (json.errors.length) {
           throw new ValidationError(path, json.errors, 200);
         } else {
-          return resp;
+          return apiResponse.response.body;
         }
       });
   },

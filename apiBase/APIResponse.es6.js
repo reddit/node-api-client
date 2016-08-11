@@ -86,8 +86,12 @@ export class APIResponseBase {
 }
 
 export default class APIResponse extends APIResponseBase {
-  constructor(meta={}, query={}) {
+  constructor(response, meta={}, query={}) {
     super();
+    this.request = response.req;
+    this.response = response;
+
+    // Left for backwards compatibility, you can use request and response directly
     this.meta = meta;
     this.query = query;
   }
