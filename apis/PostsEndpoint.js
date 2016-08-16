@@ -85,9 +85,9 @@ export default {
 
   post(apiOptions, data) {
     const path = 'api/submit';
-    const body = formatPostData(data);
+    const query = formatPostData(data);
 
-    return apiRequest(apiOptions, 'POST', path, { body })
+    return apiRequest(apiOptions, 'POST', path, { query })
       .then(apiResponse => {
         const { body: { json } } = apiResponse.response;
         if (json.errors.length && some(json.errors, e => e[0] === BAD_CAPTCHA)) {

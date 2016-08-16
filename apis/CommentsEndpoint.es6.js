@@ -1,4 +1,4 @@
-import { runQuery, runForm } from '../apiBase/APIRequestUtils';
+import apiRequest from '../apiBase/apiRequest';
 import { formatBaseContentQuery } from './BaseContentEndpoint';
 
 import { has } from 'lodash/object';
@@ -37,9 +37,8 @@ const getPath = (query) => {
   }
 };
 
-const parseGetBody = (res, apiResponse, req) => {
-  const { query } = req;
-  const { body } = res;
+const parseGetBody = (apiResponse, hasChildren) => {
+  const { body } = apiResponse.response;
   let comments = [];
 
   if (Array.isArray(body)) {
@@ -53,7 +52,7 @@ const parseGetBody = (res, apiResponse, req) => {
 
     comments = parseCommentList(body[1].data.children);
   } else if (body.json && body.json.data) {
-    if (query.children) { // treeify 'load more comments' replies
+    if (hasChildren) { // treeify 'load more comments' replies
       comments = treeifyComments(parseCommentList(body.json.data.things));
     } else {
       comments = parseCommentList(body.json.data.things);
@@ -74,42 +73,45 @@ const parseGetBody = (res, apiResponse, req) => {
     // this sets replies to be records for consistency
     return comment.toRecord();
   });
+
+  return apiResponse;
 };
 
-const parsePostBody = (res, apiResponse) => {
-  const { body } = res;
+const parsePostBody = apiResponse => {
+  const { body } = apiResponse.response;
 
   if (has(body, 'json.data.things.0.data')) {
     const comment = body.json.data.things[0].data;
     apiResponse.addResult(CommentModel.fromJSON(comment));
   }
+
+  return apiResponse;
 };
 
-// currently, the del response doesn't actually contain anything. this fn is a
-// placeholder for what might come in the future.
-const parseDelBody = (res, apiResponse) => {};
-
 export default {
-  get(apiOptions, query) {
-    const path = getPath(query);
-    const apiQuery = formatQuery({ ...query });
+  get(apiOptions, _query) {
+    const hasChildren = !!_query.children;
+    const path = getPath(_query);
+    const query = formatQuery({ raw_json: 1, ..._query });
 
-    return runQuery(apiOptions, 'get', path, apiQuery, query, parseGetBody);
+    return apiRequest(apiOptions, 'GET', path, { query })
+      .then(apiResponse => parseGetBody(apiResponse, hasChildren));
   },
 
   post(apiOptions, data) {
     const path = 'api/comment';
-    const postData = {
+    const body = {
       api_type: 'json',
       thing_id: data.thingId,
       text: data.text,
       raw_json: 1,
     };
 
-    return runForm(apiOptions, 'post', path, postData, parsePostBody);
+    return apiRequest(apiOptions, 'POST', path, { body, type: 'form' }).then(parsePostBody);
   },
 
   del(apiOptions, id) {
-    return runForm(apiOptions, 'post', 'api/del', { id }, parseDelBody);
+    const body = { id };
+    return apiRequest(apiOptions, 'POST', 'api/del', { body, type: 'form' });
   },
 };
