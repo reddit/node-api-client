@@ -54,6 +54,8 @@ export default class CommentModel extends RedditModel {
 
   static API_ALIASES = {
     approved_by: 'approvedBy',
+    author_flair_css_class: 'authorFlairCSSClass',
+    author_flair_text: 'authorFlairText',
     banned_by: 'bannedBy',
     body_html: 'bodyHTML',
     created_utc: 'createdUTC',
