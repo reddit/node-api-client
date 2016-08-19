@@ -16,6 +16,9 @@ const getPath = (query) => {
   } else if (query.ids) {
     return `by_id/${query.query.ids.join(',')}.json`;
   } else if (query.subredditName) {
+    if (query.sort) {
+      return `r/${query.subredditName}/${query.sort}.json`;
+    }
     return `r/${query.subredditName}.json`;
   } else if (query.multi) {
     return `user/${query.multiUser}/m/${query.multi}.json`;
