@@ -22,6 +22,9 @@ const formatQuery = (query, method) => {
 
     delete query.ids;
     delete query.linkId;
+  } else if (has(query, 'query.comment')) {
+    query.comment = query.query.comment;
+    query.context = 1;
   }
 
   return query;
