@@ -8,19 +8,19 @@ import PostModel from '../models2/PostModel';
 
 import {
   treeifyComments,
-  parseCommentList,
+  parseCommentData,
   normalizeCommentReplies,
 } from '../lib/commentTreeUtils';
 
 const formatQuery = (query, method) => {
   formatBaseContentQuery(query, method);
 
-  if (query.ids) {
-    query.children = query.ids.join(',');
+  if (query.commentIds) {
+    query.children = query.commentIds.join(',');
     query.api_type = 'json';
     query.link_id = query.linkId;
 
-    delete query.ids;
+    delete query.commentIds;
     delete query.linkId;
   } else if (has(query, 'query.comment')) {
     query.comment = query.query.comment;
@@ -33,7 +33,7 @@ const formatQuery = (query, method) => {
 const getPath = (query) => {
   if (query.user) {
     return `user/${query.user}/comments.json`;
-  } else if (query.ids) {
+  } else if (query.commentIds) {
     return `api/morechildren.json`;
   } else {
     return `comments/${(query.id || query.linkId).replace(/^t3_/, '')}.json`;
@@ -53,16 +53,14 @@ const parseGetBody = (apiResponse, hasChildren) => {
       });
     }
 
-    comments = parseCommentList(body[1].data.children);
+    comments = body[1].data.children.map(parseCommentData);
   } else if (body.json && body.json.data) {
-    if (hasChildren) { // treeify 'load more comments' replies
-      comments = treeifyComments(parseCommentList(body.json.data.things));
-    } else {
-      comments = parseCommentList(body.json.data.things);
-    }
+
+    const { things } = body.json.data;
+    comments = treeifyComments(things.map(parseCommentData));
   }
 
-  normalizeCommentReplies(comments, (commentJSON, isTopLevel) => {
+  normalizeCommentReplies(comments, true, (commentJSON, isTopLevel) => {
     // parsing is done bottom up, comment models are immutable
     // but they'll rely on the records
     const comment = CommentModel.fromJSON(commentJSON);

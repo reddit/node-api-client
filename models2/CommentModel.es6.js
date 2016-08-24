@@ -27,6 +27,7 @@ export default class CommentModel extends RedditModel {
     replies: T.array,
     numReplies: T.number,
     loadMore: T.bool,
+    loadMoreIds: T.arrayOf(T.string),
     saved: T.bool,
     score: T.number,
     stickied: T.bool,
