@@ -1,4 +1,4 @@
-import { runQuery } from '../apiBase/APIRequestUtils';
+import apiRequest from '../apiBase/apiRequest';
 import Account from '../models2/Account';
 
 const getPath = (query) => {
@@ -11,22 +11,27 @@ const getPath = (query) => {
   return `user/${query.user}/about.json`;
 };
 
-const parseGetBody = (res, apiResponse) => {
-  const { body } = res;
+const parseGetBody = apiResponse => {
+  const { body } = apiResponse.response;
+
   if (body) {
     const data = {
       name: 'me', // me is reserved, this should only stay me in the logged out case
+      loid: body.loid,
+      loid_created: body.loid_created,
       ...(body.data || body),
     };
 
     apiResponse.addResult(Account.fromJSON(data));
   }
+
+  return apiResponse;
 };
 
 export default {
   get(apiOptions, query) {
     const path = getPath(query);
 
-    return runQuery(apiOptions, 'get', path, {}, query, parseGetBody);
+    return apiRequest(apiOptions, 'GET', path, { query }).then(parseGetBody);
   },
 };

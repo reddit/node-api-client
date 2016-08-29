@@ -13,12 +13,12 @@ import ResponseError from './errors/ResponseError';
  */
 export default (apiOptions, method, path, options={}) => {
   const { query={}, body={}, type=null } = options;
-  const { origin, appName, env, token, defaultHeaders={} } = apiOptions;
+  const { origin, appName, env, token, headers={} } = apiOptions;
 
   const _method = method.toLowerCase();
   const _headers = token
-    ? { ...defaultHeaders, Authorization: `Bearer ${token}` }
-    : defaultHeaders;
+    ? { ...headers, Authorization: `Bearer ${token}` }
+    : headers;
   const _path = path.startsWith('/') ? path : `/${path}`
   const _query = { ...query, app: `${appName}-${env}` };
   const endpoint = origin + _path;

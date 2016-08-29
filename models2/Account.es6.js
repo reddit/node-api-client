@@ -25,6 +25,8 @@ export default class Subreddit extends RedditModel {
     isMod: T.bool,
     isSuspended: T.bool,
     linkKarma: T.number,
+    loid: T.string,
+    loidCreated: T.number,
     name: T.string,
     over18: T.bool,
     suspensionExpirationUTC: T.number,
@@ -45,6 +47,7 @@ export default class Subreddit extends RedditModel {
     is_mod: 'isMod',
     is_suspended: 'isSuspended',
     link_karma: 'linkKarma',
+    loid_created: 'loidCreated',
     over_18: 'over18',
     suspension_expiration_utc: 'suspensionExpirationUTC',
   }

@@ -43,7 +43,7 @@ const requestAuthHeader = (apiOptions) => {
 const requestHeaders = (apiOptions) => {
   const authHeaders = requestAuthHeader(apiOptions);
   return {
-    ...(apiOptions.defaultHeaders || {}),
+    ...(apiOptions.headers || {}),
     ...authHeaders,
   };
 };
