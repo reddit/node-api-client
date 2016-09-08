@@ -1070,7 +1070,11 @@ class APIv1Endpoint {
           // user information.
           const data = {
             name: '',
-            ...(body.data || body)
+            ...(body.data || body),
+            loid: body.loid,
+            loid_created: typeof body.loid_created === 'number'
+              ? new Date(body.loid_created).toISOString()
+              : body.loid_created,
           };
           if (body) {
             return new Account(data).toJSON();
