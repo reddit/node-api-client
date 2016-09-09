@@ -1478,10 +1478,15 @@ class APIv1Endpoint {
     return bindAll({
       buildOptions: function(options) {
         let uri = options.origin;
+
+        // Chop off trailing slash if there is one
+        let path = options.path;
+        path = path.endsWith('/') ? path.slice(0, -1) : path;
+
         if (options.subreddit) {
-          uri += `/r/${options.subreddit}/wiki/${options.path}.json`;
+          uri += `/r/${options.subreddit}/wiki/${path}.json`;
         } else {
-          uri += `/wiki/${options.path}.json`;
+          uri += `/wiki/${path}.json`;
         }
 
         return { uri, options };
