@@ -96,6 +96,7 @@ class Link extends Base {
 
     if (props.thumbnail &&
        (props.thumbnail === 'default' ||
+        props.thumbnail === 'image' ||
         props.thumbnail === 'self' ||
         props.thumbnail === 'nsfw')) {
       return;
