@@ -200,9 +200,6 @@ const makeApiResponse = (res, req, method, query, parseBody, parseMeta) => {
   if (!parseBody) { return res.body; }
   const meta = parseMeta ? parseMeta(res, req, method) : res.headers;
   const apiResponse = new APIResponse(res, meta, query);
-  const start = Date.now();
   parseBody(res, apiResponse, req, method);
-  const end = Date.now();
-  console.log(`response parsing took ${end - start}`);
   return apiResponse;
 };
