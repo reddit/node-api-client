@@ -59,6 +59,7 @@ const APIs = {
 
 const DEFAULT_API_ORIGIN = 'https://www.reddit.com';
 const AUTHED_API_ORIGIN = 'https://oauth.reddit.com';
+const GRANT_TYPE_ANONYMOUS = 'https://oauth.reddit.com/grants/installed_client';
 
 const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
                'save,edit,account,creddits,flair,livemanage,modconfig,' +
@@ -107,20 +108,85 @@ class Snoode {
     return new Snoode({...this.config, ...config});
   }
 
-  login (username, pass) {
+  verifyOAuthAccess () {
+    let fail;
+
+    if (this.config.clientId == null) {
+      fail = 'clientId';
+    }
+
+    if (!this.config.clientSecret == null) {
+      fail = 'clientSecret';
+    }
+
+    if (fail) {
+      throw Error(`Please set up an Oauth App, and pass in ${fail} to config.`);
+    }
+  }
+
+  buildHeaders (includeBasicAuth=false) {
+    const headers = {
+      'User-Agent': this.config.userAgent,
+      ...this.config.defaultHeaders,
+    };
+
+    if (includeBasicAuth) {
+      const clientId = this.config.clientId;
+      const clientSecret = this.config.clientSecret;
+
+      const b = new Buffer(
+        `${clientId}:${clientSecret}`
+      );
+
+      const s = b.toString('base64');
+      const basicAuth = `Basic ${s}`;
+      headers.Authorization = basicAuth;
+    }
+
+    return headers;
+  }
+
+  getAnonymousToken () {
+    this.verifyOAuthAccess();
+    const headers = this.buildHeaders(true);
+
     return new Promise((r, x) => {
-      if (!this.config.oauthAppOrigin) {
-        x('Please set up a Reddit Oauth App, and pass in its URL as oauthAppOrigin to config.');
-      }
+      superagent
+        .post(`${this.config.origin}/api/v1/access_token`)
+        .set(headers)
+        .type('form')
+        .send({ 
+          grant_type: GRANT_TYPE_ANONYMOUS,
+          device_id: this.config.deviceId,
+        })
+        .end((err, res) => {
+          if (err || !res.ok) {
+            return x(err || res);
+          }
 
-      if (!this.config.clientId) {
-        x('Please set up a Reddit Oauth App, and pass in its id as clientId to config.');
-      }
+          r(res.body);
+        });
+    });
+  }
 
-      if (!this.config.clientSecret) {
-        x('Please set up a Reddit Oauth App, and pass in its secret as clientSecret to config.');
-      }
+  getAnonymousTokenAndSave() {
+    this.getAnonymousToken().then((token) => {
+      this.config.token = token.access_token;
+      this.config.refreshToken = token.refresh_token;
+      this.config.origin = this.config.authedOrigin || AUTHED_API_ORIGIN;
+    }, err => { throw err; });
+  }
 
+  // Use this if you don't have access to set up a password-grant app. (If you
+  // don't have access to your own reddit instance, this is unlikely.)
+  login (username, pass) {
+    if (!this.config.oauthAppOrigin) {
+      throw Error('Please set up an Oauth App, and pass oauthAppOrigin (base domain) to config.');
+    }
+
+    this.verifyOAuthAcces();
+
+    return new Promise((r, x) => {
       superagent
         .post(`${this.config.origin}/api/login/${username}`)
         .type('form')
@@ -185,8 +251,7 @@ class Snoode {
 
           const redirect_uri = `${this.config.oauthAppOrigin}/oauth2/token`;
 
-          let clientId = this.config.clientId;
-          let clientSecret = this.config.clientSecret;
+          const clientId = this.config.clientId;
 
           const postParams = {
             client_id: clientId,
@@ -225,18 +290,8 @@ class Snoode {
                 redirect_uri,
               };
 
-              const b = new Buffer(
-                `${clientId}:${clientSecret}`
-              );
 
-              const s = b.toString('base64');
-              const basicAuth = `Basic ${s}`;
-
-              const headers = {
-                'User-Agent': this.config.userAgent,
-                'Authorization': basicAuth,
-                ...this.config.defaultHeaders,
-              };
+              const headers = this.buildHeaders(true);
 
               superagent
                 .post(endpoint)
