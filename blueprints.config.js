@@ -2,7 +2,7 @@ module.exports = [{
   name: 'apiClient',
   webpack: {
     entry: {
-      apiClient: './index.es6.js',
+      build: './src/index.es6.js',
     },
     output: {
       library: '[name].js',

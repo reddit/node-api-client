@@ -16,4 +16,4 @@ require('babel-register')({
   ],
 });
 
-module.exports = require('./index').default;
+module.exports = require('./src/index').default;

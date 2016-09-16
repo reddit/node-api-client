@@ -12,7 +12,7 @@ console.log(`Starting snoode v${packageInfo.version} repl`);
 console.log('Enter `help()` for information.');
 
 require('babel-polyfill');
-const optionsWithAuth = require('./apiClient').optionsWithAuth;
+const optionsWithAuth = require('./build').optionsWithAuth;
 const APIOptions = Object.assign({},
   optionsWithAuth(process.env.TOKEN),
   { eventEmitter: new EventEmitter() }

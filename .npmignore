@@ -1,0 +1,9 @@
+node_modules
+blueprints.config.js
+npm-debug*
+
+.eslintrc
+.gitignore
+.npmignore
+.travis.yml
+.git

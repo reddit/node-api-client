@@ -1,36 +1,35 @@
 {
   "name": "@r/api-client",
   "version": "3.22.4",
-  "description": "node and browser reddit api library",
-  "main": "apiClient.js",
+  "description": "A wrapper for Reddit's API",
+  "main": "build.js",
   "scripts": {
     "watch": "blueprints -w",
     "build": "blueprints",
-    "test": "mocha test/index.js",
-    "lint": "eslint . --ext .js,.jsx",
+    "prepublish": "npm run build",
+    "lint": "eslint ./src",
     "repl": "./repl"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ajacksified/snoode.git"
+    "url": "https://github.com/reddit/node-api-client"
   },
   "keywords": [
     "reddit",
     "api"
   ],
-  "author": "Jack Lawson <ajacksified@gmail.com>",
+  "author": "reddit.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ajacksified/snoode/issues"
+    "url": "https://github.com/reddit/node-api-client/issues"
   },
-  "homepage": "https://github.com/ajacksified/snoode",
   "peerDependencies": {
     "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
     "lodash": "4.x",
     "superagent": "1.x"
   },
   "devDependencies": {
-    "@r/build": "^0.6.0",
+    "@r/build": "~0.10.0",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
     "babel-plugin-syntax-trailing-function-commas": "^6.8.0",

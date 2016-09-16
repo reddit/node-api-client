@@ -1,6 +1,6 @@
 import RedditModel from './RedditModel';
 import { SUBREDDIT } from './thingTypes';
-import subscriptions from 'apis/subscriptions';
+import subscriptions from '../apis/subscriptions';
 
 
 const T = RedditModel.Types;
