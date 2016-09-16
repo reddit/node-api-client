@@ -2,6 +2,7 @@ import some from 'lodash/some';
 
 import apiRequest from '../apiBase/apiRequest';
 import BadCaptchaError from '../apiBase/errors/BadCaptchaError';
+import ValidationError from '../apiBase/errors/ValidationError';
 import PostModel from '../models2/PostModel';
 import { formatBaseContentQuery } from './BaseContentEndpoint';
 
