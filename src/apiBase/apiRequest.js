@@ -1,6 +1,6 @@
 import superagent from 'superagent';
 
-import APIResponse from './APIResponse';
+import { APIResponse } from './APIResponse';
 import ResponseError from './errors/ResponseError';
 
 

@@ -1,7 +1,7 @@
 import superagent from 'superagent';
 
 import Events from './Events';
-import APIResponse from './APIResponse';
+import { APIResponse } from './APIResponse';
 import NoModelError from './errors/NoModelError';
 import ResponseError from './errors/ResponseError';
 import ValidationError from './errors/ValidationError';

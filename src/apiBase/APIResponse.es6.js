@@ -85,7 +85,7 @@ export class APIResponseBase {
   appendResponse() { throw new Error('Not implemented in base class'); }
 }
 
-export default class APIResponse extends APIResponseBase {
+export class APIResponse extends APIResponseBase {
   constructor(response, meta={}, query={}) {
     super();
     this.request = response.req;
