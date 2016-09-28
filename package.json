@@ -29,7 +29,7 @@
     "superagent": "1.x"
   },
   "devDependencies": {
-    "@r/build": "~0.10.0",
+    "@r/build": "~0.10.1",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
     "babel-plugin-syntax-trailing-function-commas": "^6.8.0",
