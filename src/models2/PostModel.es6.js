@@ -61,7 +61,8 @@ export default class PostModel extends RedditModel {
     promotedDisplayName: T.string,
     promotedUrl: T.string,
     secureMedia: T.nop,
-    selfTextHTML: T.string,
+    selfTextHTML: T.string, // html version for display
+    selfTextMD: T.string, // markdown version for editing
     sendReplies: T.bool,
     userReports: T.array,
 
@@ -92,6 +93,7 @@ export default class PostModel extends RedditModel {
     promoted_url: 'promotedUrl',
     post_hint: 'postHint',
     secure_media: 'secureMedia',
+    selftext: 'selfTextMD',
     selftext_html: 'selfTextHTML',
     sr_detail: 'subredditDetail',
     subreddit_id: 'subredditId',

@@ -21,6 +21,7 @@ import PostsEndpoint from './apis/PostsEndpoint';
 
 import AccountsEndpoint from './apis/accounts';
 import ActivitiesEndpoint from './apis/activities';
+import EditUserTextEndpoint from './apis/EditUserTextEndpoint';
 import HiddenEndpoint from './apis/HiddenEndpoint';
 import PreferencesEndpoint from './apis/PreferencesEndpoint';
 import RecommendedSubreddits from './apis/RecommendedSubreddits';
@@ -72,6 +73,7 @@ export const endpoints = {
   // wiki,
   AccountsEndpoint,
   ActivitiesEndpoint,
+  EditUserTextEndpoint,
   CommentsEndpoint,
   HiddenEndpoint,
   PostsEndpoint,
