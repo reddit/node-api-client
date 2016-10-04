@@ -1,6 +1,6 @@
 {
   "name": "@r/api-client",
-  "version": "3.22.8",
+  "version": "3.22.9",
   "description": "A wrapper for Reddit's API",
   "main": "build.js",
   "scripts": {
