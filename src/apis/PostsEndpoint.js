@@ -52,7 +52,7 @@ const formatPostData = (data)=> {
     sendreplies: data.sendreplies,
     sr: data.sr,
     iden: data.iden,
-    captcha: data.captcha,
+    'g-recaptcha-response': data.gRecaptchaResponse,
     resubmit: data.resubmit,
   };
 
@@ -95,7 +95,7 @@ export default {
       .then(apiResponse => {
         const { body: { json } } = apiResponse.response;
         if (json.errors.length && some(json.errors, e => e[0] === BAD_CAPTCHA)) {
-          throw new BadCaptchaError(data.captcha, json.captcha, json.errors);
+          throw new BadCaptchaError(data.gRecaptchaResponse, json.captcha, json.errors);
         } else if (json.errors.length) {
           throw new ValidationError(path, json.errors, 200);
         } else {
