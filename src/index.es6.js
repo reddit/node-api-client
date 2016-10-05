@@ -35,6 +35,7 @@ import { APIResponse, MergedApiReponse } from './apiBase/APIResponse';
 import Model from './apiBase/Model';
 import Record from './apiBase/Record';
 import * as ModelTypes from './models2/thingTypes';
+import apiRequest from './apiBase/apiRequest';
 
 import {
   withQueryAndResult,
@@ -191,6 +192,7 @@ export default makeOptions(DefaultOptions);
 
 export const requestUtils = {
   rawSend,
+  apiRequest,
 };
 
 export const optionsWithAuth = token => {
