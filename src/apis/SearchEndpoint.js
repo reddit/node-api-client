@@ -33,8 +33,6 @@ const listsFromResponse = (res) => {
 
 const parseBody = (res, apiResponse) => {
   const lists = listsFromResponse(res);
-  console.log('lists.length?', lists.length);
-  console.log(res.body);
 
   lists.forEach((listing) => {
     if (listing.data.children.length) {
