@@ -17,6 +17,9 @@ export default class Message extends RedditModel {
     replies: T.arrayOf(T.string),
     distinguished: T.string,
     subject: T.string,
+
+    // derived
+    cleanPermalink: T.link,
   };
 
   static API_ALIASES = {
@@ -26,5 +29,15 @@ export default class Message extends RedditModel {
     created_utc: 'createdUTC',
     body_html: 'bodyHTML',
     parent_id: 'parentId',
+  };
+
+  static DERIVED_PROPERTIES = {
+    cleanPermalink(data) {
+      const { id } = data;
+      if (!id) {
+        return null;
+      }
+      return `/message/messages/${id}`;
+    },
   };
 }

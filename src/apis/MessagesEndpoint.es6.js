@@ -11,7 +11,18 @@ const TYPE_MAP = {
 
 const parseGetBody = (res, apiResponse, apiRequest) => {
   const { body } = res;
-  body.data.children.forEach(c => apiResponse.addResult(TYPE_MAP[c.kind].fromJSON(c.data)));
+  body.data.children.forEach(c => {
+    const replies = [];
+    if (c.data.replies) {
+      c.data.replies.data.children.forEach(r => {
+        apiResponse.addModel(TYPE_MAP[r.kind].fromJSON(r.data));
+        replies.push(`${r.kind}_${r.data.id}`);
+      });
+    }
+
+    c.data.replies = replies;
+    apiResponse.addResult(TYPE_MAP[c.kind].fromJSON(c.data));
+  });
 };
 
 const parsePostBody = (res, apiResponse, apiRequest) => {
@@ -20,9 +31,10 @@ const parsePostBody = (res, apiResponse, apiRequest) => {
 };
 
 const getPath = (query={}) => {
-  const { subreddit, type } = query;
-  const sub = subreddit ? `r/${ subreddit }/` : '';
-  return `${ sub }message/${ type }.json`;
+  const { subreddit, type, thread } = query;
+  const sub = subreddit ? `r/${subreddit}/` : '';
+  const id = thread ? `/${thread}` : '';
+  return `${sub}message/${type}${id}.json`;
 };
 
 const postPath = (body={}) => {
