@@ -65,6 +65,7 @@ export default class PostModel extends RedditModel {
     selfTextHTML: T.string, // html version for display
     selfTextMD: T.string, // markdown version for editing
     sendReplies: T.bool,
+    suggestedSort: T.string,
     userReports: T.array,
 
     // derived
@@ -97,6 +98,7 @@ export default class PostModel extends RedditModel {
     secure_media: 'secureMedia',
     selftext: 'selfTextMD',
     selftext_html: 'selfTextHTML',
+    suggested_sort: 'suggestedSort',
     sr_detail: 'subredditDetail',
     subreddit_id: 'subredditId',
     sendreplies: 'sendReplies',
