@@ -108,6 +108,8 @@ export default class PostModel extends RedditModel {
 
   static DERIVED_PROPERTIES = {
     expandable(data) {
+      if (data.expandable) { return data.expandable; }
+
       // If it has secure_media, or media, or selftext, it has expandable.
       return !!(
         (data.secure_media && data.secure_media.content) ||
@@ -117,6 +119,8 @@ export default class PostModel extends RedditModel {
     },
 
     expandedContent(data) {
+      if (data.expandedContent) { return data.expandedContent; }
+
       let content;
 
       content = (
