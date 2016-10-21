@@ -106,9 +106,16 @@ export default class PostModel extends RedditModel {
     user_reports: 'userReports',
   };
 
+  // Note: derived properties operate on the json passed to
+  // Post.fromJson(). If the model is being updated with `.set` (voting uses this)
+  // or it's being re-instanced after serializing on the server, we
+  // will have the derived property, but we might not have all of the original
+  // json the api returns. To handle this, we re-use the computed props when necessary.
   static DERIVED_PROPERTIES = {
     expandable(data) {
-      if (data.expandable) { return data.expandable; }
+      if (data.expandable) {
+        return data.expandable;
+      }
 
       // If it has secure_media, or media, or selftext, it has expandable.
       return !!(
@@ -119,7 +126,9 @@ export default class PostModel extends RedditModel {
     },
 
     expandedContent(data) {
-      if (data.expandedContent) { return data.expandedContent; }
+      if (data.expandedContent) {
+        return data.expandedContent;
+      }
 
       let content;
 
@@ -136,9 +145,11 @@ export default class PostModel extends RedditModel {
     },
 
     preview(data) {
-      if (!(data.promoted && !data.preview)) { return data.preview; }
-      // we build fake preview data for ads and normal thumbnails
+      if (!data.promoted || data.preview) {
+        return data.preview;
+      }
 
+      // we build fake preview data for ads and normal thumbnails
       const resolutions = [];
 
       if (data.mobile_ad_url) {

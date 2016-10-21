@@ -29,7 +29,6 @@ export function _vote (apiOptions, direction) {
       await endpoint(apiOptions, { thingId: oldModel.name, direction });
       return stub;
     } catch (e) {
-      console.log(e);
       throw oldModel;
     }
   });
