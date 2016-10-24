@@ -101,6 +101,12 @@ export default class Model {
       }
     }
 
+    for (let propName in PROPERTIES) {
+      if (!this[propName]) {
+        this[propName] = PROPERTIES[propName]();
+      }
+    }
+
     const derivedKeys = Object.keys(DERIVED_PROPERTIES);
     for (let i = 0; i < derivedKeys.length; i++) {
       const derivedKey = derivedKeys[i];
