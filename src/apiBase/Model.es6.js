@@ -40,9 +40,15 @@ export default class Model {
     array: val => Array.isArray(val) ? val : [],
     arrayOf: (type=Model.Types.nop) => val => Model.Types.array(val).map(type),
     bool: val => Boolean(val),
-    cubit: val => {
-      const num = Number(val);
-      return num > 0 ? 1 : num < 0 ? -1 : 0;
+    likes: val => {
+      // coming from our api, these are booleans or null. Coming from
+      // our stub method, these are actual integers
+      switch (val) {
+        case true: return 1;
+        case false: return -1;
+        case null: return 0;
+        default: return val;
+      }
     },
 
     nop: val => val,
@@ -59,7 +65,7 @@ export default class Model {
     number: () => Math.floor(Math.random() * 100),
     array: () => Array.apply(null, Array(Math.floor(Math.random() * 10))),
     bool: () => Math.floor(Math.random() * 10) < 5,
-    cubit: () => Math.round((Math.random() * (1 - -1) + -1)),
+    likes: () => Math.round((Math.random() * (1 - -1) + -1)),
     nop: () => null,
   }
 
@@ -102,7 +108,7 @@ export default class Model {
     }
 
     for (let propName in PROPERTIES) {
-      if (!this[propName]) {
+      if (this[propName] === undefined) {
         this[propName] = PROPERTIES[propName]();
       }
     }

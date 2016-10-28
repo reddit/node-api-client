@@ -22,7 +22,7 @@ export default class CommentModel extends RedditModel {
     edited: T.bool,
     gilded: T.number,
     id: T.string,
-    likes: T.cubit,
+    likes: T.likes,
     name: T.string,
     replies: T.array,
     numReplies: T.number,
