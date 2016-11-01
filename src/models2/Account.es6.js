@@ -33,7 +33,7 @@ export default class Subreddit extends RedditModel {
   }
 
   static API_ALIASES = {
-    comment_karm: 'commentKarma',
+    comment_karma: 'commentKarma',
     created_utc: 'createdUTC',
     gold_creddits: 'goldCreddits',
     gold_expiration: 'goldExpiration',
