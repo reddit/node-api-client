@@ -17,6 +17,7 @@ export default class Message extends RedditModel {
     replies: T.arrayOf(T.string),
     distinguished: T.string,
     subject: T.string,
+    new: T.bool,
 
     // derived
     cleanPermalink: T.link,
