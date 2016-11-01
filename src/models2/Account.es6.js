@@ -42,6 +42,7 @@ export default class Subreddit extends RedditModel {
     has_verifified_email: 'hasVerifiedEmail',
     hide_from_robots: 'hideFromRobots',
     in_beta: 'inBeta',
+    inbox_count: 'inboxCount',
     is_employee: 'isEmployee',
     is_gold: 'isGold',
     is_mod: 'isMod',
