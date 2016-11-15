@@ -52,6 +52,7 @@ export default class CommentModel extends RedditModel {
 
     // derived
     cleanPermalink: T.link,
+    canContinueThread: T.bool,
   };
 
   static API_ALIASES = {
@@ -85,7 +86,13 @@ export default class CommentModel extends RedditModel {
 
       return `/r/${subreddit}/comments/${link_id.substr(3)}/comment/${id}`;
     },
-  };
+
+    canContinueThread(data) {
+      // We derive this property to make the logic for rendering loadMore and
+      // continue thread more explicit
+      return data.loadMore && data.loadMoreIds.length === 0; 
+    },  
+   };
 
   makeUUID(data) {
     if (data.name === 't1__' && data.parent_id) {
