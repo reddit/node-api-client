@@ -24,7 +24,6 @@
     "url": "https://github.com/reddit/node-api-client/issues"
   },
   "peerDependencies": {
-    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
     "lodash": "4.x",
     "superagent": "1.x"
   },
@@ -51,7 +50,6 @@
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
     "superagent": "1.x",
-    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4",
     "webpack": "2.1.0-beta.7"
   }
 }
