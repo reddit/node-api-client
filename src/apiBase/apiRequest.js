@@ -13,16 +13,20 @@ import ResponseError from './errors/ResponseError';
  */
 export default (apiOptions, method, path, options={}) => {
   const { query={}, body={}, type=null } = options;
-  const { origin, appName, env, token, headers={} } = apiOptions;
+  const { origin, appName, env, token, headers={}, queryParams={}, } = apiOptions;
 
   const _method = method.toLowerCase();
   const _headers = token
     ? { ...headers, Authorization: `Bearer ${token}` }
     : headers;
-  const _path = path.startsWith('/') ? path : `/${path}`
-  const _query = { ...query, app: `${appName}-${env}` };
-  const endpoint = origin + _path;
+  const _query = {
+    ...queryParams,
+    ...query,
+    app: `${appName}-${env}`,
+  };
 
+  const _path = path.startsWith('/') ? path : `/${path}`;
+  const endpoint = `${origin}${_path}`;
   const request = superagent[_method](endpoint).set(_headers).query(_query);
 
   if (type) {

@@ -81,7 +81,11 @@ export const rawSend = (apiOptions, method, path, data, type, cb) => {
 
   if (type === 'query') {
     data.app = appParameter(apiOptions);
-    s.query(data);
+    s.query({
+      ...(apiOptions.queryParams || {}),
+      ...data,
+      app: appParameter(apiOptions),
+    });
 
     if (s.redirects) {
       s.redirects(0);
