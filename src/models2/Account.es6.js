@@ -39,7 +39,7 @@ export default class Subreddit extends RedditModel {
     gold_expiration: 'goldExpiration',
     has_mail: 'hasMail',
     has_mod_mail: 'hasModMail',
-    has_verifified_email: 'hasVerifiedEmail',
+    has_verified_email: 'hasVerifiedEmail',
     hide_from_robots: 'hideFromRobots',
     in_beta: 'inBeta',
     is_employee: 'isEmployee',
