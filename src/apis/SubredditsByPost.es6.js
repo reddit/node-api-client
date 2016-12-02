@@ -18,7 +18,7 @@ const parseBody = (apiResponse) => {
 };
 
 const get = (apiOptions, query) => {
-  return apiRequest(apiOptions, 'GET', 'api/subreddits_by_post.json', { query })
+  return apiRequest(apiOptions, 'GET', 'api/subreddits_by_link.json', { query })
     .then(parseBody);
 };
 
