@@ -31,6 +31,7 @@ import SubredditAutocomplete from './apis/SubredditAutocomplete';
 import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 import SubredditsByPost from './apis/SubredditsByPost';
+import SubredditsToPostsByPost from './apis/SubredditsToPostsByPost';
 import WikisEndpoint from './apis/wikis';
 import MessagesEndpoint from './apis/MessagesEndpoint';
 
@@ -85,6 +86,7 @@ export const endpoints = {
   subscriptions,
   SubredditAutocomplete,
   SubredditsByPost,
+  SubredditsToPostsByPost,
   SubredditEndpoint,
   WikisEndpoint,
   MessagesEndpoint,
