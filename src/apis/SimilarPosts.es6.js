@@ -18,7 +18,7 @@ const parseBody = (apiResponse) => {
 };
 
 const get = (apiOptions, query) => {
-  return apiRequest(apiOptions, 'GET', 'api/similar_posts.json', { 'query': {...query, raw_json: 1} })
+  return apiRequest(apiOptions, 'GET', 'api/similar_links.json', { 'query': {...query, raw_json: 1} })
     .then(parseBody);
 };
 
