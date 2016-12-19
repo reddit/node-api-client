@@ -27,9 +27,12 @@ import PreferencesEndpoint from './apis/PreferencesEndpoint';
 import RecommendedSubreddits from './apis/RecommendedSubreddits';
 import SavedEndpoint from './apis/SavedEndpoint';
 import SearchEndpoint from './apis/SearchEndpoint';
+import SimilarPosts from './apis/SimilarPosts';
 import SubredditAutocomplete from './apis/SubredditAutocomplete';
 import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
+import SubredditsByPost from './apis/SubredditsByPost';
+import SubredditsToPostsByPost from './apis/SubredditsToPostsByPost';
 import WikisEndpoint from './apis/wikis';
 import MessagesEndpoint from './apis/MessagesEndpoint';
 
@@ -81,8 +84,11 @@ export const endpoints = {
   RecommendedSubreddits,
   SavedEndpoint,
   SearchEndpoint,
+  SimilarPosts,
   subscriptions,
   SubredditAutocomplete,
+  SubredditsByPost,
+  SubredditsToPostsByPost,
   SubredditEndpoint,
   WikisEndpoint,
   MessagesEndpoint,
