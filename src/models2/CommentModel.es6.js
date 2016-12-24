@@ -33,6 +33,9 @@ export default class CommentModel extends RedditModel {
     stickied: T.bool,
     subreddit: T.string,
     ups: T.number,
+    removed: T.bool,
+    approved: T.bool,
+    spam: T.bool,
 
     // aliases
     approvedBy: T.string,

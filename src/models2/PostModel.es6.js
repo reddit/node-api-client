@@ -44,6 +44,9 @@ export default class PostModel extends RedditModel {
     thumbnail: T.string,
     title: T.string,
     ups: T.number,
+    removed: T.bool,
+    approved: T.bool,
+    spam: T.bool,
 
     // aliases
     authorFlairCSSClass: T.string,
