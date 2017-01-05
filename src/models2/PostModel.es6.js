@@ -68,6 +68,8 @@ export default class PostModel extends RedditModel {
     selfTextMD: T.string, // markdown version for editing
     sendReplies: T.bool,
     suggestedSort: T.string,
+    thirdPartyTracking: T.string,
+    thirdPartyTracking2: T.string,
     userReports: T.array,
 
     // derived
@@ -106,6 +108,8 @@ export default class PostModel extends RedditModel {
     sr_detail: 'subredditDetail',
     subreddit_id: 'subredditId',
     sendreplies: 'sendReplies',
+    third_party_tracking: 'thirdPartyTracking',
+    third_party_tracking_2: 'thirdPartyTracking2',
     url: 'cleanUrl',
     user_reports: 'userReports',
   };
