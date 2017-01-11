@@ -5,7 +5,7 @@ import replyable from './mixins/replyable';
 
 const T = RedditModel.Types;
 
-const IGNORED_THUMBNAILS = new Set(['default', 'image', 'self', 'nsfw']);
+const IGNORED_THUMBNAILS = new Set(['default', 'image', 'self', 'nsfw', 'spoiler']);
 const cleanThumbnail = thumbnail => {
   return IGNORED_THUMBNAILS.has(thumbnail) ? '' : thumbnail;
 };
