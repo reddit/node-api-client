@@ -50,8 +50,10 @@ export default class PostModel extends RedditModel {
     spam: T.bool,
 
     // aliases
+    approvedBy: T.string,
     authorFlairCSSClass: T.string,
     authorFlairText: T.string,
+    bannedBy: T.string,
     createdUTC: T.number,
     disableComments: T.bool,
     hideScore: T.bool,
@@ -84,8 +86,10 @@ export default class PostModel extends RedditModel {
 
   static API_ALIASES = {
     adserver_imp_pixel: 'adserverImpPixel',
+    approved_by: 'approvedBy',
     author_flair_css_class: 'authorFlairCSSClass',
     author_flair_text: 'authorFlairText',
+    banned_by: 'bannedBy',
     created_utc: 'createdUTC',
     disable_comments: 'disableComments',
     hide_score: 'hideScore',
