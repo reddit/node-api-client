@@ -1,5 +1,6 @@
 import apiRequest from '../apiBase/apiRequest';
 import Account from '../models2/Account';
+import { ACCOUNT_TYPE } from '../models2/thingTypes'
 
 const getPath = (query) => {
   if (query.loggedOut) {
@@ -21,7 +22,7 @@ const parseGetBody = apiResponse => {
       loid: body.loid,
       loid_created: body.loid_created,
       ...rest,
-      id: `t2_${rest.id}` // shim fullname to conform to new standards https://reddit.atlassian.net/wiki/display/ENG/Reddit+ID+Format
+      id: `${ACCOUNT_TYPE}_${rest.id}` // shim fullname to conform to new standards https://reddit.atlassian.net/wiki/display/ENG/Reddit+ID+Format
     };
 
     apiResponse.addResult(Account.fromJSON(data));
