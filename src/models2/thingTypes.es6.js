@@ -1,6 +1,7 @@
 export const COMMENT = 'comment';
 export const COMMENT_TYPE = 't1';
 export const COMMENT_LOAD_MORE = 'comment_load_more';
+export const COMMENT_CONTINUE_THREAD = 'comment_continue_thread';
 
 export const ACCOUNT = 'account';
 export const ACCOUNT_TYPE = 't2';
