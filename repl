@@ -84,7 +84,7 @@ local.context.checkRecordForLoadMore = function checkRecordForLoadMore(r, record
 };
 
 function exportToContext(submoduleName) {
-  const submodule = require('./apiClient')[submoduleName];
+  const submodule = require('./build')[submoduleName];
   local.context[submoduleName] = submodule;
 
   Object.keys(submodule).forEach(function(subSubmoduleName) {
