@@ -23,7 +23,7 @@ const approve = (apiOptions, fullname) => {
  * @param {Object} apiOptions
  * @param {string} fullname The fullname of the target post
  * @param {boolean} isStickied Whether to sticky or unsticky the post
- * @param {number?} [stickyNum] Allows for specifying the "slot" to sticky the post
+ * @param {?number} [stickyNum] Allows for specifying the "slot" to sticky the post
  *      into, or for specifying which post to unsticky.
  */
 const setSubredditSticky = (apiOptions, fullname, isStickied, stickyNum=null) => {
