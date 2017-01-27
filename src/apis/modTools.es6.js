@@ -54,6 +54,18 @@ const distinguish = (apiOptions, fullname, distinguishType, _sticky=null) => {
   return apiRequest(apiOptions, 'POST', `api/distinguish/${how}`, { body, type: 'form' });
 }
 
+const markNSFW = (apiOptions, id) => {
+  // Mark a link as NSFW
+  const body = { id };
+  return apiRequest(apiOptions, 'POST', 'api/marknsfw', { body, type: 'form' });
+}
+
+const unmarkNSFW = (apiOptions, id) => {
+  // Unmark a link as NSFW
+  const body = { id };
+  return apiRequest(apiOptions, 'POST', 'api/unmarknsfw', { body, type: 'form' });
+}
+
 /**
  * Set or unset a stickied post (AKA an "Annoucement").
  * See also: https://www.reddit.com/dev/api#POST_api_set_subreddit_sticky
@@ -97,6 +109,8 @@ export default {
   remove,
   approve,
   distinguish,
+  markNSFW,
+  unmarkNSFW,
   setStickyComment,
   setSubredditSticky,
   DISTINGUISH_TYPES,
