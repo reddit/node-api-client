@@ -66,6 +66,18 @@ const unmarkNSFW = (apiOptions, id) => {
   return apiRequest(apiOptions, 'POST', 'api/unmarknsfw', { body, type: 'form' });
 }
 
+const lock = (apiOptions, id) => {
+  // Lock a link
+  const body = { id };
+  return apiRequest(apiOptions, 'POST', 'api/lock', { body, type: 'form' });
+}
+
+const unlock = (apiOptions, id) => {
+  // Unlock a link
+  const body = { id };
+  return apiRequest(apiOptions, 'POST', 'api/unlock', { body, type: 'form' });
+}
+
 /**
  * Set or unset a stickied post (AKA an "Annoucement").
  * See also: https://www.reddit.com/dev/api#POST_api_set_subreddit_sticky
@@ -111,6 +123,8 @@ export default {
   distinguish,
   markNSFW,
   unmarkNSFW,
+  lock,
+  unlock,
   setStickyComment,
   setSubredditSticky,
   DISTINGUISH_TYPES,
