@@ -78,6 +78,18 @@ const unlock = (apiOptions, id) => {
   return apiRequest(apiOptions, 'POST', 'api/unlock', { body, type: 'form' });
 }
 
+const spoiler = (apiOptions, id) => {
+  // Spoiler a post
+  const body = { id };
+  return apiRequest(apiOptions, 'POST', 'api/spoiler', { body, type: 'form' });
+}
+
+const unspoiler = (apiOptions, id) => {
+  // Unspoiler a post
+  const body = { id };
+  return apiRequest(apiOptions, 'POST', 'api/unspoiler', { body, type: 'form' });
+}
+
 /**
  * Set or unset a stickied post (AKA an "Annoucement").
  * See also: https://www.reddit.com/dev/api#POST_api_set_subreddit_sticky
@@ -125,6 +137,8 @@ export default {
   unmarkNSFW,
   lock,
   unlock,
+  spoiler,
+  unspoiler,
   setStickyComment,
   setSubredditSticky,
   DISTINGUISH_TYPES,
