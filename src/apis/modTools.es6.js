@@ -24,8 +24,14 @@ const approve = (apiOptions, fullname) => {
 
 const distinguish = (apiOptions, fullname, distinguishType) => {
   // Distinguish a link or comment
+
+  const distinguishTypeMap = {
+    'moderator': 'yes',
+    '': 'no',
+  };
+
   const body = {
-    how: distinguishType,
+    how: distinguishTypeMap[distinguishType],
     id: fullname,
   };
   return apiRequest(apiOptions, 'POST', 'api/distinguish', { body, type: 'form' });
