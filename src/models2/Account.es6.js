@@ -28,6 +28,7 @@ export default class Subreddit extends RedditModel {
     loid: T.string,
     loidCreated: T.number,
     name: T.string,
+    oauthClientId: T.string,
     over18: T.bool,
     suspensionExpirationUTC: T.number,
   }
@@ -48,6 +49,7 @@ export default class Subreddit extends RedditModel {
     is_suspended: 'isSuspended',
     link_karma: 'linkKarma',
     loid_created: 'loidCreated',
+    oauth_client_id: 'oauthClientId',
     over_18: 'over18',
     suspension_expiration_utc: 'suspensionExpirationUTC',
   }
