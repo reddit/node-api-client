@@ -5,7 +5,6 @@ import { makeOptions, rawSend } from './apiBase/APIRequestUtils';
 // import multis from './apis/multis';
 // import multiSubscriptions from './apis/multiSubscriptions';
 // import reports from './apis/reports';
-// import rules from './apis/rules';
 // import stylesheets from './apis/stylesheets';
 // import subredditRelationships from './apis/subredditRelationships';
 // import trophies from './apis/trophies';
@@ -69,7 +68,6 @@ export const endpoints = {
   // multis,
   // multiSubscriptions,
   // reports,
-  // rules,
   // stylesheets,
   // subredditRelationships,
   // subscriptions,
