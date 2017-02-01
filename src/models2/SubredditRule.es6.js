@@ -6,6 +6,16 @@ const T = RedditModel.Types;
 export default class SubredditRule extends RedditModel {
   static type = SUBREDDIT_RULE;
 
+  /**
+   * Valid types for rule targets.
+   * @enum
+   */
+  static RULE_TARGET = {
+    ALL: 'all',
+    POST: 'link',
+    COMMENT: 'comment',
+  };
+
   static PROPERTIES = {
     createdUTC: T.number,
     description: T.string,

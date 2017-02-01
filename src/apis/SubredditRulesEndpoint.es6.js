@@ -5,19 +5,7 @@ const ADD_RULE_PATH = 'api/add_subreddit_rule';
 const REMOVE_RULE_PATH = 'api/remove_subreddit_rule';
 const UPDATE_RULE_PATH = 'api/update_subreddit_rule';
 
-/**
- * Valid types for rule targets.
- * @enum
- */
-const RULE_TARGET = {
-  ALL: 'all',
-  POST: 'link',
-  COMMENT: 'comment',
-};
-
 export default {
-  RULE_TARGET,
-
   /**
    * Get the rules for the given subreddit.
    * Models are added to the APIResponse object, and can be retrieved using
@@ -61,7 +49,7 @@ export default {
    * @param {string} subredditName The name of a subreddit
    * @param {Object} data
    * @param {string} data.description Markdown formatted description of the rule
-   * @param {RULE_TARGET} data.kind The types of things the rule applies to
+   * @param {SubredditRule~RULE_TARGET} data.kind The types of things the rule applies to
    * @param {string} data.shortName A short, plaintext title for the rule
    */
   async post(apiOptions, subredditName, data) {
@@ -86,7 +74,7 @@ export default {
    * @param {string} shortName The target rule's current shortName
    * @param {Object} data
    * @param {string} data.description Markdown formatted description of the rule
-   * @param {RULE_TARGET} data.kind The types of things the rule applies to
+   * @param {SubredditRule~RULE_TARGET} data.kind The types of things the rule applies to
    * @param {string} data.shortName A short, plaintext title for the rule
    */
   async put(apiOptions, subredditName, shortName, data) {
