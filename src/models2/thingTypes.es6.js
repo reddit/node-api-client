@@ -24,6 +24,9 @@ export const PROMOCAMPAIGN_TYPE = 't8';
 export const WIKI = 'wiki';
 export const WIKI_TYPE = 'wiki';
 
+export const SUBREDDIT_RULE = 'subreddit_rule';
+export const SUBREDDIT_RULE_TYPE = 'subreddit_rule';
+
 const type_pairs = [
   [COMMENT, COMMENT_TYPE],
   [ACCOUNT, ACCOUNT_TYPE],
@@ -33,6 +36,7 @@ const type_pairs = [
   [TROPHIE, TROPHIE_TYPE],
   [PROMOCAMPAIGN, PROMOCAMPAIGN_TYPE],
   [WIKI, WIKI_TYPE],
+  [SUBREDDIT_RULE, SUBREDDIT_RULE_TYPE],
 ];
 
 export const TYPES = type_pairs.reduce((table, pair) => {

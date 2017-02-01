@@ -9,6 +9,7 @@ import {
   POST,
   MESSAGE,
   SUBREDDIT,
+  SUBREDDIT_RULE,
   WIKI,
 } from '../models2/thingTypes';
 
@@ -21,6 +22,7 @@ export class APIResponseBase {
     this.accounts = {};
     this.messages = {};
     this.subreddits = {};
+    this.subreddit_rules = {};
     this.wikis = {};
 
     this.typeToTable = {
@@ -29,6 +31,7 @@ export class APIResponseBase {
       [ACCOUNT]: this.accounts,
       [MESSAGE]: this.messages,
       [SUBREDDIT]: this.subreddits,
+      [SUBREDDIT_RULE]: this.subreddit_rules,
       [WIKI]: this.wikis,
     };
 
