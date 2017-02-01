@@ -39,6 +39,6 @@ export default class SubredditRule extends RedditModel {
   makeUUID(data) {
     // The actual rules model in r2 doesn't have a proper unique key, but
     // the `created_utc` timestamp should work since it shouldn't change.
-    return `${data.subredditName}/${data.createdUTC}`;
+    return `${data.subredditName}/${data.created_utc || data.createdUTC}`;
   }
 }
