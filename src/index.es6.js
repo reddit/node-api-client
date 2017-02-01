@@ -33,6 +33,7 @@ import SubredditAutocomplete from './apis/SubredditAutocomplete';
 import subscriptions from './apis/subscriptions';
 import SubredditEndpoint from './apis/SubredditEndpoint';
 import SubredditsByPost from './apis/SubredditsByPost';
+import SubredditRulesEndpoint from './apis/SubredditRulesEndpoint';
 import SubredditsToPostsByPost from './apis/SubredditsToPostsByPost';
 import WikisEndpoint from './apis/wikis';
 import MessagesEndpoint from './apis/MessagesEndpoint';
@@ -90,6 +91,7 @@ export const endpoints = {
   subscriptions,
   SubredditAutocomplete,
   SubredditsByPost,
+  SubredditRulesEndpoint,
   SubredditsToPostsByPost,
   SubredditEndpoint,
   WikisEndpoint,
@@ -132,6 +134,7 @@ import CommentModel from './models2/CommentModel';
 import PostModel from './models2/PostModel';
 import Preferences from './models2/Preferences';
 import Subreddit from './models2/Subreddit';
+import SubredditRule from './models2/SubredditRule';
 import Wiki from './models2/Wiki';
 
 import {
@@ -170,6 +173,7 @@ export const models = {
   PostModel,
   Preferences,
   Subreddit,
+  SubredditRule,
 
   Wiki,
 };
