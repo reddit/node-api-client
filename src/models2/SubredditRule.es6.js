@@ -14,7 +14,7 @@ export default class SubredditRule extends RedditModel {
     priority: T.number,
     shortName: T.string,
 
-    // The `subreddit` property is not returned from the API directly.  It is
+    // The `subredditName` property is not returned from the API directly.  It is
     // mixed into the response data by `SubredditRulesEndpoint.get` in order
     // to enable making unique UUIDs.
     subredditName: T.string,
@@ -29,6 +29,6 @@ export default class SubredditRule extends RedditModel {
   makeUUID(data) {
     // The actual rules model in r2 doesn't have a proper unique key, but
     // the `created_utc` timestamp should work since it shouldn't change.
-    return `${data.subreddit}/${data.createdUTC}`;
+    return `${data.subredditName}/${data.createdUTC}`;
   }
 }
