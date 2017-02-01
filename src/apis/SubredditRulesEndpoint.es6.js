@@ -75,7 +75,7 @@ export default {
       short_name: data.shortName,
     };
 
-    return apiRequest(apiOptions, { body, type: 'form' });
+    return apiRequest(apiOptions, 'POST', path, { body, type: 'form' });
   },
 
   /**
@@ -101,7 +101,7 @@ export default {
       short_name: data.shortName,
     };
 
-    return apiRequest(apiOptions, { body, type: 'form' });
+    return apiRequest(apiOptions, 'POST', path, { body, type: 'form' });
   },
 
   /**
@@ -120,6 +120,6 @@ export default {
       short_name: shortName,
     };
 
-    return apiRequest(apiOptions, { body, type: 'form' });
+    return apiRequest(apiOptions, 'POST', path, { body, type: 'form' });
   },
 };
