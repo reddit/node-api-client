@@ -50,6 +50,7 @@ export default class Subreddit extends RedditModel {
 
   static PROPERTIES = {
     accountsActive: T.number,
+    advertiserCategory: T.string,
     bannerImage: T.string,
     bannerSize: T.arrayOf(T.number),
     collapseDeletedComments: T.bool,
@@ -94,6 +95,7 @@ export default class Subreddit extends RedditModel {
 
   static API_ALIASES = {
     accounts_active: 'accountsActive',
+    advertiser_category: 'advertiserCategory',
     banner_img: 'bannerImage',
     banner_size: 'bannerSize',
     collapse_deleted_comments: 'collapseDeletedComments',
