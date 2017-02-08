@@ -51,6 +51,8 @@ export default {
    * @param {string} data.description Markdown formatted description of the rule
    * @param {SubredditRule~RULE_TARGET} data.kind The types of things the rule applies to
    * @param {string} data.shortName A short, plaintext title for the rule
+   * @param {?string} data.violationReason A short, plaintext string to use for reporting
+   *    a violation of the rule.  If omitted, the shortName will be used.
    */
   async post(apiOptions, subredditName, data) {
     const path = ADD_RULE_PATH;
@@ -62,6 +64,10 @@ export default {
       kind: data.kind,
       short_name: data.shortName,
     };
+
+    if (data.violationReason) {
+      body.violation_reason = data.violation_reason;
+    }
 
     return apiRequest(apiOptions, 'POST', path, { body, type: 'form' });
   },
@@ -88,6 +94,15 @@ export default {
       kind: data.kind,
       short_name: data.shortName,
     };
+
+    // Reddit's API will return the value of short_name if violation_reason doesn't exist.
+    // To support pulling down a rule, editing an unrelated field (e.g. description) and
+    // putting it back to the API w/o side effects, we should treat violationReason as empty
+    // if it is identical to shortName.  It's necessary to use the old value of shortName
+    // here so that we don't keep it as the violationReason if only the shortName changes.
+    if (data.violationReason && data.violationReason !== shortName) {
+      data.violation_reason = data.violationReason;
+    }
 
     return apiRequest(apiOptions, 'POST', path, { body, type: 'form' });
   },

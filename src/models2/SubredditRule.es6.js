@@ -23,6 +23,7 @@ export default class SubredditRule extends RedditModel {
     kind: T.string,
     priority: T.number,
     shortName: T.string,
+    violationReason: T.string,
 
     // The `subredditName` property is not returned from the API directly.  It is
     // mixed into the response data by `SubredditRulesEndpoint.get` in order
@@ -34,6 +35,7 @@ export default class SubredditRule extends RedditModel {
     short_name: 'shortName',
     created_utc: 'createdUTC',
     description_html: 'descriptionHTML',
+    violation_reason: 'violationReason',
   };
 
   makeUUID(data) {
