@@ -5,3 +5,10 @@ export default class Record {
     this.paginationId = paginationId;
   }
 }
+
+export class DepthRecord extends Record {
+  constructor(type, uuid, paginationId=uuid, depth) {
+    super(type, uuid, paginationId);
+    this.depth = depth;
+  }
+}

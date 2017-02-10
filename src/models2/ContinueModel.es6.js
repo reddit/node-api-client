@@ -1,5 +1,5 @@
 import RedditModel from './RedditModel';
-import Record from '../apiBase/Record';
+import { DepthRecord } from '../apiBase/Record';
 
 import { COMMENT_CONTINUE_THREAD } from './thingTypes';
 
@@ -19,12 +19,13 @@ export default class ContinueThreadModel extends RedditModel {
   }
 
   makeUUID() {
-    return (Math.random() * 16).toFixed();
+    return `${this.parentId}-${COMMENT_CONTINUE_THREAD}`;
   }
 
   toRecord() {
-    const record = new Record(this.type, this.uuid, this.paginationId);
-    record.depth = this.depth;
-    return record;
+    return new DepthRecord(this.type,
+                           this.uuid,
+                           this.paginationId,
+                           this.depth);
   }
 }

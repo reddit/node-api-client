@@ -1,5 +1,5 @@
 import RedditModel from './RedditModel';
-import Record from '../apiBase/Record';
+import { DepthRecord } from '../apiBase/Record';
 import { COMMENT, COMMENT_LOAD_MORE } from './thingTypes';
 
 import votable from './mixins/votable';
@@ -90,9 +90,10 @@ export default class CommentModel extends RedditModel {
   };
 
   toRecord() {
-    const record = new Record(this.type, this.uuid, this.paginationId);
-    record.depth = this.depth;
-    return record;
+    return new DepthRecord(this.type,
+                           this.uuid,
+                           this.paginationId,
+                           this.depth);
   }
 }
 

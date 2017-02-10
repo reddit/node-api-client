@@ -1,5 +1,5 @@
 import RedditModel from './RedditModel';
-import Record from '../apiBase/Record';
+import { DepthRecord } from '../apiBase/Record';
 
 import { COMMENT_LOAD_MORE } from './thingTypes';
 
@@ -19,9 +19,14 @@ export default class LoadMoreModel extends RedditModel {
     parent_id: 'parentId',
   }
 
+  makeUUID() {
+    return `${this.parentId}-${COMMENT_LOAD_MORE}`;
+  }
+
   toRecord() {
-    const record = new Record(this.type, this.uuid, this.paginationId);
-    record.depth = this.depth;
-    return record;
+    return new DepthRecord(this.type,
+                           this.uuid,
+                           this.paginationId,
+                           this.depth);
   }
 }
