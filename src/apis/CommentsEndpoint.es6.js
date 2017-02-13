@@ -8,8 +8,7 @@ import PostModel from '../models2/PostModel';
 
 import {
   treeifyComments,
-  parseCommentData,
-  normalizeCommentReplies,
+  buildCommentsModels,
 } from '../lib/commentTreeUtils';
 
 const formatQuery = (query, method) => {
@@ -34,46 +33,35 @@ const getPath = (query) => {
   if (query.user) {
     return `user/${query.user}/comments.json`;
   } else if (query.commentIds) {
-    return `api/morechildren.json`;
+    return 'api/morechildren.json';
   } else {
     return `comments/${(query.id || query.linkId).replace(/^t3_/, '')}.json`;
   }
 };
 
-const parseGetBody = (apiResponse, hasChildren) => {
+const parseGetBody = (apiResponse /*, hasChildren */) => {
   const { body } = apiResponse.response;
-  let comments = [];
 
   if (Array.isArray(body)) {
     // The first part of the response is a link
-    const linkData = body[0].data;
-    if (linkData && linkData.children && linkData.children.length) {
-      linkData.children.forEach(link => {
+    const postData = body[0].data;
+    if (postData && postData.children && postData.children.length) {
+      postData.children.forEach(link => {
         apiResponse.addModel(PostModel.fromJSON(link.data));
       });
     }
 
-    comments = body[1].data.children.map(parseCommentData);
+    const comments = body[1].data.children;
+    buildCommentsModels(apiResponse, comments);
+
+  // handle loadMore result
   } else if (body.json && body.json.data) {
 
     const { things } = body.json.data;
-    comments = treeifyComments(things.map(parseCommentData));
+    const comments = treeifyComments(things);
+    buildCommentsModels(apiResponse, comments);
+
   }
-
-  normalizeCommentReplies(comments, true, (commentJSON, isTopLevel) => {
-    // parsing is done bottom up, comment models are immutable
-    // but they'll rely on the records
-    const comment = CommentModel.fromJSON(commentJSON);
-
-    if (isTopLevel) {
-      apiResponse.addResult(comment);
-    } else {
-      apiResponse.addModel(comment);
-    }
-
-    // this sets replies to be records for consistency
-    return comment.toRecord();
-  });
 
   return apiResponse;
 };

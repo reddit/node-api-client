@@ -11,6 +11,8 @@ import {
   SUBREDDIT,
   SUBREDDIT_RULE,
   WIKI,
+  COMMENT_LOAD_MORE,
+  COMMENT_CONTINUE_THREAD,
 } from '../models2/thingTypes';
 
 export class APIResponseBase {
@@ -24,9 +26,13 @@ export class APIResponseBase {
     this.subreddits = {};
     this.subreddit_rules = {};
     this.wikis = {};
+    this.continueThreadObjects = {};
+    this.commentLoadMoreObjects = {};
 
     this.typeToTable = {
       [COMMENT]: this.comments,
+      [COMMENT_LOAD_MORE]: this.commentLoadMoreObjects,
+      [COMMENT_CONTINUE_THREAD]: this.continueThreadObjects,
       [POST]: this.posts,
       [ACCOUNT]: this.accounts,
       [MESSAGE]: this.messages,

@@ -1,79 +1,93 @@
-import { COMMENT_LOAD_MORE } from '../models2/thingTypes';
+import {
+  COMMENT_LOAD_MORE,
+  COMMENT,
+  COMMENT_CONTINUE_THREAD,
+} from '../models2/thingTypes';
+import CommentModel from '../models2/CommentModel';
+import LoadMoreModel from '../models2/LoadMoreModel';
+import ContinueModel from '../models2/ContinueModel';
+
 
 // All of these function rely on mutation, either for building the tree,
-// or for performance reasons (things like building dictionaryies), use/edit carefully
+// or for performance reasons (things like building dictionaries), use/edit carefully
 
 export function treeifyComments(comments=[]) {
   const commentDict = {};
   comments.forEach(c => {
-    commentDict[c.name] = c;
+    const comment = c.data;
+    commentDict[comment.name] = comment;
   });
 
   const topLevelComments = [];
 
   // build the tree. this relies on references, so mutability is important here
   comments.forEach(c => {
-    const parent = commentDict[c.parent_id];
+    const comment = c.data;
+    const parent = commentDict[comment.parent_id];
     if (!parent) {
       topLevelComments.push(c);
       return;
     }
 
-    if (!parent.replies) { parent.replies = []; }
-    parent.replies.push(c);
+    if (!parent.replies) { parent.replies = { data: { children: [] } }; }
+    parent.replies.data.children.push(c);
   });
 
   return topLevelComments;
 }
 
-export function parseCommentData(data) {
-  if (data.kind === 'more') {
-    return {
-      type: COMMENT_LOAD_MORE,
-      children: data.data.children,
-      count: data.data.count,
-      parent_id: data.data.parent_id
+function getType(comment) {
+  if (comment.kind === 'more') {
+    if (comment.data.id === '_') {
+      return COMMENT_CONTINUE_THREAD;
     }
+
+    return COMMENT_LOAD_MORE;
+  } else if (comment.kind === 't1') {
+    return COMMENT;
   }
-
-  const comment = data.data;
-
-  if (comment.replies) {
-    comment.replies = comment.replies.data.children.map(parseCommentData);
-  } else {
-    comment.replies = [];
-  }
-
-  return comment;
 }
 
-const COMMENT_DEFAULTS = {
-  numReplies: 0,
-  loadMoreIds: [],
-  loadMore: false,
+/**
+ * takes the apiResponse and passes it to a function that recursively instantiates
+ * the comments/loadMore/continueThread objects and adds them to apiResponse
+ * @function
+ * @param apiResponse
+ * @returns build function
+ **/
+export const buildCommentsModels = (apiResponse, comments) => {
+  const build = (comments, depth=0) => comments.forEach(data => {
+    const comment = data.data ? data.data : data;
+    comment.depth = depth;
+    const type = getType(data);
+
+    switch (type) {
+      case COMMENT: {
+        comment.replies = comment.replies ? comment.replies.data.children : [];
+        const commentModel = CommentModel.fromJSON(comment);
+
+        apiResponse.addResult(commentModel);
+        build(comment.replies, depth + 1);
+        break;
+      }
+
+      case COMMENT_LOAD_MORE: {
+        const loadMoreModel = LoadMoreModel
+          .fromJSON(comment);
+
+        apiResponse.addResult(loadMoreModel);
+        break;
+      }
+
+      case COMMENT_CONTINUE_THREAD: {
+        const continueModel = ContinueModel
+          .fromJSON(comment);
+
+        apiResponse.addResult(continueModel);
+        break;
+      }
+    }
+  });
+
+  return build(comments);
 };
-
-export function normalizeCommentReplies(comments, isTopLevel, visitComment) {
-  return comments.map(comment => {
-    if (comment.type === COMMENT_LOAD_MORE) { return; }
-
-    // assign some helpful keys and their defaults to the comment
-    Object.assign(comment, COMMENT_DEFAULTS);
-
-    // Filter out if a comment is a "load more" type, set a property on the
-    // parent comment, and then nuke the fake "reply"
-    const loadMoreIdx = comment.replies.findIndex(c => c.type === COMMENT_LOAD_MORE);
-    if (loadMoreIdx > -1) {
-      const loadMoreStub = comment.replies[loadMoreIdx];
-
-      comment.numReplies = loadMoreStub.count;
-      comment.loadMoreIds = loadMoreStub.children;
-      comment.loadMore = true;
-      comment.replies = comment.replies.slice(0, loadMoreIdx);
-    }
-
-    comment.replies = normalizeCommentReplies(comment.replies, false, visitComment);
-
-    return visitComment(comment, isTopLevel);
-  }).filter(c => c);
-}
