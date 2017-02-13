@@ -1,5 +1,6 @@
 import apiRequest from '../apiBase/apiRequest';
 import Account from '../models2/Account';
+import { ACCOUNT_TYPE } from '../models2/thingTypes'
 
 const getPath = (query) => {
   if (query.loggedOut) {
@@ -13,13 +14,15 @@ const getPath = (query) => {
 
 const parseGetBody = apiResponse => {
   const { body } = apiResponse.response;
+  const rest = body.data || body;
 
   if (body) {
     const data = {
       name: 'me', // me is reserved, this should only stay me in the logged out case
       loid: body.loid,
       loid_created: body.loid_created,
-      ...(body.data || body),
+      ...rest,
+      id: `${ACCOUNT_TYPE}_${rest.id}` // shim fullname to conform to new standards https://reddit.atlassian.net/wiki/display/ENG/Reddit+ID+Format
     };
 
     apiResponse.addResult(Account.fromJSON(data));
