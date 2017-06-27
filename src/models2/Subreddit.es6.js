@@ -89,6 +89,7 @@ export default class Subreddit extends RedditModel {
     userIsMuted: T.bool,
     userIsSubscriber: T.bool,
     userSrThemeEnabled: T.bool,
+    whitelistStatus: T.string,
     wikiEnabled: T.bool,
   };
 
@@ -123,6 +124,7 @@ export default class Subreddit extends RedditModel {
     user_is_muted: 'userIsMuted',
     user_is_subscriber: 'userIsSubscriber',
     user_sr_theme_enabled: 'userSrThemeEnabled',
+    whitelist_status: 'whitelistStatus',
     wiki_enabled: 'wikiEnabled',
   };
 
