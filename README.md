@@ -35,7 +35,7 @@ console.log(dankestMems.postsAndComments);
 ```
 
 ### API endpoints
-At its core, the api is made up of ApiEndpoints, APIResponses, Models, and Records. ApiEndpoints all use functions from  [APIRequestUtils](/apiBase/APIRequestUtils.es6.js). It provides an easy way to build out a idealized restful wrapper for the api. Currently instances of the api endpoints are bound to API class (exported default when you import from the api client module). Using it looks like
+At its core, the api is made up of ApiEndpoints, APIResponses, Models, and Records. ApiEndpoints all use functions from  [APIRequestUtils](/src/apiBase/APIRequestUtils.es6.js). It provides an easy way to build out a idealized restful wrapper for the api. Currently instances of the api endpoints are bound to API class (exported default when you import from the api client module). Using it looks like
 
 ```javascript
 // Require snoode.
@@ -65,7 +65,7 @@ CommentsEndpoint.get(APIOptions, {
 ##### NEW from 3.5.X+: The apiclient endpoint and collection signatures have now changed to take an APIOptions object instead of an API instance. Please note that while the imports are little verbose now, there will be a subsequent minor version change which will allow piecemeal importing of only the code you want from the api. This will make imports cleaner and your payload smaller.
 
 ### Models and Records
-A [Record](/apiBase/Record.es6.js) is essentially a tuple of `(<ModelType>, <ModelId)`.
+A [Record](/src/apiBase/Record.es6.js) is essentially a tuple of `(<ModelType>, <ModelId)`.
 ```javascript
 import { models } from '@r/api-client';
 const { Record } = models;
@@ -73,12 +73,12 @@ const LinkRecord = new Record(LINK_TYPE, 't3_4gonrl');
 ```
 
 ##### A note on pagination (3.12.0+):
-Records have a property called paginationId. By default, this will be the same as uuid. This is useful for when the uuid of your model is different than the id you'll be using for pagination. See [Subreddit's Model](/models2/Subreddit.es6.js) for an example of a Model with a different UUID than paginationId.
+Records have a property called paginationId. By default, this will be the same as uuid. This is useful for when the uuid of your model is different than the id you'll be using for pagination. See [Subreddit's Model](/src/models2/Subreddit.es6.js) for an example of a Model with a different UUID than paginationId.
 
-They are produced by [Models](/apiBase/Model.es6.js).
+They are produced by [Models](/src/apiBase/Model.es6.js).
 The Model class provides type checking and immutability for your api data.
 You define models in terms of Properties and types.
-Exposed models for the Reddit API all inherit from [RedditModel](/apiBase/RedditMobile.es6.js).
+Exposed models for the Reddit API all inherit from [RedditModel](/src/models2/RedditModel.es6.js).
 
 ```javascript
 import { models } from '@r/api-client';
@@ -165,7 +165,7 @@ class Post extends Model {
 ```
 
 ### APIResponses
-[APIResponse.es6.js](/apiBase/APIResponse.es6.js) defines the primary classes used to interact with responses from the api. (NOTE: we're still transitioning all the endpoints, but lots of them work). APIResponse embodies our opinionated view on managing your API data. Responses are normalized, and accessed in terms of records.
+[APIResponse.es6.js](/src/apiBase/APIResponse.es6.js) defines the primary classes used to interact with responses from the api. (NOTE: we're still transitioning all the endpoints, but lots of them work). APIResponse embodies our opinionated view on managing your API data. Responses are normalized, and accessed in terms of records.
 
 ```javascript
 import APIOptions from '@r/api-client';
@@ -178,7 +178,7 @@ postsResponse.links; // a dictionary of <LinkId> : <LinkModel>
 ```
 
 For cases where you want pagination, there are helpers provided by
-#### [APIResponsePaging.es6.js](/apiBase/APIResponsePaging.es6.js);
+#### [APIResponsePaging.es6.js](/src/apiBase/APIResponsePaging.es6.js);
 ```javascript
 import { APIResponsePaging } from '@r/api-client';
 const { afterResponse } = APIResponsePaging;
@@ -188,7 +188,7 @@ const { afterResponse } = APIResponsePaging;
 afterResponse(PostsEndpoint.get(APIOptions, { subredditName: 'reactjs' }))
 ```
 
-#### [MergedResponses](/apiBase/APIResponse.es6.js) handle casses where you have paginated data. Once you've fetched the next page, you can merge it with the first page to have one response represent your entire list of data.
+#### [MergedResponses](/src/apiBase/APIResponse.es6.js) handle casses where you have paginated data. Once you've fetched the next page, you can merge it with the first page to have one response represent your entire list of data.
 
 ```javascript
 import APIOptions from '@r/api-client';
@@ -211,9 +211,9 @@ Note: instances of `MergedResponses` Dont' have `.query` and `.meta` instance va
 This directory contains models that are built to easy interacting with the api. Models will have methods like `subreddit.subscribe()` or `comment.upvote()`. Implementation wise they'll extend models and add various static and instance methods.
 
 ### Collections
-Collections are used to simplyify fetching groups of things. For now all collections subclass [Listing](/collections/Listing.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`). Here's some documentation on the various subclasses
+Collections are used to simplyify fetching groups of things. For now all collections subclass [Listing](/src/collections/Listing.es6.js) has numersous helper methods for pagingation (`.withNextPage()`, `.withPreviousPage()`). Here's some documentation on the various subclasses
 
-#### [SubredditLists](/collections/SubredditLists)
+#### [SubredditLists](/src/collections/SubredditLists.js)
 
 ```javascript
 import { optionsWithAuth } from '@r/api-client';
@@ -230,7 +230,7 @@ console.log(moderatedSubreddits.subreddits.map(subreddit => subreddit.url));
 
 In these examples `.fetch(api)` handles fetching all the pages by default. This is pending feedback.
 
-#### [PostsFromSubreddit](/collections/PostsFromSubreddit.es6.js)
+#### [PostsFromSubreddit](/src/collections/PostsFromSubreddit.es6.js)
 
 For example, you can fetch all the posts in a subreddit like so:
 ```javascript
@@ -263,7 +263,7 @@ const pageAfter = await PostsFromSubreddit.fetch(APIOptions, 'all', { after })
 
 There are lots of other endpoints you can use too. Just note in the future you'll most likely pass an object with your api options instead of an api instance. This makes more sense in a redux world, and will allow us to build the api into modules which can be imported piecemeal, which could drastically reduce payload size.
 
-#### [SavedPostsAndComments](/collections/SavedPostsAndComments.es6.js)
+#### [SavedPostsAndComments](/src/collections/SavedPostsAndComments.es6.js)
 ```javascript
 import { optionsWithAuth } from '@r/api-client';
 import { collections } from '@r/api-client';
@@ -276,7 +276,7 @@ savedThings.postsAndComments;
 const savedWithNextPage = await savedThings.withNextPage(authedOptions);
 ```
 
-#### [HiddenPostsAndComments](/collections/HiddenPostsAndComments.es6.js)
+#### [HiddenPostsAndComments](/src/collections/HiddenPostsAndComments.es6.js)
 ```javascript
 import { optionsWithAuth } from '@r/api-client';
 import { collections } from '@r/api-client';
@@ -288,7 +288,7 @@ const lessThanDankMemes = await HiddenPostsAndComments.fetch(authedOptions, 'my-
 lessThanDankMemes.postsAndComments;
 ```
 
-#### [CommentsPage](/collections/CommentsPage.es6.js)
+#### [CommentsPage](/src/collections/CommentsPage.es6.js)
 ```javascript
 import APIOptions from '@r/api-client';
 import { collections } from '@r/api-client';
@@ -299,7 +299,7 @@ const post = askRedditPosts.apiResponse.uuid;
 const commentsPage = await CommentsPage.fetch(api, post);
 ```
 
-#### [SearchQuery](/collections/SearchQuery.es6.js)
+#### [SearchQuery](/src/collections/SearchQuery.es6.js)
 ```javascript
 import APIOptions from '@r/api-client';
 import { collections } from '@r/api-client';
